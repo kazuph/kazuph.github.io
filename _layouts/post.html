@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+<article class="post">
+  <header class="post-header">
+    <p class="post-date">{{ page.date | date: "%Y-%m-%d" }}</p>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}
+      <p class="post-description">{{ page.description }}</p>
+    {% endif %}
+    {% if page.source == "zenn" and page.source_url %}
+      <p class="source-note">
+        <span>Zenn mirror</span>
+        <a href="{{ page.source_url }}">original article</a>
+      </p>
+    {% endif %}
+  </header>
+
+  <div class="post-body">
+    {{ content }}
+  </div>
+</article>

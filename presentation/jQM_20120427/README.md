@@ -1,4 +1,4 @@
-[jQuery Mobileで</br>やるスマフォ最適化](http://kazuph.github.com/jQuery_Mobile_Study_20120427)
+[jQuery Mobileで</br>やるスマフォ最適化](http://kazuph.github.io/jQuery_Mobile_Study_20120427)
 ============
 @kazuph
 

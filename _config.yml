@@ -1,0 +1,40 @@
+title: kazuph blog
+description: 調査ノート、実装ログ、AI エージェントとの試行錯誤、発表資料をまとめるブログです。
+url: "https://kazuph.github.io"
+baseurl: ""
+permalink: /blog/:year/:month/:day/:title/
+timezone: Asia/Tokyo
+lang: ja
+
+author:
+  name: kazuph
+  github: kazuph
+  hatena: kazuph1986
+  x: kazuph
+  avatar: https://cdn.profile-image.st-hatena.com/users/kazuph1986/profile.png
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+plugins: []
+
+exclude:
+  - AGENTS.md
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - TODO.md
+  - external/
+  - flake.lock
+  - flake.nix
+  - scripts/
+  - shell.nix
+  - vendor/
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post

@@ -1,0 +1,419 @@
+---
+- title: フルVibe Codingでも仕事が進むようになってきた2025年
+  url: https://zenn.dev/kazuph/articles/full-vibe-coding-2025
+  slug: full-vibe-coding-2025
+  published_at: '2025-12-29T23:46:56.926+09:00'
+  updated_at: '2025-12-31T16:22:56.950+09:00'
+  type: tech
+  emoji: "\U0001F3B8"
+  liked_count: 202
+  bookmarked_count: 111
+  topics:
+  - ai
+  - playwright
+  - claudecode
+  - vibecoding
+- title: 最新LLMモデル作図バトル！Opus 4.6/4.5, Codex 5.3/5, Geminiで徹底比較
+  url: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison
+  slug: claude-opus-tikz-comparison
+  published_at: '2025-11-26T12:20:56.399+09:00'
+  updated_at: '2026-02-07T17:42:56.936+09:00'
+  type: tech
+  emoji: "\U0001F3A8"
+  liked_count: 4
+  bookmarked_count: 0
+  topics:
+  - svg
+  - tikz
+  - claude
+  - gemini
+  - codex
+- title: Claude Codeの「すぐルール忘れる問題」をHooksで解決する
+  url: https://zenn.dev/kazuph/articles/483d6cf5f3798c
+  slug: 483d6cf5f3798c
+  published_at: '2025-07-03T22:15:48.982+09:00'
+  updated_at: '2025-07-03T22:20:22.895+09:00'
+  type: tech
+  emoji: "\U0001FA9D"
+  liked_count: 147
+  bookmarked_count: 73
+  topics:
+  - ai
+  - hooks
+  - claude
+  - claudecode
+- title: Claude Codeを並列組織化してClaude Code "Company"にするtmuxコマンド集
+  url: https://zenn.dev/kazuph/articles/beb87d102bd4f5
+  slug: beb87d102bd4f5
+  published_at: '2025-06-09T22:42:56.983+09:00'
+  updated_at: '2025-06-11T11:06:58.164+09:00'
+  type: tech
+  emoji: "\U0001F3E2"
+  liked_count: 432
+  bookmarked_count: 201
+  topics:
+  - tmux
+  - claude
+  - claudecode
+- title: あなたもAndroidに機種変してTermuxでClaude CodeでMCPしよ？
+  url: https://zenn.dev/kazuph/articles/abb81cf4c844d6
+  slug: abb81cf4c844d6
+  published_at: '2025-06-05T11:09:34.235+09:00'
+  updated_at: '2025-07-02T23:15:20.337+09:00'
+  type: idea
+  emoji: "\U0001F933"
+  liked_count: 48
+  bookmarked_count: 20
+  topics:
+  - android
+  - mcp
+  - claude
+  - claudecode
+- title: いつのまにか「Claude CodeをMCPサーバー化」してClaude Desktopから利用できる神機能が生えてた件について
+  url: https://zenn.dev/kazuph/articles/5a6cc61ae21940
+  slug: 5a6cc61ae21940
+  published_at: '2025-03-19T13:24:35.571+09:00'
+  updated_at: '2025-03-19T13:36:48.700+09:00'
+  type: tech
+  emoji: "❤️"
+  liked_count: 373
+  bookmarked_count: 171
+  topics:
+  - mcp
+  - agent
+  - claude
+- title: DrizzleがTiDB Serverlessに対応していた件
+  url: https://zenn.dev/kazuph/articles/0ed213c1196928
+  slug: 0ed213c1196928
+  published_at: '2024-06-28T07:30:00.300+09:00'
+  updated_at: '2024-06-28T16:33:00.880+09:00'
+  type: tech
+  emoji: "\U0001F4D1"
+  liked_count: 10
+  bookmarked_count: 0
+  topics:
+  - mysql
+  - nextjs
+  - cloudflarepages
+  - tidb
+  - drizzle
+- title: ChatGPTにgitのリポジトリ渡すと全ソースコード.txtをダウンロードさせてくれるやつ〜〜〜〜（AIに食わせるコード一覧が欲しい時用）
+  url: https://zenn.dev/kazuph/articles/10ce8f068f449d
+  slug: 10ce8f068f449d
+  published_at: '2024-06-15T09:38:42.585+09:00'
+  updated_at: '2024-06-17T17:11:42.835+09:00'
+  type: idea
+  emoji: "\U0001F916"
+  liked_count: 149
+  bookmarked_count: 2
+  topics:
+  - shell
+  - chatgpt
+  - gemini
+  - claude3
+- title: OpenRouterでOpenAIと同インターフェイスにしたClaude3をCursorで使う
+  url: https://zenn.dev/kazuph/articles/f25ddab23db43e
+  slug: f25ddab23db43e
+  published_at: '2024-03-11T13:20:49.489+09:00'
+  updated_at: '2024-04-08T11:07:15.109+09:00'
+  type: tech
+  emoji: "\U0001FABA"
+  liked_count: 57
+  bookmarked_count: 1
+  topics:
+  - vscode
+  - cursor
+  - openai
+  - llm
+  - claude
+- title: ローカルRAG + VSCode拡張であるContinueを使ってClaude 3を先取りする
+  url: https://zenn.dev/kazuph/articles/28f055f2489cfb
+  slug: 28f055f2489cfb
+  published_at: '2024-03-09T07:11:21.116+09:00'
+  updated_at: '2024-03-09T11:47:23.473+09:00'
+  type: tech
+  emoji: "\U0001F50D"
+  liked_count: 25
+  bookmarked_count: 2
+  topics:
+  - vscode
+  - continue
+  - llm
+  - claude3
+- title: Cloud Functions for Firebase上のHonoでBasic/Bearer Authするだけの記事
+  url: https://zenn.dev/kazuph/articles/ee51d6cf08d620
+  slug: ee51d6cf08d620
+  published_at: '2024-02-05T12:11:08.253+09:00'
+  updated_at: '2024-02-07T10:10:11.922+09:00'
+  type: tech
+  emoji: "\U0001F9EF"
+  liked_count: 18
+  bookmarked_count: 0
+  topics:
+  - firebase
+  - cloudfunctions
+  - hono
+  - gc24
+- title: サーバーレスなGPUクラウド "Modal" で Swallow の 70B モデルをサクッと実行する（$30のクレジットあり）
+  url: https://zenn.dev/kazuph/articles/d10653fcfb17db
+  slug: d10653fcfb17db
+  published_at: '2023-12-20T11:57:38.518+09:00'
+  updated_at: '2023-12-20T13:22:14.494+09:00'
+  type: tech
+  emoji: "\U0001F329️"
+  liked_count: 15
+  bookmarked_count: 0
+  topics:
+  - python
+  - gpu
+  - modal
+  - llm
+  - awq
+- title: WebUIではなく素のDiffusersでLora（safetensors）もLCMもやる
+  url: https://zenn.dev/kazuph/articles/1a67d696f5d68d
+  slug: 1a67d696f5d68d
+  published_at: '2023-12-15T10:55:12.242+09:00'
+  updated_at: '2023-12-15T10:59:06.576+09:00'
+  type: tech
+  emoji: "\U0001F468‍\U0001F3A8"
+  liked_count: 4
+  bookmarked_count: 0
+  topics:
+  - python
+  - api
+  - stablediffusion
+  - diffusers
+  - lcm
+- title: ddPn08/rvc-webui を今更ながら試す（API利用のみ）
+  url: https://zenn.dev/kazuph/articles/c837435845cc1b
+  slug: c837435845cc1b
+  published_at: '2023-12-13T11:15:25.153+09:00'
+  updated_at: '2023-12-13T20:59:58.996+09:00'
+  type: tech
+  emoji: "\U0001F3A4"
+  liked_count: 2
+  bookmarked_count: 1
+  topics:
+  - docker
+  - python
+  - rvc
+- title: macOS Sonomaから使えるようになった日本語縦書きOCRを使ってスクリーンショットの画像の文字を認識する
+  url: https://zenn.dev/kazuph/articles/c78404eff5de8b
+  slug: c78404eff5de8b
+  published_at: '2023-12-09T07:12:18.864+09:00'
+  updated_at: '2023-12-09T07:12:18.864+09:00'
+  type: tech
+  emoji: "\U0001F4DD"
+  liked_count: 4
+  bookmarked_count: 0
+  topics:
+  - macos
+  - ocr
+  - shortcuts
+- title: moshをやめてEternalTerminalにしたら快適以外の何物でもなかった
+  url: https://zenn.dev/kazuph/articles/58bb8530af1ac5
+  slug: 58bb8530af1ac5
+  published_at: '2023-12-04T15:47:18.562+09:00'
+  updated_at: '2023-12-04T15:47:18.562+09:00'
+  type: tech
+  emoji: "♾️"
+  liked_count: 20
+  bookmarked_count: 8
+  topics:
+  - ubuntu
+  - ssh
+  - macos
+  - tailscale
+- title: ELYZA-japanese-Llama-2-7bをAWQ化して利用する
+  url: https://zenn.dev/kazuph/articles/e0b60dd192dfe2
+  slug: e0b60dd192dfe2
+  published_at: '2023-09-26T16:43:59.975+09:00'
+  updated_at: '2023-09-26T17:07:37.252+09:00'
+  type: tech
+  emoji: "\U0001F481‍♀️"
+  liked_count: 6
+  bookmarked_count: 0
+  topics:
+  - transformer
+  - 量子化
+  - llm
+- title: Dockerでnltkを使いたい
+  url: https://zenn.dev/kazuph/articles/9cf3aa31ac3fb0
+  slug: 9cf3aa31ac3fb0
+  published_at: '2023-07-28T09:53:29.659+09:00'
+  updated_at: '2023-07-28T09:53:43.194+09:00'
+  type: tech
+  emoji: "\U0001F433"
+  liked_count: 0
+  bookmarked_count: 0
+  topics:
+  - docker
+  - python
+- title: koboldcppを使ってコーディングつよつよモデルのMPT-30BをRTX3090(VRAM24GB)環境で動かす
+  url: https://zenn.dev/kazuph/articles/1dddbdfc3318cd
+  slug: 1dddbdfc3318cd
+  published_at: '2023-06-23T16:24:35.140+09:00'
+  updated_at: '2023-06-23T16:37:18.765+09:00'
+  type: tech
+  emoji: "\U0001F468‍\U0001F4BB"
+  liked_count: 2
+  bookmarked_count: 0
+  topics:
+  - nvidia
+  - llm
+- title: GPU VRAM 24GBでギリギリ動く40BのLLMがあるぞ！（falcon-40B-3bit）
+  url: https://zenn.dev/kazuph/articles/a3c9a7d1259b42
+  slug: a3c9a7d1259b42
+  published_at: '2023-06-15T18:00:29.700+09:00'
+  updated_at: '2023-06-15T17:59:56.050+09:00'
+  type: tech
+  emoji: "\U0001F4DD"
+  liked_count: 4
+  bookmarked_count: 0
+  topics:
+  - huggingface
+  - llm
+- title: RinnaのppoモデルをCTranslate2で高速に動かす
+  url: https://zenn.dev/kazuph/articles/84f5debf015e76
+  slug: 84f5debf015e76
+  published_at: '2023-06-12T11:57:20.966+09:00'
+  updated_at: '2023-06-13T09:10:20.224+09:00'
+  type: tech
+  emoji: "\U0001F3CE️"
+  liked_count: 16
+  bookmarked_count: 0
+  topics:
+  - gpt
+  - rinna
+  - ctranslate2
+- title: Ubuntu x RadiataでTensorRTを使った高速画像生成がやりたい
+  url: https://zenn.dev/kazuph/articles/69e88296ebe495
+  slug: 69e88296ebe495
+  published_at: '2023-06-11T16:11:05.609+09:00'
+  updated_at: '2023-06-11T21:04:52.549+09:00'
+  type: tech
+  emoji: "\U0001F680"
+  liked_count: 0
+  bookmarked_count: 0
+  topics:
+  - nvidia
+  - cuda
+  - tensorrt
+  - stablediffusion
+- title: Ryeでwhisper環境を構築する
+  url: https://zenn.dev/kazuph/articles/00ee4932fb3528
+  slug: 00ee4932fb3528
+  published_at: '2023-05-30T09:14:50.261+09:00'
+  updated_at: '2023-05-30T09:22:57.062+09:00'
+  type: tech
+  emoji: "\U0001F343"
+  liked_count: 1
+  bookmarked_count: 0
+  topics:
+  - python
+  - whisper
+  - rye
+- title: whisper.cppのGPU対応を試す
+  url: https://zenn.dev/kazuph/articles/84c9f119d0f6b3
+  slug: 84c9f119d0f6b3
+  published_at: '2023-05-02T00:20:20.805+09:00'
+  updated_at: '2023-05-02T12:48:29.731+09:00'
+  type: tech
+  emoji: "\U0001F5E3️"
+  liked_count: 3
+  bookmarked_count: 0
+  topics:
+  - cpp
+  - docker
+  - whisper
+- title: VimRにzshで設定しているコマンドのパスが通ってない場合は `.zshenv` に書く
+  url: https://zenn.dev/kazuph/articles/e7c5b8bda335c3
+  slug: e7c5b8bda335c3
+  published_at: '2023-04-16T09:53:33.032+09:00'
+  updated_at: '2023-04-16T09:53:33.032+09:00'
+  type: tech
+  emoji: "⌨️"
+  liked_count: 0
+  bookmarked_count: 0
+  topics:
+  - neovim
+  - zsh
+- title: コマンドライン上でChatGPTを実行したい（playwright, パイプでテキスト渡せる）
+  url: https://zenn.dev/kazuph/articles/ea6cf252aace7c
+  slug: ea6cf252aace7c
+  published_at: '2023-03-30T11:59:36.579+09:00'
+  updated_at: '2023-03-30T14:46:21.748+09:00'
+  type: tech
+  emoji: "\U0001F916"
+  liked_count: 5
+  bookmarked_count: 0
+  topics:
+  - python
+  - shell
+  - playwright
+  - chatgpt
+- title: ChatGPTとReplicateを使って無料でAIに画像生成してもらう
+  url: https://zenn.dev/kazuph/articles/b123f3ae01103b
+  slug: b123f3ae01103b
+  published_at: '2023-03-28T17:49:08.896+09:00'
+  updated_at: '2023-03-28T22:43:09.248+09:00'
+  type: tech
+  emoji: "\U0001F468‍\U0001F3A8"
+  liked_count: 8
+  bookmarked_count: 0
+  topics:
+  - node
+  - stablediffusion
+  - chatgpt
+- title: AndroidのChromeアプリが開いているタブのURLをすべて吸い出す方法
+  url: https://zenn.dev/kazuph/articles/a236b2292a67e9
+  slug: a236b2292a67e9
+  published_at: '2023-03-28T12:04:19.161+09:00'
+  updated_at: '2023-03-28T12:04:19.161+09:00'
+  type: tech
+  emoji: "\U0001F4F1"
+  liked_count: 3
+  bookmarked_count: 2
+  topics:
+  - android
+  - php
+  - adb
+- title: M1 MacでStable Diffusionしたい人が試すときの一番簡単で高速な方法（M1 Mac GPUでの実行）
+  url: https://zenn.dev/kazuph/articles/2f8af4764183dc
+  slug: 2f8af4764183dc
+  published_at: '2023-02-22T11:18:30.503+09:00'
+  updated_at: '2023-03-10T11:37:38.289+09:00'
+  type: tech
+  emoji: "\U0001F3A8"
+  liked_count: 33
+  bookmarked_count: 0
+  topics:
+  - macos
+  - ml
+  - m1
+  - stablediffusion
+- title: console.logで[Object]が出たときはconsole.log('%o', obj)という選択肢もある
+  url: https://zenn.dev/kazuph/articles/dc323eca77398d
+  slug: dc323eca77398d
+  published_at: '2022-04-22T12:18:23.997+09:00'
+  updated_at: '2022-04-22T12:19:33.711+09:00'
+  type: tech
+  emoji: "\U0001F9D0"
+  liked_count: 42
+  bookmarked_count: 0
+  topics:
+  - nodejs
+  - js
+  - log
+- title: VSCodeでRemote SSHしている時に特定のポートを転送する
+  url: https://zenn.dev/kazuph/articles/b39c1dde22d3dc
+  slug: b39c1dde22d3dc
+  published_at: '2021-03-17T00:05:49.433+09:00'
+  updated_at: '2021-03-17T00:05:49.433+09:00'
+  type: tech
+  emoji: "\U0001F6A2"
+  liked_count: 10
+  bookmarked_count: 0
+  topics:
+  - vscode
+  - ssh

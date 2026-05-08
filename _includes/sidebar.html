@@ -1,0 +1,67 @@
+<aside class="sidebar" aria-label="サイドバー">
+  <section class="sidebar-section profile" aria-label="プロフィール">
+    <div class="profile-card">
+      <a class="profile-avatar" href="https://x.com/{{ site.author.x }}" target="_blank" rel="noopener noreferrer">
+        <img src="{{ site.author.avatar }}" alt="{{ site.author.name }}">
+      </a>
+      <div>
+        <p class="profile-name">kazuph</p>
+        <p>ソフトウェアエンジニア。Web、IoT、AI エージェント、プロダクト開発の現場で試したことを記録しています。</p>
+        <ul class="profile-links">
+          <li><a href="https://x.com/{{ site.author.x }}" target="_blank" rel="noopener noreferrer">X</a></li>
+          <li><a href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://kazuph.hateblo.jp/" target="_blank" rel="noopener noreferrer">Hatena</a></li>
+          <li><a href="https://speakerdeck.com/kazuph" target="_blank" rel="noopener noreferrer">Slides</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sidebar-section">
+    <h2>Popular</h2>
+    <div class="hatena-popular">
+      <script src="https://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script>
+        Hatena.BookmarkWidget.url = "https://kazuph.hateblo.jp/";
+        Hatena.BookmarkWidget.title = "";
+        Hatena.BookmarkWidget.sort = "count";
+        Hatena.BookmarkWidget.width = 280;
+        Hatena.BookmarkWidget.num = 5;
+        Hatena.BookmarkWidget.theme = "hatenadiary";
+        Hatena.BookmarkWidget.load();
+      </script>
+    </div>
+    <p class="note"><a href="https://kazuph.hateblo.jp/" target="_blank" rel="noopener noreferrer">kazuph.hateblo.jp</a></p>
+  </section>
+
+  <section class="sidebar-section">
+    <div class="sidebar-heading-link">
+      <h2>Slides</h2>
+      <a href="https://speakerdeck.com/kazuph" target="_blank" rel="noopener noreferrer">すべて見る</a>
+    </div>
+    <div class="sidebar-deck-list">
+      {% for deck in site.data.speakerdeck %}
+        <article class="sidebar-deck-card">
+          <a href="{{ deck.url }}" target="_blank" rel="noopener noreferrer">
+            <img src="{{ deck.thumbnail }}" alt="{{ deck.title }}" loading="lazy">
+            <span>
+              <small>{{ deck.date }} / {{ deck.slide_count }} slides</small>
+              <strong>{{ deck.title }}</strong>
+            </span>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="sidebar-section" aria-label="ローカルスライド">
+    <ul class="slide-list">
+      {% for slide in site.data.slides %}
+        <li>
+          <a href="{{ slide.url | relative_url }}" target="_blank" rel="noopener noreferrer">{{ slide.title }}</a>
+          <span>{{ slide.date }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+</aside>

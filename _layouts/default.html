@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'ja' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <link rel="canonical" href="{{ page.canonical_url | default: page.url | absolute_url }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ '/stylesheets/stylesheet.css' | relative_url }}">
+    {% if page.title == site.title %}
+      <title>{{ site.title }}</title>
+    {% else %}
+      <title>{{ page.title }} | {{ site.title }}</title>
+    {% endif %}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="inner header-inner">
+        <div class="site-title-block">
+          <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+          <p>{{ site.description }}</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <div class="inner content-layout">
+        <section class="primary-content">
+          {{ content }}
+        </section>
+        {% include sidebar.html %}
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="inner">
+        <p>&copy; kazuph</p>
+      </div>
+    </footer>
+    <script>
+      (() => {
+        const openExternalLinksInNewTabs = (root = document) => {
+          root.querySelectorAll?.('a[href]').forEach((link) => {
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#')) return;
+
+            let url;
+            try {
+              url = new URL(href, window.location.href);
+            } catch (_error) {
+              return;
+            }
+
+            if (!/^https?:$/.test(url.protocol) || url.origin === window.location.origin) return;
+
+            link.target = '_blank';
+            const rel = new Set((link.rel || '').split(/\s+/).filter(Boolean));
+            rel.add('noopener');
+            rel.add('noreferrer');
+            link.rel = [...rel].join(' ');
+          });
+        };
+
+        openExternalLinksInNewTabs();
+        new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === Node.ELEMENT_NODE) openExternalLinksInNewTabs(node);
+            });
+          });
+        }).observe(document.body, { childList: true, subtree: true });
+      })();
+    </script>
+  </body>
+</html>

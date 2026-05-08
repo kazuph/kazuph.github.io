@@ -1,57 +1,20 @@
-<!DOCTYPE html>
-<html>
+---
+layout: default
+title: kazuph blog
+description: 調査ノート、実装ログ、AI エージェントとの試行錯誤、発表資料をまとめるブログです。
+---
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="kazuph.github.com : my github page" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>kazuph.github.com</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-      <header class="inner">
-      <a id="forkme_banner" href="https://github.com/kazuph">View on GitHub</a>
-
-      <h1 id="project_title">kazuph.github.com</h1>
-      <h2 id="project_tagline">my github page</h2>
-
-      </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-      <h2>
-        My Contents
-      </h2>
-      <ul>
-        <li><a href="http://kazuph.github.io/presentation/jQM_20120427">2012-04-27 jQuery Mobile発表資料</a></li>
-        <li><a href="http://kazuph.github.io/presentation/github_hatena_twitter">2012-11-30 僕とはてブとgithubとvimの付き合い方</a></li>
-        <li><a href="http://kazuph.github.io/presentation/fukuoka_ruby_kaigi">2012-12-01 福岡Ruby会議LT資料</a></li>
-        <li><a href="http://kazuph.github.io/presentation/kenshu2013">2013-04-12 新卒エンジニア研修キックオフ資料</a></li>
-        <li><a href="http://kazuph.github.io/presentation/yapc_vim_2013_github">2013-09-20 Vim実践入門 Perl編</a></li>
-        <li><a href="http://kazuph.github.io/presentation/isucon_heno_sonae">2014-08-05 ISUCONとリアルISUCONへの備え</a></li>
-        <li><a href="http://kazuph.github.io/presentation/yapc-2015-iot-presentation">2014-08-21 Web由来の組み込みエンジニアの半年間のすべて</a></li>
-        <li><a href="http://kazuph.github.io/presentation/TechCrunchTokyoCTONight2015">2015-11-17 IoTはものづくりを加速する</a></li>
-        <li><a href="http://kazuph.github.io/presentation/gotanda_lt_2015">2015-11-19 第0会五反田IT企業LT大会 株式会社フォトシンス会社紹介</a></li>
-      </ul>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-      <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-
-
-  </body>
-</html>
+<section class="post-list" aria-label="最新記事">
+  {% for post in site.posts %}
+    <article class="post-card">
+      <p class="post-date">{{ post.date | date: "%Y-%m-%d" }}</p>
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      {% if post.description %}
+        <p>{{ post.description }}</p>
+      {% else %}
+        <p>{{ post.excerpt | strip_html | truncate: 140 }}</p>
+      {% endif %}
+      <a class="read-more" href="{{ post.url | relative_url }}" aria-label="{{ post.title }}を開く">→</a>
+    </article>
+  {% endfor %}
+</section>

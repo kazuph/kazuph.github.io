@@ -94,7 +94,7 @@
 ### そんな素敵な<br />サービス
 
 ## 僕とgithub 1
-[社内会議用タイマー](http://kazuph.github.com/TeiClock/ "timer")
+[社内会議用タイマー](http://kazuph.github.io/TeiClock/ "timer")
 
 * github単体で動作（サーバーいらない
 
@@ -120,7 +120,7 @@
 ![bu](img/bu.png "bu")
 
 ## 僕とgithub 5
-[この資料](https://github.com/kazuph/kazuph.github.com/tree/master/presentation/github_hatena_twitter "kore")
+[この資料](https://github.com/kazuph/kazuph.github.io/tree/master/presentation/github_hatena_twitter "kore")
 
 * github単体で動作（サーバーいらない
 

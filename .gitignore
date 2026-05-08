@@ -35,3 +35,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Local Jekyll output
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+vendor/
+
+# Generated from public Zenn pages at build time.
+_posts/zenn/
