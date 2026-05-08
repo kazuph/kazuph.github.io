@@ -13,9 +13,6 @@ layout: default
       {% endunless %}
       {% include hatena_bookmark_count.html url=bookmark_url %}
     </h1>
-    {% if page.description %}
-      <p class="post-description">{{ page.description }}</p>
-    {% endif %}
     {% if page.source == "zenn" and page.source_url %}
       <p class="source-note">
         <span>Zenn mirror</span>

@@ -437,13 +437,13 @@ Blog Reboot
 body {
   color: #171717;
   background: #ffffff;
-  font-family: "BIZ UDPGothic", "UD Digi Kyokasho NK-R", "Yu Gothic", YuGothic, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  font-family: "Helvetica Neue", Arial, "BIZ UDPGothic", "Yu Gothic", YuGothic, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   letter-spacing: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: #111111;
-  font-family: "BIZ UDPGothic", "UD Digi Kyokasho NK-R", "Yu Gothic", YuGothic, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  font-family: "Helvetica Neue", Arial, "BIZ UDPGothic", "Yu Gothic", YuGothic, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   letter-spacing: 0;
 }
 
@@ -488,8 +488,11 @@ a:hover {
 
 .site-header h1 {
   margin: 0;
-  font-size: 40px;
-  line-height: 1.1;
+  font-family: "Helvetica Neue", Arial, "BIZ UDPGothic", "Yu Gothic", YuGothic, "Hiragino Sans", Meiryo, sans-serif;
+  font-size: 46px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .site-header h1 a {
@@ -638,7 +641,7 @@ a:hover {
   max-height: 100vh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 26px 0 56px;
+  padding: 26px 0 96px;
   scrollbar-width: thin;
 }
 
@@ -649,6 +652,37 @@ a:hover {
 
 .sidebar-section:first-child {
   padding-top: 0;
+}
+
+.external-blog-title {
+  margin-bottom: 12px;
+}
+
+.external-blog-title p {
+  margin: 0 0 4px;
+  color: #54677a;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.external-blog-title h2 {
+  margin: 0;
+}
+
+.external-blog-title h2 a {
+  color: #111111;
+}
+
+.external-blog-title h2 a:hover {
+  color: #174a7c;
+}
+
+.external-blog-title-muted h2 a {
+  color: #54677a;
+}
+
+.external-blog-title-muted h2 a:hover {
+  color: #174a7c;
 }
 
 .profile-name {
@@ -699,6 +733,10 @@ a:hover {
 .link-list,
 .slide-list {
   margin: 0;
+}
+
+.slide-list {
+  padding-bottom: 72px;
 }
 
 .link-list li,
@@ -943,8 +981,8 @@ a:hover {
 
 .post-body .msg.message,
 .post-body .msg.info {
-  background: #eef6ff;
-  border-color: #cfe2f3;
+  background: #fff7e6;
+  border-color: #ffe8b3;
 }
 
 .post-body mark {
@@ -1013,7 +1051,11 @@ a:hover {
   margin-bottom: 12px;
 }
 
-.sidebar-heading-link a {
+.sidebar-heading-link .external-blog-title h2 {
+  margin: 0;
+}
+
+.sidebar-heading-link > a {
   flex: none;
   font-size: 12px;
   font-weight: 800;

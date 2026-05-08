@@ -1,0 +1,1382 @@
+---
+layout: post
+title: "Codexのpetスキルの問題点を改善する"
+date: 2026-05-08
+description: "画像生成ではなく切り抜き方を直して、Codex petのジャンプや左右移動のスケール違和感を改善した記録。"
+---
+
+<style>
+
+    :root {
+      --ink: #172025;
+      --muted: #4f5d66;
+      --line: #d7dfdc;
+      --soft-line: #edf2f0;
+      --red: #c93443;
+      --blue: #245d92;
+      --wash: #f7faf8;
+    }
+
+    .pet-article, .pet-article * { box-sizing: border-box; }
+
+    .primary-content:has(.pet-article) {
+      max-width: 900px;
+    }
+
+    .pet-article {
+      margin: 0;
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    .pet-article {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 4px 0 40px;
+      overflow: hidden;
+    }
+
+    .pet-article .intro {
+      padding: 0 0 12px;
+    }
+
+    .lead {
+      max-width: 820px;
+      margin: 10px 0 0;
+      color: var(--ink);
+      font-size: 17px;
+    }
+
+    .pet-article .problem-lead {
+      margin-top: 0;
+      color: var(--ink);
+      font-size: 19px;
+      font-weight: 760;
+    }
+
+    .pet-article section {
+      margin-top: 32px;
+      padding-top: 0;
+    }
+
+    .pet-article h2 {
+      margin: 0 0 12px;
+      padding: 0;
+      background: none;
+      font-size: 25px;
+      letter-spacing: 0;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 22px;
+      margin-top: 16px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding-top: 0;
+    }
+
+    .step-no {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .step h3 {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .step figure {
+      grid-column: 2;
+      margin-top: 8px;
+    }
+
+    .pet-article figure {
+      margin: 0;
+    }
+
+    .pet-article img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(45deg, #eef1ef 25%, transparent 25%),
+        linear-gradient(-45deg, #eef1ef 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #eef1ef 75%),
+        linear-gradient(-45deg, transparent 75%, #eef1ef 75%);
+      background-size: 18px 18px;
+      background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+    }
+
+    .pet-article figcaption {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .row-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .row-card {
+      padding-top: 0;
+    }
+
+    .row-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .qa-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+      gap: 16px;
+      align-items: start;
+      margin-top: 16px;
+    }
+
+    .algorithm-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .algorithm-card {
+      min-height: 130px;
+      padding-top: 0;
+    }
+
+    .algorithm-card b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .algorithm-card p {
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      align-items: start;
+      margin-top: 16px;
+    }
+
+    .checks-panel {
+      margin-top: 16px;
+    }
+
+    .gif-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .gif-card {
+      padding-top: 0;
+    }
+
+    .gif-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .ok-list {
+      counter-reset: ok-item;
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pet-article .ok-list li {
+      counter-increment: ok-item;
+      position: relative;
+      padding: 8px 0 8px 46px;
+      border-left: 4px solid var(--blue);
+      background: transparent;
+      color: var(--ink);
+      font-weight: 750;
+      list-style: none;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    .pet-article .ok-list li::before {
+      content: counter(ok-item);
+      position: absolute;
+      left: 10px;
+      top: 9px;
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 12px 0 0;
+      border-left: 0 !important;
+      border-top: 1px solid var(--line);
+      background: transparent;
+      color: #5b2730;
+      font-weight: 750;
+    }
+
+    .pet-article code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .source-details {
+      margin-top: 16px;
+    }
+
+    .source-details summary {
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    .source-details pre {
+      margin-top: 12px;
+      max-height: 520px;
+      overflow: auto;
+      white-space: pre;
+      background: #111a20;
+      color: #e7f3ee;
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .source-details code {
+      display: block;
+      color: inherit;
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .pet-article { width: 100%; padding-top: 10px; }
+      .step, .row-grid, .qa-grid, .algorithm-grid, .compare-grid, .gif-grid { grid-template-columns: 1fr; }
+      .step figure { grid-column: auto; }
+    }
+  
+</style>
+
+<div class="pet-article">
+    <section class="intro">
+      <p class="problem-lead">
+        問題は、Codexのpet用spritesheetを作るときに「画像そのもの」ではなく「切り抜き方」でキャラの大きさが揺れていたことでした。
+      </p>
+      <p class="lead">
+        添付写真の男の子をもとにStrider Boyをhatchしたところ、ジャンプや左右移動で頭が大きく見えたり、移動時だけ小さく見えたりしました。
+        そこで画像生成をやり直すのではなく、row stripの切り出し、正規化、足元baseline、row単位補正を順番に見直しました。
+        これは、その試行錯誤と最終的な改善方法を、あとから同じ罠に落ちないようにまとめた記事です。
+      </p>
+      <div class="gif-grid">
+        <article class="gif-card">
+          <h3>Before: dokochanのjumpingを各frameで個別fit</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-before-identity-normalization-v2.gif" alt="dokochan before normalization jumping animation">
+          <p>
+            低い姿勢がセルに合わせて拡大され、ジャンプの上下移動よりもサイズ差が目立っていました。
+          </p>
+        </article>
+        <article class="gif-card">
+          <h3>After: dokochanも共通scale + 足元baseline</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-after-identity-normalization-v2.gif" alt="dokochan after normalization jumping animation">
+          <p>
+            キャラの大きさを保ったまま、ジャンプをセル内の上下位置の変化として見せます。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="order-title">
+      <h2 id="order-title">作成した順番</h2>
+      <div class="timeline">
+        <article class="step">
+          <div class="step-no">01</div>
+          <div>
+            <h3>run manifestを作成</h3>
+            <p>
+              <code>~/.codex/pet-runs/strider-boy</code> にrunフォルダを作り、
+              Strider Boyのidentity、rowごとのprompt、layout guide、出力先を確定しました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-references-layout-guides-idle.png" alt="idle row layout guide">
+            <figcaption>layout guide例: row生成時のフレーム数と余白だけを示す参照画像。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">02</div>
+          <div>
+            <h3>base画像を生成</h3>
+            <p>
+              写真から赤ヘルメット、黒サングラス、ネイビー服、青パンツ、赤いバランスバイクを抽出し、
+              以後のrow生成のcanonical referenceにしました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-base.png" alt="generated Strider Boy base pet image">
+            <figcaption>decoded/base.png: row生成の見た目の正解。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">03</div>
+          <div>
+            <h3>identity check rowを先に生成</h3>
+            <p>
+              subagentで<code>idle</code>と<code>running-right</code>を先に生成しました。
+              静止と走行で同じ男の子に見えることを確認してから残りrowに進みました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running-right.png" alt="generated running-right row strip">
+            <figcaption>running-right: 最初に確認した走行row。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">04</div>
+          <div>
+            <h3>running-leftはミラーせず生成</h3>
+            <p>
+              baseの赤バイクに文字が入っていたため、左右反転すると意味が壊れます。
+              そのため<code>running-left</code>はミラー派生ではなく、参照付きで別生成しました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running-left.png" alt="generated running-left row strip">
+            <figcaption>running-left: 反転ではなく通常生成。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">05</div>
+          <div>
+            <h3>残りrowをsubagentで並列生成</h3>
+            <p>
+              <code>waving</code>、<code>jumping</code>、<code>failed</code>、
+              <code>waiting</code>、<code>running</code>、<code>review</code>をrowごとに生成しました。
+              親エージェントはmanifest記録とpackageだけを担当しました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-failed.png" alt="generated failed row strip">
+            <figcaption>failed: row単位で生成された実画像。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">06</div>
+          <div>
+            <h3>atlas化とQA</h3>
+            <p>
+              生成rowから各フレームを抽出し、透明背景の <code>192x208</code> セルへ並べ直しました。
+              この「全モーションのセルを1枚に敷き詰めた画像」がatlasで、Codex Appは
+              <code>pet.json</code> のrow定義を見ながらatlas上の該当セルを順番に再生します。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-contact-sheet.png" alt="QA contact sheet for Strider Boy pet">
+            <figcaption>qa/contact-sheet.png: 全rowの目視確認用。</figcaption>
+          </figure>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="rows-title">
+      <h2 id="rows-title">生成したrow strips</h2>
+      <p class="lead">
+        row stripは、1つのモーションだけを横長に並べた生成元画像です。
+        これをそのままpetとして使うのではなく、各rowからフレームを切り出して、
+        最後に1枚のspritesheet atlasへ再配置します。
+      </p>
+      <div class="row-grid">
+        <article class="row-card">
+          <h3>row 0: idle / 6 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-idle.png" alt="idle row strip">
+        </article>
+        <article class="row-card">
+          <h3>row 1: running-right / 8 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running-right.png" alt="running-right row strip">
+        </article>
+        <article class="row-card">
+          <h3>row 2: running-left / 8 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running-left.png" alt="running-left row strip">
+        </article>
+        <article class="row-card">
+          <h3>row 3: waving / 4 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-waving.png" alt="waving row strip">
+        </article>
+        <article class="row-card">
+          <h3>row 4: jumping / 5 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-jumping-v2.png" alt="jumping row strip">
+        </article>
+        <article class="row-card">
+          <h3>row 5: failed / 8 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-failed.png" alt="failed row strip">
+        </article>
+        <article class="row-card">
+          <h3>row 6: waiting / 6 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-waiting.png" alt="waiting row strip">
+        </article>
+        <article class="row-card">
+          <h3>row 7: running / 6 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running.png" alt="running row strip">
+        </article>
+        <article class="row-card">
+          <h3>row 8: review / 6 frames</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-review.png" alt="review row strip">
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="extract-title">
+      <h2 id="extract-title">row stripをどう切り出しているか</h2>
+      <p class="lead">
+        生成AIには「横長の1枚に複数ポーズを並べる」と依頼します。
+        その後、<code>extract_strip_frames.py</code> が背景を透過し、ポーズ単位の連結成分を検出して、
+        Codex pet用の <code>192x208</code> セルへ配置します。
+      </p>
+
+      <div class="row-grid">
+        <figure>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-jump-strip-source.png" alt="generated jumping row strip">
+          <figcaption>1. まずはマゼンタ背景つきの横長row stripとして生成される。</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-jump-strip-bbox.png" alt="detected bounding boxes on jumping row strip">
+          <figcaption>2. 背景を透明化し、ポーズごとの不透明pixel領域をbboxとして検出する。</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-jump-atlas-cells.png" alt="jumping frames placed into 192x208 atlas cells">
+          <figcaption>3. 切り出したフレームを192x208セルへ配置する。青線が足元baseline。</figcaption>
+        </figure>
+      </div>
+
+      <div class="algorithm-grid">
+        <article class="algorithm-card">
+          <b>1. chroma key除去</b>
+          <p>
+            row画像のマゼンタ背景を色距離で透明化します。
+            背景が完全な単色でなくても、しきい値内の近似色は透明になります。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>2. connected components</b>
+          <p>
+            透明化後の不透明pixelを探索し、つながった塊を検出します。
+            大きい塊を各フレームのseedとして左から順に並べます。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>3. noiseを近いseedへ結合</b>
+          <p>
+            小さな部品やハンドルなど、別componentになったpixelは、
+            X座標が近いseedへまとめて1ポーズとして扱います。
+          </p>
+        </article>
+      </div>
+
+      <details class="source-details">
+        <summary>extract_strip_frames.py の全文を開く</summary>
+        <pre><code>#!/usr/bin/env python3
+&quot;&quot;&quot;Extract generated horizontal row strips into 192x208 sprite frames.&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import re
+from pathlib import Path
+
+from PIL import Image
+
+CELL_WIDTH = 192
+CELL_HEIGHT = 208
+CELL_PADDING = 10
+ROW_FRAME_COUNTS = {
+    &quot;idle&quot;: 6,
+    &quot;running-right&quot;: 8,
+    &quot;running-left&quot;: 8,
+    &quot;waving&quot;: 4,
+    &quot;jumping&quot;: 5,
+    &quot;failed&quot;: 8,
+    &quot;waiting&quot;: 6,
+    &quot;running&quot;: 6,
+    &quot;review&quot;: 6,
+}
+REFERENCE_HEIGHT_STATES = {&quot;idle&quot;, &quot;waving&quot;, &quot;waiting&quot;, &quot;review&quot;}
+IDENTITY_HEIGHT_STATES = {&quot;running-right&quot;, &quot;running-left&quot;, &quot;running&quot;}
+MAX_IDENTITY_ROW_SCALE = 1.45
+
+
+def parse_states(raw: str) -&gt; list[str]:
+    if raw.strip().lower() == &quot;all&quot;:
+        return list(ROW_FRAME_COUNTS)
+    states = [item.strip() for item in raw.split(&quot;,&quot;) if item.strip()]
+    unknown = sorted(set(states) - set(ROW_FRAME_COUNTS))
+    if unknown:
+        raise SystemExit(f&quot;unknown state(s): {&#39;, &#39;.join(unknown)}&quot;)
+    return states
+
+
+def parse_hex_color(value: str) -&gt; tuple[int, int, int]:
+    if not re.fullmatch(r&quot;#[0-9a-fA-F]{6}&quot;, value):
+        raise SystemExit(f&quot;invalid chroma key color: {value}; expected #RRGGBB&quot;)
+    return tuple(int(value[index : index + 2], 16) for index in (1, 3, 5))
+
+
+def load_chroma_key(decoded_dir: Path, override: str | None) -&gt; tuple[int, int, int]:
+    if override:
+        return parse_hex_color(override)
+    request_path = decoded_dir.parent / &quot;pet_request.json&quot;
+    if request_path.is_file():
+        request = json.loads(request_path.read_text(encoding=&quot;utf-8&quot;))
+        chroma_key = request.get(&quot;chroma_key&quot;)
+        if isinstance(chroma_key, dict) and isinstance(chroma_key.get(&quot;hex&quot;), str):
+            return parse_hex_color(chroma_key[&quot;hex&quot;])
+    return parse_hex_color(&quot;#00FF00&quot;)
+
+
+def color_distance(
+    red: int,
+    green: int,
+    blue: int,
+    key: tuple[int, int, int],
+) -&gt; float:
+    return math.sqrt((red - key[0]) ** 2 + (green - key[1]) ** 2 + (blue - key[2]) ** 2)
+
+
+def remove_chroma_background(
+    image: Image.Image,
+    chroma_key: tuple[int, int, int],
+    threshold: float,
+) -&gt; Image.Image:
+    rgba = image.convert(&quot;RGBA&quot;)
+    pixels = rgba.load()
+    for y in range(rgba.height):
+        for x in range(rgba.width):
+            red, green, blue, alpha = pixels[x, y]
+            if color_distance(red, green, blue, chroma_key) &lt;= threshold:
+                pixels[x, y] = (red, green, blue, 0)
+    return rgba
+
+
+def fit_to_cell(image: Image.Image) -&gt; Image.Image:
+    bbox = image.getbbox()
+    target = Image.new(&quot;RGBA&quot;, (CELL_WIDTH, CELL_HEIGHT), (0, 0, 0, 0))
+    if bbox is None:
+        return target
+
+    sprite = image.crop(bbox)
+    max_width = CELL_WIDTH - CELL_PADDING
+    max_height = CELL_HEIGHT - CELL_PADDING
+    scale = min(max_width / sprite.width, max_height / sprite.height, 1.0)
+    if scale != 1.0:
+        sprite = sprite.resize(
+            (max(1, round(sprite.width * scale)), max(1, round(sprite.height * scale))),
+            Image.Resampling.LANCZOS,
+        )
+    left = (CELL_WIDTH - sprite.width) // 2
+    top = (CELL_HEIGHT - sprite.height) // 2
+    target.alpha_composite(sprite, (left, top))
+    return target
+
+
+def fit_sprites_to_cells_consistently(
+    sprites: list[tuple[Image.Image, tuple[int, int, int, int]]],
+    scale: float | None = None,
+) -&gt; list[Image.Image]:
+    if not sprites:
+        return []
+
+    max_width = CELL_WIDTH - CELL_PADDING
+    max_height = CELL_HEIGHT - CELL_PADDING
+    max_sprite_width = max(sprite.width for sprite, _bbox in sprites)
+    global_min_y = min(bbox[1] for _sprite, bbox in sprites)
+    global_max_y = max(bbox[3] for _sprite, bbox in sprites)
+    vertical_span = max(1, global_max_y - global_min_y)
+    if scale is None:
+        scale = min(
+            max_width / max(1, max_sprite_width),
+            max_height / vertical_span,
+            1.0,
+        )
+    baseline_y = CELL_HEIGHT - max(4, CELL_PADDING // 2)
+    frames: list[Image.Image] = []
+
+    for sprite, bbox in sprites:
+        target = Image.new(&quot;RGBA&quot;, (CELL_WIDTH, CELL_HEIGHT), (0, 0, 0, 0))
+        scaled_width = max(1, round(sprite.width * scale))
+        scaled_height = max(1, round(sprite.height * scale))
+        scaled = sprite
+        if scaled.size != (scaled_width, scaled_height):
+            scaled = sprite.resize((scaled_width, scaled_height), Image.Resampling.LANCZOS)
+        left = (CELL_WIDTH - scaled.width) // 2
+        # Keep row-local vertical motion, but anchor it from the lowest foot point.
+        top = baseline_y - round((global_max_y - bbox[1]) * scale)
+        top = max(0, min(CELL_HEIGHT - scaled.height, top))
+        target.alpha_composite(scaled, (left, top))
+        frames.append(target)
+
+    return frames
+
+
+def connected_components(image: Image.Image) -&gt; list[dict[str, object]]:
+    alpha = image.getchannel(&quot;A&quot;)
+    width, height = image.size
+    data = alpha.tobytes()
+    visited = bytearray(width * height)
+    components: list[dict[str, object]] = []
+
+    for start, alpha_value in enumerate(data):
+        if alpha_value &lt;= 16 or visited[start]:
+            continue
+
+        stack = [start]
+        visited[start] = 1
+        pixels: list[int] = []
+        min_x = width
+        min_y = height
+        max_x = 0
+        max_y = 0
+
+        while stack:
+            current = stack.pop()
+            pixels.append(current)
+            x = current % width
+            y = current // width
+            min_x = min(min_x, x)
+            min_y = min(min_y, y)
+            max_x = max(max_x, x)
+            max_y = max(max_y, y)
+
+            if x &gt; 0:
+                neighbor = current - 1
+                if not visited[neighbor] and data[neighbor] &gt; 16:
+                    visited[neighbor] = 1
+                    stack.append(neighbor)
+            if x + 1 &lt; width:
+                neighbor = current + 1
+                if not visited[neighbor] and data[neighbor] &gt; 16:
+                    visited[neighbor] = 1
+                    stack.append(neighbor)
+            if y &gt; 0:
+                neighbor = current - width
+                if not visited[neighbor] and data[neighbor] &gt; 16:
+                    visited[neighbor] = 1
+                    stack.append(neighbor)
+            if y + 1 &lt; height:
+                neighbor = current + width
+                if not visited[neighbor] and data[neighbor] &gt; 16:
+                    visited[neighbor] = 1
+                    stack.append(neighbor)
+
+        components.append(
+            {
+                &quot;pixels&quot;: pixels,
+                &quot;area&quot;: len(pixels),
+                &quot;bbox&quot;: (min_x, min_y, max_x + 1, max_y + 1),
+                &quot;center_x&quot;: (min_x + max_x + 1) / 2,
+            }
+        )
+
+    return components
+
+
+def component_group_image(
+    source: Image.Image,
+    components: list[dict[str, object]],
+    padding: int = 4,
+) -&gt; tuple[Image.Image, tuple[int, int, int, int]]:
+    width, height = source.size
+    min_x = max(0, min(component[&quot;bbox&quot;][0] for component in components) - padding)
+    min_y = max(0, min(component[&quot;bbox&quot;][1] for component in components) - padding)
+    max_x = min(width, max(component[&quot;bbox&quot;][2] for component in components) + padding)
+    max_y = min(height, max(component[&quot;bbox&quot;][3] for component in components) + padding)
+
+    output = Image.new(&quot;RGBA&quot;, (max_x - min_x, max_y - min_y), (0, 0, 0, 0))
+    source_pixels = source.load()
+    output_pixels = output.load()
+    for component in components:
+        for pixel_index in component[&quot;pixels&quot;]:
+            x = pixel_index % width
+            y = pixel_index // width
+            output_pixels[x - min_x, y - min_y] = source_pixels[x, y]
+    return output, (min_x, min_y, max_x, max_y)
+
+
+def extract_component_sprites(
+    strip: Image.Image,
+    frame_count: int,
+) -&gt; list[tuple[Image.Image, tuple[int, int, int, int]]] | None:
+    components = connected_components(strip)
+    if not components:
+        return None
+
+    largest_area = max(component[&quot;area&quot;] for component in components)
+    seed_threshold = max(120, largest_area * 0.20)
+    seeds = [component for component in components if component[&quot;area&quot;] &gt;= seed_threshold]
+    if len(seeds) &lt; frame_count:
+        seeds = sorted(components, key=lambda component: component[&quot;area&quot;], reverse=True)[
+            :frame_count
+        ]
+    if len(seeds) &lt; frame_count:
+        return None
+
+    seeds = sorted(
+        sorted(seeds, key=lambda component: component[&quot;area&quot;], reverse=True)[:frame_count],
+        key=lambda component: component[&quot;center_x&quot;],
+    )
+    seed_ids = {id(seed) for seed in seeds}
+    groups: list[list[dict[str, object]]] = [[seed] for seed in seeds]
+    noise_threshold = max(12, largest_area * 0.002)
+
+    for component in components:
+        if id(component) in seed_ids or component[&quot;area&quot;] &lt; noise_threshold:
+            continue
+        nearest_index = min(
+            range(len(seeds)),
+            key=lambda index: abs(seeds[index][&quot;center_x&quot;] - component[&quot;center_x&quot;]),
+        )
+        groups[nearest_index].append(component)
+
+    return [component_group_image(strip, group) for group in groups]
+
+
+def extract_component_frames(strip: Image.Image, frame_count: int) -&gt; list[Image.Image] | None:
+    sprites = extract_component_sprites(strip, frame_count)
+    if sprites is None:
+        return None
+    return fit_sprites_to_cells_consistently(sprites)
+
+
+def extract_slot_sprites(
+    strip: Image.Image,
+    frame_count: int,
+) -&gt; list[tuple[Image.Image, tuple[int, int, int, int]]]:
+    slot_width = strip.width / frame_count
+    sprites = []
+    for index in range(frame_count):
+        left = round(index * slot_width)
+        right = round((index + 1) * slot_width)
+        crop = strip.crop((left, 0, right, strip.height))
+        bbox = crop.getbbox()
+        if bbox is None:
+            sprites.append((Image.new(&quot;RGBA&quot;, (1, 1), (0, 0, 0, 0)), (left, 0, left + 1, 1)))
+            continue
+        sprite = crop.crop(bbox)
+        sprites.append((sprite, (left + bbox[0], bbox[1], left + bbox[2], bbox[3])))
+    return sprites
+
+
+def extract_slot_frames(strip: Image.Image, frame_count: int) -&gt; list[Image.Image]:
+    return fit_sprites_to_cells_consistently(extract_slot_sprites(strip, frame_count))
+
+
+def extract_state_sprites(
+    strip_path: Path,
+    state: str,
+    chroma_key: tuple[int, int, int],
+    threshold: float,
+    method: str,
+) -&gt; dict[str, object]:
+    frame_count = ROW_FRAME_COUNTS[state]
+    with Image.open(strip_path) as opened:
+        strip = remove_chroma_background(opened, chroma_key, threshold)
+
+    sprites = None
+    used_method = method
+    if method in {&quot;auto&quot;, &quot;components&quot;}:
+        sprites = extract_component_sprites(strip, frame_count)
+        if sprites is None and method == &quot;components&quot;:
+            raise SystemExit(f&quot;could not find {frame_count} sprite components in {strip_path}&quot;)
+        if sprites is not None:
+            used_method = &quot;components&quot;
+
+    if sprites is None:
+        sprites = extract_slot_sprites(strip, frame_count)
+        used_method = &quot;slots&quot;
+
+    return {&quot;state&quot;: state, &quot;sprites&quot;: sprites, &quot;method&quot;: used_method}
+
+
+def global_scale_for_states(states: list[dict[str, object]]) -&gt; float:
+    sprites = [
+        sprite
+        for state in states
+        for sprite, _bbox in state[&quot;sprites&quot;]
+        if isinstance(sprite, Image.Image)
+    ]
+    if not sprites:
+        return 1.0
+    max_width = max(sprite.width for sprite in sprites)
+    max_height = max(sprite.height for sprite in sprites)
+    return min(
+        (CELL_WIDTH - CELL_PADDING) / max(1, max_width),
+        (CELL_HEIGHT - CELL_PADDING) / max(1, max_height),
+        1.0,
+    )
+
+
+def median(values: list[float]) -&gt; float:
+    if not values:
+        return 0.0
+    ordered = sorted(values)
+    middle = len(ordered) // 2
+    if len(ordered) % 2:
+        return ordered[middle]
+    return (ordered[middle - 1] + ordered[middle]) / 2
+
+
+def row_median_height(state: dict[str, object]) -&gt; float:
+    heights = [
+        sprite.height
+        for sprite, _bbox in state[&quot;sprites&quot;]
+        if isinstance(sprite, Image.Image)
+    ]
+    return median([float(height) for height in heights])
+
+
+def identity_row_scales(states: list[dict[str, object]]) -&gt; dict[str, float]:
+    reference_heights = [
+        row_median_height(state)
+        for state in states
+        if state[&quot;state&quot;] in REFERENCE_HEIGHT_STATES
+    ]
+    canonical_height = median([height for height in reference_heights if height &gt; 0])
+    row_scales: dict[str, float] = {}
+    for state in states:
+        state_name = str(state[&quot;state&quot;])
+        row_height = row_median_height(state)
+        if canonical_height &lt;= 0 or row_height &lt;= 0 or state_name not in IDENTITY_HEIGHT_STATES:
+            row_scales[state_name] = 1.0
+            continue
+        row_scales[state_name] = min(MAX_IDENTITY_ROW_SCALE, canonical_height / row_height)
+    return row_scales
+
+
+def write_state_frames(
+    state: str,
+    sprites: list[tuple[Image.Image, tuple[int, int, int, int]]],
+    output_root: Path,
+    used_method: str,
+    scale: float | None,
+) -&gt; dict[str, object]:
+    state_dir = output_root / state
+    state_dir.mkdir(parents=True, exist_ok=True)
+    frames = fit_sprites_to_cells_consistently(sprites, scale=scale)
+    outputs = []
+    for index, frame in enumerate(frames):
+        output = state_dir / f&quot;{index:02d}.png&quot;
+        frame.save(output)
+        outputs.append(str(output))
+    return {&quot;state&quot;: state, &quot;frames&quot;: outputs, &quot;method&quot;: used_method}
+
+
+def extract_state(
+    strip_path: Path,
+    state: str,
+    output_root: Path,
+    chroma_key: tuple[int, int, int],
+    threshold: float,
+    method: str,
+) -&gt; dict[str, object]:
+    frame_count = ROW_FRAME_COUNTS[state]
+    with Image.open(strip_path) as opened:
+        strip = remove_chroma_background(opened, chroma_key, threshold)
+
+    state_dir = output_root / state
+    state_dir.mkdir(parents=True, exist_ok=True)
+
+    frames = None
+    used_method = method
+    if method in {&quot;auto&quot;, &quot;components&quot;}:
+        frames = extract_component_frames(strip, frame_count)
+        if frames is None and method == &quot;components&quot;:
+            raise SystemExit(f&quot;could not find {frame_count} sprite components in {strip_path}&quot;)
+        if frames is not None:
+            used_method = &quot;components&quot;
+
+    if frames is None:
+        frames = extract_slot_frames(strip, frame_count)
+        used_method = &quot;slots&quot;
+
+    outputs = []
+    for index, frame in enumerate(frames):
+        output = state_dir / f&quot;{index:02d}.png&quot;
+        frame.save(output)
+        outputs.append(str(output))
+    return {&quot;state&quot;: state, &quot;frames&quot;: outputs, &quot;method&quot;: used_method}
+
+
+def main() -&gt; None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(&quot;--decoded-dir&quot;, required=True)
+    parser.add_argument(&quot;--output-dir&quot;, required=True)
+    parser.add_argument(&quot;--states&quot;, default=&quot;all&quot;)
+    parser.add_argument(&quot;--chroma-key&quot;, help=&quot;Override chroma key as #RRGGBB.&quot;)
+    parser.add_argument(&quot;--key-threshold&quot;, type=float, default=96.0)
+    parser.add_argument(
+        &quot;--method&quot;,
+        choices=(&quot;auto&quot;, &quot;components&quot;, &quot;slots&quot;),
+        default=&quot;auto&quot;,
+        help=&quot;Use connected sprite components when possible, or fixed equal slots.&quot;,
+    )
+    parser.add_argument(
+        &quot;--normalization&quot;,
+        choices=(&quot;global&quot;, &quot;row&quot;),
+        default=&quot;global&quot;,
+        help=&quot;Use one atlas-wide scale by default; row keeps the older per-row scale.&quot;,
+    )
+    args = parser.parse_args()
+
+    decoded_dir = Path(args.decoded_dir).expanduser().resolve()
+    output_dir = Path(args.output_dir).expanduser().resolve()
+    chroma_key = load_chroma_key(decoded_dir, args.chroma_key)
+    states = parse_states(args.states)
+    manifest = []
+    if args.normalization == &quot;global&quot;:
+        extracted_states = []
+        for state in states:
+            strip_path = decoded_dir / f&quot;{state}.png&quot;
+            if not strip_path.is_file():
+                raise SystemExit(f&quot;missing generated strip for {state}: {strip_path}&quot;)
+            extracted_states.append(
+                extract_state_sprites(
+                    strip_path,
+                    state,
+                    chroma_key,
+                    args.key_threshold,
+                    args.method,
+                )
+            )
+        common_scale = global_scale_for_states(extracted_states)
+        row_scales = identity_row_scales(extracted_states)
+        scales = {
+            extracted[&quot;state&quot;]: common_scale * row_scales[str(extracted[&quot;state&quot;])]
+            for extracted in extracted_states
+        }
+        for extracted in extracted_states:
+            manifest.append(
+                write_state_frames(
+                    extracted[&quot;state&quot;],
+                    extracted[&quot;sprites&quot;],
+                    output_dir,
+                    extracted[&quot;method&quot;],
+                    scales[extracted[&quot;state&quot;]],
+                )
+            )
+    else:
+        scales = None
+        row_scales = None
+        for state in states:
+            strip_path = decoded_dir / f&quot;{state}.png&quot;
+            if not strip_path.is_file():
+                raise SystemExit(f&quot;missing generated strip for {state}: {strip_path}&quot;)
+            manifest.append(
+                extract_state(
+                    strip_path,
+                    state,
+                    output_dir,
+                    chroma_key,
+                    args.key_threshold,
+                    args.method,
+                )
+            )
+
+    (output_dir / &quot;frames-manifest.json&quot;).write_text(
+        json.dumps(
+            {
+                &quot;ok&quot;: True,
+                &quot;chroma_key&quot;: {
+                    &quot;hex&quot;: f&quot;#{chroma_key[0]:02X}{chroma_key[1]:02X}{chroma_key[2]:02X}&quot;,
+                    &quot;rgb&quot;: list(chroma_key),
+                    &quot;threshold&quot;: args.key_threshold,
+                },
+                &quot;normalization&quot;: {
+                    &quot;mode&quot;: args.normalization,
+                    &quot;scale&quot;: scales,
+                    &quot;row_scale&quot;: row_scales,
+                    &quot;reference_height_states&quot;: sorted(REFERENCE_HEIGHT_STATES),
+                    &quot;identity_height_states&quot;: sorted(IDENTITY_HEIGHT_STATES),
+                    &quot;anchor&quot;: &quot;row-local foot baseline with atlas-wide base scale and row-level identity height correction&quot;,
+                },
+                &quot;rows&quot;: manifest,
+            },
+            indent=2,
+        )
+        + &quot;\n&quot;,
+        encoding=&quot;utf-8&quot;,
+    )
+    print(json.dumps({&quot;ok&quot;: True, &quot;frames_root&quot;: str(output_dir), &quot;states&quot;: states}, indent=2))
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+      </details>
+    </section>
+
+    <section aria-labelledby="normalize-title">
+      <h2 id="normalize-title">正規化問題と改善</h2>
+      <p class="lead">
+        旧処理では、各フレームを個別bboxで切り抜いて個別にfitしていました。
+        これだと、しゃがむ・倒れる・ジャンプするような姿勢で、実際の高さ変化が「拡大縮小」に変換され、
+        頭や体が不自然に大きく見えることがあります。
+      </p>
+
+      <div class="algorithm-grid">
+        <article class="algorithm-card">
+          <b>旧: frameごとの個別scale</b>
+          <p>
+            各フレームのbboxだけを見てセルに収めるため、低い姿勢ほど拡大されやすく、
+            row内のキャラサイズが揺れます。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>新: row単位でidentityを保つ</b>
+          <p>
+            先に全rowの全フレームを抽出し、一番大きいキャラ矩形で基礎scaleを決めます。
+            その上で、左右移動のように本来同じ背丈で見えるべきrowだけ、行全体に同じ補正をかけます。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>新: 足元baselineを保持</b>
+          <p>
+            足元を基準に配置し、余った空間は頭より上に出します。
+            ジャンプや失敗姿勢はサイズ変更ではなく位置変化として残します。
+          </p>
+        </article>
+      </div>
+
+      <div class="gif-grid">
+        <article class="gif-card">
+          <h3>Before: jumpingを各frameで個別fit</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-jump-before-identity-normalization-v2.gif" alt="before normalization jumping animation">
+          <p>
+            低い姿勢や小さく検出された姿勢をセルいっぱいに寄せるため、ジャンプの上下移動よりも
+            「キャラが伸び縮みしている」ように見えます。
+          </p>
+        </article>
+        <article class="gif-card">
+          <h3>After: 共通scale + 足元baseline</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-jump-after-identity-normalization-v2.gif" alt="after normalization jumping animation">
+          <p>
+            同じrowから切り出したフレームを、共通scaleのまま足元基準で配置します。
+            余白は頭上に逃がし、ジャンプはサイズ差ではなく上下位置の変化として残します。
+          </p>
+        </article>
+      </div>
+
+      <div class="compare-grid">
+        <figure>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-contact-sheet.png" alt="normalized v2 contact sheet">
+          <figcaption>
+            改善後contact sheet。特にjumping rowで、上下移動がセル内のポジション変化として残る。
+          </figcaption>
+        </figure>
+        <div>
+          <ol class="ok-list">
+            <li>実装は <code>extract_strip_frames.py</code>。全フレーム最大矩形から1つのscaleを決定</li>
+            <li>左右移動rowは立ち姿系の標準高さを参照し、row全体で同じ倍率に補正</li>
+            <li>frameごとの個別拡大はしないため、row内の同一性は維持</li>
+            <li>足元baselineで揃え、頭上の余白で高さ差を吸収</li>
+            <li>最終検証の <code>final/validation.json</code> は errors 0 / warnings 0</li>
+          </ol>
+          <p class="note">
+            この改善は画像生成のやり直しではなく、既存の生成rowからフレームを切り出すdeterministic処理の修正です。
+            見た目のidentityはそのまま、アニメーション時のスケール揺れだけを減らしています。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="identity-crop-title">
+      <h2 id="identity-crop-title">左右移動が小さくなる問題の改善</h2>
+      <p class="lead">
+        画像生成には戻らず、切り抜き後の正規化だけで改善しました。
+        原因は、左右移動rowの元bboxが立ち姿より低く、全体scale固定だけではその小ささがそのまま残ったことです。
+        新処理では、idle / waving / waiting / review から標準キャラ高さを推定し、running-right / running-left / running だけをrow単位で同じ倍率に補正します。
+      </p>
+
+      <div class="algorithm-grid">
+        <article class="algorithm-card">
+          <b>検出</b>
+          <p>
+            chroma key除去後、連結成分から各フレームのキャラbboxを抽出します。
+            frame単位ではなくrow単位で中央値を取り、偶然の手足や小物に引っ張られにくくします。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>標準高さ</b>
+          <p>
+            idle / waving / waiting / review を基準rowとして、標準キャラ高さを推定します。
+            failedやjumpingは意図的に高さが変わるので、この補正対象から外します。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>補正</b>
+          <p>
+            running-right / running-left / running はrow全体に同じ倍率をかけます。
+            これにより、移動中のキャラサイズだけが縮む違和感を抑えます。
+          </p>
+        </article>
+      </div>
+
+      <figure>
+        <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-contact-sheet.png" alt="identity normalized strider boy contact sheet">
+        <figcaption>
+          Strider Boy after: running-right / running-left / running が idle に近い高さへ揃ったcontact sheet。
+        </figcaption>
+      </figure>
+      <div class="checks-panel">
+        <ol class="ok-list">
+          <li>running-right 平均高さを約138pxから約188pxへ補正</li>
+          <li>running-left 平均高さを約140pxから約188pxへ補正</li>
+          <li><code>frames-manifest.json</code> に <code>row_scale</code> を記録</li>
+          <li><code>qa/review.json</code> と <code>final/validation.json</code> は errors 0 / warnings 0</li>
+        </ol>
+      </div>
+    </section>
+
+    <section aria-labelledby="dokochan-title">
+      <h2 id="dokochan-title">dokochanにも同じ改善を適用</h2>
+      <p class="lead">
+        dokochanも旧正規化ではjumping rowが他rowと違う大きさに見え、jumpの上下移動が弱くなっていました。
+        同じ全体最大矩形scale、足元baseline、row単位identity補正で再finalizeし、正式petアセットも更新済みです。
+      </p>
+
+      <div class="gif-grid">
+        <article class="gif-card">
+          <h3>Before: dokochanのjumpingを各frameで個別fit</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-before-identity-normalization-v2.gif" alt="dokochan before normalization jumping animation">
+          <p>
+            低い姿勢がセルに合わせて拡大され、ジャンプの上下移動よりもサイズ差が目立っていました。
+          </p>
+        </article>
+        <article class="gif-card">
+          <h3>After: dokochanも共通scale + 足元baseline</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-after-identity-normalization-v2.gif" alt="dokochan after normalization jumping animation">
+          <p>
+            キャラの大きさを保ったまま、ジャンプをセル内の上下位置の変化として見せます。
+          </p>
+        </article>
+      </div>
+
+      <div class="compare-grid">
+        <figure>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-contact-sheet.png" alt="dokochan normalized contact sheet">
+          <figcaption>dokochan after: 全体最大矩形scaleとrow単位identity補正で再finalizeしたcontact sheet。</figcaption>
+        </figure>
+        <div>
+          <ol class="ok-list">
+            <li><code>~/.codex/pets/dokochan/spritesheet.webp</code> は更新済み</li>
+            <li><code>~/.codex/pet-runs/dokochan/final/validation.json</code>: errors 0 / warnings 0</li>
+            <li><code>frames/frames-manifest.json</code>: <code>mode: global</code> / <code>row_scale</code> 記録済み</li>
+          </ol>
+          <p class="note">
+            <code>pet-runs</code> は作業履歴、<code>pets</code> がCodex Appの正式アセット置き場です。
+            今回は両方のpetについて正式アセット側も新しいspritesheetへ交換済みです。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="lessons-title">
+      <h2 id="lessons-title">今回の試行錯誤とノウハウ</h2>
+      <p class="lead">
+        最終的な学びは、petの品質は画像生成だけでは決まらず、生成済みrowをどう切り抜き、
+        どの単位で同一性を守るかで大きく変わる、という点です。
+        ここでは今回採用した判断と、途中で捨てた方針をまとめます。
+      </p>
+
+      <div class="algorithm-grid">
+        <article class="algorithm-card">
+          <b>1. 生成はrow単位</b>
+          <p>
+            1枚の画像で全姿勢を一括生成するのではなく、baseを先に作り、
+            idle / running-right / running-left / jumping などをrow stripとして個別生成します。
+            その後、deterministicな切り抜き処理で192x208セルへ配置します。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>2. 画像生成に戻りすぎない</b>
+          <p>
+            右向きが左を向くなど、row自体の意味が壊れている場合は再生成が必要です。
+            ただし、ジャンプや左右移動のサイズ違和感は生成をやり直すと泥沼化しやすいため、
+            まず切り抜き・正規化アルゴリズムで直します。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>3. frame単位fitは使わない</b>
+          <p>
+            各frameのbboxをセルいっぱいに拡大すると、しゃがみ・ジャンプ・倒れ姿勢の高さ差が消えます。
+            その結果、動きが上下移動ではなく頭や体の拡大縮小に見えます。
+          </p>
+        </article>
+      </div>
+
+      <div class="algorithm-grid">
+        <article class="algorithm-card">
+          <b>4. 全体最大矩形を基礎scaleにする</b>
+          <p>
+            全rowの全フレームを先に抽出し、一番大きいキャラ矩形がセルに収まるscaleを基礎値にします。
+            ジャンプの上昇や失敗姿勢の低さは、足元baselineからの位置変化として残します。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>5. 左右移動はrow単位補正</b>
+          <p>
+            左右移動rowは元画像のbboxが立ち姿より低いことがあり、全体scale固定だけでは小さく見えます。
+            idle / waving / waiting / review から標準高さを推定し、running系だけをrow全体で同じ倍率に補正します。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>6. 補正対象を分ける</b>
+          <p>
+            jumping / failed は高さが変わること自体が表現なので、row_scale補正対象から外します。
+            running-right / running-left / running は同じ背丈で見えるべき移動状態なので補正対象にします。
+          </p>
+        </article>
+      </div>
+
+      <div class="compare-grid">
+        <div>
+          <h3>最終的にやっていること</h3>
+          <p>
+            背景を透明化し、各ポーズの不透明pixelをまとめてframeとして取り出します。
+            そのうえで全row共通の基礎scaleを決め、running系だけ標準身長に近づくようrow単位で補正し、
+            最後に足元baselineへ揃えてatlasへ配置します。
+          </p>
+        </div>
+        <div>
+          <h3>採用しなかった方針</h3>
+          <ol class="ok-list">
+            <li>サイズ違和感のたびに画像生成をやり直す</li>
+            <li>frameごとにセルへ最大fitする</li>
+            <li>全rowを同じ高さへ強制し、jumping / failed の意味まで消す</li>
+            <li>pet-runsだけを正式アセットとして扱う</li>
+          </ol>
+          <p class="note">
+            <code>~/.codex/pet-runs/&lt;pet&gt;</code> は作業履歴とQA置き場です。
+            Codex Appが読む正式アセットは <code>~/.codex/pets/&lt;pet&gt;/pet.json</code> と
+            <code>~/.codex/pets/&lt;pet&gt;/spritesheet.webp</code> です。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="future-title">
+      <h2 id="future-title">今後の課題</h2>
+      <p class="lead">
+        今回の方式は、画像生成をやり直さずに実用的な品質へ寄せるためのbbox/row統計ベースの改善です。
+        ただし、キャラ本体を意味的に理解しているわけではないため、まだ弱点があります。
+      </p>
+      <div class="algorithm-grid">
+        <article class="algorithm-card">
+          <b>本体と小物の分離</b>
+          <p>
+            自転車、ハンドル、手足、髪の跳ねなどを意味的に分離していないため、長い小物があるrowではbboxや幅の基準が引っ張られる可能性があります。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>基準rowへの依存</b>
+          <p>
+            idle / waving / waiting / review から標準高さを推定しているため、これらのrow自体が崩れているpetでは補正基準も崩れます。
+          </p>
+        </article>
+        <article class="algorithm-card">
+          <b>固定ルールの限界</b>
+          <p>
+            running系は補正し、jumping / failed は補正しない、というルールは今回のpetには合っていますが、別キャラや別モーションでは調整が必要になる場合があります。
+          </p>
+        </article>
+      </div>
+      <div class="compare-grid">
+        <div>
+          <h3>次に入れるなら</h3>
+          <p>
+            APIなしでさらに強くするなら、semantic segmentationではなく、足元点・頭頂点・胴体中心を推定する軽量ヒューリスティックが現実的です。
+            それにより、bbox全体ではなく「キャラ本体らしさ」に近い基準でrow_scaleを決められます。
+          </p>
+        </div>
+        <div>
+          <h3>残る不確実性</h3>
+          <ol class="ok-list">
+            <li>極端に小さいrowでは <code>MAX_IDENTITY_ROW_SCALE</code> の上限に当たる</li>
+            <li>横長propがあるpetでは横幅制約で拡大しきれない</li>
+            <li>頭頂や足元を本当に認識しているわけではなく、alpha bboxに基づく推定である</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="qa-title">
+      <h2 id="qa-title">完成物と検証結果</h2>
+      <div class="qa-grid">
+        <figure>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-contact-sheet.png" alt="complete contact sheet">
+          <figcaption>contact-sheet: 全row、使用セル、未使用透明セルの一覧。</figcaption>
+        </figure>
+        <div>
+          <ol class="ok-list">
+            <li>QA結果の <code>qa/review.json</code> は errors 0 / warnings 0</li>
+            <li>最終検証の <code>final/validation.json</code> は errors 0 / warnings 0</li>
+            <li>完成spritesheetの <code>final/spritesheet.webp</code> は 1536x1872 RGBA</li>
+            <li>プレビュー動画 <code>qa/videos/*.mp4</code> は9 row分を生成済み</li>
+            <li>正式アセット <code>~/.codex/pets/strider-boy</code> に pet.json と spritesheet.webp をpackage済み</li>
+          </ol>
+          <p class="note">
+            画像生成はすべて組み込み画像生成で行い、API KEY fallbackは使っていません。
+            row生成はsubagentに委譲し、親エージェントだけがmanifest記録とpackage処理を行いました。
+          </p>
+        </div>
+      </div>
+    </section>
+
+</div>

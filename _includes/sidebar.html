@@ -11,6 +11,7 @@
           <li><a href="https://x.com/{{ site.author.x }}" target="_blank" rel="noopener noreferrer">X</a></li>
           <li><a href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener noreferrer">GitHub</a></li>
           <li><a href="https://kazuph.hateblo.jp/" target="_blank" rel="noopener noreferrer">Hatena</a></li>
+          <li><a href="https://qiita.com/kazuph" target="_blank" rel="noopener noreferrer">Qiita</a></li>
           <li><a href="https://speakerdeck.com/kazuph" target="_blank" rel="noopener noreferrer">Slides</a></li>
         </ul>
       </div>
@@ -18,9 +19,31 @@
   </section>
 
   <section class="sidebar-section">
-    <h2>Popular</h2>
+    <div class="sidebar-heading-link">
+      <div class="external-blog-title external-blog-title-muted">
+        <h2><a href="https://qiita.com/kazuph" target="_blank" rel="noopener noreferrer">Qiita - kazuph</a></h2>
+      </div>
+      <a href="https://b.hatena.ne.jp/site/qiita.com/kazuph?sort=count" target="_blank" rel="noopener noreferrer">すべて見る</a>
+    </div>
     <div class="hatena-popular">
       <script src="https://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script>
+        Hatena.BookmarkWidget.url = "https://qiita.com/kazuph";
+        Hatena.BookmarkWidget.title = "";
+        Hatena.BookmarkWidget.sort = "count";
+        Hatena.BookmarkWidget.width = 280;
+        Hatena.BookmarkWidget.num = 5;
+        Hatena.BookmarkWidget.theme = "hatenadiary";
+        Hatena.BookmarkWidget.load();
+      </script>
+    </div>
+  </section>
+
+  <section class="sidebar-section">
+    <div class="external-blog-title external-blog-title-muted">
+      <h2><a href="https://kazuph.hateblo.jp/" target="_blank" rel="noopener noreferrer">Hatena - 僕のYak Shavingは終わらない</a></h2>
+    </div>
+    <div class="hatena-popular">
       <script>
         Hatena.BookmarkWidget.url = "https://kazuph.hateblo.jp/";
         Hatena.BookmarkWidget.title = "";
@@ -31,7 +54,6 @@
         Hatena.BookmarkWidget.load();
       </script>
     </div>
-    <p class="note"><a href="https://kazuph.hateblo.jp/" target="_blank" rel="noopener noreferrer">kazuph.hateblo.jp</a></p>
   </section>
 
   <section class="sidebar-section">
