@@ -627,6 +627,11 @@ a:hover {
   color: #c85f78;
 }
 
+.hatena-bookmark-count.is-empty,
+.hatena-bookmark-count.is-loading {
+  display: none;
+}
+
 .sidebar {
   position: sticky;
   top: 0;
