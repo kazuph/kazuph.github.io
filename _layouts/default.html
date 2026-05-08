@@ -71,5 +71,57 @@
         }).observe(document.body, { childList: true, subtree: true });
       })();
     </script>
+    <script>
+      (() => {
+        const elements = [...document.querySelectorAll('[data-hatena-bookmark-url]')];
+        if (elements.length === 0) return;
+
+        const grouped = new Map();
+        elements.forEach((element) => {
+          const url = element.dataset.hatenaBookmarkUrl;
+          if (!url) return;
+          if (!grouped.has(url)) grouped.set(url, []);
+          grouped.get(url).push(element);
+        });
+
+        const update = (url, count) => {
+          const number = Number.isFinite(Number(count)) ? Number(count) : 0;
+          grouped.get(url)?.forEach((element) => {
+            element.classList.remove('is-loading');
+            element.classList.toggle('is-empty', number === 0);
+            element.querySelector('.hatena-bookmark-count__number').textContent = String(number);
+          });
+        };
+
+        const urls = [...grouped.keys()];
+        const batches = [];
+        for (let index = 0; index < urls.length; index += 50) {
+          batches.push(urls.slice(index, index + 50));
+        }
+
+        batches.forEach((batch, batchIndex) => {
+          const callbackName = `__hatenaBookmarkCount${Date.now()}_${batchIndex}`;
+          window[callbackName] = (counts) => {
+            batch.forEach((url) => update(url, counts?.[url] ?? 0));
+            delete window[callbackName];
+            document.getElementById(callbackName)?.remove();
+          };
+
+          const script = document.createElement('script');
+          script.id = callbackName;
+          script.async = true;
+          script.onerror = () => {
+            batch.forEach((url) => update(url, 0));
+            delete window[callbackName];
+            script.remove();
+          };
+
+          const params = new URLSearchParams({ callback: callbackName });
+          batch.forEach((url) => params.append('url', url));
+          script.src = `https://bookmark.hatenaapis.com/count/entries?${params.toString()}`;
+          document.head.append(script);
+        });
+      })();
+    </script>
   </body>
 </html>

@@ -1,0 +1,16 @@
+{% assign bookmark_url = include.url %}
+{% unless bookmark_url %}
+  {% assign bookmark_url = page.hatena_bookmark_url | default: page.source_url %}
+{% endunless %}
+{% unless bookmark_url %}
+  {% assign bookmark_url = page.url | absolute_url %}
+{% endunless %}
+<a
+  class="hatena-bookmark-count is-loading"
+  href="https://b.hatena.ne.jp/entry?url={{ bookmark_url | uri_escape }}"
+  data-hatena-bookmark-url="{{ bookmark_url | escape }}"
+  aria-label="はてなブックマーク数を見る"
+>
+  <span class="hatena-bookmark-count__number">...</span>
+  <span class="hatena-bookmark-count__label">users</span>
+</a>

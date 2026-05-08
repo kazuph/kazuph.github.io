@@ -5,7 +5,14 @@ layout: default
 <article class="post">
   <header class="post-header">
     <p class="post-date">{{ page.date | date: "%Y-%m-%d" }}</p>
-    <h1>{{ page.title }}</h1>
+    <h1>
+      {{ page.title }}
+      {% assign bookmark_url = page.hatena_bookmark_url | default: page.source_url %}
+      {% unless bookmark_url %}
+        {% assign bookmark_url = page.url | absolute_url %}
+      {% endunless %}
+      {% include hatena_bookmark_count.html url=bookmark_url %}
+    </h1>
     {% if page.description %}
       <p class="post-description">{{ page.description }}</p>
     {% endif %}
