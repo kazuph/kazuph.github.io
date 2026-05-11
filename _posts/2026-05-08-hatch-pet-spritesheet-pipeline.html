@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Codexのpetスキルの問題点を改善する"
+title: "Codexのpetスキルでキャラの上下移動のアニメーション時に大きさが変わるだけになる問題点を改善する"
 date: 2026-05-08
-description: "画像生成ではなく切り抜き方を直して、Codex petのジャンプや左右移動のスケール違和感を改善した記録。"
+description: "画像生成ではなく切り抜き方を直して、Codex petのジャンプや左右移動でキャラの大きさが変わって見える問題を改善した記録。"
 ---
 
 <style>
@@ -21,6 +21,15 @@ description: "画像生成ではなく切り抜き方を直して、Codex petの
 
     .primary-content:has(.pet-article) {
       max-width: 900px;
+    }
+
+    .primary-content:has(.pet-article) .post-header {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .primary-content:has(.pet-article) .post-body {
+      padding-top: 16px;
     }
 
     .pet-article {
@@ -190,6 +199,18 @@ description: "画像生成ではなく切り抜き方を直して、Codex petの
       margin-top: 16px;
     }
 
+    .wide-figure {
+      margin-top: 16px;
+    }
+
+    .wide-figure img {
+      width: 100%;
+    }
+
+    .summary-under {
+      margin-top: 16px;
+    }
+
     .checks-panel {
       margin-top: 16px;
     }
@@ -249,13 +270,32 @@ description: "画像生成ではなく切り抜き方を直して、Codex petの
     }
 
     .note {
-      margin-top: 14px;
-      padding: 12px 0 0;
-      border-left: 0 !important;
-      border-top: 1px solid var(--line);
-      background: transparent;
-      color: #5b2730;
+      position: relative;
+      display: block;
+      margin: 18px 0 0;
+      min-height: 72px;
+      padding: 18px 20px 18px 70px;
+      border: 1px solid #ffe8b3;
+      border-radius: 10px;
+      background: #fff7e6;
+      color: #2b2f36;
       font-weight: 750;
+    }
+
+    .note::before {
+      content: "!";
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      color: #ffffff;
+      background: #f59e0b;
+      border-radius: 50%;
+      font-weight: 900;
+      line-height: 1;
     }
 
     .pet-article code {
@@ -303,24 +343,36 @@ description: "画像生成ではなく切り抜き方を直して、Codex petの
 
 <div class="pet-article">
     <section class="intro">
+      <aside class="msg message ai-note">
+        <span class="msg-symbol">!</span>
+        <div class="msg-content">
+          <p>
+            この記事は、Codexに作業してもらった内容を、さらにCodexを使ってHTML記事として整理したものです。
+            作業ログをそのまま貼るのではなく、あとから同じ改善を再現できるように、流れと判断を読み物として再構成しています。
+          </p>
+        </div>
+      </aside>
       <p class="problem-lead">
-        Codexでpetという機能があり、いくつかキャラを作成してみたのですが、挙動がおかしいです。
-        例えば、キャラの顔の大きさがグワグワ変わります。みなさんはそういうことないでしょうか？
+        Codexには、画面の端で小さなキャラが動くpetという機能があります。
+        弊社のSlackで活躍しているbotのキャラもpetにしてみました。名前はdokochan。
+        おばあちゃんを探している孫、という設定のキャラです。
       </p>
       <p class="lead">
-        画像を確認してみると、画像生成自体は問題なさそうなのですが、切り抜き方に問題があることがわかってきました。
-        今回はCodexと相談しながらキャラの挙動改善を行った話です。
+        それはいいのですが、実際に動かしてみると挙動が少しおかしい。
+        ジャンプ中に顔が大きく見えたり、動きによってキャラの大きさが揺れて見えたりします。
+        画像を確認してみると、生成された絵そのものよりも、あとから1コマずつ切り出して並べる処理に問題がありそうだとわかってきました。
+        今回は、Codexと相談しながらdokochanの動きを直した話です。
       </p>
       <div class="gif-grid">
         <article class="gif-card">
-          <h3>Before: dokochanのjumpingを各frameで個別fit</h3>
+          <h3>Before: dokochanのジャンプを個別に拡大</h3>
           <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-before-identity-normalization-v2.gif" alt="dokochan before normalization jumping animation">
           <p>
             低い姿勢がセルに合わせて拡大され、ジャンプの上下移動よりもサイズ差が目立っていました。
           </p>
         </article>
         <article class="gif-card">
-          <h3>After: dokochanも共通scale + 足元baseline</h3>
+          <h3>After: dokochanも大きさを揃えて足元基準に</h3>
           <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-after-identity-normalization-v2.gif" alt="dokochan after normalization jumping animation">
           <p>
             キャラの大きさを保ったまま、ジャンプをセル内の上下位置の変化として見せます。
@@ -329,193 +381,96 @@ description: "画像生成ではなく切り抜き方を直して、Codex petの
       </div>
     </section>
 
-    <section aria-labelledby="order-title">
-      <h2 id="order-title">作成した順番</h2>
-      <div class="timeline">
-        <article class="step">
-          <div class="step-no">01</div>
-          <div>
-            <h3>run manifestを作成</h3>
-            <p>
-              <code>~/.codex/pet-runs/strider-boy</code> にrunフォルダを作り、
-              Strider Boyのidentity、rowごとのprompt、layout guide、出力先を確定しました。
-            </p>
-          </div>
-          <figure>
-            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-references-layout-guides-idle.png" alt="idle row layout guide">
-            <figcaption>layout guide例: row生成時のフレーム数と余白だけを示す参照画像。</figcaption>
-          </figure>
-        </article>
-
-        <article class="step">
-          <div class="step-no">02</div>
-          <div>
-            <h3>base画像を生成</h3>
-            <p>
-              写真から赤ヘルメット、黒サングラス、ネイビー服、青パンツ、赤いバランスバイクを抽出し、
-              以後のrow生成のcanonical referenceにしました。
-            </p>
-          </div>
-          <figure>
-            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-base.png" alt="generated Strider Boy base pet image">
-            <figcaption>decoded/base.png: row生成の見た目の正解。</figcaption>
-          </figure>
-        </article>
-
-        <article class="step">
-          <div class="step-no">03</div>
-          <div>
-            <h3>identity check rowを先に生成</h3>
-            <p>
-              subagentで<code>idle</code>と<code>running-right</code>を先に生成しました。
-              静止と走行で同じ男の子に見えることを確認してから残りrowに進みました。
-            </p>
-          </div>
-          <figure>
-            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running-right.png" alt="generated running-right row strip">
-            <figcaption>running-right: 最初に確認した走行row。</figcaption>
-          </figure>
-        </article>
-
-        <article class="step">
-          <div class="step-no">04</div>
-          <div>
-            <h3>running-leftはミラーせず生成</h3>
-            <p>
-              baseの赤バイクに文字が入っていたため、左右反転すると意味が壊れます。
-              そのため<code>running-left</code>はミラー派生ではなく、参照付きで別生成しました。
-            </p>
-          </div>
-          <figure>
-            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running-left.png" alt="generated running-left row strip">
-            <figcaption>running-left: 反転ではなく通常生成。</figcaption>
-          </figure>
-        </article>
-
-        <article class="step">
-          <div class="step-no">05</div>
-          <div>
-            <h3>残りrowをsubagentで並列生成</h3>
-            <p>
-              <code>waving</code>、<code>jumping</code>、<code>failed</code>、
-              <code>waiting</code>、<code>running</code>、<code>review</code>をrowごとに生成しました。
-              親エージェントはmanifest記録とpackageだけを担当しました。
-            </p>
-          </div>
-          <figure>
-            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-failed.png" alt="generated failed row strip">
-            <figcaption>failed: row単位で生成された実画像。</figcaption>
-          </figure>
-        </article>
-
-        <article class="step">
-          <div class="step-no">06</div>
-          <div>
-            <h3>atlas化とQA</h3>
-            <p>
-              生成rowから各フレームを抽出し、透明背景の <code>192x208</code> セルへ並べ直しました。
-              この「全モーションのセルを1枚に敷き詰めた画像」がatlasで、Codex Appは
-              <code>pet.json</code> のrow定義を見ながらatlas上の該当セルを順番に再生します。
-            </p>
-          </div>
-          <figure>
-            <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-contact-sheet.png" alt="QA contact sheet for Strider Boy pet">
-            <figcaption>qa/contact-sheet.png: 全rowの目視確認用。</figcaption>
-          </figure>
-        </article>
-      </div>
-    </section>
-
     <section aria-labelledby="rows-title">
-      <h2 id="rows-title">生成したrow strips</h2>
+      <h2 id="rows-title">まず、今の作り方を整理する</h2>
       <p class="lead">
-        row stripは、1つのモーションだけを横長に並べた生成元画像です。
-        これをそのままpetとして使うのではなく、各rowからフレームを切り出して、
-        最後に1枚のspritesheet atlasへ再配置します。
+        Codexのpet画像は、まず「待機」「走る」「ジャンプ」などの動きごとに、複数のポーズを横一列に並べた画像を作ります。
+        そこから1ポーズずつ切り出し、最後にアプリが読みやすい1枚の画像へ並べ直します。
+        この記事では、この横長の元画像を必要なところだけ <code>row strip</code>、並べ直した完成画像を <code>atlas</code> と呼びます。
       </p>
       <div class="row-grid">
         <article class="row-card">
-          <h3>row 0: idle / 6 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-idle.png" alt="idle row strip">
+          <h3>0行目: 待機 / 6枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-idle.png" alt="idle row strip">
         </article>
         <article class="row-card">
-          <h3>row 1: running-right / 8 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running-right.png" alt="running-right row strip">
+          <h3>1行目: 右へ移動 / 8枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-running-right.png" alt="running-right row strip">
         </article>
         <article class="row-card">
-          <h3>row 2: running-left / 8 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running-left.png" alt="running-left row strip">
+          <h3>2行目: 左へ移動 / 8枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-running-left.png" alt="running-left row strip">
         </article>
         <article class="row-card">
-          <h3>row 3: waving / 4 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-waving.png" alt="waving row strip">
+          <h3>3行目: 手を振る / 4枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-waving.png" alt="waving row strip">
         </article>
         <article class="row-card">
-          <h3>row 4: jumping / 5 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-jumping-v2.png" alt="jumping row strip">
+          <h3>4行目: ジャンプ / 5枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-jumping.png" alt="jumping row strip">
         </article>
         <article class="row-card">
-          <h3>row 5: failed / 8 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-failed.png" alt="failed row strip">
+          <h3>5行目: 失敗 / 8枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-failed.png" alt="failed row strip">
         </article>
         <article class="row-card">
-          <h3>row 6: waiting / 6 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-waiting.png" alt="waiting row strip">
+          <h3>6行目: 待つ / 6枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-waiting.png" alt="waiting row strip">
         </article>
         <article class="row-card">
-          <h3>row 7: running / 6 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-running.png" alt="running row strip">
+          <h3>7行目: 走る / 6枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-running.png" alt="running row strip">
         </article>
         <article class="row-card">
-          <h3>row 8: review / 6 frames</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-decoded-review.png" alt="review row strip">
+          <h3>8行目: 確認中 / 6枚</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-review.png" alt="review row strip">
         </article>
       </div>
     </section>
 
     <section aria-labelledby="extract-title">
-      <h2 id="extract-title">row stripをどう切り出しているか</h2>
+      <h2 id="extract-title">横長画像から1ポーズずつ取り出す</h2>
       <p class="lead">
-        生成AIには「横長の1枚に複数ポーズを並べる」と依頼します。
-        その後、<code>extract_strip_frames.py</code> が背景を透過し、ポーズ単位の連結成分を検出して、
-        Codex pet用の <code>192x208</code> セルへ配置します。
+        既存の方法では、生成AIに「複数のポーズを横一列に並べた画像」を作らせます。
+        その後、<code>extract_strip_frames.py</code> が背景を透明にし、キャラが描かれている部分をポーズごとに見つけて、
+        Codex pet用の <code>192x208</code> の枠へ置いていきます。今回の違和感は、この「見つけて、切り出して、置く」処理の途中で生まれていました。
       </p>
 
       <div class="row-grid">
         <figure>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-jump-strip-source.png" alt="generated jumping row strip">
-          <figcaption>1. まずはマゼンタ背景つきの横長row stripとして生成される。</figcaption>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-jump-strip-source.png" alt="generated jumping row strip">
+          <figcaption>1. まずは、複数のポーズが横一列に並んだ画像として生成される。</figcaption>
         </figure>
         <figure>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-jump-strip-bbox.png" alt="detected bounding boxes on jumping row strip">
-          <figcaption>2. 背景を透明化し、ポーズごとの不透明pixel領域をbboxとして検出する。</figcaption>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-jump-strip-bbox.png" alt="detected bounding boxes on jumping row strip">
+          <figcaption>2. 背景を透明にして、ポーズごとにキャラが描かれている範囲を見つける。</figcaption>
         </figure>
         <figure>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-jump-atlas-cells.png" alt="jumping frames placed into 192x208 atlas cells">
-          <figcaption>3. 切り出したフレームを192x208セルへ配置する。青線が足元baseline。</figcaption>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-jump-atlas-cells.png" alt="jumping frames placed into 192x208 atlas cells">
+          <figcaption>3. 見つけたポーズを192x208の枠へ置く。青線は足元を合わせる基準線。</figcaption>
         </figure>
       </div>
 
       <div class="algorithm-grid">
         <article class="algorithm-card">
-          <b>1. chroma key除去</b>
+          <b>1. 背景を透明にする</b>
           <p>
-            row画像のマゼンタ背景を色距離で透明化します。
-            背景が完全な単色でなくても、しきい値内の近似色は透明になります。
+            まず、マゼンタの背景を透明にします。
+            生成画像では背景色に少し揺れが出ることがあるので、完全一致ではなく近い色もまとめて消します。
           </p>
         </article>
         <article class="algorithm-card">
-          <b>2. connected components</b>
+          <b>2. キャラの塊を見つける</b>
           <p>
-            透明化後の不透明pixelを探索し、つながった塊を検出します。
-            大きい塊を各フレームのseedとして左から順に並べます。
+            背景を消したあと、残ったピクセルのつながりを見て、キャラが描かれている範囲を探します。
+            大きな塊をポーズ候補として、左から順番に並べます。
           </p>
         </article>
         <article class="algorithm-card">
-          <b>3. noiseを近いseedへ結合</b>
+          <b>3. 小さな部品を近いポーズへまとめる</b>
           <p>
-            小さな部品やハンドルなど、別componentになったpixelは、
-            X座標が近いseedへまとめて1ポーズとして扱います。
+            手足やハンドルのような小さな部品が別の塊として見つかることがあります。
+            その場合は、横位置が近いポーズへまとめて、1つの絵として扱います。
           </p>
         </article>
       </div>
@@ -1063,115 +1018,115 @@ if __name__ == &quot;__main__&quot;:
     </section>
 
     <section aria-labelledby="normalize-title">
-      <h2 id="normalize-title">正規化問題と改善</h2>
+      <h2 id="normalize-title">そこで起きていた問題</h2>
       <p class="lead">
-        旧処理では、各フレームを個別bboxで切り抜いて個別にfitしていました。
-        これだと、しゃがむ・倒れる・ジャンプするような姿勢で、実際の高さ変化が「拡大縮小」に変換され、
-        頭や体が不自然に大きく見えることがあります。
+        以前の処理では、ポーズごとにキャラの範囲を見つけ、その範囲だけを見て枠いっぱいに収めていました。
+        そのため、しゃがむ・倒れる・ジャンプするような姿勢では、本来は上下位置として見えるべき変化が、
+        キャラ自体の拡大縮小に変わってしまっていました。
       </p>
 
       <div class="algorithm-grid">
         <article class="algorithm-card">
-          <b>旧: frameごとの個別scale</b>
+          <b>旧: ポーズごとに枠いっぱいへ拡大</b>
           <p>
-            各フレームのbboxだけを見てセルに収めるため、低い姿勢ほど拡大されやすく、
-            row内のキャラサイズが揺れます。
+            各ポーズの見た目の範囲だけを見て枠に収めるため、低い姿勢ほど大きく拡大されます。
+            その結果、同じ動きの中でキャラの大きさが揺れます。
           </p>
         </article>
         <article class="algorithm-card">
-          <b>新: row単位でidentityを保つ</b>
+          <b>新: 同じ動きの中では大きさを揃える</b>
           <p>
-            先に全rowの全フレームを抽出し、一番大きいキャラ矩形で基礎scaleを決めます。
-            その上で、左右移動のように本来同じ背丈で見えるべきrowだけ、行全体に同じ補正をかけます。
+            先にすべてのポーズを取り出し、一番大きいキャラが枠に収まる倍率を決めます。
+            そのうえで、左右移動のように本来同じ背丈で見えるべき動きだけ、行全体に同じ補正をかけます。
           </p>
         </article>
         <article class="algorithm-card">
-          <b>新: 足元baselineを保持</b>
+          <b>新: 足元の位置を基準にする</b>
           <p>
-            足元を基準に配置し、余った空間は頭より上に出します。
-            ジャンプや失敗姿勢はサイズ変更ではなく位置変化として残します。
+            足元を基準に配置し、余った空間は頭の上へ逃がします。
+            ジャンプや転倒の低さは、サイズ変更ではなく位置の変化として残します。
           </p>
         </article>
       </div>
 
       <div class="gif-grid">
         <article class="gif-card">
-          <h3>Before: jumpingを各frameで個別fit</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-jump-before-identity-normalization-v2.gif" alt="before normalization jumping animation">
+          <h3>Before: ジャンプ中の各ポーズを個別に拡大</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-before-identity-normalization-v2.gif" alt="before normalization jumping animation">
           <p>
             低い姿勢や小さく検出された姿勢をセルいっぱいに寄せるため、ジャンプの上下移動よりも
             「キャラが伸び縮みしている」ように見えます。
           </p>
         </article>
         <article class="gif-card">
-          <h3>After: 共通scale + 足元baseline</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-jump-after-identity-normalization-v2.gif" alt="after normalization jumping animation">
+          <h3>After: 大きさを揃えて足元基準で配置</h3>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-after-identity-normalization-v2.gif" alt="after normalization jumping animation">
           <p>
-            同じrowから切り出したフレームを、共通scaleのまま足元基準で配置します。
+            同じ動きから切り出したポーズは、同じ倍率のまま足元を基準に配置します。
             余白は頭上に逃がし、ジャンプはサイズ差ではなく上下位置の変化として残します。
           </p>
         </article>
       </div>
 
-      <div class="compare-grid">
-        <figure>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-contact-sheet.png" alt="normalized v2 contact sheet">
-          <figcaption>
-            改善後contact sheet。特にjumping rowで、上下移動がセル内のポジション変化として残る。
-          </figcaption>
-        </figure>
-        <div>
-          <ol class="ok-list">
-            <li>実装は <code>extract_strip_frames.py</code>。全フレーム最大矩形から1つのscaleを決定</li>
-            <li>左右移動rowは立ち姿系の標準高さを参照し、row全体で同じ倍率に補正</li>
-            <li>frameごとの個別拡大はしないため、row内の同一性は維持</li>
-            <li>足元baselineで揃え、頭上の余白で高さ差を吸収</li>
-            <li>最終検証の <code>final/validation.json</code> は errors 0 / warnings 0</li>
-          </ol>
-          <p class="note">
-            この改善は画像生成のやり直しではなく、既存の生成rowからフレームを切り出すdeterministic処理の修正です。
-            見た目のidentityはそのまま、アニメーション時のスケール揺れだけを減らしています。
-          </p>
-        </div>
+      <figure class="wide-figure">
+        <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-before-after-problem-rows-labeled.png" alt="labeled before and after problem rows for dokochan cropping">
+        <figcaption>
+          左が旧処理、右が改善後です。画像内にもBefore/Afterを入れ、同じ行どうしで見比べられるようにしました。
+          旧処理では左右移動が小さく切り出され、ジャンプや失敗はポーズごとに大きさが変わって見えます。
+        </figcaption>
+      </figure>
+      <div class="summary-under">
+        <ol class="ok-list">
+          <li>実装は <code>extract_strip_frames.py</code>。全ポーズの最大サイズから共通の倍率を決める</li>
+          <li>左右移動の行は、立ち姿に近い行の高さを参考にして、行全体を同じ倍率で補正</li>
+          <li>ポーズごとの個別拡大をやめるので、同じ動きの中で大きさが揺れにくい</li>
+          <li>足元を基準に揃え、姿勢の高さ差は頭上の余白で吸収</li>
+          <li>最終検証の <code>final/validation.json</code> は errors 0 / warnings 0</li>
+        </ol>
+        <p class="note">
+          今回の改善では、画像生成そのものはやり直していません。
+          生成済みの横長画像からポーズを切り出す処理を直し、見た目の同一性を保ったまま、アニメーション中の大きさの揺れだけを減らしています。
+        </p>
       </div>
     </section>
 
     <section aria-labelledby="identity-crop-title">
-      <h2 id="identity-crop-title">左右移動が小さくなる問題の改善</h2>
+      <h2 id="identity-crop-title">左右移動だけ小さく見える問題を直す</h2>
       <p class="lead">
-        画像生成には戻らず、切り抜き後の正規化だけで改善しました。
-        原因は、左右移動rowの元bboxが立ち姿より低く、全体scale固定だけではその小ささがそのまま残ったことです。
-        新処理では、idle / waving / waiting / review から標準キャラ高さを推定し、running-right / running-left / running だけをrow単位で同じ倍率に補正します。
+        左右に移動する絵だけ、静止時より小さく見える問題もありました。
+        原因は、走っている姿勢の検出範囲が立ち姿より低く、共通倍率にしただけでは、その低さがそのまま残ったことです。
+        新しい処理では、待機や手振りなどの自然な立ち姿から標準の高さを推定し、左右移動と走行だけを行単位で補正します。
       </p>
 
       <div class="algorithm-grid">
         <article class="algorithm-card">
           <b>検出</b>
           <p>
-            chroma key除去後、連結成分から各フレームのキャラbboxを抽出します。
-            frame単位ではなくrow単位で中央値を取り、偶然の手足や小物に引っ張られにくくします。
+            背景を消したあと、各ポーズでキャラが描かれている範囲を取り出します。
+            ポーズ単位ではなく動き単位で中央値を取り、偶然の手足や小物に引っ張られにくくします。
           </p>
         </article>
         <article class="algorithm-card">
           <b>標準高さ</b>
           <p>
-            idle / waving / waiting / review を基準rowとして、標準キャラ高さを推定します。
-            failedやjumpingは意図的に高さが変わるので、この補正対象から外します。
+            待機、手振り、待ち、レビューの行を基準にして、自然なキャラの高さを推定します。
+            転倒やジャンプは高さが変わること自体が動きなので、この補正対象から外します。
           </p>
         </article>
         <article class="algorithm-card">
           <b>補正</b>
           <p>
-            running-right / running-left / running はrow全体に同じ倍率をかけます。
+            左右移動と走行は、行全体に同じ倍率をかけます。
             これにより、移動中のキャラサイズだけが縮む違和感を抑えます。
           </p>
         </article>
       </div>
 
-      <figure>
-        <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-contact-sheet.png" alt="identity normalized strider boy contact sheet">
+      <figure class="wide-figure">
+        <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-running-right-before-after-row.png" alt="running-right row before and after height correction">
         <figcaption>
-          Strider Boy after: running-right / running-left / running が idle に近い高さへ揃ったcontact sheet。
+          同じ <code>running-right</code> の行を左before / 右afterで並べたものです。
+          beforeでは行全体が小さく、afterでは同じ行にだけ同じ倍率をかけて高さを補正しています。
         </figcaption>
       </figure>
       <div class="checks-panel">
@@ -1184,78 +1139,130 @@ if __name__ == &quot;__main__&quot;:
       </div>
     </section>
 
-    <section aria-labelledby="dokochan-title">
-      <h2 id="dokochan-title">dokochanにも同じ改善を適用</h2>
-      <p class="lead">
-        dokochanも旧正規化ではjumping rowが他rowと違う大きさに見え、jumpの上下移動が弱くなっていました。
-        同じ全体最大矩形scale、足元baseline、row単位identity補正で再finalizeし、正式petアセットも更新済みです。
-      </p>
-
-      <div class="gif-grid">
-        <article class="gif-card">
-          <h3>Before: dokochanのjumpingを各frameで個別fit</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-before-identity-normalization-v2.gif" alt="dokochan before normalization jumping animation">
-          <p>
-            低い姿勢がセルに合わせて拡大され、ジャンプの上下移動よりもサイズ差が目立っていました。
-          </p>
+    <section aria-labelledby="order-title">
+      <h2 id="order-title">作成した順番</h2>
+      <div class="timeline">
+        <article class="step">
+          <div class="step-no">01</div>
+          <div>
+            <h3>作業用の設定を作る</h3>
+            <p>
+              <code>~/.codex/pet-runs/dokochan</code> に作業用フォルダを作り、
+              dokochanの見た目、動きごとの指示、配置ガイド、出力先を決めました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-idle.png" alt="idle row layout guide">
+            <figcaption>配置ガイドの例。生成時に、枚数と余白の目安だけを伝えるための画像。</figcaption>
+          </figure>
         </article>
-        <article class="gif-card">
-          <h3>After: dokochanも共通scale + 足元baseline</h3>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-jump-after-identity-normalization-v2.gif" alt="dokochan after normalization jumping animation">
-          <p>
-            キャラの大きさを保ったまま、ジャンプをセル内の上下位置の変化として見せます。
-          </p>
-        </article>
-      </div>
 
-      <div class="compare-grid">
-        <figure>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-contact-sheet.png" alt="dokochan normalized contact sheet">
-          <figcaption>dokochan after: 全体最大矩形scaleとrow単位identity補正で再finalizeしたcontact sheet。</figcaption>
-        </figure>
-        <div>
-          <ol class="ok-list">
-            <li><code>~/.codex/pets/dokochan/spritesheet.webp</code> は更新済み</li>
-            <li><code>~/.codex/pet-runs/dokochan/final/validation.json</code>: errors 0 / warnings 0</li>
-            <li><code>frames/frames-manifest.json</code>: <code>mode: global</code> / <code>row_scale</code> 記録済み</li>
-          </ol>
-          <p class="note">
-            <code>pet-runs</code> は作業履歴、<code>pets</code> がCodex Appの正式アセット置き場です。
-            今回は両方のpetについて正式アセット側も新しいspritesheetへ交換済みです。
-          </p>
-        </div>
+        <article class="step">
+          <div class="step-no">02</div>
+          <div>
+            <h3>基準になる画像を生成</h3>
+            <p>
+              Slack botとして使っているdokochanの見た目を基準にし、
+              以後の動き生成でも同じキャラに見えるようにしました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-idle.png" alt="generated dokochan base pet image">
+            <figcaption>基準画像: 以後の生成で見た目の基準にしたdokochan。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">03</div>
+          <div>
+            <h3>同じキャラに見えるかを先に確認</h3>
+            <p>
+              まず、待機と右移動の画像を先に生成しました。
+              静止中と移動中で同じdokochanに見えることを確認してから、残りの動きに進みました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-running-right.png" alt="generated running-right row strip">
+            <figcaption>右移動: 最初に確認した移動画像。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">04</div>
+          <div>
+            <h3>左右移動も個別に確認する</h3>
+            <p>
+              左右移動は、向きが変わったときに髪型や服の印象が崩れやすいので、
+              右移動と左移動をそれぞれ確認し、同じキャラに見えるかを見ました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-running-left.png" alt="generated running-left row strip">
+            <figcaption>左移動: 右移動と並べて違和感がないか確認した画像。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">05</div>
+          <div>
+            <h3>残りの動きを並列で生成</h3>
+            <p>
+              手を振る、ジャンプ、失敗、待つ、走る、確認中の画像を、動きごとに生成しました。
+              親エージェントは、設定の記録と最後のパッケージ化だけを担当しました。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-row-failed.png" alt="generated failed row strip">
+            <figcaption>失敗: 動きごとに生成された実画像。</figcaption>
+          </figure>
+        </article>
+
+        <article class="step">
+          <div class="step-no">06</div>
+          <div>
+            <h3>1枚の完成画像にまとめて確認</h3>
+            <p>
+              生成した横長画像から各ポーズを取り出し、透明背景の <code>192x208</code> の枠へ並べ直しました。
+              この「全ての動きを1枚に敷き詰めた画像」がatlasで、Codex Appは
+              <code>pet.json</code> の行定義を見ながら、該当する枠を順番に再生します。
+            </p>
+          </div>
+          <figure>
+            <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-final-spritesheet.webp" alt="final dokochan spritesheet atlas">
+            <figcaption>final/spritesheet.webp: Codex Appが実際に読む完成atlas。</figcaption>
+          </figure>
+        </article>
       </div>
     </section>
 
     <section aria-labelledby="lessons-title">
-      <h2 id="lessons-title">今回の試行錯誤とノウハウ</h2>
+      <h2 id="lessons-title">採用した改善方針</h2>
       <p class="lead">
-        最終的な学びは、petの品質は画像生成だけでは決まらず、生成済みrowをどう切り抜き、
-        どの単位で同一性を守るかで大きく変わる、という点です。
-        ここでは今回採用した判断と、途中で捨てた方針をまとめます。
+        今回の問題は、dokochanの絵を作り直すよりも、生成済みの横長画像をどう切り出して、どの単位で大きさを揃えるかを直す方が筋がよさそうでした。
+        ここでは、実際に採用した方針と、途中でやめた方針をまとめます。
       </p>
 
       <div class="algorithm-grid">
         <article class="algorithm-card">
-          <b>1. 生成はrow単位</b>
+          <b>1. 生成は動きごとに分ける</b>
           <p>
-            1枚の画像で全姿勢を一括生成するのではなく、baseを先に作り、
-            idle / running-right / running-left / jumping などをrow stripとして個別生成します。
-            その後、deterministicな切り抜き処理で192x208セルへ配置します。
+            すべての姿勢を1枚でまとめて作るのではなく、基準になる画像を先に作り、
+            待機、右移動、左移動、ジャンプなどを動きごとに生成します。
+            その後、決まった手順で1ポーズずつ切り出し、192x208の枠へ配置します。
           </p>
         </article>
         <article class="algorithm-card">
           <b>2. 画像生成に戻りすぎない</b>
           <p>
-            右向きが左を向くなど、row自体の意味が壊れている場合は再生成が必要です。
+            右向きのはずが左を向いているなど、動きそのものが壊れている場合は再生成が必要です。
             ただし、ジャンプや左右移動のサイズ違和感は生成をやり直すと泥沼化しやすいため、
             まず切り抜き・正規化アルゴリズムで直します。
           </p>
         </article>
         <article class="algorithm-card">
-          <b>3. frame単位fitは使わない</b>
+          <b>3. ポーズごとに最大化しない</b>
           <p>
-            各frameのbboxをセルいっぱいに拡大すると、しゃがみ・ジャンプ・倒れ姿勢の高さ差が消えます。
+            各ポーズを枠いっぱいに拡大すると、しゃがみ・ジャンプ・倒れ姿勢の高さ差が消えます。
             その結果、動きが上下移動ではなく頭や体の拡大縮小に見えます。
           </p>
         </article>
@@ -1263,24 +1270,24 @@ if __name__ == &quot;__main__&quot;:
 
       <div class="algorithm-grid">
         <article class="algorithm-card">
-          <b>4. 全体最大矩形を基礎scaleにする</b>
+          <b>4. 全体で共通の大きさを決める</b>
           <p>
-            全rowの全フレームを先に抽出し、一番大きいキャラ矩形がセルに収まるscaleを基礎値にします。
-            ジャンプの上昇や失敗姿勢の低さは、足元baselineからの位置変化として残します。
+            すべての動きから全ポーズを先に取り出し、一番大きいキャラが枠に収まる倍率を基準にします。
+            ジャンプの上昇や転倒姿勢の低さは、足元からの位置変化として残します。
           </p>
         </article>
         <article class="algorithm-card">
-          <b>5. 左右移動はrow単位補正</b>
+          <b>5. 左右移動は動き単位で補正する</b>
           <p>
-            左右移動rowは元画像のbboxが立ち姿より低いことがあり、全体scale固定だけでは小さく見えます。
-            idle / waving / waiting / review から標準高さを推定し、running系だけをrow全体で同じ倍率に補正します。
+            左右移動の行は、検出された高さが立ち姿より低いことがあり、共通倍率だけでは小さく見えます。
+            idle / waving / waiting / review から標準高さを推定し、走行系だけを行全体で同じ倍率に補正します。
           </p>
         </article>
         <article class="algorithm-card">
-          <b>6. 補正対象を分ける</b>
+          <b>6. 補正してよい動きと、してはいけない動きを分ける</b>
           <p>
-            jumping / failed は高さが変わること自体が表現なので、row_scale補正対象から外します。
-            running-right / running-left / running は同じ背丈で見えるべき移動状態なので補正対象にします。
+            ジャンプや転倒は高さが変わること自体が表現なので、大きさ補正の対象から外します。
+            左右移動と走行は同じ背丈に見えるべき動きなので、補正対象にします。
           </p>
         </article>
       </div>
@@ -1289,9 +1296,9 @@ if __name__ == &quot;__main__&quot;:
         <div>
           <h3>最終的にやっていること</h3>
           <p>
-            背景を透明化し、各ポーズの不透明pixelをまとめてframeとして取り出します。
-            そのうえで全row共通の基礎scaleを決め、running系だけ標準身長に近づくようrow単位で補正し、
-            最後に足元baselineへ揃えてatlasへ配置します。
+            背景を透明にし、各ポーズでキャラが描かれている部分を取り出します。
+            そのうえで全体に共通する大きさを決め、走行系だけ標準の高さに近づくよう行単位で補正し、
+            最後に足元の位置を揃えて、完成用の1枚画像へ並べます。
           </p>
         </div>
         <div>
@@ -1312,10 +1319,10 @@ if __name__ == &quot;__main__&quot;:
     </section>
 
     <section aria-labelledby="future-title">
-      <h2 id="future-title">今後の課題</h2>
+      <h2 id="future-title">まだ弱いところ</h2>
       <p class="lead">
-        今回の方式は、画像生成をやり直さずに実用的な品質へ寄せるためのbbox/row統計ベースの改善です。
-        ただし、キャラ本体を意味的に理解しているわけではないため、まだ弱点があります。
+        今回の方式は、画像生成をやり直さずに実用的な品質へ寄せるための、切り出し範囲と行ごとの統計を使った改善です。
+        ただし、キャラ本体を意味として理解しているわけではないため、まだ弱点があります。
       </p>
       <div class="algorithm-grid">
         <article class="algorithm-card">
@@ -1325,7 +1332,7 @@ if __name__ == &quot;__main__&quot;:
           </p>
         </article>
         <article class="algorithm-card">
-          <b>基準rowへの依存</b>
+          <b>基準にする行への依存</b>
           <p>
             idle / waving / waiting / review から標準高さを推定しているため、これらのrow自体が崩れているpetでは補正基準も崩れます。
           </p>
@@ -1333,7 +1340,7 @@ if __name__ == &quot;__main__&quot;:
         <article class="algorithm-card">
           <b>固定ルールの限界</b>
           <p>
-            running系は補正し、jumping / failed は補正しない、というルールは今回のpetには合っていますが、別キャラや別モーションでは調整が必要になる場合があります。
+            走行系は補正し、ジャンプや転倒は補正しない、というルールは今回のpetには合っていますが、別キャラや別モーションでは調整が必要になる場合があります。
           </p>
         </article>
       </div>
@@ -1341,27 +1348,27 @@ if __name__ == &quot;__main__&quot;:
         <div>
           <h3>次に入れるなら</h3>
           <p>
-            APIなしでさらに強くするなら、semantic segmentationではなく、足元点・頭頂点・胴体中心を推定する軽量ヒューリスティックが現実的です。
-            それにより、bbox全体ではなく「キャラ本体らしさ」に近い基準でrow_scaleを決められます。
+            APIなしでさらに強くするなら、キャラを完全に意味理解する方向ではなく、足元・頭頂・胴体中心を推定する軽いルールを足すのが現実的です。
+            そうすると、単純な外接矩形ではなく「キャラ本体らしさ」に近い基準で大きさを決められます。
           </p>
         </div>
         <div>
           <h3>残る不確実性</h3>
           <ol class="ok-list">
             <li>極端に小さいrowでは <code>MAX_IDENTITY_ROW_SCALE</code> の上限に当たる</li>
-            <li>横長propがあるpetでは横幅制約で拡大しきれない</li>
-            <li>頭頂や足元を本当に認識しているわけではなく、alpha bboxに基づく推定である</li>
+            <li>横長の小物があるpetでは、横幅の制約で拡大しきれない</li>
+            <li>頭頂や足元を本当に認識しているわけではなく、透明でないピクセル範囲に基づく推定である</li>
           </ol>
         </div>
       </div>
     </section>
 
     <section aria-labelledby="qa-title">
-      <h2 id="qa-title">完成物と検証結果</h2>
+      <h2 id="qa-title">完成した画像と確認結果</h2>
       <div class="qa-grid">
         <figure>
-          <img src="/images/posts/hatch-pet-spritesheet-pipeline/strider-boy-qa-contact-sheet.png" alt="complete contact sheet">
-          <figcaption>contact-sheet: 全row、使用セル、未使用透明セルの一覧。</figcaption>
+          <img src="/images/posts/hatch-pet-spritesheet-pipeline/dokochan-qa-contact-sheet.png" alt="complete contact sheet">
+          <figcaption>確認用画像。全ての動き、使用セル、未使用セルを一覧できる。</figcaption>
         </figure>
         <div>
           <ol class="ok-list">
@@ -1369,7 +1376,7 @@ if __name__ == &quot;__main__&quot;:
             <li>最終検証の <code>final/validation.json</code> は errors 0 / warnings 0</li>
             <li>完成spritesheetの <code>final/spritesheet.webp</code> は 1536x1872 RGBA</li>
             <li>プレビュー動画 <code>qa/videos/*.mp4</code> は9 row分を生成済み</li>
-            <li>正式アセット <code>~/.codex/pets/strider-boy</code> に pet.json と spritesheet.webp をpackage済み</li>
+            <li>正式アセット <code>~/.codex/pets/dokochan</code> に pet.json と spritesheet.webp を配置済み</li>
           </ol>
           <p class="note">
             画像生成はすべて組み込み画像生成で行い、API KEY fallbackは使っていません。
@@ -1377,6 +1384,216 @@ if __name__ == &quot;__main__&quot;:
           </p>
         </div>
       </div>
+    </section>
+
+    <section aria-labelledby="skill-title">
+      <h2 id="skill-title">AIに同じ改善を頼むための追補SKILL.md</h2>
+      <p class="lead">
+        最後に、今回の知見をそのまま別のAI作業へ渡せる形にしておきます。
+        これは既存の <code>hatch-pet</code> skillを置き換えるものではなく、切り抜きと正規化まわりの判断を追加するための追補です。
+        公開されている元skillのURLがある場合は、そのURLを「元にするskill」として併記し、このMarkdownをパッチ方針として貼るのが扱いやすいと思います。
+      </p>
+      <details class="source-details" open>
+        <summary>コピペ用SKILL.md</summary>
+        <pre><code class="language-markdown"># Hatch Pet Cropping Stabilizer
+
+## Positioning
+
+This is a patch-style companion instruction for an existing `hatch-pet` skill.
+Do not replace the original pet generation workflow with this file alone.
+
+Base skill:
+
+- `hatch-pet`
+- If there is an official public URL for the installed skill, keep that URL here.
+- In a local Codex/Claude environment this is usually equivalent to:
+  - `$HOME/.claude/skills/hatch-pet/SKILL.md`
+  - or `$HOME/.codex/skills/hatch-pet/SKILL.md`
+
+## Goal
+
+When a generated pet looks unstable during animation, fix the crop and normalization pipeline before asking the image model to regenerate the character.
+
+The common failure is:
+
+- the image itself is mostly fine
+- but each frame is cropped and fit independently
+- so crouching, jumping, falling, or running poses appear to change character size
+- the head can look too large, or locomotion rows can look smaller than idle rows
+
+The goal is to preserve character identity and apparent scale across the whole spritesheet while keeping real vertical motion, especially jumping.
+
+## Hard Rules
+
+1. Do not create placeholder art with SVG, canvas, Pillow drawings, CSS shapes, or hand-made diagrams as a substitute for real generated pet images.
+2. Do not solve size wobble by blindly regenerating row images.
+3. Treat size wobble as a crop, scale, placement, and baseline problem first.
+4. Keep generated character art as the source of truth unless the row image is visually broken.
+5. Use before / after GIFs for verification, especially for jumping.
+
+## Required Pipeline
+
+### 1. Generate real row strips
+
+Generate one horizontal row strip per motion such as:
+
+- idle
+- running-right
+- running-left
+- waving
+- jumping
+- failed
+- waiting
+- running
+- review
+
+Each row strip should contain multiple poses of the same character on a removable chroma-key background.
+
+### 2. Remove background
+
+Remove the chroma-key background and convert the pet pixels to an alpha mask.
+
+Do not treat checkerboard preview pixels as transparency unless they are truly transparent in the image file.
+
+### 3. Detect connected components
+
+From the alpha mask:
+
+1. find connected non-transparent pixel components
+2. choose the largest components as pose seeds
+3. sort pose seeds by horizontal center
+4. attach small nearby components to the nearest pose seed
+5. crop each grouped pose from the row strip
+
+This avoids losing small separated parts such as ears, accessories, tires, hands, or outline fragments.
+
+### 4. Compute one global scale
+
+Do not decide scale frame by frame.
+Do not decide scale only from each row.
+
+Compute the largest character rectangle across the whole run, then choose one base scale that fits the final cell size.
+
+Recommended cell:
+
+- width: 192px
+- height: 208px
+
+The same global scale should be the default for every frame.
+
+### 5. Preserve foot baseline
+
+Place frames by a foot baseline.
+
+For normal standing or running motions, align the feet to the same baseline.
+For jumping, keep the character size the same and express the jump as vertical position change inside the cell.
+
+Important:
+
+- a jump should move up and down
+- a jump should not become bigger or smaller
+- crouching should not make the head huge
+- falling or failed poses should keep their apparent size unless the pose itself is genuinely lower
+
+### 6. Apply row-level identity correction only when needed
+
+Some locomotion rows may still look smaller because the generated row itself has a shorter character silhouette.
+In that case, compare those rows with stable standing-like rows.
+
+Reference rows:
+
+- idle
+- waving
+- waiting
+- review
+
+Usually correctable rows:
+
+- running-right
+- running-left
+- running
+
+Avoid applying identity-height correction to:
+
+- jumping
+- failed
+
+Jumping and failed rows often contain real vertical or pose-height changes. For those rows, keep global scale and baseline placement rather than forcing the row to match standing height.
+
+### 7. Build the final atlas
+
+After all frames are normalized, place them into the final spritesheet atlas.
+
+For Codex pets, use the expected atlas layout and keep unused cells transparent.
+
+At minimum, verify:
+
+- final spritesheet dimensions
+- transparent unused cells
+- no frame overlaps
+- no cropped head, feet, or accessories
+- correct right-facing and left-facing rows
+
+### 8. QA with visual evidence
+
+Always produce:
+
+1. contact sheet of all rows and frames
+2. before / after GIF for jumping
+3. before / after GIF for any row that looked too small
+4. validation JSON with errors 0 / warnings 0
+5. preview videos for every animation row when possible
+
+Do not report completion based only on file generation.
+Open the result visually and confirm that animation size is stable.
+
+## Final Packaging
+
+When the pet is ready, place the official assets where the Codex app reads them:
+
+```text
+~/.codex/pets/&lt;pet-name&gt;/pet.json
+~/.codex/pets/&lt;pet-name&gt;/spritesheet.webp
+```
+
+Use the run directory only as working history and QA evidence.
+
+```text
+~/.codex/pet-runs/&lt;pet-name&gt;/
+```
+
+The run directory is useful for debugging, but it is not the official app asset location.
+
+## Article / Report Notes
+
+When documenting the result:
+
+1. Start with the feature and the strange behavior a reader may recognize.
+2. Explain that the generated image was not the main problem.
+3. Show that the crop and normalization process caused apparent size changes.
+4. Include real before / after images or GIFs.
+5. Avoid fake SVG diagrams when real pet frames are available.
+6. Record remaining weaknesses honestly.
+
+The reader should understand why the pet looked wrong, what was changed, and how to repeat the fix.</code></pre>
+      </details>
+    </section>
+
+    <section aria-labelledby="closing-title">
+      <h2 id="closing-title">おわりに</h2>
+      <p class="lead">
+        今回は、Codexのpetスキルで作ったキャラが、ジャンプや移動のたびに大きくなったり小さくなったり見える問題を直しました。
+        原因は画像生成そのものではなく、生成後のrow画像を1コマずつ切り出して、192x208のセルへ配置する処理にありました。
+      </p>
+      <p>
+        修正後は、フレームごとに個別fitするのをやめ、全体で共通のscaleを決めたうえで、足元baselineを基準に配置するようにしました。
+        さらに、左右移動のように行全体が小さく見えるケースだけ、行単位で高さを補正しています。
+      </p>
+      <p>
+        これで、ジャンプは「キャラの拡大縮小」ではなく「セル内の上下移動」として見えるようになり、移動中だけキャラが小さくなる違和感も減りました。
+        同じようなpetを作る場合は、画像を作り直す前に、切り出しと正規化の処理を確認するのがよさそうです。
+      </p>
+      <p>Enjoy, hatching stable little pets!</p>
     </section>
 
 </div>
