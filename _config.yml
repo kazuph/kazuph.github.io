@@ -2,6 +2,7 @@ title: 僕のYak Shavingは終わらない2
 description: 調査ノート、実装ログ、AI エージェントとの試行錯誤、発表資料をまとめるブログです。
 url: "https://kazuph.github.io"
 baseurl: ""
+og_image: /images/og-default.png
 permalink: /blog/:year/:month/:day/:title/
 timezone: Asia/Tokyo
 lang: ja

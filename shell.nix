@@ -2,6 +2,8 @@
 
 pkgs.mkShell {
   packages = [
+    pkgs.imagemagick
+    pkgs.noto-fonts-cjk-sans
     pkgs.ruby_3_3
   ];
 

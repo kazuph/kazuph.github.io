@@ -7,22 +7,42 @@ description: 調査ノート、実装ログ、AI エージェントとの試行�
 <section class="post-list" aria-label="最新記事">
   {% for post in site.posts %}
     <article class="post-card">
-      <p class="post-date">{{ post.date | date: "%Y-%m-%d" }}</p>
-      <h3>
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        {% assign bookmark_url = post.hatena_bookmark_url | default: post.source_url %}
-        {% unless bookmark_url %}
-          {% assign bookmark_url = post.url | absolute_url %}
-        {% endunless %}
-        {% include hatena_bookmark_count.html url=bookmark_url %}
-      </h3>
-      {% if post.description %}
-        <p>{{ post.description }}</p>
-      {% else %}
-        <p>{{ post.excerpt | strip_html | truncate: 140 }}</p>
-      {% endif %}
-      <div class="post-actions">
-        <a class="read-more" href="{{ post.url | relative_url }}" aria-label="{{ post.title }}を開く">→</a>
+      {% assign card_image = post.image %}
+      {% unless card_image %}
+        {% if post.source != "zenn" %}
+          {% assign image_parts = post.content | split: "<img" %}
+          {% if image_parts.size > 1 %}
+            {% assign first_image_tag = image_parts[1] %}
+            {% if first_image_tag contains 'src="' %}
+              {% assign card_image = first_image_tag | split: 'src="' | last | split: '"' | first %}
+            {% elsif first_image_tag contains "src='" %}
+              {% assign card_image = first_image_tag | split: "src='" | last | split: "'" | first %}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endunless %}
+      {% assign card_image = card_image | default: site.og_image %}
+      <a class="post-card-thumb" href="{{ post.url | relative_url }}" aria-label="{{ post.title }}を開く">
+        <img src="{{ card_image }}" alt="" loading="lazy">
+      </a>
+      <div class="post-card-body">
+        <p class="post-date">{{ post.date | date: "%Y-%m-%d" }}</p>
+        <h3>
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          {% assign bookmark_url = post.hatena_bookmark_url | default: post.source_url %}
+          {% unless bookmark_url %}
+            {% assign bookmark_url = post.url | absolute_url %}
+          {% endunless %}
+          {% include hatena_bookmark_count.html url=bookmark_url %}
+        </h3>
+        {% if post.description %}
+          <p>{{ post.description }}</p>
+        {% else %}
+          <p>{{ post.excerpt | strip_html | truncate: 140 }}</p>
+        {% endif %}
+        <div class="post-actions">
+          <a class="read-more" href="{{ post.url | relative_url }}" aria-label="{{ post.title }}を開く">→</a>
+        </div>
       </div>
     </article>
   {% endfor %}
