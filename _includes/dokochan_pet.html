@@ -1,0 +1,296 @@
+<div
+  class="site-pet"
+  data-site-pet
+  data-spritesheet-url="{{ '/images/pets/dokochan-spritesheet.webp' | relative_url }}"
+  aria-hidden="true"
+  title="dokochan"
+>
+  <div class="site-pet__sprite" data-site-pet-sprite></div>
+  <div class="site-pet__speech" data-site-pet-speech hidden></div>
+</div>
+<script>
+  (() => {
+    const pet = document.querySelector('[data-site-pet]');
+    const sprite = pet?.querySelector('[data-site-pet-sprite]');
+    const speech = pet?.querySelector('[data-site-pet-speech]');
+    if (!pet || !sprite || !speech) return;
+
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const storageKey = 'kazuph.site-pet.position';
+    const frameWidth = 192;
+    const frameHeight = 208;
+    const renderWidth = 77;
+    const renderHeight = 85;
+    const sheetWidth = 1536;
+    const sheetHeight = 1872;
+    const states = {
+      idle: { row: 0, frames: 6, fps: 4 },
+      'running-right': { row: 1, frames: 8, fps: 10 },
+      'running-left': { row: 2, frames: 8, fps: 10 },
+      waving: { row: 3, frames: 4, fps: 5 },
+      jumping: { row: 4, frames: 5, fps: 8 },
+      failed: { row: 5, frames: 8, fps: 8 },
+      waiting: { row: 6, frames: 6, fps: 4 }
+    };
+    const phrases = [
+      'どこちゃん、右下に帰還です。',
+      'よしよし、ここを定位置にします。',
+      '今日もブログをおさんぽします。',
+      'ちいさく元気に動きます。',
+      '右下から見守ってます。'
+    ];
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const defaultPosition = () => ({
+      x: window.innerWidth - renderWidth - 18,
+      y: window.innerHeight - renderHeight - 14
+    });
+    const clampPosition = (position) => ({
+      x: clamp(position.x, 8, Math.max(8, window.innerWidth - renderWidth - 8)),
+      y: clamp(position.y, 8, Math.max(8, window.innerHeight - renderHeight - 8))
+    });
+    const loadSavedPosition = () => {
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (typeof parsed?.x !== 'number' || typeof parsed?.y !== 'number') return null;
+        return clampPosition(parsed);
+      } catch (_error) {
+        return null;
+      }
+    };
+    const savePosition = (position) => {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(position));
+      } catch (_error) {
+      }
+    };
+
+    let position = loadSavedPosition() ?? clampPosition(defaultPosition());
+    let target = { ...position };
+    let state = 'idle';
+    let frame = 0;
+    let lastFrameAt = 0;
+    let lastTickAt = performance.now();
+    let dragging = false;
+    let draggedDuringPointer = false;
+    let dragOffset = { x: 0, y: 0 };
+    let lastDragPoint = null;
+    let pointer = { x: position.x, y: position.y };
+    let pointerActive = false;
+    let manualUntil = 0;
+    let petHover = false;
+    let waveUntil = 0;
+    let hoverState = 'jumping';
+    let hoverShuffleAt = 0;
+    let lastHoverMoveAt = 0;
+    let speechTimer = null;
+
+    const setState = (next) => {
+      if (state === next) return;
+      state = next;
+      frame = 0;
+      lastFrameAt = 0;
+    };
+
+    const showSpeech = (text) => {
+      speech.textContent = text;
+      speech.hidden = false;
+      pet.classList.add('has-speech');
+      if (speechTimer) clearTimeout(speechTimer);
+      speechTimer = window.setTimeout(() => {
+        speech.hidden = true;
+        pet.classList.remove('has-speech');
+      }, 3200);
+    };
+
+    const sayRandomPhrase = () => {
+      const text = phrases[Math.floor(Math.random() * phrases.length)];
+      showSpeech(text);
+    };
+
+    const syncSprite = (now) => {
+      const config = states[state] ?? states.idle;
+      const frameInterval = 1000 / config.fps;
+      if (!lastFrameAt || now - lastFrameAt >= frameInterval) {
+        frame = (frame + 1) % config.frames;
+        lastFrameAt = now;
+      }
+      const scaleX = renderWidth / frameWidth;
+      const scaleY = renderHeight / frameHeight;
+      sprite.style.backgroundPosition = `${-frame * renderWidth}px ${-config.row * renderHeight}px`;
+      sprite.style.backgroundSize = `${sheetWidth * scaleX}px ${sheetHeight * scaleY}px`;
+    };
+
+    const syncPosition = () => {
+      pet.style.transform = `translate3d(${Math.round(position.x)}px, ${Math.round(position.y)}px, 0)`;
+    };
+
+    const aimForPointer = () => {
+      target = clampPosition({
+        x: pointer.x - renderWidth * 0.45,
+        y: pointer.y - renderHeight * 0.82
+      });
+    };
+
+    const animate = (now) => {
+      const delta = Math.min((now - lastTickAt) / 16.6667, 3);
+      lastTickAt = now;
+      petHover = !dragging && pet.matches(':hover');
+
+      const allowFollow = pointerActive && !prefersReducedMotion && now >= manualUntil && !petHover;
+      if (allowFollow) aimForPointer();
+
+      if (!dragging) {
+        const dx = target.x - position.x;
+        const dy = target.y - position.y;
+        const distance = Math.hypot(dx, dy);
+
+        if (distance > 0.8) {
+          position.x += dx * 0.12 * delta;
+          position.y += dy * 0.12 * delta;
+          position = clampPosition(position);
+        }
+
+        if (petHover) {
+          if (now - lastHoverMoveAt < 260) {
+            hoverState = 'jumping';
+            hoverShuffleAt = now + 700;
+            setState('jumping');
+          } else {
+            if (now >= hoverShuffleAt) {
+              const hoverStates = ['waiting', 'jumping', 'failed'];
+              hoverState = hoverStates[Math.floor(Math.random() * hoverStates.length)];
+              hoverShuffleAt = now + 650 + Math.random() * 850;
+            }
+            setState(hoverState);
+          }
+        } else if (waveUntil > now) {
+          setState('waving');
+        } else if (distance > 0.8) {
+          if (Math.abs(dy) > 18) {
+            setState('jumping');
+          } else if (dx < -1) {
+            setState('running-left');
+          } else if (dx > 1) {
+            setState('running-right');
+          }
+        } else {
+          setState('idle');
+        }
+      }
+
+      syncPosition();
+      syncSprite(now);
+      pet.classList.add('is-ready');
+      requestAnimationFrame(animate);
+    };
+
+    sprite.style.backgroundImage = `url("${pet.dataset.spritesheetUrl}")`;
+    sprite.style.imageRendering = 'pixelated';
+    syncPosition();
+
+    pet.addEventListener('pointerdown', (event) => {
+      dragging = true;
+      draggedDuringPointer = false;
+      pointerActive = false;
+      manualUntil = Infinity;
+      dragOffset = {
+        x: event.clientX - position.x,
+        y: event.clientY - position.y
+      };
+      lastDragPoint = { x: event.clientX, y: event.clientY };
+      pet.classList.add('is-dragging');
+      pet.setPointerCapture?.(event.pointerId);
+      event.preventDefault();
+    });
+
+    pet.addEventListener('pointermove', (event) => {
+      if (!dragging) return;
+      if (lastDragPoint) {
+        const dx = event.clientX - lastDragPoint.x;
+        const dy = event.clientY - lastDragPoint.y;
+        if (Math.hypot(dx, dy) > 2) {
+          draggedDuringPointer = true;
+          position = clampPosition({
+            x: event.clientX - dragOffset.x,
+            y: event.clientY - dragOffset.y
+          });
+          target = { ...position };
+          if (Math.abs(dy) > 10) {
+            setState('jumping');
+          } else if (dx < -1) {
+            setState('running-left');
+          } else if (dx > 1) {
+            setState('running-right');
+          }
+        }
+      }
+
+      lastDragPoint = { x: event.clientX, y: event.clientY };
+      syncPosition();
+    });
+
+    const releaseDrag = (event) => {
+      if (!dragging) return;
+      dragging = false;
+      lastDragPoint = null;
+      pet.classList.remove('is-dragging');
+      pet.releasePointerCapture?.(event.pointerId);
+      if (draggedDuringPointer) {
+        manualUntil = performance.now() + 5000;
+        savePosition(position);
+        setState('jumping');
+      } else {
+        manualUntil = performance.now() + 5000;
+        pointerActive = false;
+        waveUntil = performance.now() + 1800;
+        position = clampPosition(defaultPosition());
+        target = { ...position };
+        savePosition(position);
+        setState('waving');
+        syncPosition();
+        sayRandomPhrase();
+      }
+    };
+
+    pet.addEventListener('pointerup', releaseDrag);
+    pet.addEventListener('pointercancel', releaseDrag);
+    pet.addEventListener('pointerenter', () => {
+      petHover = true;
+      lastHoverMoveAt = performance.now();
+      hoverState = 'jumping';
+      hoverShuffleAt = performance.now() + 700;
+    });
+    pet.addEventListener('pointerleave', () => {
+      petHover = false;
+    });
+    pet.addEventListener('pointermove', () => {
+      if (dragging) return;
+      lastHoverMoveAt = performance.now();
+      hoverState = 'jumping';
+      hoverShuffleAt = performance.now() + 700;
+    });
+
+    window.addEventListener('pointermove', (event) => {
+      if (dragging || event.pointerType !== 'mouse') return;
+      pointerActive = true;
+      pointer = { x: event.clientX, y: event.clientY };
+    }, { passive: true });
+
+    window.addEventListener('pointerleave', () => {
+      pointerActive = false;
+      target = loadSavedPosition() ?? clampPosition(defaultPosition());
+    });
+
+    window.addEventListener('resize', () => {
+      position = clampPosition(position);
+      target = clampPosition(target);
+      savePosition(position);
+      syncPosition();
+    });
+
+    requestAnimationFrame(animate);
+  })();
+</script>
