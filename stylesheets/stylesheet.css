@@ -931,14 +931,16 @@ body.media-lightbox-open {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(100%, 1280px);
-  max-height: 100%;
+  width: calc(100vw - 40px);
+  max-width: calc(100vw - 40px);
+  height: calc(100vh - 96px);
+  max-height: calc(100vh - 96px);
 }
 
 .media-lightbox__content img,
 .media-lightbox__content video {
   width: auto;
-  max-width: 100%;
+  max-width: calc(100vw - 40px);
   max-height: calc(100vh - 96px);
   height: auto;
   margin: 0;
