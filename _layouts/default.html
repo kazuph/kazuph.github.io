@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% include head_meta.html %}
     <link rel="stylesheet" type="text/css" media="screen" href="{{ '/stylesheets/stylesheet.css' | relative_url }}">
+    <link rel="icon" href="{{ '/images/favicons/favicon.ico' | relative_url }}" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ '/images/favicons/favicon-32x32.png' | relative_url }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ '/images/favicons/favicon-512x512.png' | relative_url }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ '/images/favicons/apple-touch-icon.png' | relative_url }}">
     {% if page.title == site.title %}
       <title>{{ site.title }}</title>
     {% else %}
@@ -37,6 +41,10 @@
       </div>
     </footer>
     {% include dokochan_pet.html %}
+    <div class="media-lightbox" data-media-lightbox hidden aria-hidden="true">
+      <button class="media-lightbox__close" type="button" aria-label="Close">×</button>
+      <div class="media-lightbox__content" data-media-lightbox-content></div>
+    </div>
     <script>
       (() => {
         const openExternalLinksInNewTabs = (root = document) => {
@@ -66,6 +74,84 @@
           mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
               if (node.nodeType === Node.ELEMENT_NODE) openExternalLinksInNewTabs(node);
+            });
+          });
+        }).observe(document.body, { childList: true, subtree: true });
+      })();
+    </script>
+    <script>
+      (() => {
+        const overlay = document.querySelector('[data-media-lightbox]');
+        const content = document.querySelector('[data-media-lightbox-content]');
+        const closeButton = overlay?.querySelector('.media-lightbox__close');
+        if (!overlay || !content || !closeButton) return;
+
+        let activeTrigger = null;
+
+        const closeLightbox = () => {
+          overlay.hidden = true;
+          overlay.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('media-lightbox-open');
+          content.replaceChildren();
+          if (activeTrigger instanceof HTMLElement) {
+            activeTrigger.focus({ preventScroll: true });
+          }
+          activeTrigger = null;
+        };
+
+        const openLightbox = (source) => {
+          const tagName = source.tagName.toLowerCase();
+          const media = source.cloneNode(true);
+          media.removeAttribute('width');
+          media.removeAttribute('height');
+          if (tagName === 'video') {
+            media.controls = true;
+            media.autoplay = true;
+            media.loop = true;
+          }
+          content.replaceChildren(media);
+          overlay.hidden = false;
+          overlay.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('media-lightbox-open');
+          activeTrigger = source;
+          closeButton.focus({ preventScroll: true });
+        };
+
+        const bindMedia = (root = document) => {
+          root.querySelectorAll?.('.post-body img, .post-body video').forEach((media) => {
+            if (media.closest('[data-media-lightbox]')) return;
+            if (media.dataset.lightboxBound === '1') return;
+            media.dataset.lightboxBound = '1';
+            media.classList.add('is-lightbox-target');
+            media.tabIndex = 0;
+            media.setAttribute('role', 'button');
+            media.setAttribute('aria-label', 'Open media in lightbox');
+            media.addEventListener('click', (event) => {
+              event.preventDefault();
+              openLightbox(media);
+            });
+            media.addEventListener('keydown', (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openLightbox(media);
+              }
+            });
+          });
+        };
+
+        closeButton.addEventListener('click', closeLightbox);
+        overlay.addEventListener('click', (event) => {
+          if (event.target === overlay) closeLightbox();
+        });
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && !overlay.hidden) closeLightbox();
+        });
+
+        bindMedia();
+        new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === Node.ELEMENT_NODE) bindMedia(node);
             });
           });
         }).observe(document.body, { childList: true, subtree: true });
