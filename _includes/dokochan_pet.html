@@ -21,6 +21,7 @@
     const frameHeight = 208;
     const renderWidth = 77;
     const renderHeight = 85;
+    const pointerStandoff = Math.max(renderWidth, renderHeight) + 28;
     const sheetWidth = 1536;
     const sheetHeight = 1872;
     const states = {
@@ -128,9 +129,23 @@
     };
 
     const aimForPointer = () => {
+      const center = {
+        x: position.x + renderWidth / 2,
+        y: position.y + renderHeight / 2
+      };
+      const dx = pointer.x - center.x;
+      const dy = pointer.y - center.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance <= pointerStandoff) {
+        target = { ...position };
+        return;
+      }
+
+      const unitX = dx / distance;
+      const unitY = dy / distance;
       target = clampPosition({
-        x: pointer.x - renderWidth * 0.45,
-        y: pointer.y - renderHeight * 0.82
+        x: pointer.x - unitX * pointerStandoff - renderWidth / 2,
+        y: pointer.y - unitY * pointerStandoff - renderHeight / 2
       });
     };
 

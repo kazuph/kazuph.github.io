@@ -6,7 +6,7 @@
 {% endif %}
 {% assign canonical_url = page.canonical_url | default: page.url | absolute_url %}
 {% assign page_url = page.url | absolute_url %}
-{% assign raw_image = page.image %}
+{% assign raw_image = page.social_image | default: page.image %}
 {% unless raw_image %}
   {% if page.layout == "post" and page.source != "zenn" %}
     {% assign image_parts = content | split: "<img" %}
