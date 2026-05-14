@@ -30,6 +30,9 @@
   {% assign og_image = raw_image | absolute_url %}
 {% endif %}
 <meta name="description" content="{{ meta_description | escape }}">
+{% if page.robots %}
+<meta name="robots" content="{{ page.robots | escape }}">
+{% endif %}
 <link rel="canonical" href="{{ canonical_url }}">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="{{ site.title | escape }}">
