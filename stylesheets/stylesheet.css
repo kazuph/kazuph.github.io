@@ -1337,7 +1337,11 @@ body.media-lightbox-open {
 
   .sidebar {
     position: static;
+    max-height: none;
+    overflow-y: visible;
+    overscroll-behavior: auto;
     padding-top: 0;
+    padding-bottom: 0;
   }
 
   .site-header h1 {
