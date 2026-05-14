@@ -229,4 +229,4 @@ Codex に聞けば大体やってくれるのも良いですね。
 
 副産物でマイクラ捗る感じになったので、Codex の Computer Use と組み合わせて色々できそうです。
 
-Enjoy launching scrcpy as an app.
+Enjoy, Minecraft with scrcpy ;)
