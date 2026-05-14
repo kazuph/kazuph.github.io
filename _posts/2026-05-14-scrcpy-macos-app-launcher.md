@@ -221,20 +221,12 @@ $ tail /tmp/scrcpy-minecraft-app.log
 - `scrcpy.app`: Pixel の実画面をそのままミラーする
 - `scrcpy Minecraft.app`: 可変サイズの仮想ディスプレイを作って Minecraft を起動する
 
-## 注意点
-
-この方法は「scrcpy を macOS アプリとして包む」だけなので、scrcpy 本体のアップデートは Homebrew 側で行います。つまり、`brew upgrade scrcpy` すれば、次回アプリを開いたときも新しい `/opt/homebrew/bin/scrcpy` が使われます。
-
-一方で、`scrcpy` や `adb` の場所が違う環境では、AppleScript 内の `PATH` と実行パスを合わせる必要があります。Intel Mac や Homebrew の prefix が違う環境では、`/usr/local/bin/scrcpy` になることもあります。
-
-また、起動に失敗したときはまず `/tmp/scrcpy-app.log` を見るのがよいです。Android 側の USB デバッグ許可、ケーブル接続、`adb devices` の状態がそのまま原因として出ることが多いです。
-
-`scrcpy Minecraft.app` 側で何も映らない場合は、仮想ディスプレイだけが作られて、そこにアプリが起動していない可能性があります。`--start-app=com.mojang.minecraftpe` を付けて、Minecraft をその仮想ディスプレイ上で起動するのがポイントです。
-
 ## おわりに
 
-やっていることはとても小さいですが、よく使う CLI を `/Applications` に置ける形にすると、急に日常の道具っぽくなります。scrcpy はもともと軽くて速いので、この薄いラッパーとの相性もかなり良いです。
+scrcpy をアプリ化してみました。これまで起動するときに、えーっと確か scrap みたいな名前の……って感じでうろ覚えだったのと、Alfred / Raycast の候補に出てこないことで使いこなせてなかったのですが、これでサクッと起動できるようになって助かりました。
 
-Finder から開ける。Spotlight から呼べる。ログも残る。これくらいの雑に使える感じが、毎日使う道具にはちょうどいいです。
+Codex に聞けば大体やってくれるのも良いですね。
 
-Launch tiny tools like real apps.
+副産物でマイクラ捗る感じになったので、Codex の Computer Use と組み合わせて色々できそうです。
+
+Enjoy launching scrcpy as an app.
