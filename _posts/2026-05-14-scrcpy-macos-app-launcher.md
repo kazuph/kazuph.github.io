@@ -106,6 +106,8 @@ GUI アプリとして起動すると、ターミナルで使っている shell 
 
 Homebrew の scrcpy にはアイコン画像も入っているので、それを `.icns` に変換して app bundle に入れます。
 
+![scrcpy のアプリアイコン](/images/scrcpy/scrcpy-app-icon.png)
+
 ```bash
 ICON_PNG="/opt/homebrew/share/icons/hicolor/256x256/apps/scrcpy.png"
 ICONSET="/tmp/scrcpy.iconset"
@@ -130,6 +132,17 @@ iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/scrcpy.icns"
   || /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string scrcpy" "$APP/Contents/Info.plist"
 
 rm -rf "$ICONSET"
+```
+
+AppleScript アプリの場合、`CFBundleIconName` が `applet` のままだと、`CFBundleIconFile` を設定したつもりでも見た目が AppleScript のデフォルトアイコンに戻ることがあります。なので、`CFBundleIconName` も `scrcpy` に揃え、さらに `applet.icns` 自体も置き換えておくと確実です。
+
+```bash
+cp "$APP/Contents/Resources/scrcpy.icns" "$APP/Contents/Resources/applet.icns"
+
+/usr/libexec/PlistBuddy -c "Set :CFBundleIconName scrcpy" "$APP/Contents/Info.plist" 2>/dev/null \
+  || /usr/libexec/PlistBuddy -c "Add :CFBundleIconName string scrcpy" "$APP/Contents/Info.plist"
+
+touch "$APP"
 ```
 
 これで `/Applications` の中でも `scrcpy` として見え、アイコンも scrcpy のものになります。
@@ -189,6 +202,8 @@ end run'
 これを起動すると、Pixel の実画面をそのまま映すのではなく、Android 側に `scrcpy` という仮想ディスプレイを作り、その上で Minecraft を起動します。Mac 側でウィンドウを横長にしたり縦長にしたりすると、仮想ディスプレイの解像度も追従します。
 
 ![scrcpy Minecraft.app で flex display のサイズ変更を試しているところ](/images/scrcpy/2026-05-14-scrcpy-minecraft-flex.gif)
+
+さらに面白いのは、この状態だと Mac 側のキーボードとマウスで Minecraft を操作できることです。スマホゲームを「Mac のウィンドウ上で、キーボード + マウス操作できる」状態になるので、単なる画面ミラーリングよりだいぶ PC 版っぽい触り心地になります。
 
 確認ログはこんな感じです。
 
