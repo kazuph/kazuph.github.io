@@ -3,7 +3,7 @@ layout: post
 title: "Codex.appのpetに着想を得て、tmux向けの相棒 TmuxPal をつくった"
 date: 2026-05-13
 description: "Codex.app の /pet を見て、tmux 内の Codex / Claude Code / Copilot / opencode をまとめて見渡せる macOS アプリ TmuxPal を Swift で作った。開発方針と現時点の機能を紹介する。"
-social_image: /images/tmuxpal/2026-05-13-tmuxpal-demo-poster.png
+social_image: /images/tmuxpal/2026-05-13-tmuxpal-demo-poster-v2.png
 ---
 
 <img src="/images/tmuxpal/2026-05-13-tmuxpal-demo.gif" alt="TmuxPal demo" width="720" height="437" loading="eager" decoding="sync" onerror="this.onerror=null;this.src='/images/tmuxpal/2026-05-13-tmuxpal-demo-poster.png';">
