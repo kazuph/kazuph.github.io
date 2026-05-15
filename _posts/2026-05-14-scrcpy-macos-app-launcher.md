@@ -106,7 +106,9 @@ GUI アプリとして起動すると、ターミナルで使っている shell 
 
 Homebrew の scrcpy にはアイコン画像も入っているので、それを `.icns` に変換して app bundle に入れます。
 
-![scrcpy のアプリアイコン](/images/scrcpy/scrcpy-app-icon.png)
+<p class="app-icon-preview">
+  <img src="/images/scrcpy/scrcpy-app-icon.png" alt="scrcpy のアプリアイコン" style="width: 96px; height: 96px; max-width: 96px;">
+</p>
 
 ```bash
 ICON_PNG="/opt/homebrew/share/icons/hicolor/256x256/apps/scrcpy.png"
@@ -182,7 +184,9 @@ $ scrcpy --help
 
 通常ミラーと混ぜると挙動がわかりにくくなるので、別アプリとして `/Applications/scrcpy Minecraft.app` を作ることにしました。名前は公式表記に合わせて `scrcpy`、Minecraft 起動専用なので `scrcpy Minecraft` です。
 
-![scrcpy Minecraft.app のアプリアイコン](/images/scrcpy/scrcpy-minecraft-app-icon.png)
+<p class="app-icon-preview">
+  <img src="/images/scrcpy/scrcpy-minecraft-app-icon.png" alt="scrcpy Minecraft.app のアプリアイコン" style="width: 128px; height: 128px; max-width: 128px;">
+</p>
 
 ```bash
 APP="/Applications/scrcpy Minecraft.app"
