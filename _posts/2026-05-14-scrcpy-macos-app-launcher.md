@@ -3,10 +3,6 @@ layout: post
 title: "scrcpyを/Applicationsに置けるmacOSアプリにする"
 date: 2026-05-14
 description: "Homebrew の scrcpy を AppleScript アプリとして /Applications に置き、Finder や Spotlight から起動できるようにした小さな実装メモ。"
-hidden: true
-sitemap: false
-robots: noindex,nofollow
-permalink: /preview/scrcpy-macos-app-launcher-20260515-b7f3a9/
 ---
 
 ## はじめに
