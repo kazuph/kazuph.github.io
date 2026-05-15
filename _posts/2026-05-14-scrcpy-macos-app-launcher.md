@@ -9,7 +9,7 @@ robots: noindex,nofollow
 permalink: /preview/scrcpy-macos-app-launcher-20260515-b7f3a9/
 ---
 
-## なぜ
+## はじめに
 
 Android の画面を Mac に映すとき、`scrcpy` はかなり便利です。USB でつないで `scrcpy` と打つだけで、端末の画面を低遅延で表示できます。
 
@@ -205,7 +205,7 @@ osacompile -o "$APP" -e 'on run
 end run'
 ```
 
-Minecraft 版は Alfred / Raycast で見分けやすいように、草ブロック風の専用アイコンにしています。AppleScript のデフォルトアイコンが残らないように、通常版と同じく `CFBundleIconFile` / `CFBundleIconName` / `applet.icns` を揃えます。
+Minecraft 版は Spotlight / Raycast で見分けやすいように、草ブロック風の専用アイコンにしています。AppleScript のデフォルトアイコンが残らないように、通常版と同じく `CFBundleIconFile` / `CFBundleIconName` / `applet.icns` を揃えます。
 
 これを起動すると、Pixel の実画面をそのまま映すのではなく、Android 側に `scrcpy` という仮想ディスプレイを作り、その上で Minecraft を起動します。Mac 側でウィンドウを横長にしたり縦長にしたりすると、仮想ディスプレイの解像度も追従します。
 
@@ -231,7 +231,7 @@ $ tail /tmp/scrcpy-minecraft-app.log
 
 ## おわりに
 
-scrcpy をアプリ化してみました。これまで起動するときに、えーっと確か scrap みたいな名前の……って感じでうろ覚えだったのと、Alfred / Raycast の候補に出てこないことで使いこなせてなかったのですが、これでサクッと起動できるようになって助かりました。
+scrcpy をアプリ化してみました。これまで起動するときに、えーっと確か scrap みたいな名前の……って感じでうろ覚えだったのと、Spotlight / Raycast の候補に出てこないことで使いこなせてなかったのですが、これでサクッと起動できるようになって助かりました。
 
 Codex に聞けば大体やってくれるのも良いですね。
 
