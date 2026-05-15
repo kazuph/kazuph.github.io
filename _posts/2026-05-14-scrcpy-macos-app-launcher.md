@@ -182,6 +182,8 @@ $ scrcpy --help
 
 通常ミラーと混ぜると挙動がわかりにくくなるので、別アプリとして `/Applications/scrcpy Minecraft.app` を作ることにしました。名前は公式表記に合わせて `scrcpy`、Minecraft 起動専用なので `scrcpy Minecraft` です。
 
+![scrcpy Minecraft.app のアプリアイコン](/images/scrcpy/scrcpy-minecraft-app-icon.png)
+
 ```bash
 APP="/Applications/scrcpy Minecraft.app"
 
@@ -198,6 +200,8 @@ osacompile -o "$APP" -e 'on run
     do shell script shellScript
 end run'
 ```
+
+Minecraft 版は Alfred / Raycast で見分けやすいように、草ブロック風の専用アイコンにしています。AppleScript のデフォルトアイコンが残らないように、通常版と同じく `CFBundleIconFile` / `CFBundleIconName` / `applet.icns` を揃えます。
 
 これを起動すると、Pixel の実画面をそのまま映すのではなく、Android 側に `scrcpy` という仮想ディスプレイを作り、その上で Minecraft を起動します。Mac 側でウィンドウを横長にしたり縦長にしたりすると、仮想ディスプレイの解像度も追従します。
 
