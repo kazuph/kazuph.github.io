@@ -1005,6 +1005,93 @@ body.media-lightbox-open {
   display: inline;
 }
 
+.post-body .highlight {
+  color: #e5edf7;
+  background: transparent;
+}
+
+.post-body .highlight .c,
+.post-body .highlight .cm,
+.post-body .highlight .c1,
+.post-body .highlight .cs {
+  color: #8fa1b7;
+  font-style: italic;
+}
+
+.post-body .highlight .k,
+.post-body .highlight .kc,
+.post-body .highlight .kd,
+.post-body .highlight .kn,
+.post-body .highlight .kr,
+.post-body .highlight .kt,
+.post-body .highlight .nt {
+  color: #7dd3fc;
+  font-weight: 700;
+}
+
+.post-body .highlight .s,
+.post-body .highlight .s1,
+.post-body .highlight .s2,
+.post-body .highlight .sb,
+.post-body .highlight .sc,
+.post-body .highlight .sd,
+.post-body .highlight .sh,
+.post-body .highlight .sx {
+  color: #fca5a5;
+}
+
+.post-body .highlight .se,
+.post-body .highlight .si,
+.post-body .highlight .sr,
+.post-body .highlight .ss {
+  color: #fbbf24;
+}
+
+.post-body .highlight .m,
+.post-body .highlight .mf,
+.post-body .highlight .mh,
+.post-body .highlight .mi,
+.post-body .highlight .mo,
+.post-body .highlight .il {
+  color: #fcd34d;
+}
+
+.post-body .highlight .na,
+.post-body .highlight .nb,
+.post-body .highlight .nc,
+.post-body .highlight .nd,
+.post-body .highlight .ne,
+.post-body .highlight .nf,
+.post-body .highlight .nl,
+.post-body .highlight .nn,
+.post-body .highlight .no,
+.post-body .highlight .nv,
+.post-body .highlight .bp,
+.post-body .highlight .vc,
+.post-body .highlight .vg,
+.post-body .highlight .vi {
+  color: #86efac;
+}
+
+.post-body .highlight .o,
+.post-body .highlight .ow,
+.post-body .highlight .p {
+  color: #cbd5e1;
+}
+
+.post-body .highlight .go,
+.post-body .highlight .gp,
+.post-body .highlight .w {
+  color: #b6c2d1;
+}
+
+.post-body .highlight .err,
+.post-body .highlight .gr,
+.post-body .highlight .gt {
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.18);
+}
+
 .post-body :not(pre) > code {
   width: auto;
   padding: 0.16em 0.36em;
