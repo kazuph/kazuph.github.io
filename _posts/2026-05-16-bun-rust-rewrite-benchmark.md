@@ -24,6 +24,21 @@ image: /images/posts/bun-rust-rewrite-benchmark/rust-vs-zig-bars.svg
 
 確認日は2026年5月16日 JST。
 
+## 実行環境
+
+ベンチマークは、次の1台のローカル環境で実行しました。
+
+| 項目 | 内容 |
+|---|---|
+| OS | macOS 26.4 |
+| Kernel | Darwin 25.4.0 / arm64 |
+| CPU | Apple M5 |
+| CPU core | 10 physical / 10 logical |
+| Memory | 32 GB |
+| hyperfine | 1.20.0 |
+
+同じマシン上でBefore RustとAfter Rustのrelease binaryをそれぞれビルドし、同じfixtureと同じ `hyperfine` 設定で測っています。
+
 ## まず両方をビルドする
 
 リポジトリは `https://github.com/oven-sh/bun.git` からcloneしました。`main` をfetchしたあと、リライト前後のコミットを別々のworktreeに切り出しました。
