@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <rect width="1200" height="900" fill="#fbfaf6"/>
+  <rect x="90" y="620" width="1020" height="160" rx="20" fill="#e9dcc9"/>
+  <rect x="130" y="160" width="190" height="300" rx="18" fill="#d8ccb8" stroke="#8b7d6b" stroke-width="6"/>
+  <rect x="158" y="188" width="134" height="220" rx="12" fill="#2f3540"/>
+  <rect x="135" y="470" width="180" height="20" rx="10" fill="#9c8f7f"/>
+  <rect x="820" y="410" width="210" height="150" rx="24" fill="#b48162"/>
+  <rect x="840" y="350" width="170" height="90" rx="18" fill="#b48162"/>
+  <circle cx="890" cy="318" r="52" fill="#f3d8c6"/>
+  <path d="M850 318 q40 -82 98 0" fill="#ece7e2"/>
+  <circle cx="872" cy="318" r="6" fill="#49362c"/>
+  <circle cx="916" cy="318" r="6" fill="#49362c"/>
+  <path d="M880 346 q18 10 36 0" fill="none" stroke="#6f4f3d" stroke-width="4"/>
+  <path d="M856 400 q32 42 76 0" fill="none" stroke="#7b5747" stroke-width="12" stroke-linecap="round"/>
+  <path d="M932 404 q30 40 68 26" fill="none" stroke="#7b5747" stroke-width="12" stroke-linecap="round"/>
+  <path d="M858 540 q18 80 54 132" fill="none" stroke="#6b4d3a" stroke-width="20" stroke-linecap="round"/>
+  <path d="M972 540 q-8 88 -20 150" fill="none" stroke="#6b4d3a" stroke-width="20" stroke-linecap="round"/>
+  <path d="M760 245 q85 85 0 170" fill="none" stroke="#d7c7b4" stroke-width="16" stroke-linecap="round"/>
+  <path d="M1050 245 q-85 85 0 170" fill="none" stroke="#d7c7b4" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="792" cy="260" r="18" fill="#e8dcca"/>
+  <circle cx="1020" cy="260" r="18" fill="#e8dcca"/>
+  <circle cx="232" cy="302" r="10" fill="#f5e66a"/>
+  <line x1="292" y1="302" x2="856" y2="320" stroke="#8fb3da" stroke-width="4" stroke-dasharray="10 8"/>
+  <polygon points="842,312 874,320 842,328" fill="#8fb3da"/>
+  <text x="212" y="148" font-size="34" fill="#665749">TV</text>
+  <text x="760" y="220" font-size="34" fill="#665749">Curtain</text>
+  <text x="806" y="610" font-size="34" fill="#665749">Sofa</text>
+
+</svg>

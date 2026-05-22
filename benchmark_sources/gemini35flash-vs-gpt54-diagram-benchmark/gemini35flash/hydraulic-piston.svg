@@ -1,0 +1,486 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Technical Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="1" stroke-opacity="0.6" />
+      <path d="M 8 0 L 8 40 M 16 0 L 16 40 M 24 0 L 24 40 M 32 0 L 32 40 M 0 8 L 40 8 M 0 16 L 40 16 M 0 24 L 40 24 M 0 32 L 40 32" fill="none" stroke="#1e293b" stroke-width="0.5" stroke-opacity="0.25" />
+    </pattern>
+
+    <!-- Metal Hatching Pattern for Section Cuts -->
+    <pattern id="hatch-metal" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="12" stroke="#e2e8f0" stroke-width="0.8" opacity="0.3" />
+    </pattern>
+
+    <!-- Background Radial Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="60%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </radialGradient>
+
+    <!-- Metallic Gradient for Cylinder Body -->
+    <linearGradient id="metal-body" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569" />
+      <stop offset="25%" stop-color="#94a3b8" />
+      <stop offset="50%" stop-color="#64748b" />
+      <stop offset="75%" stop-color="#cbd5e1" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+
+    <!-- Metallic Gradient for Piston Body -->
+    <linearGradient id="metal-piston" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#64748b" />
+      <stop offset="20%" stop-color="#e2e8f0" />
+      <stop offset="40%" stop-color="#94a3b8" />
+      <stop offset="70%" stop-color="#cbd5e1" />
+      <stop offset="100%" stop-color="#475569" />
+    </linearGradient>
+
+    <!-- Metallic Gradient for Piston Rod -->
+    <linearGradient id="rod-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="15%" stop-color="#cbd5e1" />
+      <stop offset="40%" stop-color="#94a3b8" />
+      <stop offset="60%" stop-color="#64748b" />
+      <stop offset="85%" stop-color="#475569" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+
+    <!-- Brass / Bronze Gradient for Bushings and Wear Rings -->
+    <linearGradient id="brass-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="40%" stop-color="#b45309" />
+      <stop offset="70%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+
+    <!-- Polyurethane Seal Gradient (Orange) -->
+    <linearGradient id="seal-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="50%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+
+    <!-- Wiper Seal Gradient (Teal) -->
+    <linearGradient id="wiper-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d9488" />
+      <stop offset="50%" stop-color="#14b8a6" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+
+    <!-- High Pressure Fluid Gradient (Red) -->
+    <linearGradient id="fluid-high-press" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#991b1b" stop-opacity="0.7" />
+      <stop offset="50%" stop-color="#ef4444" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#b91c1c" stop-opacity="0.7" />
+    </linearGradient>
+
+    <!-- Low Pressure Fluid Gradient (Blue) -->
+    <linearGradient id="fluid-low-press" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.7" />
+      <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.7" />
+    </linearGradient>
+
+    <!-- Glow Filters for Fluid Flow and Pressure Chambers -->
+    <filter id="glow-red" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <!-- Flow Markers -->
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ef4444" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#3b82f6" />
+    </marker>
+    <marker id="arrow-motion" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f59e0b" />
+    </marker>
+  </defs>
+
+  <style>
+    /* CSS Styles for animations and crisp typography */
+    @keyframes flow-active {
+      to {
+        stroke-dashoffset: -40;
+      }
+    }
+    .flow-line-red {
+      fill: none;
+      stroke: #f87171;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 8 6;
+      animation: flow-active 2.5s linear infinite;
+      filter: url(#glow-red);
+    }
+    .flow-line-blue {
+      fill: none;
+      stroke: #60a5fa;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 8 6;
+      animation: flow-active 2.5s linear infinite;
+      filter: url(#glow-blue);
+    }
+    .text-title {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 800;
+      fill: #ffffff;
+    }
+    .text-label {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 700;
+      fill: #f8fafc;
+      stroke: #020617;
+      stroke-width: 3px;
+      stroke-linejoin: round;
+      paint-order: stroke;
+    }
+    .text-sub {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 11px;
+      fill: #94a3b8;
+      stroke: #020617;
+      stroke-width: 2px;
+      stroke-linejoin: round;
+      paint-order: stroke;
+    }
+    .callout-line {
+      fill: none;
+      stroke: #38bdf8;
+      stroke-width: 1.5;
+      opacity: 0.85;
+    }
+  </style>
+
+  <!-- Background Base -->
+  <rect width="100%" height="100%" fill="url(#bg-grad)" />
+  <rect width="100%" height="100%" fill="url(#grid)" />
+
+  <!-- ==================== FLUID LAYERS ==================== -->
+  
+  <!-- Left Chamber Fluid (High Pressure - Red) -->
+  <rect x="310" y="280" width="20" height="95" fill="url(#fluid-high-press)" filter="url(#glow-red)" />
+  <rect x="250" y="375" width="180" height="210" fill="url(#fluid-high-press)" filter="url(#glow-red)" />
+  
+  <!-- Left Chamber Flow Particles -->
+  <g opacity="0.6">
+    <circle cx="320" cy="310" r="3" fill="#ffa7a7" />
+    <circle cx="320" cy="340" r="4" fill="#ffa7a7" />
+    <circle cx="280" cy="400" r="3" fill="#ffa7a7" />
+    <circle cx="350" cy="415" r="4" fill="#ffa7a7" />
+    <circle cx="275" cy="460" r="3" fill="#ffa7a7" />
+    <circle cx="300" cy="510" r="5" fill="#ffa7a7" />
+    <circle cx="360" cy="550" r="3" fill="#ffa7a7" />
+    <circle cx="280" cy="560" r="4" fill="#ffa7a7" />
+  </g>
+
+  <!-- Right Chamber Fluid (Low Pressure - Blue) -->
+  <rect x="770" y="280" width="20" height="95" fill="url(#fluid-low-press)" filter="url(#glow-blue)" />
+  <rect x="510" y="375" width="340" height="210" fill="url(#fluid-low-press)" filter="url(#glow-blue)" />
+  
+  <!-- Right Chamber Flow Particles -->
+  <g opacity="0.6">
+    <circle cx="780" cy="310" r="3" fill="#93c5fd" />
+    <circle cx="780" cy="340" r="4" fill="#93c5fd" />
+    <circle cx="560" cy="405" r="4" fill="#93c5fd" />
+    <circle cx="640" cy="410" r="3" fill="#93c5fd" />
+    <circle cx="720" cy="400" r="5" fill="#93c5fd" />
+    <circle cx="580" cy="550" r="3" fill="#93c5fd" />
+    <circle cx="670" cy="565" r="4" fill="#93c5fd" />
+    <circle cx="750" cy="545" r="3" fill="#93c5fd" />
+  </g>
+
+  <!-- ==================== FLOW ARROWS & LINES ==================== -->
+  
+  <!-- Left Chamber (Inflow Paths) -->
+  <path d="M 320 230 L 320 375" class="flow-line-red" />
+  <path d="M 320 375 C 320 430 310 460 380 460" class="flow-line-red" marker-end="url(#arrow-red)" />
+  <path d="M 320 375 C 320 480 290 535 365 540" class="flow-line-red" marker-end="url(#arrow-red)" />
+
+  <!-- Right Chamber (Outflow Paths) -->
+  <path d="M 780 375 L 780 230" class="flow-line-blue" />
+  <path d="M 570 410 C 660 410 780 410 780 375" class="flow-line-blue" marker-end="url(#arrow-blue)" />
+  <path d="M 570 550 C 660 550 780 550 780 375" class="flow-line-blue" marker-end="url(#arrow-blue)" />
+
+  <!-- ==================== CYLINDER & COMPONENT SECTIONS ==================== -->
+  
+  <!-- Cylinder Top Wall with Ports -->
+  <path d="M 250 375 L 250 345 L 295 345 L 295 280 L 310 280 L 310 375 Z 
+           M 330 375 L 330 280 L 345 280 L 345 345 L 755 345 L 755 280 L 770 280 L 770 375 Z 
+           M 790 375 L 790 280 L 805 280 L 805 345 L 850 345 L 850 375 Z" 
+        fill="url(#metal-body)" stroke="#475569" stroke-width="1.5" />
+  
+  <!-- Cylinder Top Wall Hatching -->
+  <path d="M 250 375 L 250 345 L 295 345 L 295 280 L 310 280 L 310 375 Z 
+           M 330 375 L 330 280 L 345 280 L 345 345 L 755 345 L 755 280 L 770 280 L 770 375 Z 
+           M 790 375 L 790 280 L 805 280 L 805 345 L 850 345 L 850 375 Z" 
+        fill="url(#hatch-metal)" />
+
+  <!-- Cylinder Bottom Wall -->
+  <rect x="250" y="585" width="600" height="30" fill="url(#metal-body)" stroke="#475569" stroke-width="1.5" />
+  <rect x="250" y="585" width="600" height="30" fill="url(#hatch-metal)" />
+
+  <!-- Cylinder Left Cap (Head Cover) with Clevis Mount -->
+  <path d="M 220 345 L 250 345 L 250 615 L 220 615 L 220 550 C 190 550 150 520 140 480 C 150 440 190 410 220 410 Z" 
+        fill="url(#metal-body)" stroke="#475569" stroke-width="1.5" />
+  <path d="M 220 345 L 250 345 L 250 615 L 220 615 L 220 550 C 190 550 150 520 140 480 C 150 440 190 410 220 410 Z" 
+        fill="url(#hatch-metal)" />
+  
+  <!-- Left Mount Pin Bushing -->
+  <circle cx="180" cy="480" r="22" fill="url(#brass-grad)" stroke="#78350f" stroke-width="1.5" />
+  <circle cx="180" cy="480" r="14" fill="#0f172a" stroke="#334155" stroke-width="1" />
+
+  <!-- Cylinder Right Cap (Gland / Rod Cover) -->
+  <!-- Top Gland Block -->
+  <path d="M 850 345 L 890 345 L 890 440 L 850 440 Z" fill="url(#metal-body)" stroke="#475569" stroke-width="1.5" />
+  <path d="M 850 345 L 890 345 L 890 440 L 850 440 Z" fill="url(#hatch-metal)" />
+  <!-- Bottom Gland Block -->
+  <path d="M 850 520 L 890 520 L 890 615 L 850 615 Z" fill="url(#metal-body)" stroke="#475569" stroke-width="1.5" />
+  <path d="M 850 520 L 890 520 L 890 615 L 850 615 Z" fill="url(#hatch-metal)" />
+
+  <!-- ==================== PISTON & ROD ASSEMBLY ==================== -->
+  
+  <!-- Piston Rod (Chrome Plated Steel) -->
+  <!-- Inner Segment & Shoulder -->
+  <path d="M 510 435 L 525 435 L 525 525 L 510 525 Z" fill="url(#metal-piston)" stroke="#334155" stroke-width="1" />
+  <!-- Rod Shaft (Extends Outwards) -->
+  <rect x="525" y="440" width="475" height="80" fill="url(#rod-grad)" stroke="#475569" stroke-width="1.5" />
+  <rect x="525" y="442" width="475" height="8" fill="#ffffff" opacity="0.25" /> <!-- Reflection highlight -->
+
+  <!-- Threaded Rod End (Inside Head Chamber) -->
+  <rect x="390" y="465" width="40" height="30" fill="url(#metal-piston)" stroke="#475569" stroke-width="1" />
+  <path d="M 393 465 L 393 495 M 397 465 L 397 495 M 401 465 L 401 495 M 405 465 L 405 495 M 409 465 L 409 495 M 413 465 L 413 495 M 417 465 L 417 495 M 421 465 L 421 495 M 425 465 L 425 495" stroke="#334155" stroke-width="1" />
+
+  <!-- Lock Nut -->
+  <path d="M 395 460 L 402 450 L 425 450 L 425 510 L 402 510 L 395 500 Z" fill="url(#metal-piston)" stroke="#475569" stroke-width="1.5" />
+  <line x1="402" y1="450" x2="402" y2="510" stroke="#475569" stroke-width="1" />
+  
+  <!-- Piston Body -->
+  <rect x="430" y="375" width="80" height="210" fill="url(#metal-piston)" stroke="#334155" stroke-width="2" />
+  
+  <!-- Piston Seal & Wear Ring Grooves & Seals (Top) -->
+  <!-- Wear Ring 1 -->
+  <rect x="444" y="375" width="12" height="12" fill="#0b0f19" stroke="#334155" stroke-width="1" />
+  <rect x="445" y="375" width="10" height="10" fill="url(#brass-grad)" />
+  <!-- Piston Seal (Double Acting Seal) -->
+  <rect x="464" y="375" width="12" height="20" fill="#0b0f19" stroke="#334155" stroke-width="1" />
+  <rect x="465" y="375" width="10" height="17" fill="url(#seal-grad)" />
+  <!-- Wear Ring 2 -->
+  <rect x="484" y="375" width="12" height="12" fill="#0b0f19" stroke="#334155" stroke-width="1" />
+  <rect x="485" y="375" width="10" height="10" fill="url(#brass-grad)" />
+
+  <!-- Piston Seal & Wear Ring Grooves & Seals (Bottom) -->
+  <!-- Wear Ring 1 -->
+  <rect x="444" y="563" width="12" height="12" fill="#0b0f19" stroke="#334155" stroke-width="1" />
+  <rect x="445" y="565" width="10" height="10" fill="url(#brass-grad)" />
+  <!-- Piston Seal -->
+  <rect x="464" y="555" width="12" height="20" fill="#0b0f19" stroke="#334155" stroke-width="1" />
+  <rect x="465" y="558" width="10" height="17" fill="url(#seal-grad)" />
+  <!-- Wear Ring 2 -->
+  <rect x="484" y="563" width="12" height="12" fill="#0b0f19" stroke="#334155" stroke-width="1" />
+  <rect x="485" y="565" width="10" height="10" fill="url(#brass-grad)" />
+
+  <!-- Rod Gland Seals & Wiper (In the Right Cap) -->
+  <!-- Rod Seal (Top) -->
+  <rect x="864" y="440" width="12" height="12" fill="#0b0f19" stroke="#334155" stroke-width="0.8" />
+  <rect x="865" y="440" width="10" height="10" fill="url(#seal-grad)" />
+  <!-- Rod Seal (Bottom) -->
+  <rect x="864" y="508" width="12" height="12" fill="#0b0f19" stroke="#334155" stroke-width="0.8" />
+  <rect x="865" y="510" width="10" height="10" fill="url(#seal-grad)" />
+  <!-- Wiper Seal (Top) -->
+  <rect x="881" y="440" width="7" height="8" fill="#0b0f19" stroke="#334155" stroke-width="0.8" />
+  <path d="M 881 440 L 888 440 L 885 448 Z" fill="url(#wiper-grad)" />
+  <!-- Wiper Seal (Bottom) -->
+  <rect x="881" y="512" width="7" height="8" fill="#0b0f19" stroke="#334155" stroke-width="0.8" />
+  <path d="M 881 520 L 888 520 L 885 512 Z" fill="url(#wiper-grad)" />
+
+  <!-- Rod Gland Wear Bushing (Top & Bottom) -->
+  <rect x="852" y="440" width="8" height="6" fill="url(#brass-grad)" stroke="#78350f" stroke-width="0.5" />
+  <rect x="852" y="514" width="8" height="6" fill="url(#brass-grad)" stroke="#78350f" stroke-width="0.5" />
+
+  <!-- Rod Eye / Mounting Clevis (Right End) -->
+  <path d="M 1000 450 L 1030 450 C 1040 430 1080 430 1080 480 C 1080 530 1040 530 1030 510 L 1000 510 Z" 
+        fill="url(#metal-body)" stroke="#475569" stroke-width="1.5" />
+  <circle cx="1050" cy="480" r="22" fill="url(#brass-grad)" stroke="#78350f" stroke-width="1.5" />
+  <circle cx="1050" cy="480" r="14" fill="#0f172a" stroke="#334155" stroke-width="1" />
+
+  <!-- ==================== FORCE & MOTION SYMBOLS ==================== -->
+  
+  <!-- Force Vectors (Red Arrows Pushing Piston) -->
+  <g stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrow-red)">
+    <line x1="395" y1="395" x2="425" y2="395" />
+    <line x1="395" y1="425" x2="425" y2="425" />
+    <line x1="365" y1="480" x2="385" y2="480" /> <!-- Push on nut -->
+    <line x1="395" y1="535" x2="425" y2="535" />
+    <line x1="395" y1="565" x2="425" y2="565" />
+  </g>
+  <text x="415" y="480" transform="rotate(-90 415 480)" fill="#fca5a5" font-size="9" font-family="'Inter', sans-serif" font-weight="900" letter-spacing="1" text-anchor="middle">受圧面 (PRESSURE FACE)</text>
+
+  <!-- Piston Motion Direction Indicator -->
+  <g>
+    <!-- Motion Arrow -->
+    <line x1="910" y1="410" x2="970" y2="410" stroke="#f59e0b" stroke-width="4.5" stroke-linecap="round" marker-end="url(#arrow-motion)" />
+    <text x="940" y="395" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">動作方向 / EXTEND</text>
+  </g>
+
+  <!-- Outflow Resistance / Fluid Exit (Blue Arrows) -->
+  <g stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-blue)">
+    <line x1="535" y1="410" x2="515" y2="410" />
+    <line x1="535" y1="550" x2="515" y2="550" />
+  </g>
+
+  <!-- Cylinder Tube Highlight -->
+  <rect x="250" y="347" width="600" height="4" fill="#ffffff" opacity="0.2" />
+  <rect x="250" y="611" width="600" height="4" fill="#ffffff" opacity="0.2" />
+
+  <!-- ==================== CALLOUTS & LABELS ==================== -->
+
+  <!-- A: PISTON SEAL -->
+  <g>
+    <circle cx="470" cy="382" r="3.5" fill="#38bdf8" />
+    <circle cx="470" cy="382" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 470 382 L 470 190 L 400 190" class="callout-line" />
+    <text x="390" y="185" class="text-label" text-anchor="end">ピストンシール</text>
+    <text x="390" y="202" class="text-sub" text-anchor="end">Piston Seal</text>
+  </g>
+
+  <!-- B: PISTON -->
+  <g>
+    <circle cx="450" cy="420" r="3.5" fill="#38bdf8" />
+    <circle cx="450" cy="420" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 450 420 L 450 150 L 380 150" class="callout-line" />
+    <text x="370" y="145" class="text-label" text-anchor="end">ピストン</text>
+    <text x="370" y="162" class="text-sub" text-anchor="end">Piston</text>
+  </g>
+
+  <!-- C: CYLINDER TUBE -->
+  <g>
+    <circle cx="580" cy="355" r="3.5" fill="#38bdf8" />
+    <circle cx="580" cy="355" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 580 355 L 580 110 L 660 110" class="callout-line" />
+    <text x="670" y="105" class="text-label" text-anchor="start">シリンダーチューブ</text>
+    <text x="670" y="122" class="text-sub" text-anchor="start">Cylinder Tube</text>
+  </g>
+
+  <!-- D: WEAR RING -->
+  <g>
+    <circle cx="495" cy="382" r="3.5" fill="#38bdf8" />
+    <circle cx="495" cy="382" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 495 382 L 495 150 L 570 150" class="callout-line" />
+    <text x="580" y="145" class="text-label" text-anchor="start">ウェアリング (ガイド)</text>
+    <text x="580" y="162" class="text-sub" text-anchor="start">Wear Ring (Guide)</text>
+  </g>
+
+  <!-- E: ROD SEAL -->
+  <g>
+    <circle cx="865" cy="440" r="3.5" fill="#38bdf8" />
+    <circle cx="865" cy="440" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 865 440 L 865 190 L 930 190" class="callout-line" />
+    <text x="940" y="185" class="text-label" text-anchor="start">ロッドシール</text>
+    <text x="940" y="202" class="text-sub" text-anchor="start">Rod Seal</text>
+  </g>
+
+  <!-- F: HEAD PORT -->
+  <g>
+    <circle cx="320" cy="290" r="3.5" fill="#38bdf8" />
+    <circle cx="320" cy="290" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 320 290 L 270 230 L 200 230" class="callout-line" />
+    <text x="190" y="225" class="text-label" text-anchor="end">ヘッド側ポート [供給]</text>
+    <text x="190" y="242" class="text-sub" text-anchor="end">Head Port [Supply]</text>
+  </g>
+
+  <!-- G: ROD PORT -->
+  <g>
+    <circle cx="780" cy="290" r="3.5" fill="#38bdf8" />
+    <circle cx="780" cy="290" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 780 290 L 830 230 L 900 230" class="callout-line" />
+    <text x="910" y="225" class="text-label" text-anchor="start">ロッド側ポート [排出]</text>
+    <text x="910" y="242" class="text-sub" text-anchor="start">Rod Port [Return]</text>
+  </g>
+
+  <!-- H: HEAD CHAMBER -->
+  <g>
+    <circle cx="320" cy="520" r="3.5" fill="#38bdf8" />
+    <circle cx="320" cy="520" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 320 520 L 320 710 L 240 710" class="callout-line" />
+    <text x="230" y="705" class="text-label" text-anchor="end">ヘッド側圧力室 (高圧)</text>
+    <text x="230" y="722" class="text-sub" text-anchor="end">Head Chamber (High Pressure)</text>
+  </g>
+
+  <!-- I: PISTON ROD -->
+  <g>
+    <circle cx="680" cy="480" r="3.5" fill="#38bdf8" />
+    <circle cx="680" cy="480" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 680 480 L 680 750 L 600 750" class="callout-line" />
+    <text x="590" y="745" class="text-label" text-anchor="end">ピストンロッド</text>
+    <text x="590" y="762" class="text-sub" text-anchor="end">Piston Rod</text>
+  </g>
+
+  <!-- J: ROD CHAMBER -->
+  <g>
+    <circle cx="600" cy="550" r="3.5" fill="#38bdf8" />
+    <circle cx="600" cy="550" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 600 550 L 600 710 L 680 710" class="callout-line" />
+    <text x="690" y="705" class="text-label" text-anchor="start">ロッド側圧力室 (低圧)</text>
+    <text x="690" y="722" class="text-sub" text-anchor="start">Rod Chamber (Low Pressure)</text>
+  </g>
+
+  <!-- K: ROD BUSHING -->
+  <g>
+    <circle cx="875" cy="550" r="3.5" fill="#38bdf8" />
+    <circle cx="875" cy="550" r="7" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.5" />
+    <path d="M 875 550 L 875 750 L 940 750" class="callout-line" />
+    <text x="950" y="745" class="text-label" text-anchor="start">ロッドブッシュ (ガイド)</text>
+    <text x="950" y="762" class="text-sub" text-anchor="start">Rod Bushing (Gland Bush)</text>
+  </g>
+
+  <!-- ==================== HEADER / TITLE BLOCK ==================== -->
+  <g transform="translate(50, 30)">
+    <!-- Translucent Backdrop -->
+    <rect width="1100" height="80" rx="16" fill="#0f172a" fill-opacity="0.75" stroke="#334155" stroke-width="1.5" />
+    
+    <!-- Title English / Japanese -->
+    <text x="30" y="36" class="text-title" font-size="22">複動式油圧シリンダー 構造断面図</text>
+    <text x="30" y="58" class="text-sub" font-size="11" fill="#38bdf8">DOUBLE-ACTING HYDRAULIC CYLINDER SECTIONAL VIEW</text>
+
+    <!-- Technical Specs & Status -->
+    <g transform="translate(1070, 0)" text-anchor="end">
+      <!-- Status Badge -->
+      <rect x="-190" y="20" width="85" height="20" rx="4" fill="#065f46" fill-opacity="0.8" />
+      <circle cx="-178" cy="30" r="4" fill="#34d399" />
+      <text x="-166" y="34" font-family="'Inter', sans-serif" font-weight="700" font-size="10" fill="#a7f3d0" text-anchor="start">前進中 (EXT)</text>
+      
+      <!-- System Specs -->
+      <text x="-195" y="34" class="text-sub" font-size="11" fill="#f59e0b">PRESSURE: 14.0 MPa</text>
+      <text x="0" y="48" class="text-sub" font-size="10" fill="#94a3b8">SCALE: 1 : 1.5 (A3)</text>
+      <text x="0" y="62" class="text-sub" font-size="10" fill="#94a3b8">UNIT: MILLIMETER (mm)</text>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER / LEGEND ==================== -->
+  <g transform="translate(350, 810)">
+    <!-- Legend Box -->
+    <rect width="500" height="56" rx="12" fill="#0f172a" fill-opacity="0.8" stroke="#334155" stroke-width="1.2" />
+    
+    <!-- High-P Legend -->
+    <g transform="translate(30, 28)">
+      <rect x="0" y="-8" width="16" height="16" rx="4" fill="url(#fluid-high-press)" stroke="#ef4444" stroke-width="1" />
+      <text x="26" y="4" class="text-label" font-size="12">高圧油回路 (Supply Channel)</text>
+    </g>
+
+    <!-- Low-P Legend -->
+    <g transform="translate(270, 28)">
+      <rect x="0" y="-8" width="16" height="16" rx="4" fill="url(#fluid-low-press)" stroke="#3b82f6" stroke-width="1" />
+      <text x="26" y="4" class="text-label" font-size="12">低圧戻り回路 (Return Channel)</text>
+    </g>
+  </g>
+
+</svg>

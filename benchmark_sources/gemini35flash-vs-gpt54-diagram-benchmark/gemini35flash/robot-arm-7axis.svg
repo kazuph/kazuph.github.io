@@ -1,0 +1,442 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&amp;family=Inter:wght@400;600&amp;display=swap');
+      text {
+        user-select: none;
+      }
+    </style>
+    
+    <!-- 背景グラデーション -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#070a10"/>
+    </linearGradient>
+    
+    <!-- ホワイトリンク（アーム外装）用グラデーション -->
+    <linearGradient id="whiteLink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#f8fafc"/>
+      <stop offset="70%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    
+    <!-- ダークアロイ（関節ハウジング）用グラデーション -->
+    <linearGradient id="metalDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="30%" stop-color="#334155"/>
+      <stop offset="70%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    
+    <!-- シルバーメタリックグラデーション -->
+    <linearGradient id="metalLight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="50%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- ネオンオレンジアクセント -->
+    <linearGradient id="orangeAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff7a00"/>
+      <stop offset="100%" stop-color="#ff5100"/>
+    </linearGradient>
+    
+    <!-- シャドウ効果 -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="15" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+    
+    <!-- ネオングロー効果 -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="strongGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur1" />
+      <feGaussianBlur stdDeviation="3" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- 矢印マーカー -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#00f0ff"/>
+    </marker>
+  </defs>
+  
+  <!-- 背景パネル -->
+  <rect width="100%" height="100%" fill="url(#bgGrad)"/>
+  
+  <!-- テックグリッド & サークルHUD -->
+  <g opacity="0.07">
+    <path d="M 0,150 L 1200,150 M 0,300 L 1200,300 M 0,450 L 1200,450 M 0,600 L 1200,600 M 0,750 L 1200,750" stroke="#ffffff" stroke-width="1"/>
+    <path d="M 150,0 L 150,900 M 300,0 L 300,900 M 450,0 L 450,900 M 600,0 L 600,900 M 750,0 L 750,900 M 900,0 L 900,900 M 1050,0 L 1050,900" stroke="#ffffff" stroke-width="1"/>
+    <circle cx="500" cy="550" r="380" fill="none" stroke="#ffffff" stroke-width="1"/>
+    <circle cx="500" cy="550" r="480" fill="none" stroke="#ffffff" stroke-width="1" stroke-dasharray="10,15"/>
+  </g>
+
+  <!-- タイトルヘッダー (HUDスタイル) -->
+  <g transform="translate(50, 40)">
+    <rect x="0" y="0" width="1100" height="70" rx="8" fill="#111827" opacity="0.8" stroke="#1f2937" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="30" y="43" fill="#f8fafc" font-family="Outfit, sans-serif" font-size="24" font-weight="700" letter-spacing="2">7-DOF REDUNDANT MANIPULATOR</text>
+    <text x="30" y="58" fill="#06b6d4" font-family="Outfit, sans-serif" font-size="11" font-weight="700" letter-spacing="4">TECHNICAL DIAGRAM &amp; JOINT CONFIGURATION</text>
+    
+    <!-- ステータス表示 -->
+    <rect x="940" y="20" width="130" height="30" rx="15" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <circle cx="960" cy="35" r="4" fill="#10b981" filter="url(#glow)"/>
+    <text x="975" y="39" fill="#10b981" font-family="Outfit, sans-serif" font-size="11" font-weight="700" letter-spacing="1">SYS_ONLINE</text>
+  </g>
+
+  <!-- 左パネル: ロボットシステム概要 -->
+  <g transform="translate(50, 140)">
+    <rect x="0" y="0" width="320" height="230" rx="12" fill="#111827" opacity="0.8" stroke="#1f2937" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="20" y="35" fill="#06b6d4" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="13" font-weight="bold" letter-spacing="1.5">SYSTEM RELATIONSHIP (階層関係)</text>
+    <line x1="20" y1="45" x2="300" y2="45" stroke="#1f2937" stroke-width="1.5"/>
+
+    <text x="20" y="75" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="11" font-weight="bold">■ BASE (ベース部 / J1)</text>
+    <text x="20" y="90" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">アーム全体を支持し、床面の高剛性基準となる土台。</text>
+
+    <text x="20" y="125" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="11" font-weight="bold">■ LINKS (リンク部 / J2-J5)</text>
+    <text x="20" y="140" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">J2-J3の上腕部、J4-J5の前腕部で動力を伝達。</text>
+    <text x="20" y="153" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">冗長な第3軸(J3)により、障害物回避動作を可能とする。</text>
+
+    <text x="20" y="185" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="11" font-weight="bold">■ END EFFECTOR (手先部 / J6-J7)</text>
+    <text x="20" y="200" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">手首ピッチとフランジ回転を統合し、正確な姿勢で</text>
+    <text x="20" y="213" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">グリッパーやツールが作業対象にアプローチする。</text>
+  </g>
+
+  <!-- 左下パネル: システム諸元 -->
+  <g transform="translate(50, 390)">
+    <rect x="0" y="0" width="320" height="200" rx="12" fill="#111827" opacity="0.8" stroke="#1f2937" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="20" y="35" fill="#06b6d4" font-family="Outfit, sans-serif" font-size="13" font-weight="bold" letter-spacing="1.5">HARDWARE STATUS</text>
+    <line x1="20" y1="45" x2="300" y2="45" stroke="#1f2937" stroke-width="1.5"/>
+
+    <!-- ステータスグリッド -->
+    <text x="20" y="75" fill="#64748b" font-family="Outfit, sans-serif" font-size="11" font-weight="bold">MODEL TYPE</text>
+    <text x="20" y="90" fill="#f8fafc" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">AG-7D REDUNDANT</text>
+
+    <text x="180" y="75" fill="#64748b" font-family="Outfit, sans-serif" font-size="11" font-weight="bold">MAX PAYLOAD</text>
+    <text x="180" y="90" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">15.0 KG (NOMINAL)</text>
+
+    <text x="20" y="130" fill="#64748b" font-family="Outfit, sans-serif" font-size="11" font-weight="bold">TOTAL WEIGHT</text>
+    <text x="20" y="145" fill="#f8fafc" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">28.5 KG</text>
+
+    <text x="180" y="130" fill="#64748b" font-family="Outfit, sans-serif" font-size="11" font-weight="bold">COMMUNICATION</text>
+    <text x="180" y="145" fill="#f8fafc" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">EtherCAT / ROS2</text>
+
+    <!-- プログレスデコレーション -->
+    <rect x="20" y="175" width="280" height="4" rx="2" fill="#1e293b"/>
+    <rect x="20" y="175" width="230" height="4" rx="2" fill="#00f0ff" filter="url(#glow)"/>
+  </g>
+
+  <!-- 右パネル: 軸仕様と可動範囲 -->
+  <g transform="translate(830, 140)">
+    <rect x="0" y="0" width="320" height="690" rx="12" fill="#111827" opacity="0.8" stroke="#1f2937" stroke-width="1.5" filter="url(#shadow)"/>
+    
+    <text x="25" y="35" fill="#06b6d4" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="13" font-weight="bold" letter-spacing="1.5">AXIS JOINT DATA (軸関節仕様)</text>
+    <line x1="25" y1="45" x2="295" y2="45" stroke="#1f2937" stroke-width="1.5"/>
+
+    <!-- J1 -->
+    <text x="25" y="75" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold">J1: Base Yaw (旋回)</text>
+    <text x="220" y="75" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">±170°</text>
+    <text x="25" y="90" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">アーム全体の水平旋回を担う。</text>
+
+    <!-- J2 -->
+    <text x="25" y="125" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold">J2: Shoulder Pitch (倒れ)</text>
+    <text x="220" y="125" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">±120°</text>
+    <text x="25" y="140" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">肩部起伏関節。前後の倒れ動作を制御。</text>
+
+    <!-- J3 -->
+    <text x="25" y="175" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold">J3: Arm Roll (捻り)</text>
+    <text x="220" y="175" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">±170°</text>
+    <text x="25" y="190" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">上腕の自転（ロール軸）。冗長自由度の核心。</text>
+
+    <!-- J4 -->
+    <text x="25" y="225" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold">J4: Elbow Pitch (曲げ)</text>
+    <text x="220" y="225" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">±120°</text>
+    <text x="25" y="240" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">肘関節。アーム全体の伸縮・曲げを司る。</text>
+
+    <!-- J5 -->
+    <text x="25" y="275" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold">J5: Wrist Roll (捻り)</text>
+    <text x="220" y="275" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">±170°</text>
+    <text x="25" y="290" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">前腕部の自転。手首全体の方向を決定する。</text>
+
+    <!-- J6 -->
+    <text x="25" y="325" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold">J6: Wrist Pitch (曲げ)</text>
+    <text x="220" y="325" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">±120°</text>
+    <text x="25" y="340" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">手首部起伏。ツール取付面のピッチ制御。</text>
+
+    <!-- J7 -->
+    <text x="25" y="375" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold">J7: Tool Roll (旋回)</text>
+    <text x="220" y="375" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="12" font-weight="bold">±360°</text>
+    <text x="25" y="390" fill="#94a3b8" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="10">手先工具の無限回転・微細旋回を行う。</text>
+
+    <!-- 手先空間座標グラフィック (HUDミニチュア) -->
+    <g transform="translate(45, 450)" opacity="0.8">
+      <rect x="0" y="0" width="230" height="210" rx="8" fill="#1e293b" opacity="0.4" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="25" fill="#94a3b8" font-family="Outfit, sans-serif" font-size="11" font-weight="bold" letter-spacing="1">END EFFECTOR SPACE</text>
+      
+      <!-- レーダー/極座標 HUD -->
+      <circle cx="115" cy="115" r="50" fill="none" stroke="#334155" stroke-width="1"/>
+      <circle cx="115" cy="115" r="70" fill="none" stroke="#00f0ff" stroke-width="1" stroke-dasharray="4,6" opacity="0.5"/>
+      <circle cx="115" cy="115" r="30" fill="none" stroke="#334155" stroke-width="1"/>
+      
+      <!-- XYZ 軸ライン -->
+      <line x1="115" y1="35" x2="115" y2="195" stroke="#334155" stroke-width="1"/>
+      <line x1="35" y1="115" x2="195" y2="115" stroke="#334155" stroke-width="1"/>
+      <line x1="60" y1="60" x2="170" y2="170" stroke="#334155" stroke-width="1" stroke-dasharray="2,2"/>
+      
+      <!-- プロット点 -->
+      <circle cx="145" cy="85" r="5" fill="#ff7a00" filter="url(#glow)"/>
+      <line x1="115" y1="115" x2="145" y2="85" stroke="#ff7a00" stroke-width="1.5"/>
+      
+      <text x="155" y="80" fill="#ff7a00" font-family="Outfit, sans-serif" font-size="10" font-weight="bold">TCP</text>
+    </g>
+  </g>
+
+  <!-- ==================== ロボットアーム描画グループ ==================== -->
+  <g transform="translate(80, 0)">
+    
+    <!-- 空間座標グリッドベース (足元) -->
+    <g transform="translate(450, 770)">
+      <ellipse cx="0" cy="30" rx="200" ry="80" fill="none" stroke="#00f0ff" stroke-width="1" opacity="0.1"/>
+      <ellipse cx="0" cy="30" rx="160" ry="64" fill="none" stroke="#00f0ff" stroke-width="1.5" opacity="0.2"/>
+      <ellipse cx="0" cy="30" rx="120" ry="48" fill="none" stroke="#00f0ff" stroke-width="1" stroke-dasharray="8,4" opacity="0.3"/>
+      
+      <!-- XYZ基準投影線 -->
+      <line x1="-200" y1="30" x2="200" y2="30" stroke="#00f0ff" stroke-width="1.5" opacity="0.2"/>
+      <line x1="0" y1="-50" x2="0" y2="110" stroke="#00f0ff" stroke-width="1.5" opacity="0.2"/>
+      
+      <!-- 床面座標スケール目盛り -->
+      <path d="M -160,30 L -160,25 M -120,30 L -120,25 M -80,30 L -80,25 M -40,30 L -40,25 M 40,30 L 40,25 M 80,30 L 80,25 M 120,30 L 120,25 M 160,30 L 160,25" stroke="#00f0ff" stroke-width="1" opacity="0.3"/>
+    </g>
+
+    <!-- 回転軸 中心基準線 (CAD風) -->
+    <g opacity="0.4">
+      <!-- J1軸 (垂直) -->
+      <line x1="450" y1="800" x2="450" y2="600" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="10,5,2,5"/>
+      <!-- J2軸 (水平・斜め投影) -->
+      <line x1="360" y1="650" x2="540" y2="650" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="10,5,2,5"/>
+      <!-- J4軸 (水平) -->
+      <line x1="500" y1="520" x2="660" y2="520" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="10,5,2,5"/>
+      <!-- J6軸 (水平) -->
+      <line x1="420" y1="340" x2="580" y2="340" stroke="#00f0ff" stroke-width="1.5" stroke-dasharray="10,5,2,5"/>
+    </g>
+
+    <!-- === BASE (ベース部) === -->
+    <g filter="url(#shadow)">
+      <!-- 最下層アンカープレート -->
+      <ellipse cx="450" cy="800" rx="110" ry="44" fill="url(#metalDark)" stroke="#475569" stroke-width="2"/>
+      <!-- ベース厚み -->
+      <path d="M 340,800 L 340,825 A 110,44 0 0,0 560,825 L 560,800 A 110,44 0 0,1 340,800 Z" fill="#0f172a"/>
+      <!-- ボルト固定穴用のテクスチャ -->
+      <ellipse cx="370" cy="815" rx="6" ry="3" fill="#1e293b" opacity="0.8"/>
+      <ellipse cx="530" cy="815" rx="6" ry="3" fill="#1e293b" opacity="0.8"/>
+      <ellipse cx="450" cy="830" rx="8" ry="4" fill="#1e293b" opacity="0.8"/>
+      <ellipse cx="450" cy="800" rx="80" ry="32" fill="#1e293b"/>
+      
+      <!-- ベースハウジングシリンダー (J1支持部) -->
+      <path d="M 380,730 L 380,800 A 70,28 0 0,0 520,800 L 520,730 A 70,28 0 0,1 380,730 Z" fill="url(#metalDark)" stroke="#334155" stroke-width="1"/>
+      <ellipse cx="450" cy="730" rx="70" ry="28" fill="url(#metalLight)"/>
+    </g>
+
+    <!-- === LINK 1 (J1からJ2への立ち上がり) === -->
+    <g filter="url(#shadow)">
+      <ellipse cx="450" cy="730" rx="45" ry="18" fill="#1e293b"/>
+      <path d="M 410,650 C 410,700 405,715 410,730 A 45,18 0 0,0 490,730 C 495,715 490,700 490,650 Z" fill="url(#whiteLink)" stroke="#cbd5e1" stroke-width="1"/>
+      <ellipse cx="450" cy="650" rx="40" ry="16" fill="#64748b"/>
+    </g>
+
+    <!-- === J2 (肩ピッチジョイント / Shoulder Joint) === -->
+    <g filter="url(#shadow)">
+      <!-- ジョイント中心軸ドラム -->
+      <path d="M 390,650 L 390,610 A 60,30 0 0,1 510,610 L 510,650 A 60,30 0 0,1 390,650 Z" fill="url(#metalDark)" stroke="#334155" stroke-width="1"/>
+      <!-- 両側シリンダーエンドキャップ -->
+      <ellipse cx="390" cy="630" rx="15" ry="30" fill="url(#metalLight)" stroke="#475569" stroke-width="1"/>
+      <ellipse cx="510" cy="630" rx="15" ry="30" fill="url(#metalDark)" stroke="#1e293b" stroke-width="1"/>
+    </g>
+
+    <!-- === LINK 2 (下腕 / Lower Arm) === -->
+    <!-- 流線型で美しい造形をパスで表現 -->
+    <g filter="url(#shadow)">
+      <path d="M 425,630 C 425,600 500,530 550,510 L 575,530 C 540,560 455,660 455,660 Z" fill="url(#whiteLink)" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <!-- J3 (上腕ロール) 分割スリットライン (テック感の演出) -->
+      <path d="M 488,579 C 496,572 506,562 516,554" stroke="#475569" stroke-width="3" fill="none" opacity="0.6"/>
+      <!-- J3用のネオンイルミネーションリング -->
+      <ellipse cx="503" cy="566" rx="20" ry="9" fill="none" stroke="#00f0ff" stroke-width="2.5" transform="rotate(-38, 503, 566)" filter="url(#glow)"/>
+    </g>
+
+    <!-- === J4 (肘ピッチジョイント / Elbow Joint) === -->
+    <g filter="url(#shadow)">
+      <!-- 肘の球体ドラム -->
+      <circle cx="580" cy="520" r="32" fill="url(#metalDark)" stroke="#334155" stroke-width="1"/>
+      <circle cx="580" cy="520" r="24" fill="none" stroke="#00f0ff" stroke-width="1" opacity="0.5"/>
+      <!-- メタルエンブレムキャップ -->
+      <circle cx="580" cy="520" r="18" fill="url(#metalLight)"/>
+    </g>
+
+    <!-- === LINK 3 (上腕 / Forearm) === -->
+    <g filter="url(#shadow)">
+      <path d="M 590,505 C 585,485 530,370 515,345 L 485,355 C 505,385 560,510 565,530 Z" fill="url(#whiteLink)" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <!-- J5 (前腕ロール) 分割スリット -->
+      <path d="M 547,440 C 538,425 528,410 523,400" stroke="#475569" stroke-width="3" fill="none" opacity="0.6"/>
+      <!-- J5用ネオンイルミネーションリング -->
+      <ellipse cx="538" cy="425" rx="16" ry="7" fill="none" stroke="#00f0ff" stroke-width="2.5" transform="rotate(58, 538, 425)" filter="url(#glow)"/>
+    </g>
+
+    <!-- === J6 (手首ピッチジョイント / Wrist Joint) === -->
+    <g filter="url(#shadow)">
+      <circle cx="500" cy="340" r="22" fill="url(#metalDark)" stroke="#334155" stroke-width="1"/>
+      <circle cx="500" cy="340" r="15" fill="url(#metalLight)"/>
+    </g>
+
+    <!-- === LINK 4 & J7 (手先旋回部 / Wrist Flange) === -->
+    <g filter="url(#shadow)">
+      <!-- 手首延長部リンク -->
+      <path d="M 510,345 L 550,285 L 570,295 L 530,355 Z" fill="url(#whiteLink)" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <!-- J7 フランジ (ディスク状パーツ) -->
+      <g transform="translate(560, 270) rotate(-45)">
+        <ellipse cx="0" cy="0" rx="16" ry="7" fill="url(#metalDark)" stroke="#334155" stroke-width="1"/>
+        <ellipse cx="0" cy="-3" rx="16" ry="7" fill="url(#metalLight)"/>
+        <!-- フランジ底面の結合ライン -->
+        <ellipse cx="0" cy="-3" rx="12" ry="5" fill="none" stroke="#00f0ff" stroke-width="1.5" opacity="0.7"/>
+      </g>
+    </g>
+
+    <!-- === END EFFECTOR (手先ツール / グリッパー) === -->
+    <g filter="url(#shadow)">
+      <!-- ツールベース -->
+      <path d="M 552,278 L 578,252 L 590,265 L 564,291 Z" fill="url(#metalDark)"/>
+      
+      <!-- 爪A (上側フィンガー) -->
+      <path d="M 578,252 C 585,240 600,230 615,225 C 605,235 595,245 590,265 Z" fill="url(#whiteLink)" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <!-- 爪B (下側フィンガー) -->
+      <path d="M 567,262 C 580,265 598,260 610,250 C 598,252 585,250 577,272 Z" fill="url(#whiteLink)" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <!-- 把持されているオブジェクト (エネルギーコア風のグラフィック) -->
+      <g transform="translate(620, 235)">
+        <!-- 外部グローコア -->
+        <circle cx="0" cy="0" r="18" fill="#00f0ff" opacity="0.8" filter="url(#strongGlow)"/>
+        <circle cx="0" cy="0" r="10" fill="#ffffff" filter="url(#glow)"/>
+        
+        <!-- コアを巡るテックアーク (稲妻) -->
+        <path d="M -12,-5 Q -5,-15 5,-12 Q 15,-5 12,8" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.9"/>
+        <path d="M -8,10 Q 5,12 8,-5 Q 12,-15 -2,-12" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.7"/>
+        
+        <text x="0" y="32" fill="#00f0ff" font-family="Outfit, sans-serif" font-size="9" text-anchor="middle" font-weight="700" letter-spacing="1" filter="url(#glow)">TCP: ACTIVE</text>
+      </g>
+    </g>
+
+    <!-- ==================== 各軸の回転矢印 (J1 - J7) ==================== -->
+    <g>
+      <!-- J1 (Base Yaw): ベース周辺の水平旋回 -->
+      <path d="M 330,730 A 120,48 0 0,0 570,730" fill="none" stroke="#00f0ff" stroke-width="3" marker-end="url(#arrow)" filter="url(#glow)"/>
+      <path d="M 570,730 A 120,48 0 0,0 330,730" fill="none" stroke="#00f0ff" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+
+      <!-- J2 (Shoulder Pitch): 肩ドラムに沿った縦起伏 -->
+      <path d="M 370,610 A 50,50 0 0,1 410,575" fill="none" stroke="#00f0ff" stroke-width="3" marker-end="url(#arrow)" filter="url(#glow)"/>
+      <circle cx="390" cy="630" r="3" fill="#00f0ff" filter="url(#glow)"/>
+
+      <!-- J3 (Arm Roll): 上腕長手軸回りの回転 -->
+      <g transform="translate(503, 566) rotate(-38)">
+        <path d="M -30,-5 A 35,14 0 1,1 30,-5" fill="none" stroke="#00f0ff" stroke-width="3" marker-end="url(#arrow)" filter="url(#glow)"/>
+      </g>
+
+      <!-- J4 (Elbow Pitch): 肘関節の曲げ -->
+      <path d="M 535,520 A 45,45 0 0,1 580,470" fill="none" stroke="#00f0ff" stroke-width="3" marker-end="url(#arrow)" filter="url(#glow)"/>
+      <circle cx="580" cy="520" r="3" fill="#00f0ff" filter="url(#glow)"/>
+
+      <!-- J5 (Forearm Roll): 前腕長手軸回りの回転 -->
+      <g transform="translate(538, 425) rotate(58)">
+        <path d="M -26,-4 A 30,12 0 1,1 26,-4" fill="none" stroke="#00f0ff" stroke-width="3" marker-end="url(#arrow)" filter="url(#glow)"/>
+      </g>
+
+      <!-- J6 (Wrist Pitch): 手首関節の曲げ -->
+      <path d="M 465,340 A 35,35 0 0,1 500,305" fill="none" stroke="#00f0ff" stroke-width="3" marker-end="url(#arrow)" filter="url(#glow)"/>
+      <circle cx="500" cy="340" r="3" fill="#00f0ff" filter="url(#glow)"/>
+
+      <!-- J7 (Tool Roll): 手先フランジ旋回 -->
+      <g transform="translate(560, 270) rotate(-45)">
+        <path d="M -22,-3 A 25,10 0 1,1 22,-3" fill="none" stroke="#00f0ff" stroke-width="3" marker-end="url(#arrow)" filter="url(#glow)"/>
+      </g>
+    </g>
+
+    <!-- ==================== 引き出し線 & 関節ラベルバッジ (J1 - J7) ==================== -->
+    <g>
+      <!-- J1 (Base Yaw) -->
+      <path d="M 450,775 L 210,775" fill="none" stroke="#ff7a00" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.8"/>
+      <circle cx="210" cy="775" r="16" fill="url(#orangeAccent)" filter="url(#glow)"/>
+      <text x="210" y="780" fill="#ffffff" font-family="Outfit, sans-serif" font-weight="700" font-size="13" text-anchor="middle">J1</text>
+      <text x="180" y="780" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold" text-anchor="end">Base Yaw</text>
+
+      <!-- J2 (Shoulder Pitch) -->
+      <path d="M 390,630 L 190,630" fill="none" stroke="#ff7a00" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.8"/>
+      <circle cx="190" cy="630" r="16" fill="url(#orangeAccent)" filter="url(#glow)"/>
+      <text x="190" y="635" fill="#ffffff" font-family="Outfit, sans-serif" font-weight="700" font-size="13" text-anchor="middle">J2</text>
+      <text x="160" y="635" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold" text-anchor="end">Shoulder Pitch</text>
+
+      <!-- J3 (Arm Roll) -->
+      <path d="M 503,566 L 210,510" fill="none" stroke="#ff7a00" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.8"/>
+      <circle cx="210" cy="510" r="16" fill="url(#orangeAccent)" filter="url(#glow)"/>
+      <text x="210" y="515" fill="#ffffff" font-family="Outfit, sans-serif" font-weight="700" font-size="13" text-anchor="middle">J3</text>
+      <text x="180" y="515" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold" text-anchor="end">Arm Roll</text>
+
+      <!-- J4 (Elbow Pitch) -->
+      <path d="M 580,520 L 710,520" fill="none" stroke="#ff7a00" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.8"/>
+      <circle cx="710" cy="520" r="16" fill="url(#orangeAccent)" filter="url(#glow)"/>
+      <text x="710" y="525" fill="#ffffff" font-family="Outfit, sans-serif" font-weight="700" font-size="13" text-anchor="middle">J4</text>
+      <text x="740" y="525" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold" text-anchor="start">Elbow Pitch</text>
+
+      <!-- J5 (Wrist Roll) -->
+      <path d="M 538,425 L 210,400" fill="none" stroke="#ff7a00" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.8"/>
+      <circle cx="210" cy="400" r="16" fill="url(#orangeAccent)" filter="url(#glow)"/>
+      <text x="210" y="405" fill="#ffffff" font-family="Outfit, sans-serif" font-weight="700" font-size="13" text-anchor="middle">J5</text>
+      <text x="180" y="405" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold" text-anchor="end">Wrist Roll</text>
+
+      <!-- J6 (Wrist Pitch) -->
+      <path d="M 500,340 L 190,300" fill="none" stroke="#ff7a00" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.8"/>
+      <circle cx="190" cy="300" r="16" fill="url(#orangeAccent)" filter="url(#glow)"/>
+      <text x="190" y="305" fill="#ffffff" font-family="Outfit, sans-serif" font-weight="700" font-size="13" text-anchor="middle">J6</text>
+      <text x="160" y="305" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold" text-anchor="end">Wrist Pitch</text>
+
+      <!-- J7 (Tool Roll) -->
+      <path d="M 560,270 L 710,270" fill="none" stroke="#ff7a00" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.8"/>
+      <circle cx="710" cy="270" r="16" fill="url(#orangeAccent)" filter="url(#glow)"/>
+      <text x="710" y="275" fill="#ffffff" font-family="Outfit, sans-serif" font-weight="700" font-size="13" text-anchor="middle">J7</text>
+      <text x="740" y="275" fill="#f8fafc" font-family="Outfit, sans-serif, &quot;Hiragino Kaku Gothic Pro&quot;, Meiryo" font-size="12" font-weight="bold" text-anchor="start">Tool Roll</text>
+    </g>
+
+    <!-- 部位名称の空間バッジラベル (BASE, LINKS, HAND) -->
+    <g opacity="0.8">
+      <!-- BASE -->
+      <rect x="580" y="750" width="70" height="22" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="615" y="765" fill="#e2e8f0" font-family="Outfit, sans-serif" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="1">BASE</text>
+      <path d="M 580,761 L 520,761" stroke="#334155" stroke-width="1" stroke-dasharray="2,2" fill="none"/>
+
+      <!-- LOWER ARM -->
+      <rect x="610" y="600" width="90" height="22" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="655" y="615" fill="#e2e8f0" font-family="Outfit, sans-serif" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="1">LOWER ARM</text>
+      <path d="M 610,611 L 490,611" stroke="#334155" stroke-width="1" stroke-dasharray="2,2" fill="none"/>
+
+      <!-- UPPER ARM -->
+      <rect x="620" y="420" width="90" height="22" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="665" y="435" fill="#e2e8f0" font-family="Outfit, sans-serif" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="1">UPPER ARM</text>
+      <path d="M 620,431 L 550,431" stroke="#334155" stroke-width="1" stroke-dasharray="2,2" fill="none"/>
+
+      <!-- HAND / TOOL -->
+      <rect x="630" y="295" width="80" height="22" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="670" y="310" fill="#e2e8f0" font-family="Outfit, sans-serif" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="1">HAND / TOOL</text>
+      <path d="M 630,306 L 560,306" stroke="#334155" stroke-width="1" stroke-dasharray="2,2" fill="none"/>
+    </g>
+  </g>
+</svg>

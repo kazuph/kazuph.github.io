@@ -1,0 +1,433 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Google Font Import -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap');
+      
+      text {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      }
+      .mono {
+        font-family: 'JetBrains Mono', monospace;
+      }
+      
+      /* Animation / Glow effects */
+      .pulse-cyan {
+        animation: pulse-c 3s infinite alternate;
+      }
+      .pulse-purple {
+        animation: pulse-p 3s infinite alternate;
+      }
+      
+      @keyframes pulse-c {
+        0% { opacity: 0.3; }
+        100% { opacity: 0.8; }
+      }
+      @keyframes pulse-p {
+        0% { opacity: 0.4; }
+        100% { opacity: 0.9; }
+      }
+    </style>
+
+    <!-- Background grid pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1.5" fill="#38bdf8" opacity="0.05" />
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#38bdf8" stroke-width="0.5" opacity="0.02" />
+    </pattern>
+
+    <!-- Glowing Filters -->
+    <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="glow-orange" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <!-- Linear Gradients for Node Borders & Highlights -->
+    <linearGradient id="grad-cyan-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    
+    <linearGradient id="grad-indigo-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    
+    <linearGradient id="grad-orange-rose" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+
+    <!-- Glass Fill Gradients -->
+    <linearGradient id="glass-fill-1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#111625" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0b0e17" stop-opacity="0.95" />
+    </linearGradient>
+    
+    <linearGradient id="glass-fill-node" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#171e30" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#0e1320" stop-opacity="0.95" />
+    </linearGradient>
+    
+    <!-- Arrowhead markers -->
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#06b6d4" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#a855f7" />
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ec4899" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#3b82f6" />
+    </marker>
+  </defs>
+
+  <!-- Main Background -->
+  <rect width="100%" height="100%" fill="#080b11" />
+  
+  <!-- Subtle colorful background glowing orbs -->
+  <circle cx="100" cy="150" r="300" fill="#06b6d4" opacity="0.03" filter="blur(80px)" />
+  <circle cx="1100" cy="450" r="350" fill="#a855f7" opacity="0.04" filter="blur(100px)" />
+  <circle cx="500" cy="800" r="250" fill="#ec4899" opacity="0.03" filter="blur(80px)" />
+
+  <!-- Grid Overlay -->
+  <rect width="100%" height="100%" fill="url(#grid)" />
+
+  <!-- Header Area -->
+  <g transform="translate(0, 0)">
+    <text x="600" y="65" text-anchor="middle" font-size="30" font-weight="800" fill="#ffffff" letter-spacing="3">RAG PIPELINE ARCHITECTURE</text>
+    <text x="600" y="95" text-anchor="middle" font-size="15" font-weight="500" fill="#64748b" letter-spacing="1">Retrieval-Augmented Generation System Design</text>
+    <rect x="400" y="115" width="400" height="2" rx="1" fill="url(#grad-indigo-purple)" opacity="0.8" />
+  </g>
+
+  <!-- SWIMLANES -->
+  
+  <!-- Lane 1: Offline Ingestion -->
+  <g>
+    <rect x="60" y="150" width="1080" height="220" rx="20" fill="url(#glass-fill-1)" stroke="rgba(255, 255, 255, 0.04)" stroke-width="1.5" />
+    <circle cx="95" cy="185" r="5" fill="#10b981" class="pulse-cyan" filter="url(#glow-cyan)" />
+    <text x="115" y="190" font-size="13" font-weight="700" fill="#10b981" letter-spacing="1.5">OFFLINE PIPELINE: DOCUMENT INGESTION</text>
+    <text x="1120" y="190" text-anchor="end" font-size="12" font-weight="500" fill="#475569">PRE-PROCESSING AND INDEXING</text>
+  </g>
+
+  <!-- Lane 2: Online Query & Generation -->
+  <g>
+    <rect x="60" y="390" width="1080" height="380" rx="20" fill="url(#glass-fill-1)" stroke="rgba(255, 255, 255, 0.04)" stroke-width="1.5" />
+    <circle cx="95" cy="425" r="5" fill="#3b82f6" class="pulse-cyan" filter="url(#glow-cyan)" />
+    <text x="115" y="430" font-size="13" font-weight="700" fill="#3b82f6" letter-spacing="1.5">ONLINE PIPELINE: REAL-TIME INFERENCE</text>
+    <text x="1120" y="430" text-anchor="end" font-size="12" font-weight="500" fill="#475569">RETRIEVAL AND GENERATION LOOP</text>
+  </g>
+
+  <!-- NODES: OFFLINE PIPELINE (LANE 1) -->
+
+  <!-- Node 1.1: Raw Documents -->
+  <g transform="translate(100, 220)">
+    <rect x="0" y="0" width="180" height="110" rx="14" fill="url(#glass-fill-node)" stroke="url(#grad-cyan-blue)" stroke-width="1.5" />
+    <rect x="-2" y="-2" width="184" height="114" rx="16" fill="none" stroke="#06b6d4" stroke-width="3" opacity="0.1" filter="url(#glow-cyan)" />
+    
+    <g transform="translate(20, 20)">
+      <path d="M 0 4 A 2 2 0 0 1 2 2 L 16 2 A 2 2 0 0 1 18 4 L 18 24 A 2 2 0 0 1 16 26 L 2 26 A 2 2 0 0 1 0 24 Z" fill="none" stroke="#06b6d4" stroke-width="1.5" />
+      <path d="M 4 -2 A 2 2 0 0 1 6 -4 L 20 -4 A 2 2 0 0 1 22 -2 L 22 18 A 2 2 0 0 1 20 20" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.7" />
+      <line x1="4" y1="8" x2="14" y2="8" stroke="#06b6d4" stroke-width="1.5" />
+      <line x1="4" y1="14" x2="14" y2="14" stroke="#06b6d4" stroke-width="1.5" />
+      <line x1="4" y1="20" x2="10" y2="20" stroke="#06b6d4" stroke-width="1.5" />
+    </g>
+    
+    <text x="20" y="70" font-size="15" font-weight="700" fill="#ffffff">Raw Documents</text>
+    <text x="20" y="90" font-size="11" font-weight="500" fill="#94a3b8">PDF, Web, TXT, APIs</text>
+  </g>
+
+  <!-- Node 1.2: Parser / Chunking -->
+  <g transform="translate(360, 220)">
+    <rect x="0" y="0" width="180" height="110" rx="14" fill="url(#glass-fill-node)" stroke="url(#grad-cyan-blue)" stroke-width="1.5" />
+    <rect x="-2" y="-2" width="184" height="114" rx="16" fill="none" stroke="#06b6d4" stroke-width="3" opacity="0.1" filter="url(#glow-cyan)" />
+    
+    <g transform="translate(20, 18)">
+      <rect x="0" y="0" width="22" height="22" rx="4" fill="none" stroke="#06b6d4" stroke-width="1.5" />
+      <line x1="0" y1="7" x2="22" y2="7" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="2,2" />
+      <line x1="0" y1="15" x2="22" y2="15" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="2,2" />
+      <path d="M 6 11 L 16 11" stroke="#ef4444" stroke-width="2" />
+      <circle cx="4" cy="11" r="2" fill="#ef4444" />
+      <circle cx="18" cy="11" r="2" fill="#ef4444" />
+    </g>
+    
+    <text x="20" y="70" font-size="15" font-weight="700" fill="#ffffff">Parser / Chunking</text>
+    <text x="20" y="90" font-size="11" font-weight="500" fill="#94a3b8">Text Splitting / Sliding</text>
+  </g>
+
+  <!-- Node 1.3: Embedding Model (Ingestion) -->
+  <g transform="translate(620, 220)">
+    <rect x="0" y="0" width="180" height="110" rx="14" fill="url(#glass-fill-node)" stroke="url(#grad-indigo-purple)" stroke-width="1.5" />
+    <rect x="-2" y="-2" width="184" height="114" rx="16" fill="none" stroke="#a855f7" stroke-width="3" opacity="0.1" filter="url(#glow-purple)" />
+    
+    <g transform="translate(20, 18)">
+      <circle cx="4" cy="11" r="3" fill="#6366f1" />
+      <circle cx="18" cy="4" r="3" fill="#a855f7" />
+      <circle cx="18" cy="18" r="3" fill="#a855f7" />
+      <line x1="4" y1="11" x2="18" y2="4" stroke="#818cf8" stroke-width="1.5" />
+      <line x1="4" y1="11" x2="18" y2="18" stroke="#818cf8" stroke-width="1.5" />
+      <path d="M 18 4 Q 11 11 18 18" fill="none" stroke="#818cf8" stroke-width="1" stroke-dasharray="1,1" />
+    </g>
+    
+    <text x="20" y="70" font-size="15" font-weight="700" fill="#ffffff">Embedding Model</text>
+    <text x="20" y="90" font-size="11" font-weight="500" fill="#94a3b8">Text to Dense Vectors</text>
+  </g>
+
+  <!-- BRIDGING NODE: VECTOR DATABASE -->
+  <g transform="translate(880, 290)">
+    <rect x="0" y="0" width="220" height="250" rx="18" fill="url(#glass-fill-node)" stroke="url(#grad-indigo-purple)" stroke-width="2" />
+    <rect x="-3" y="-3" width="226" height="256" rx="21" fill="none" stroke="#a855f7" stroke-width="4" opacity="0.15" filter="url(#glow-purple)" />
+    
+    <!-- 3D Vector Database Cylinder Illustration -->
+    <g transform="translate(110, 80)">
+      <ellipse cx="0" cy="40" rx="45" ry="18" fill="#1e1b4b" opacity="0.8" stroke="#6366f1" stroke-width="1.5" />
+      <path d="M -45 0 L -45 40 A 45 18 0 0 0 45 40 L 45 0 Z" fill="url(#glass-fill-1)" stroke="#6366f1" stroke-width="1.5" />
+      
+      <ellipse cx="0" cy="18" rx="45" ry="18" fill="#1e1b4b" opacity="0.8" stroke="#818cf8" stroke-width="1" />
+      <path d="M -45 -20 L -45 18 A 45 18 0 0 0 45 18 L 45 -20 Z" fill="url(#glass-fill-1)" stroke="#818cf8" stroke-width="1.5" opacity="0.8" />
+      
+      <ellipse cx="0" cy="-20" rx="45" ry="18" fill="#312e81" stroke="#a855f7" stroke-width="2" />
+      
+      <circle cx="-15" cy="-22" r="3" fill="#06b6d4" filter="url(#glow-cyan)" />
+      <circle cx="15" cy="-15" r="2.5" fill="#fbbf24" />
+      <circle cx="0" cy="-25" r="2" fill="#ec4899" />
+      <line x1="-15" y1="-22" x2="0" y2="-25" stroke="rgba(255,255,255,0.4)" stroke-width="0.75" />
+      <line x1="0" y1="-25" x2="15" y2="-15" stroke="rgba(255,255,255,0.4)" stroke-width="0.75" />
+      
+      <line x1="-30" y1="12" x2="30" y2="12" stroke="#a855f7" stroke-width="1.5" opacity="0.6" />
+      <line x1="-30" y1="32" x2="30" y2="32" stroke="#6366f1" stroke-width="1.5" opacity="0.6" />
+    </g>
+    
+    <text x="110" y="180" text-anchor="middle" font-size="16" font-weight="800" fill="#ffffff" letter-spacing="0.5">Vector Database</text>
+    <text x="110" y="202" text-anchor="middle" font-size="11" font-weight="600" fill="#c084fc" class="mono">INDEXED VECTOR SPACE</text>
+    <text x="110" y="222" text-anchor="middle" font-size="11" font-weight="500" fill="#94a3b8">Pinecone, Qdrant, Milvus</text>
+  </g>
+
+  <!-- NODES: ONLINE PIPELINE (LANE 2) -->
+
+  <!-- Node 2.1: User Application Interface -->
+  <g transform="translate(100, 450)">
+    <rect x="0" y="0" width="200" height="300" rx="18" fill="url(#glass-fill-node)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
+    
+    <circle cx="20" cy="20" r="4.5" fill="#ef4444" />
+    <circle cx="34" cy="20" r="4.5" fill="#f59e0b" />
+    <circle cx="48" cy="20" r="4.5" fill="#10b981" />
+    <text x="185" y="23" text-anchor="end" font-size="10" font-weight="700" fill="#475569" class="mono">UI CLIENT</text>
+
+    <!-- Block 1: User Query Box -->
+    <g transform="translate(15, 35)">
+      <rect x="0" y="0" width="170" height="100" rx="10" fill="#0d111a" stroke="url(#grad-cyan-blue)" stroke-width="1" />
+      <rect x="12" y="10" width="75" height="18" rx="4" fill="rgba(6, 182, 212, 0.15)" />
+      <text x="20" y="22" font-size="9" font-weight="700" fill="#06b6d4" letter-spacing="0.5">USER QUERY</text>
+      <text x="12" y="48" font-size="12" font-weight="600" fill="#ffffff">How does RAG</text>
+      <text x="12" y="66" font-size="12" font-weight="600" fill="#ffffff">improve LLMs?</text>
+      <text x="12" y="86" font-size="9" font-weight="500" fill="#64748b" class="mono">&gt; Entering prompt...</text>
+    </g>
+
+    <!-- Block 2: Generated Response Box -->
+    <g transform="translate(15, 150)">
+      <rect x="0" y="0" width="170" height="135" rx="10" fill="#0d111a" stroke="url(#grad-orange-rose)" stroke-width="1" />
+      <rect x="12" y="12" width="75" height="18" rx="4" fill="rgba(236, 72, 153, 0.15)" />
+      <text x="20" y="24" font-size="9" font-weight="700" fill="#ec4899" letter-spacing="0.5">RESPONSE</text>
+      
+      <text x="12" y="48" font-size="11" font-weight="500" fill="#e2e8f0">"RAG enhances LLMs</text>
+      <text x="12" y="66" font-size="11" font-weight="500" fill="#e2e8f0">by injecting real-time</text>
+      <text x="12" y="84" font-size="11" font-weight="500" fill="#e2e8f0">factual context from</text>
+      <text x="12" y="102" font-size="11" font-weight="500" fill="#e2e8f0">external databases..."</text>
+      
+      <path d="M 148 18 L 150 24 L 156 26 L 150 28 L 148 34 L 146 28 L 140 26 L 146 24 Z" fill="#ec4899" />
+      <circle cx="15" cy="122" r="2.5" fill="#10b981" class="pulse-cyan" />
+      <text x="25" y="125" font-size="9" font-weight="500" fill="#10b981" class="mono">SUCCESS 200 OK</text>
+    </g>
+  </g>
+
+  <!-- Node 2.2: Embedding Model (Query) -->
+  <g transform="translate(360, 450)">
+    <rect x="0" y="0" width="180" height="110" rx="14" fill="url(#glass-fill-node)" stroke="url(#grad-indigo-purple)" stroke-width="1.5" />
+    <rect x="-2" y="-2" width="184" height="114" rx="16" fill="none" stroke="#a855f7" stroke-width="3" opacity="0.1" filter="url(#glow-purple)" />
+    
+    <g transform="translate(20, 18)">
+      <circle cx="8" cy="8" r="6" fill="none" stroke="#6366f1" stroke-width="1.5" />
+      <line x1="13" y1="13" x2="20" y2="20" stroke="#6366f1" stroke-width="2" />
+      <circle cx="18" cy="4" r="1.5" fill="#a855f7" />
+      <circle cx="21" cy="9" r="1.5" fill="#a855f7" />
+    </g>
+    
+    <text x="20" y="70" font-size="15" font-weight="700" fill="#ffffff">Embedding Model</text>
+    <text x="20" y="90" font-size="11" font-weight="500" fill="#94a3b8">Query Vectorization</text>
+  </g>
+
+  <!-- Node 2.3: Prompt Builder -->
+  <g transform="translate(620, 450)">
+    <rect x="0" y="0" width="180" height="110" rx="14" fill="url(#glass-fill-node)" stroke="url(#grad-orange-rose)" stroke-width="1.5" />
+    <rect x="-2" y="-2" width="184" height="114" rx="16" fill="none" stroke="#ec4899" stroke-width="3" opacity="0.1" filter="url(#glow-orange)" />
+    
+    <g transform="translate(20, 18)">
+      <path d="M 4 2 Q 1 2 1 6 Q 1 9 4 9 C 6 9 6 11 4 11 Q 1 11 1 14 Q 1 18 4 18" fill="none" stroke="#f97316" stroke-width="2" />
+      <path d="M 14 2 Q 17 2 17 6 Q 17 9 14 9 C 12 9 12 11 14 11 Q 17 11 17 14 Q 17 18 14 18" fill="none" stroke="#f97316" stroke-width="2" />
+      <line x1="8" y1="5" x2="10" y2="5" stroke="#ec4899" stroke-width="1.5" />
+      <line x1="8" y1="10" x2="10" y2="10" stroke="#ec4899" stroke-width="1.5" />
+      <line x1="8" y1="15" x2="10" y2="15" stroke="#ec4899" stroke-width="1.5" />
+    </g>
+    
+    <text x="20" y="70" font-size="15" font-weight="700" fill="#ffffff">Prompt Builder</text>
+    <text x="20" y="90" font-size="11" font-weight="500" fill="#94a3b8">Context Synthesis</text>
+  </g>
+
+  <!-- Node 2.4: LLM Generator -->
+  <g transform="translate(880, 580)">
+    <rect x="0" y="0" width="220" height="140" rx="16" fill="url(#glass-fill-node)" stroke="url(#grad-orange-rose)" stroke-width="2" />
+    <rect x="-3" y="-3" width="226" height="146" rx="19" fill="none" stroke="#ec4899" stroke-width="4" opacity="0.15" filter="url(#glow-orange)" />
+    
+    <g transform="translate(20, 20)">
+      <rect x="0" y="0" width="28" height="28" rx="6" fill="none" stroke="#f97316" stroke-width="2" />
+      <path d="M 6 14 C 6 10, 10 6, 14 6 C 18 6, 22 10, 22 14 C 22 18, 18 22, 14 22 C 10 22, 6 18, 6 14 Z" fill="none" stroke="#ec4899" stroke-width="1.5" />
+      <line x1="-4" y1="14" x2="0" y2="14" stroke="#f97316" stroke-width="1.5" />
+      <line x1="28" y1="14" x2="32" y2="14" stroke="#f97316" stroke-width="1.5" />
+      <line x1="14" y1="-4" x2="14" y2="0" stroke="#f97316" stroke-width="1.5" />
+      <line x1="14" y1="28" x2="14" y2="32" stroke="#f97316" stroke-width="1.5" />
+    </g>
+    
+    <text x="20" y="75" font-size="16" font-weight="800" fill="#ffffff" letter-spacing="0.5">LLM Generator</text>
+    <text x="20" y="97" font-size="11" font-weight="600" fill="#f43f5e" class="mono">GENERATIVE REASONING</text>
+    <text x="20" y="117" font-size="11" font-weight="500" fill="#94a3b8">Claude, GPT, Gemini</text>
+  </g>
+
+  <!-- FLOW ARROWS & GLOWING PIPES -->
+  
+  <!-- OFFLINE FLOWS -->
+  <!-- 1. Raw Docs -> Parser -->
+  <g>
+    <path d="M 280 275 L 360 275" stroke="#06b6d4" stroke-width="5" opacity="0.1" filter="url(#glow-cyan)" fill="none" />
+    <path d="M 280 275 L 360 275" stroke="url(#grad-cyan-blue)" stroke-width="2" fill="none" marker-end="url(#arrow-cyan)" />
+  </g>
+
+  <!-- 2. Parser -> Ingestion Embedding -->
+  <g>
+    <path d="M 540 275 L 620 275" stroke="#06b6d4" stroke-width="5" opacity="0.1" filter="url(#glow-cyan)" fill="none" />
+    <path d="M 540 275 L 620 275" stroke="url(#grad-cyan-blue)" stroke-width="2" fill="none" marker-end="url(#arrow-cyan)" />
+  </g>
+
+  <!-- 3. Ingestion Embedding -> Vector DB -->
+  <g>
+    <path d="M 800 275 C 840 275, 840 350, 880 350" stroke="#a855f7" stroke-width="5" opacity="0.1" filter="url(#glow-purple)" fill="none" />
+    <path d="M 800 275 C 840 275, 840 350, 880 350" stroke="url(#grad-indigo-purple)" stroke-width="2" fill="none" marker-end="url(#arrow-purple)" />
+  </g>
+
+  <!-- ONLINE FLOWS -->
+  <!-- 4. User Query -> Query Embedding -->
+  <g>
+    <path d="M 285 535 C 320 535, 320 505, 360 505" stroke="#3b82f6" stroke-width="5" opacity="0.1" filter="url(#glow-cyan)" fill="none" />
+    <path d="M 285 535 C 320 535, 320 505, 360 505" stroke="url(#grad-cyan-blue)" stroke-width="2" fill="none" marker-end="url(#arrow-blue)" />
+  </g>
+
+  <!-- 5. User Query Bypass -> Prompt Builder -->
+  <g>
+    <path d="M 285 535 C 340 620, 560 620, 620 520" stroke="#3b82f6" stroke-width="5" opacity="0.1" filter="url(#glow-cyan)" fill="none" />
+    <path d="M 285 535 C 340 620, 560 620, 620 520" stroke="url(#grad-cyan-blue)" stroke-width="2" fill="none" marker-end="url(#arrow-blue)" />
+  </g>
+
+  <!-- 6. Query Embedding -> Vector DB -->
+  <g>
+    <path d="M 540 505 C 600 415, 800 415, 880 430" stroke="#a855f7" stroke-width="5" opacity="0.1" filter="url(#glow-purple)" fill="none" />
+    <path d="M 540 505 C 600 415, 800 415, 880 430" stroke="url(#grad-indigo-purple)" stroke-width="2" fill="none" marker-end="url(#arrow-purple)" />
+  </g>
+
+  <!-- 7. Vector DB -> Prompt Builder -->
+  <g>
+    <path d="M 880 490 C 845 490, 845 505, 800 505" stroke="#a855f7" stroke-width="5" opacity="0.1" filter="url(#glow-purple)" fill="none" />
+    <path d="M 880 490 C 845 490, 845 505, 800 505" stroke="url(#grad-indigo-purple)" stroke-width="2" fill="none" marker-end="url(#arrow-purple)" />
+  </g>
+
+  <!-- 8. Prompt Builder -> LLM Generator -->
+  <g>
+    <path d="M 800 505 C 840 505, 840 650, 880 650" stroke="#ec4899" stroke-width="5" opacity="0.1" filter="url(#glow-orange)" fill="none" />
+    <path d="M 800 505 C 840 505, 840 650, 880 650" stroke="url(#grad-orange-rose)" stroke-width="2" fill="none" marker-end="url(#arrow-orange)" />
+  </g>
+
+  <!-- 9. LLM Generator -> User Response Box -->
+  <g>
+    <path d="M 880 680 L 285 670" stroke="#ec4899" stroke-width="5" opacity="0.1" filter="url(#glow-orange)" fill="none" />
+    <path d="M 880 680 L 285 670" stroke="url(#grad-orange-rose)" stroke-width="2" fill="none" marker-end="url(#arrow-orange)" />
+  </g>
+
+  <!-- FLOW LABELS (GLASS STYLE) -->
+  
+  <!-- 1. DOC STREAM -->
+  <g transform="translate(320, 275)">
+    <rect x="-45" y="-10" width="90" height="20" rx="5" fill="#0b0f19" stroke="#06b6d4" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#06b6d4" class="mono">DOC STREAM</text>
+  </g>
+
+  <!-- 2. TEXT CHUNKS -->
+  <g transform="translate(580, 275)">
+    <rect x="-45" y="-10" width="90" height="20" rx="5" fill="#0b0f19" stroke="#06b6d4" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#06b6d4" class="mono">TEXT CHUNKS</text>
+  </g>
+
+  <!-- 3. EMBEDDINGS -->
+  <g transform="translate(840, 312)">
+    <rect x="-45" y="-10" width="90" height="20" rx="5" fill="#0b0f19" stroke="#a855f7" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#c084fc" class="mono">EMBEDDINGS</text>
+  </g>
+
+  <!-- 4. USER QUERY -->
+  <g transform="translate(322, 520)">
+    <rect x="-40" y="-10" width="80" height="20" rx="5" fill="#0b0f19" stroke="#3b82f6" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#60a5fa" class="mono">INPUT QUERY</text>
+  </g>
+
+  <!-- 5. RAW QUERY -->
+  <g transform="translate(452, 605)">
+    <rect x="-45" y="-10" width="90" height="20" rx="5" fill="#0b0f19" stroke="#3b82f6" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#60a5fa" class="mono">RAW QUERY</text>
+  </g>
+
+  <!-- 6. QUERY VECTOR -->
+  <g transform="translate(710, 425)">
+    <rect x="-50" y="-10" width="100" height="20" rx="5" fill="#0b0f19" stroke="#a855f7" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#c084fc" class="mono">QUERY VECTOR</text>
+  </g>
+
+  <!-- 7. RETRIEVED CONTEXT -->
+  <g transform="translate(840, 497)">
+    <rect x="-65" y="-10" width="130" height="20" rx="5" fill="#0b0f19" stroke="#a855f7" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#c084fc" class="mono">RETRIEVED CONTEXT</text>
+  </g>
+
+  <!-- 8. ENRICHED PROMPT -->
+  <g transform="translate(840, 577)">
+    <rect x="-60" y="-10" width="120" height="20" rx="5" fill="#0b0f19" stroke="#f97316" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#fdba74" class="mono">ENRICHED PROMPT</text>
+  </g>
+
+  <!-- 9. GENERATED RESPONSE -->
+  <g transform="translate(582, 675)">
+    <rect x="-70" y="-10" width="140" height="20" rx="5" fill="#0b0f19" stroke="#ec4899" stroke-width="1" opacity="0.95" />
+    <text x="0" y="4" text-anchor="middle" font-size="9" font-weight="700" fill="#f472b6" class="mono">GENERATED RESPONSE</text>
+  </g>
+
+  <!-- SYSTEM LEGEND PANEL -->
+  <g transform="translate(60, 785)">
+    <rect x="0" y="0" width="1080" height="65" rx="14" fill="url(#glass-fill-node)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2" />
+    
+    <circle cx="30" cy="32" r="5" fill="#06b6d4" />
+    <text x="45" y="36" font-size="12" font-weight="700" fill="#ffffff">Document Ingestion (Offline)</text>
+    <text x="245" y="36" font-size="11" font-weight="500" fill="#64748b">Parses, chunks, and creates vectors for static documents to build knowledge index.</text>
+    
+    <line x1="680" y1="15" x2="680" y2="50" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+    
+    <circle cx="710" cy="32" r="5" fill="#ec4899" />
+    <text x="725" y="36" font-size="12" font-weight="700" fill="#ffffff">RAG Generation (Online)</text>
+    <text x="895" y="36" font-size="11" font-weight="500" fill="#64748b">Retrieves semantic chunks in real-time to ground LLM context.</text>
+  </g>
+</svg>

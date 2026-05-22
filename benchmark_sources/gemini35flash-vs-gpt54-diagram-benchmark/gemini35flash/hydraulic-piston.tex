@@ -1,0 +1,113 @@
+\documentclass[tikz,border=15pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{patterns,arrows.meta,calc}
+\usepackage{xeCJK}
+
+\definecolor{highfluid}{HTML}{FFE3E3}
+\definecolor{highfluidarrow}{HTML}{FF4D4D}
+\definecolor{lowfluid}{HTML}{E7F5FF}
+\definecolor{lowfluidarrow}{HTML}{339AF0}
+\definecolor{metalwall}{HTML}{D8DEE9}
+\definecolor{metalborder}{HTML}{4C566A}
+\definecolor{pistoncolor}{HTML}{ECEFF4}
+\definecolor{rodcolor}{HTML}{E5E9F0}
+\definecolor{sealcolor}{HTML}{D08770}
+\definecolor{arrowgreen}{HTML}{A3BE8C}
+\definecolor{labelbg}{HTML}{FFFFFF}
+
+\begin{document}
+\begin{tikzpicture}[
+    >=Stealth,
+    font=\sffamily,
+    labelbox/.style={draw=metalborder, fill=labelbg, rounded corners=3pt, font=\sffamily\small, inner sep=4pt, line width=0.6pt},
+    leader/.style={draw=metalborder!70, line width=0.8pt, -{Circle[scale=0.8]}}
+]
+
+    \fill[highfluid] (-5, -2) rectangle (-0.8, 2);
+    \fill[highfluid] (-4.2, 2) rectangle (-3.8, 3.2);
+
+    \fill[lowfluid] (0.8, -2) rectangle (5, 2);
+    \fill[lowfluid] (3.8, 2) rectangle (4.2, 3.2);
+
+    \shade[left color=pistoncolor!80!black, right color=pistoncolor, draw=metalborder, line width=1pt, rounded corners=1pt] (-0.8, -1.98) rectangle (0.8, 1.98);
+
+    \fill[sealcolor] (-0.3, 1.6) rectangle (0.3, 1.98);
+    \fill[sealcolor] (-0.3, -1.98) rectangle (0.3, -1.6);
+    \draw[metalborder, line width=0.5pt] (-0.3, 1.6) rectangle (0.3, 1.98);
+    \draw[metalborder, line width=0.5pt] (-0.3, -1.98) rectangle (0.3, -1.6);
+
+    \shade[top color=rodcolor!90!black, bottom color=rodcolor!60!black, draw=metalborder, line width=1pt] (0.8, -0.6) rectangle (8, 0.6);
+
+    \shade[left color=metalwall!80!black, right color=metalwall, draw=metalborder, line width=1pt] (-5.5, -2.5) rectangle (-5, 2.5);
+
+    \shade[top color=metalwall!80!black, bottom color=metalwall, draw=metalborder, line width=1pt] (5, 0.6) rectangle (5.5, 2.5);
+    \shade[top color=metalwall, bottom color=metalwall!80!black, draw=metalborder, line width=1pt] (5, -2.5) rectangle (5.5, -0.6);
+
+    \shade[left color=metalwall, right color=metalwall!90!black, draw=metalborder, line width=1pt] (-5, 2) rectangle (-4.4, 2.5);
+    \shade[left color=metalwall, right color=metalwall, draw=metalborder, line width=1pt] (-3.6, 2) rectangle (3.6, 2.5);
+    \shade[left color=metalwall!90!black, right color=metalwall, draw=metalborder, line width=1pt] (4.4, 2) rectangle (5, 2.5);
+
+    \shade[left color=metalwall, right color=metalwall!95!black, draw=metalborder, line width=1pt] (-4.4, 2.5) rectangle (-4.2, 3.2);
+    \shade[left color=metalwall!95!black, right color=metalwall, draw=metalborder, line width=1pt] (-3.8, 2.5) rectangle (-3.6, 3.2);
+    \shade[left color=metalwall!90!black, right color=metalwall!70!black, draw=metalborder, line width=1pt] (-4.5, 3.2) rectangle (-3.5, 3.4);
+
+    \shade[left color=metalwall, right color=metalwall!95!black, draw=metalborder, line width=1pt] (3.6, 2.5) rectangle (3.8, 3.2);
+    \shade[left color=metalwall!95!black, right color=metalwall, draw=metalborder, line width=1pt] (4.2, 2.5) rectangle (4.4, 3.2);
+    \shade[left color=metalwall!90!black, right color=metalwall!70!black, draw=metalborder, line width=1pt] (3.5, 3.2) rectangle (4.5, 3.4);
+
+    \shade[left color=metalwall, right color=metalwall, draw=metalborder, line width=1pt] (-5, -2.5) rectangle (5, -2);
+
+    \fill[sealcolor] (5.15, 0.6) rectangle (5.35, 0.9);
+    \fill[sealcolor] (5.15, -0.9) rectangle (5.35, -0.6);
+    \draw[metalborder, line width=0.5pt] (5.15, 0.6) rectangle (5.35, 0.9);
+    \draw[metalborder, line width=0.5pt] (5.15, -0.9) rectangle (5.35, -0.6);
+
+    \draw[metalborder, line width=1.5pt] (-5, 2) -- (-4.2, 2);
+    \draw[metalborder, line width=1.5pt] (-3.8, 2) -- (3.8, 2);
+    \draw[metalborder, line width=1.5pt] (4.2, 2) -- (5, 2);
+    \draw[metalborder, line width=1.5pt] (-5, -2) -- (5, -2);
+
+    \draw[line width=1.5pt, highfluidarrow, -{Stealth[scale=1.2]}] (-4, 2.9) -- (-4, 2.2);
+    \draw[line width=1.2pt, highfluidarrow, -{Stealth}] (-4.6, 1.2) -- (-3.8, 1.2);
+    \draw[line width=1.2pt, highfluidarrow, -{Stealth}] (-4.6, 0) -- (-3.8, 0);
+    \draw[line width=1.2pt, highfluidarrow, -{Stealth}] (-4.6, -1.2) -- (-3.8, -1.2);
+    \draw[line width=1.2pt, highfluidarrow, -{Stealth}] (-3, 0.8) -- (-2, 0.8);
+    \draw[line width=1.2pt, highfluidarrow, -{Stealth}] (-3, -0.8) -- (-2, -0.8);
+    \draw[line width=1.2pt, highfluidarrow, -{Stealth}] (-1.8, 0) -- (-1.1, 0);
+
+    \draw[line width=1.2pt, lowfluidarrow, -{Stealth}] (1.2, 1.2) -- (2.2, 1.2);
+    \draw[line width=1.2pt, lowfluidarrow, -{Stealth}] (1.2, -1.2) -- (2.2, -1.2);
+    \draw[line width=1.2pt, lowfluidarrow, -{Stealth}] (2.8, 1.2) -- (3.6, 1.2);
+    \draw[line width=1.2pt, lowfluidarrow, -{Stealth}] (2.8, -1.2) -- (3.6, -1.2);
+    \draw[line width=1.5pt, lowfluidarrow, -{Stealth[scale=1.2]}] (4, 2.2) -- (4, 2.9);
+
+    \draw[line width=3.5pt, arrowgreen, -{Stealth[scale=1.4]}] (6, 1.1) -- (7.2, 1.1) node[midway, above, font=\sffamily\bfseries\small, text=metalborder] {移動方向};
+
+    \draw[draw=metalborder!40, dashed, line width=0.8pt] (-4.8, -2) -- (-4.8, 2);
+    \draw[draw=metalborder!40, dashed, line width=0.8pt] (4.8, -2) -- (4.8, 2);
+    \draw[<->, >=Stealth, draw=metalborder!80, line width=0.8pt] (-4.8, -3.0) -- (4.8, -3.0) node[midway, fill=white, font=\sffamily\small] {ストローク (行程)};
+
+    \node[labelbox] (L1) at (-5, 4.3) {給油ポート (高圧側)};
+    \node[labelbox] (L2) at (-2.2, 4.3) {ピストンシール};
+    \node[labelbox] (L3) at (0.8, 4.3) {シリンダーチューブ};
+    \node[labelbox] (L4) at (3.2, 4.3) {ロッドシール};
+    \node[labelbox] (L5) at (5.8, 4.3) {排油ポート (低圧側)};
+
+    \node[labelbox] (B1) at (-4, -4.3) {ヘッド側圧力室 (高圧)};
+    \node[labelbox] (B2) at (-1.2, -4.3) {ピストン};
+    \node[labelbox] (B3) at (1.6, -4.3) {ロッド側圧力室 (低圧)};
+    \node[labelbox] (B4) at (4.4, -4.3) {ピストンロッド};
+
+    \draw[leader] (L1.south) -- (-4, 2.6);
+    \draw[leader] (L2.south) -- (0, 1.8);
+    \draw[leader] (L3.south) -- (1.5, 2.25);
+    \draw[leader] (L4.south) -- (5.2, 0.75);
+    \draw[leader] (L5.south) -- (4, 2.6);
+
+    \draw[leader] (B1.north) -- (-2.8, -1.0);
+    \draw[leader] (B2.north) -- (-0.4, -0.8);
+    \draw[leader] (B3.north) -- (2.5, -1.0);
+    \draw[leader] (B4.north) -- (3.5, -0.3);
+
+\end{tikzpicture}
+\end{document}

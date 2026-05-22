@@ -29,7 +29,7 @@ layout: default
       <aside class="full-ai-notice" aria-label="Full AI article notice">
         この記事はすべてAIが執筆したものですが、ユーザーの意向を取り入れつつ、実環境で実際に検証した内容だけを掲載しています。
         <br>
-        執筆モデル: gpt-5.5
+        執筆モデル: {{ page.full_ai_model | default: "gpt-5.5" }}
       </aside>
     {% endif %}
     {{ content }}

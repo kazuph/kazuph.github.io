@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="50%" stop-color="#070a14" />
+      <stop offset="100%" stop-color="#020306" />
+    </linearGradient>
+    
+    <!-- Sphere Radial Shading for 3D depth -->
+    <radialGradient id="sphere-glow" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" stop-color="#2a334d" stop-opacity="0.15" />
+      <stop offset="70%" stop-color="#181e2e" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.4" />
+    </radialGradient>
+    
+    <!-- Glass Specular Reflection -->
+    <radialGradient id="glass-specular" cx="35%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.02" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    
+    <!-- Glow Filters for Premium Visuals -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    
+    <!-- Axis Arrowheads -->
+    <marker id="arrow-z" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#818cf8" />
+    </marker>
+    <marker id="arrow-x" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f43f5e" />
+    </marker>
+    <marker id="arrow-y" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#10b981" />
+    </marker>
+    <marker id="arrow-psi" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+  </defs>
+
+  <!-- Deep Sci-Fi Dark Background -->
+  <rect width="1200" height="900" fill="url(#bg-gradient)" />
+
+  <!-- Outer Decorative Ring -->
+  <circle cx="600" cy="450" r="301" fill="none" stroke="rgba(99, 102, 241, 0.08)" stroke-width="8" />
+  <circle cx="600" cy="450" r="300" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+
+  <!-- 3D Sphere Spherical Shading & Glass Specular Highlights -->
+  <circle cx="600" cy="450" r="300" fill="url(#sphere-glow)" />
+  <circle cx="600" cy="450" r="300" fill="url(#glass-specular)" />
+
+  <!-- Back side of Equator (Dashed to represent hidden part) -->
+  <path d="M 900 450 A 300 92.7 0 0 0 300 450" fill="none" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1.5" stroke-dasharray="5,5" />
+
+  <!-- Full Meridian Wireframe Ellipses (Thin & Dashed) -->
+  <ellipse cx="600" cy="450" rx="300" ry="142.6" transform="rotate(-80 600 450)" fill="none" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" stroke-dasharray="4,4" />
+  <ellipse cx="600" cy="450" rx="300" ry="247" transform="rotate(62 600 450)" fill="none" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" stroke-dasharray="4,4" />
+
+  <!-- Negative Semi-Axes (Dashed to indicate background) -->
+  <!-- -z axis -->
+  <line x1="600" y1="450" x2="600" y2="750" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5" stroke-dasharray="4,4" />
+  <!-- -y axis -->
+  <line x1="600" y1="450" x2="275.3" y2="391.9" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5" stroke-dasharray="4,4" />
+  <!-- -x axis -->
+  <line x1="600" y1="450" x2="787.5" y2="349.5" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5" stroke-dasharray="4,4" />
+
+  <!-- Front side of Equator (Solid to establish 3D depth) -->
+  <path d="M 300 450 A 300 92.7 0 0 0 900 450" fill="none" stroke="rgba(255, 255, 255, 0.35)" stroke-width="1.5" />
+
+  <!-- Positive Axes (Solid & Glowing) -->
+  <!-- z axis -->
+  <line x1="600" y1="450" x2="600" y2="100" stroke="#818cf8" stroke-width="3" marker-end="url(#arrow-z)" />
+  <!-- x axis -->
+  <line x1="600" y1="450" x2="412.5" y2="550.5" stroke="#f43f5e" stroke-width="3" marker-end="url(#arrow-x)" />
+  <!-- y axis -->
+  <line x1="600" y1="450" x2="924.8" y2="508.1" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-y)" />
+
+  <!-- State Vector Projections (Dashed guide lines) -->
+  <!-- Projection onto the equator plane (XY plane) -->
+  <line x1="600" y1="450" x2="829.8" y2="450" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.5" stroke-dasharray="4,4" />
+  <!-- Vertical projection from the state vector tip to the equator plane -->
+  <line x1="829.8" y1="266.7" x2="829.8" y2="450" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.5" stroke-dasharray="4,4" />
+
+  <!-- Mathematically Projected 3D Angle Arcs -->
+  <!-- phi arc (azimuthal angle, lies in the equator plane) -->
+  <path d="M 550 476.8 Q 675 490.2 700 450" fill="none" stroke="#a7f3d0" stroke-width="2" />
+  <!-- theta arc (polar angle, lies in the plane of the state vector) -->
+  <path d="M 600 373.9 Q 637 374.7 661.3 401.1" fill="none" stroke="#facc15" stroke-width="2" />
+
+  <!-- The Quantum State Vector |psi> -->
+  <line x1="600" y1="450" x2="822.0" y2="272.9" stroke="#38bdf8" stroke-width="4.5" filter="url(#glow)" marker-end="url(#arrow-psi)" />
+  <!-- Nodes at vector tip and center -->
+  <circle cx="829.8" cy="266.7" r="4" fill="#38bdf8" filter="url(#soft-glow)" />
+  <circle cx="600" cy="450" r="5" fill="#ffffff" />
+
+  <!-- Coordinate Axis Labels -->
+  <text x="600" y="70" text-anchor="middle" font-family="'Cambria Math', 'Times New Roman', Times, serif" font-style="italic" font-size="26" fill="#a5b4fc">z</text>
+  <text x="390" y="575" text-anchor="middle" font-family="'Cambria Math', 'Times New Roman', Times, serif" font-style="italic" font-size="26" fill="#fda4af">x</text>
+  <text x="945" y="515" text-anchor="middle" font-family="'Cambria Math', 'Times New Roman', Times, serif" font-style="italic" font-size="26" fill="#6ee7b7">y</text>
+
+  <!-- Basis State Labels (Classic Dirac Notation) -->
+  <!-- |0> at the North Pole -->
+  <text x="600" y="130" text-anchor="middle" font-family="'Times New Roman', Times, serif" font-size="28" fill="#ffffff" font-weight="500">|0⟩</text>
+  <!-- |1> at the South Pole -->
+  <text x="600" y="785" text-anchor="middle" font-family="'Times New Roman', Times, serif" font-size="28" fill="#ffffff" font-weight="500">|1⟩</text>
+  <!-- |+> at +x surface intersection -->
+  <text x="435" y="565" text-anchor="middle" font-family="'Times New Roman', Times, serif" font-size="24" fill="#f43f5e" font-weight="500">|+⟩</text>
+  <!-- |-> at -x surface intersection -->
+  <text x="790" y="340" text-anchor="middle" font-family="'Times New Roman', Times, serif" font-size="24" fill="rgba(255,255,255,0.6)" font-weight="500">|−⟩</text>
+  <!-- |i> at +y surface intersection -->
+  <text x="885" y="525" text-anchor="middle" font-family="'Times New Roman', Times, serif" font-size="24" fill="#10b981" font-weight="500">|i⟩</text>
+  <!-- |-i> at -y surface intersection -->
+  <text x="315" y="395" text-anchor="middle" font-family="'Times New Roman', Times, serif" font-size="24" fill="rgba(255,255,255,0.6)" font-weight="500">|−i⟩</text>
+
+  <!-- Quantum State Vector Label -->
+  <text x="860" y="245" text-anchor="middle" font-family="'Times New Roman', Times, serif" font-size="28" fill="#38bdf8" font-weight="bold">|ψ⟩</text>
+
+  <!-- Angle Symbol Labels -->
+  <!-- Polar angle theta (θ) -->
+  <text x="632" y="355" text-anchor="middle" font-family="'Cambria Math', 'Times New Roman', Times, serif" font-style="italic" font-size="22" fill="#facc15">θ</text>
+  <!-- Azimuthal angle phi (φ) -->
+  <text x="625" y="505" text-anchor="middle" font-family="'Cambria Math', 'Times New Roman', Times, serif" font-style="italic" font-size="22" fill="#a7f3d0">φ</text>
+
+  <!-- Textbook Feature Card (Top Left) -->
+  <rect x="60" y="60" width="370" height="160" rx="16" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" />
+  <text x="85" y="98" font-family="'Inter', 'Outfit', 'Helvetica Neue', sans-serif" font-weight="800" font-size="14" fill="#818cf8" letter-spacing="2">THE BLOCH SPHERE</text>
+  <text x="85" y="145" font-family="'Times New Roman', Times, serif" font-size="24" fill="#f3f4f6">|ψ⟩ = cos(θ/2)|0⟩ + e<tspan font-size="15" baseline-shift="super">iφ</tspan> sin(θ/2)|1⟩</text>
+  <text x="85" y="185" font-family="'Times New Roman', Times, serif" font-style="italic" font-size="16" fill="rgba(255,255,255,0.5)">θ ∈ [0, π],   φ ∈ [0, 2π]</text>
+
+  <!-- Textbook Legend Card (Bottom Right) -->
+  <rect x="770" y="700" width="370" height="140" rx="16" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" />
+  <text x="795" y="732" font-family="'Inter', 'Outfit', sans-serif" font-weight="800" font-size="12" fill="#818cf8" letter-spacing="1.5">STATE REPRESENTATION</text>
+  <text x="795" y="765" font-family="'Times New Roman', Times, serif" font-size="16" fill="#ffffff">|0⟩, |1⟩ : Computational Basis (Z-axis)</text>
+  <text x="795" y="795" font-family="'Times New Roman', Times, serif" font-size="16" fill="#fda4af">|+⟩, |−⟩ : Superposition Basis (X-axis)</text>
+  <text x="795" y="825" font-family="'Times New Roman', Times, serif" font-size="16" fill="#6ee7b7">|i⟩, |−i⟩ : Conjugate Basis (Y-axis)</text>
+</svg>

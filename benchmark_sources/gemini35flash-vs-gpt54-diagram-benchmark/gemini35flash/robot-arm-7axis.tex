@@ -1,0 +1,145 @@
+\documentclass[tikz,border=20pt]{standalone}
+\usepackage{xeCJK}
+\setCJKmainfont{Hiragino Kaku Gothic ProN}
+\usetikzlibrary{arrows.meta, calc, shadows, positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+    x={(-0.5cm,-0.3cm)},
+    y={(0.8cm,-0.15cm)},
+    z={(0cm,0.9cm)},
+    scale=2.0,
+    >=Stealth,
+    % Styles
+    base_style/.style={top color=gray!60, bottom color=gray!90, middle color=gray!75, draw=gray!40, thick},
+    link_bg/.style={gray!95!black, line width=16pt, line cap=round},
+    link_md/.style={blue!60!gray, line width=12pt, line cap=round},
+    link_fg/.style={white!95!blue, line width=3pt, line cap=round},
+    joint_ball/.style={circle, ball color=orange!95!yellow, minimum size=18pt},
+    joint_ball_small/.style={circle, ball color=orange!95!yellow, minimum size=13pt},
+    arrow_rot/.style={->, line width=1.5pt, red!95!black},
+    axis_line/.style={dashed, gray!75!black, line width=0.8pt},
+    label_style/.style={draw=gray!50, fill=white, rounded corners=3pt, font=\sffamily\small, inner sep=4pt, drop shadow={opacity=0.2}, align=left}
+]
+
+% Draw grid on the ground plane
+\draw[gray!15, step=1] (-2,-2) grid (6,4);
+
+% Joint Coordinates
+\coordinate (O) at (0,0,0);
+\coordinate (J1) at (0,0,0.6);
+\coordinate (J2) at (0,0,1.8);
+\coordinate (J3) at (0.6,0.25,2.65);
+\coordinate (J4) at (1.2,0.5,3.5);
+\coordinate (J5) at (2.1,0.25,3.25);
+\coordinate (J6) at (3.0,0.0,3.0);
+\coordinate (J7) at (3.5,-0.2,2.7);
+\coordinate (EE) at (3.8,-0.3,2.5);
+
+% 0. Draw soft shadows on the floor (z=0)
+\draw[fill=black!10, draw=none] plot[domain=0:360, samples=40] ({1.2*cos(\x)}, {1.2*sin(\x)}, 0);
+\draw[black!10, line width=16pt, line cap=round] (0,0,0) -- (1.2,0.5,0) -- (3.0,0,0) -- (3.8,-0.3,0);
+
+% 1. Draw Base
+\draw[base_style] plot[domain=0:360, samples=40] ({1.2*cos(\x)}, {1.2*sin(\x)}, 0) -- 
+  plot[domain=360:0, samples=40] ({1.2*cos(\x)}, {1.2*sin(\x)}, 0.3) -- cycle;
+\draw[base_style] plot[domain=0:360, samples=40] ({1.2*cos(\x)}, {1.2*sin(\x)}, 0.3);
+
+% 2. Draw all Links first (for clean layering)
+\draw[link_bg] (0,0,0.3) -- (J1);
+\draw[link_md] (0,0,0.3) -- (J1);
+\draw[link_fg] (0,0,0.3) -- (J1);
+
+\draw[link_bg] (J1) -- (J2);
+\draw[link_md] (J1) -- (J2);
+\draw[link_fg] (J1) -- (J2);
+
+\draw[link_bg] (J2) -- (J4);
+\draw[link_md] (J2) -- (J4);
+\draw[link_fg] (J2) -- (J4);
+
+\draw[link_bg] (J4) -- (J6);
+\draw[link_md] (J4) -- (J6);
+\draw[link_fg] (J4) -- (J6);
+
+\draw[link_bg, line width=12pt] (J6) -- (EE);
+\draw[link_md, line width=8pt] (J6) -- (EE);
+\draw[link_fg, line width=2pt] (J6) -- (EE);
+
+% 3. Draw Gripper Hand
+\draw[gray!95!black, line width=7pt] (EE) -- ($(EE) + (0.2,-0.05,-0.15)$);
+\draw[gray!85!black, line width=3.5pt] ($(EE) + (0.1, 0.05, -0.05)$) -- ($(EE) + (0.4, -0.05, -0.25)$);
+\draw[gray!85!black, line width=3.5pt] ($(EE) + (0.05, -0.1, -0.2)$) -- ($(EE) + (0.35, -0.2, -0.4)$);
+
+% 4. Draw Joint Balls on top
+\node[joint_ball] at (J1) {};
+\node[joint_ball] at (J2) {};
+\node[joint_ball] at (J3) {};
+\node[joint_ball] at (J4) {};
+\node[joint_ball] at (J5) {};
+\node[joint_ball_small] at (J6) {};
+\node[joint_ball_small] at (J7) {};
+
+% 5. Draw Axis Lines and Rotation Arrows
+% J1 Yaw
+\draw[axis_line] (0,0,0) -- (0,0,1.2);
+\draw[arrow_rot] plot[domain=130:310, samples=30] ({0.7*cos(\x)}, {0.7*sin(\x)}, 0.6);
+
+% J2 Pitch
+\draw[axis_line] (0,-0.8,1.8) -- (0,0.8,1.8);
+\draw[arrow_rot] plot[domain=30:210, samples=30] ({0.5*cos(\x)}, 0, {1.8 + 0.5*sin(\x)});
+
+% J3 Roll
+\draw[axis_line] ($(J3)-0.5*(1.2,0.5,1.7)$) -- ($(J3)+0.5*(1.2,0.5,1.7)$);
+\draw[arrow_rot] plot[domain=50:230, samples=30] ({0.6 + 0.45*(0.34*cos(\x) + 0.1*sin(\x))}, {0.25 + 0.45*(-0.3*cos(\x) + 0.3*sin(\x))}, {2.65 + 0.45*(-0.15*cos(\x) - 0.16*sin(\x))});
+
+% J4 Pitch
+\draw[axis_line] (1.2, -0.3, 3.5) -- (1.2, 1.3, 3.5);
+\draw[arrow_rot] plot[domain=30:210, samples=30] ({1.2 + 0.5*cos(\x)}, 0.5, {3.5 + 0.5*sin(\x)});
+
+% J5 Roll
+\draw[axis_line] ($(J5)-0.5*(1.8,-0.5,-0.5)$) -- ($(J5)+0.5*(1.8,-0.5,-0.5)$);
+\draw[arrow_rot] plot[domain=50:230, samples=30] ({2.1 + 0.4*(0.1*cos(\x) + 0.1*sin(\x))}, {0.25 + 0.4*(0.3*cos(\x) - 0.1*sin(\x))}, {3.25 + 0.4*(-0.1*cos(\x) + 0.3*sin(\x))});
+
+% J6 Pitch
+\draw[axis_line] (3.0, -0.6, 3.0) -- (3.0, 0.6, 3.0);
+\draw[arrow_rot] plot[domain=30:210, samples=30] ({3.0 + 0.4*cos(\x)}, 0.0, {3.0 + 0.4*sin(\x)});
+
+% J7 Roll
+\draw[axis_line] ($(J7)-0.5*(0.8,-0.3,-0.5)$) -- ($(J7)+0.5*(0.8,-0.3,-0.5)$);
+\draw[arrow_rot] plot[domain=50:230, samples=30] ({3.4 + 0.3*(0.1*cos(\x) + 0.1*sin(\x))}, {-0.15 + 0.3*(0.3*cos(\x) - 0.1*sin(\x))}, {2.75 + 0.3*(-0.1*cos(\x) + 0.3*sin(\x))});
+
+
+% 6. Reset to 2D screen coordinate system for perfect label alignment
+\begin{scope}[shift={(0,0)}, x=1cm, y=1cm]
+    % Left Column (X = -5.5cm)
+    \node[label_style] (L5) at (-5.5, 4.0) {\textbf{J5: 前腕ロール軸 (Forearm Roll)}\\前腕をねじる軸};
+    \node[label_style] (L7) at (-5.5, 2.0) {\textbf{J7: 手首ロール軸 (Wrist Roll)}\\手先を回転させる軸 (フランジ部)};
+    \node[label_style] (L3) at (-5.5, 0.0) {\textbf{J3: 上腕ロール軸 (Upper Arm Roll)}\\上腕をねじる軸};
+    \node[label_style] (L1) at (-5.5, -2.0) {\textbf{J1: 旋回軸 (Base Yaw)}\\ベース部を左右に旋回させる軸};
+
+    % Right Column (X = 4.5cm)
+    \node[label_style] (L4) at (4.5, 4.0) {\textbf{J4: 肘ピッチ軸 (Elbow Pitch)}\\肘を曲げ伸ばしする軸};
+    \node[label_style] (L6) at (4.5, 2.0) {\textbf{J6: 手首ピッチ軸 (Wrist Pitch)}\\手先を上下に振る軸};
+    \node[label_style] (L_EE) at (4.5, 0.0) {\textbf{手先 (End Effector)}\\グリッパ等の様々な工具を装着可能};
+    \node[label_style] (L2) at (4.5, -2.0) {\textbf{J2: 肩ピッチ軸 (Shoulder Pitch)}\\アーム全体を前後に倒す軸};
+
+    % Base Label (Bottom Center)
+    \node[label_style, fill=gray!10] (L_Base) at (0.0, -3.5) {\textbf{ベース (Base)}\\設置面に頑丈に固定される基盤部};
+
+    % Draw leader lines (No crossings, elegant distribution)
+    \draw[thick, gray!60, -{Circle[length=4pt]}] (L5.east) -- (J5);
+    \draw[thick, gray!60, -{Circle[length=4pt]}] (L7.east) -- (J7);
+    \draw[thick, gray!60, -{Circle[length=4pt]}] (L3.east) -- (J3);
+    \draw[thick, gray!60, -{Circle[length=4pt]}] (L1.east) -- (J1);
+
+    \draw[thick, gray!60, -{Circle[length=4pt]}] (L4.west) -- (J4);
+    \draw[thick, gray!60, -{Circle[length=4pt]}] (L6.west) -- (J6);
+    \draw[thick, gray!60, -{Circle[length=4pt]}] (L_EE.west) -- (EE);
+    \draw[thick, gray!60, -{Circle[length=4pt]}] (L2.west) -- (J2);
+
+    \draw[thick, gray!70, -Latex] (L_Base.north) -- (0,0,0.15);
+\end{scope}
+
+\end{tikzpicture}
+\end{document}
