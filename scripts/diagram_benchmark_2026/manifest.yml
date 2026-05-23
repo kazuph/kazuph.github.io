@@ -1,0 +1,72 @@
+confirmed_at: 2026-05-22
+models:
+  - id: gemini-35-flash
+    name: Gemini 3.5 Flash
+    runner: agy
+  - id: gpt-54
+    name: GPT-5.4
+    runner: copilot-cli
+formats:
+  - id: tikz
+    name: TikZ
+    build: xelatex -> pdftoppm -> cwebp
+  - id: matplotlib
+    name: matplotlib
+    build: python -> png -> cwebp
+  - id: svg
+    name: SVG
+    build: rsvg-convert -> png -> cwebp
+shared_checklist:
+  - 概念の表現が正確か
+  - 矢印や視線の向きが自然か
+  - 要素同士が重ならず読めるか
+  - 余白と配置バランスが崩れていないか
+  - 初見でも意味が追えるか
+cases:
+  - id: bear-plush
+    title: クマのぬいぐるみ
+    category: illustration
+    source: user-mandatory
+    prompt:
+      - かわいいクマのぬいぐるみを正面向きで描く
+      - 頭は丸く、耳は左右対称で少し大きめ
+      - 胴体は柔らかい綿入りの感じが出るように、少し横幅を持たせる
+      - 腕と脚は短めで、ぬいぐるみらしい丸みを付ける
+      - 目、鼻、口、足裏、胸のワッペンなどで質感差を出す
+      - 暖色寄りでやさしい配色にする
+  - id: elderly-living-room-tv
+    title: 独居おばあちゃんがリビングでテレビを見ている絵
+    category: illustration
+    source: user-mandatory
+  - id: vr-son-watched-by-mother
+    title: 自分の部屋でVRゴーグルで遊んでいる様子をお母さんに見られる息子
+    category: illustration
+    source: user-mandatory
+  - id: hydraulic-piston
+    title: 油圧ピストンの構造解説
+    category: mechanics
+    source: user-mandatory
+  - id: robot-arm-7axis
+    title: 7軸ロボットアームとその軸の説明
+    category: mechanics
+    source: user-mandatory
+  - id: kalman-filter
+    title: カルマンフィルターのブロック線図
+    category: control
+    source: ai-designed
+  - id: rag-pipeline
+    title: RAGパイプライン構成図
+    category: ai-systems
+    source: ai-designed
+  - id: zero-trust-token-exchange
+    title: ゼロトラスト認証とトークン交換
+    category: security
+    source: ai-designed
+  - id: bloch-sphere
+    title: ブロッホ球
+    category: math-physics
+    source: ai-designed
+  - id: michelson-interferometer
+    title: マイケルソン干渉計
+    category: physics
+    source: ai-designed

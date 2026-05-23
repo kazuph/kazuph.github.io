@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <rect width="1200" height="900" fill="#fbfaf6"/>
+  <ellipse cx="600" cy="420" rx="250" ry="250" fill="#f8fbff" stroke="#6b7280" stroke-width="5"/>
+  <ellipse cx="600" cy="420" rx="250" ry="90" fill="none" stroke="#cbd5e1" stroke-width="3"/>
+  <line x1="350" y1="420" x2="850" y2="420" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="600" y1="170" x2="600" y2="670" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="600" y1="420" x2="760" y2="280" stroke="#2563eb" stroke-width="8"/>
+  <polygon points="748,282 760,280 754,292" fill="#2563eb"/>
+  <path d="M600 420 A110 110 0 0 1 658 326" fill="none" stroke="#ef4444" stroke-width="4"/>
+  <path d="M670 418 A70 70 0 0 1 730 374" fill="none" stroke="#10b981" stroke-width="4"/>
+  <text x="606" y="198" font-size="30" fill="#1f2937">z</text>
+  <text x="822" y="408" font-size="30" fill="#1f2937">x</text>
+  <text x="724" y="250" font-size="30" fill="#1f2937">|ψ⟩</text>
+  <text x="646" y="344" font-size="28" fill="#ef4444">θ</text>
+  <text x="720" y="388" font-size="28" fill="#10b981">φ</text>
+
+</svg>

@@ -1,0 +1,181 @@
+\documentclass[tikz, border=20pt]{standalone}
+\usepackage{xcolor}
+\usepackage{xeCJK}
+\usetikzlibrary{shapes.geometric, positioning, calc, fit, backgrounds, shadows}
+
+% Set Japanese fonts for macOS compatibility
+\setCJKmainfont{Hiragino Sans}
+\setCJKsansfont{Hiragino Sans}
+
+% Define a modern, professional color palette
+\definecolor{onlineColor}{HTML}{2563EB}  % Deep Blue
+\definecolor{offlineColor}{HTML}{0D9488} % Teal
+\definecolor{llmColor}{HTML}{7C3AED}     % Royal Purple
+\definecolor{dbColor}{HTML}{EA580C}      % Amber Orange
+\definecolor{darkColor}{HTML}{0F172A}    % Slate 900
+\definecolor{textColor}{HTML}{1E293B}    % Slate 800
+\definecolor{grayColor}{HTML}{475569}    % Slate 600
+\definecolor{lightGray}{HTML}{94A3B8}    % Slate 400
+\definecolor{offlineBg}{HTML}{F0FDFA}    % Very light Teal
+\definecolor{onlineBg}{HTML}{EFF6FF}     % Very light Blue
+\definecolor{borderOffline}{HTML}{CCFBF1}% Soft Teal border
+\definecolor{borderOnline}{HTML}{DBEAFE} % Soft Blue border
+
+\begin{document}
+\renewcommand{\familydefault}{\sfdefault}
+\begin{tikzpicture}[
+    % Core Node Styles
+    baseNode/.style={
+        rectangle,
+        rounded corners=8pt,
+        minimum width=3.5cm,
+        minimum height=1.3cm,
+        draw=darkColor!90,
+        line width=1.2pt,
+        fill=white,
+        align=center,
+        font=\sffamily\small\bfseries,
+        text=textColor,
+        drop shadow={opacity=0.1, shadow xshift=2pt, shadow yshift=-2pt, fill=black!50}
+    },
+    offlineNode/.style={
+        baseNode,
+        draw=offlineColor,
+        line width=1.5pt,
+        text=offlineColor!65!black
+    },
+    onlineNode/.style={
+        baseNode,
+        draw=onlineColor,
+        line width=1.5pt,
+        text=onlineColor!65!black
+    },
+    llmNode/.style={
+        baseNode,
+        draw=llmColor,
+        line width=1.8pt,
+        text=llmColor!65!black
+    },
+    dbNode/.style={
+        cylinder,
+        cylinder uses custom fill,
+        cylinder body fill=white,
+        cylinder end fill=white,
+        shape border rotate=90,
+        minimum width=2.4cm,
+        minimum height=1.8cm,
+        draw=dbColor,
+        line width=1.8pt,
+        align=center,
+        font=\sffamily\small\bfseries,
+        text=dbColor!65!black,
+        drop shadow={opacity=0.1, shadow xshift=2pt, shadow yshift=-2pt, fill=black!50}
+    },
+    % Arrow Styles
+    flowArrow/.style={
+        ->,
+        >=stealth,
+        line width=1.6pt,
+        draw=darkColor!75
+    },
+    offlineArrow/.style={
+        flowArrow,
+        draw=offlineColor!85
+    },
+    onlineArrow/.style={
+        flowArrow,
+        draw=onlineColor!85
+    },
+    % Labels
+    labelStyle/.style={
+        font=\sffamily\scriptsize\bfseries,
+        text=grayColor,
+        fill=white,
+        inner sep=2pt,
+        rounded corners=2pt
+    }
+]
+
+% ==========================================
+% NODE PLACEMENT
+% ==========================================
+
+% --- SYSTEM TITLE ---
+\node[anchor=west, font=\sffamily\Large\bfseries, text=darkColor] (systemTitle) at (-6.8, 3.8) {Retrieval-Augmented Generation (RAG) Pipeline};
+
+% --- OFFLINE INGESTION PATHWAY ---
+\node[offlineNode] (docs) at (-5.0, 2.2) {Documents\\ \textnormal{\scriptsize (PDF, Web, Wikis)}};
+\node[offlineNode] (chunk) at (-1.5, 2.2) {Chunk \& Clean\\ \textnormal{\scriptsize (Text Splitting)}};
+\node[offlineNode] (embedDoc) at (2.0, 2.2) {Embedding Model\\ \textnormal{\scriptsize (Vectorization)}};
+
+% --- SHARED KNOWLEDGE BASE ---
+\node[dbNode] (vectorDb) at (5.5, 2.2) {Vector DB\\ \textnormal{\scriptsize (Semantic Index)}};
+
+% --- ONLINE GENERATION PATHWAY ---
+\node[onlineNode] (query) at (-5.0, -1.8) {User Query\\ \textnormal{\scriptsize (ユーザーの質問)}};
+\node[onlineNode] (embedQuery) at (-1.5, -0.4) {Embedding Model\\ \textnormal{\scriptsize (Query Vectorization)}};
+\node[onlineNode] (context) at (2.0, -1.8) {Retrieved Context\\ \textnormal{\scriptsize (関連コンテキスト)}};
+\node[llmNode] (llm) at (5.5, -1.8) {LLM (Generator)\\ \textnormal{\scriptsize (大規模言語モデル)}};
+\node[onlineNode] (answer) at (8.8, -1.8) {Answer\\ \textnormal{\scriptsize (生成された回答)}};
+
+% ==========================================
+% ARROWS & CONNECTIONS
+% ==========================================
+
+% --- Offline Flow ---
+\draw[offlineArrow] (docs) -- node[labelStyle] {1. Split} (chunk);
+\draw[offlineArrow] (chunk) -- node[labelStyle] {2. Embed} (embedDoc);
+\draw[offlineArrow] (embedDoc) -- node[labelStyle] {3. Store} (vectorDb);
+
+% --- Online Flow ---
+\draw[onlineArrow] (query) -- node[labelStyle] {A. Vectorize} (embedQuery);
+\draw[onlineArrow] (query) -- node[labelStyle] {B. Direct Flow} (context);
+\draw[onlineArrow] (embedQuery) -- node[labelStyle] {C. Search} (vectorDb);
+\draw[onlineArrow] (vectorDb) -- node[labelStyle] {D. Retrieve} (context);
+\draw[onlineArrow] (context) -- node[labelStyle] {E. Prompt} (llm);
+\draw[onlineArrow] (llm) -- node[labelStyle] {F. Generate} (answer);
+
+% ==========================================
+% BACKGROUND GROUPS & BOXES
+% ==========================================
+\begin{scope}[on background layer]
+    % Offline Ingestion Group
+    \node[
+        fill=offlineBg, 
+        draw=borderOffline, 
+        line width=1.5pt, 
+        rounded corners=12pt, 
+        fit=(docs) (chunk) (embedDoc), 
+        inner sep=18pt
+    ] (offlineGroup) {};
+    
+    % Online Generation Group
+    \node[
+        fill=onlineBg, 
+        draw=borderOnline, 
+        line width=1.5pt, 
+        rounded corners=12pt, 
+        fit=(query) (embedQuery) (context) (llm) (answer), 
+        inner sep=18pt
+    ] (onlineGroup) {};
+    
+    % Group Headers
+    \node[
+        anchor=north west, 
+        font=\sffamily\small\bfseries, 
+        text=offlineColor!80!black, 
+        yshift=-4pt, 
+        xshift=6pt
+    ] at (offlineGroup.north west) {事前の文書投入 (Offline Ingestion Pathway)};
+
+    \node[
+        anchor=south west, 
+        font=\sffamily\small\bfseries, 
+        text=onlineColor!80!black, 
+        yshift=4pt, 
+        xshift=6pt
+    ] at (onlineGroup.south west) {オンライン処理 (Online Generation Pathway)};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

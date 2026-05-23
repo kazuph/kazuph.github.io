@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <rect width="1200" height="900" fill="#fbfaf6"/>
+  <rect x="140" y="310" width="820" height="210" rx="36" fill="#e7edf3" stroke="#617587" stroke-width="8"/>
+  <rect x="300" y="340" width="220" height="150" fill="#cdd8e3" stroke="#617587" stroke-width="6"/>
+  <rect x="500" y="336" width="40" height="158" fill="#617587"/>
+  <rect x="540" y="388" width="380" height="54" rx="14" fill="#b8c7d6" stroke="#617587" stroke-width="6"/>
+  <rect x="248" y="370" width="28" height="92" rx="10" fill="#d97d5d"/>
+  <rect x="564" y="374" width="24" height="84" rx="10" fill="#d97d5d"/>
+  <polygon points="120,402 170,376 170,428" fill="#60a5fa"/>
+  <line x1="170" y1="402" x2="286" y2="402" stroke="#60a5fa" stroke-width="8"/>
+  <polygon points="980,402 930,376 930,428" fill="#f87171"/>
+  <line x1="930" y1="402" x2="828" y2="402" stroke="#f87171" stroke-width="8"/>
+  <text x="188" y="280" font-size="32" fill="#445566">Cylinder</text>
+  <text x="332" y="538" font-size="32" fill="#445566">Pressure chamber A</text>
+  <text x="610" y="538" font-size="32" fill="#445566">Pressure chamber B</text>
+  <text x="486" y="292" font-size="30" fill="#445566">Piston</text>
+  <text x="690" y="372" font-size="30" fill="#445566">Rod</text>
+
+</svg>

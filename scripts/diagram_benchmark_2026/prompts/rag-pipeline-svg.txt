@@ -1,0 +1,13 @@
+RAGパイプライン構成図 を、1200x900 の SVG で描いてください。
+
+要件:
+- RAG のパイプライン構成図を描く
+- User Query, Embed/Retrieve, Vector DB, Retrieved Context, LLM, Answer を入れる
+- オンライン処理と事前の文書投入を区別する
+- データフローを矢印で示す
+- 現代的なAIシステム図として整理する
+
+出力ルール:
+- 説明は不要
+- Markdown の code fence も不要
+- SVG 本体だけを出力する

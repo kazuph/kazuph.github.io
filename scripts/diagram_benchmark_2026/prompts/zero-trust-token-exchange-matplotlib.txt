@@ -1,0 +1,19 @@
+ゼロトラスト認証とトークン交換 を matplotlib で描く Python スクリプトを書いてください。
+
+要件:
+- ゼロトラスト認証とトークン交換の流れを描く
+- User, Browser, IdP, API Gateway, Service A, Service B を入れる
+- ID token, access token, service token の流れを区別する
+- 信頼境界を領域として表現する
+- 複雑でも読めるセキュリティ図にする
+
+実装ルール:
+- matplotlib だけを使う
+- 出力ファイルパスは sys.argv[1] から受け取る
+- 画像は 1200x900 相当で保存する
+- 軸や余計なラベルは出さない
+
+出力ルール:
+- 説明は不要
+- Markdown の code fence も不要
+- Python コード本体だけを出力する

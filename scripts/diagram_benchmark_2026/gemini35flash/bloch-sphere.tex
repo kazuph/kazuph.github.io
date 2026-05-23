@@ -1,0 +1,84 @@
+\documentclass[tikz,border=12pt]{standalone}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{arrows.meta, calc}
+
+% Define premium colors
+\definecolor{primaryBlue}{RGB}{28, 99, 242}
+\definecolor{accentRed}{RGB}{224, 36, 36}
+\definecolor{darkGray}{RGB}{55, 65, 81}
+\definecolor{lightGray}{RGB}{209, 213, 219}
+\definecolor{gridGray}{RGB}{229, 231, 235}
+
+\begin{document}
+
+% Set view angle: 75 degrees polar, 115 degrees azimuth for optimal 3D perspective
+\tdplotsetmaincoords{75}{115}
+
+\begin{tikzpicture}[tdplot_main_coords, scale=4.5, font=\sffamily]
+    % Outer boundary of the sphere (drawn in screen coordinates)
+    \draw[lightGray!80, line width=1pt, tdplot_screen_coords] (0,0) circle (1);
+
+    % Equator (xy-plane)
+    % Back half of the equator (dashed)
+    \tdplotdrawarc[dashed, lightGray, line width=0.8pt]{(0,0,0)}{1}{115}{295}{}{}
+    % Front half of the equator (solid)
+    \tdplotdrawarc[lightGray, line width=0.8pt]{(0,0,0)}{1}{295}{475}{}{}
+
+    % Prime Meridian (xz-plane)
+    \tdplotsetthetaplanecoords{0}
+    % Back half of the meridian (dashed)
+    \tdplotdrawarc[tdplot_rotated_coords, dashed, lightGray, line width=0.8pt]{(0,0,0)}{1}{115}{295}{}{}
+    % Front half of the meridian (solid)
+    \tdplotdrawarc[tdplot_rotated_coords, lightGray, line width=0.8pt]{(0,0,0)}{1}{295}{475}{}{}
+
+    % Coordinate Axes
+    % Negative axes (dashed)
+    \draw[dashed, darkGray!50, line width=0.8pt] (0,0,0) -- (-1.2,0,0);
+    \draw[dashed, darkGray!50, line width=0.8pt] (0,0,0) -- (0,-1.2,0);
+    \draw[dashed, darkGray!50, line width=0.8pt] (0,0,0) -- (0,0,-1.2);
+
+    % Positive axes (solid with arrows)
+    \draw[-{Stealth[scale=1.0]}, darkGray, line width=1pt] (0,0,0) -- (1.5,0,0) node[left, darkGray, yshift=-4pt] {$x$};
+    \draw[-{Stealth[scale=1.0]}, darkGray, line width=1pt] (0,0,0) -- (0,1.5,0) node[right, darkGray, xshift=2pt] {$y$};
+    \draw[-{Stealth[scale=1.0]}, darkGray, line width=1pt] (0,0,0) -- (0,0,1.5) node[above, darkGray] {$z$};
+
+    % Set quantum state vector coordinates
+    % theta = 55 degrees, phi = 45 degrees
+    \tdplotsetcoord{P}{1}{55}{45}
+
+    % State Vector |psi>
+    \draw[-{Stealth[scale=1.2]}, primaryBlue, line width=1.8pt] (0,0,0) -- (P) node[above right, primaryBlue, font=\bfseries\large] {$|\psi\rangle$};
+    
+    % Sphere intersection node
+    \fill[primaryBlue] (P) circle (1.5pt);
+
+    % Projections and Dashed Lines
+    % Projection of P onto xy-plane
+    \draw[dashed, primaryBlue!50, line width=0.8pt] (P) -- (Pxy);
+    \draw[dashed, primaryBlue!50, line width=0.8pt] (0,0,0) -- (Pxy);
+    \fill[primaryBlue!50] (Pxy) circle (1.2pt);
+    
+    % Projections from xy-projection to axes
+    \draw[dashed, darkGray!30, line width=0.6pt] (Pxy) -- (Px);
+    \draw[dashed, darkGray!30, line width=0.6pt] (Pxy) -- (Py);
+
+    % Polar Angle (theta)
+    % Rotate coordinate system to the state vector plane (phi = 45 degrees)
+    \tdplotsetthetaplanecoords{45}
+    \tdplotdrawarc[tdplot_rotated_coords, -{Stealth[scale=0.85]}, accentRed, line width=1pt]{(0,0,0)}{0.35}{0}{55}{anchor=south west, accentRed, font=\large}{$\theta$}
+
+    % Azimuth Angle (phi)
+    % Draw in the xy-plane (standard main coordinates)
+    \tdplotdrawarc[-{Stealth[scale=0.85]}, accentRed, line width=1pt]{(0,0,0)}{0.4}{0}{45}{anchor=north, accentRed, font=\large}{$\phi$}
+
+    % Labels for standard states (poles)
+    \node[above=4pt, darkGray, font=\large] at (0,0,1) {$|0\rangle$};
+    \node[below=4pt, darkGray, font=\large] at (0,0,-1) {$|1\rangle$};
+    \node[below left=4pt, darkGray, font=\large] at (1,0,0) {$|+\rangle$};
+    \node[above right=4pt, darkGray, font=\large] at (-1,0,0) {$|-\rangle$};
+    \node[above right=4pt, darkGray, font=\large] at (0,1,0) {$|+i\rangle$};
+    \node[left=4pt, darkGray, font=\large] at (0,-1,0) {$|-i\rangle$};
+
+\end{tikzpicture}
+
+\end{document}

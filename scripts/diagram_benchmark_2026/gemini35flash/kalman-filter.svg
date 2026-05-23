@@ -1,0 +1,469 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap');
+      
+      text {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      .main-title {
+        font-weight: 800;
+        font-size: 32px;
+        fill: #FFFFFF;
+        letter-spacing: 3px;
+      }
+      
+      .sub-title {
+        font-weight: 400;
+        font-size: 14px;
+        fill: #94A3B8;
+        letter-spacing: 1.5px;
+      }
+      
+      .stage-title {
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 2px;
+      }
+      
+      .block-label {
+        font-weight: 700;
+        font-size: 26px;
+        fill: #FFFFFF;
+      }
+      
+      .block-sub {
+        font-weight: 500;
+        font-size: 9px;
+        fill: #94A3B8;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      
+      .math-main {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        font-size: 13px;
+        fill: #F8FAFC;
+      }
+      
+      .math-sub {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 400;
+        font-size: 10px;
+        fill: #94A3B8;
+      }
+      
+      .node-title {
+        font-weight: 600;
+        font-size: 11px;
+        fill: #E2E8F0;
+        letter-spacing: 0.5px;
+      }
+      
+      .node-sub {
+        font-weight: 500;
+        font-size: 9px;
+        letter-spacing: 0.5px;
+      }
+      
+      .signal-label {
+        font-weight: 600;
+        font-size: 11px;
+        fill: #64748B;
+      }
+      
+      .plus-minus {
+        font-weight: 700;
+        font-size: 16px;
+        fill: #FFFFFF;
+      }
+      
+      .panel-bg {
+        transition: all 0.3s ease;
+      }
+      
+      .animated-flow {
+        stroke-dasharray: 8, 8;
+        animation: flow-speed 25s linear infinite;
+      }
+      
+      .animated-flow-fast {
+        stroke-dasharray: 6, 6;
+        animation: flow-speed 15s linear infinite;
+      }
+      
+      @keyframes flow-speed {
+        to {
+          stroke-dashoffset: -1000;
+        }
+      }
+      
+      .legend-text {
+        font-size: 11px;
+        font-weight: 600;
+        fill: #94A3B8;
+        letter-spacing: 0.5px;
+      }
+    </style>
+
+    <!-- Background Gradient -->
+    <radialGradient id="bg-gradient" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </radialGradient>
+
+    <!-- Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.03)" stroke-width="1" />
+      <path d="M 200 0 L 0 0 0 200" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" />
+    </pattern>
+
+    <!-- Theme Gradients -->
+    <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <linearGradient id="emerald-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <linearGradient id="purple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A78BFA" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+
+    <linearGradient id="amber-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+
+    <linearGradient id="slate-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#94A3B8" />
+      <stop offset="100%" stop-color="#475569" />
+    </linearGradient>
+
+    <!-- Neon Glow Filters -->
+    <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#0ea5e9" flood-opacity="0.5" />
+    </filter>
+    <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#10b981" flood-opacity="0.5" />
+    </filter>
+    <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#8b5cf6" flood-opacity="0.5" />
+    </filter>
+    <filter id="glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.5" />
+    </filter>
+
+    <filter id="block-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+
+    <!-- Markers for Arrows -->
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38BDF8" />
+    </marker>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#34D399" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#A78BFA" />
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#FBBF24" />
+    </marker>
+    <marker id="arrow-slate" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94A3B8" />
+    </marker>
+  </defs>
+
+  <!-- 1. Background -->
+  <rect width="1200" height="900" fill="url(#bg-gradient)" />
+  <rect width="1200" height="900" fill="url(#grid)" opacity="0.8" />
+
+  <!-- 2. Header and Title -->
+  <g transform="translate(60, 65)">
+    <text class="main-title">KALMAN FILTER BLOCK DIAGRAM</text>
+    <text class="sub-title" y="30">Discrete-Time State Estimation Space &amp; Error Covariance Control Loop</text>
+  </g>
+
+  <!-- 3. Stage Background Panels (Visual separation) -->
+  <!-- Prediction Panel -->
+  <rect class="panel-bg" x="50" y="140" width="410" height="680" rx="20" fill="rgba(15, 23, 42, 0.4)" stroke="rgba(56, 189, 248, 0.15)" stroke-width="1.5" />
+  <text class="stage-title" x="70" y="175" fill="#38BDF8">PREDICTION STAGE (TIME UPDATE)</text>
+
+  <!-- Measurement Panel -->
+  <rect class="panel-bg" x="480" y="140" width="230" height="680" rx="20" fill="rgba(15, 23, 42, 0.4)" stroke="rgba(52, 211, 153, 0.15)" stroke-width="1.5" />
+  <text class="stage-title" x="500" y="175" fill="#34D399">MEASUREMENT SYSTEM</text>
+
+  <!-- Update Panel -->
+  <rect class="panel-bg" x="730" y="140" width="420" height="680" rx="20" fill="rgba(15, 23, 42, 0.4)" stroke="rgba(167, 139, 250, 0.15)" stroke-width="1.5" />
+  <text class="stage-title" x="750" y="175" fill="#A78BFA">UPDATE STAGE (MEASUREMENT UPDATE)</text>
+
+
+  <!-- 4. Signals & Connections (Drawn first to stay under blocks) -->
+  <g>
+    <!-- STATE FLOW PATHS (Upper Loop) -->
+    <!-- u_k to B -->
+    <path d="M 86 230 L 130 230" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-cyan)" />
+    
+    <!-- B to Sum1 -->
+    <path d="M 210 230 L 242 230" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-cyan)" />
+
+    <!-- Sum1 to Prior Capsule -->
+    <path d="M 278 230 L 305 230" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-cyan)" />
+
+    <!-- Prior Capsule to Branch to Sum2 -->
+    <path d="M 395 230 L 842 230" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-cyan)" />
+
+    <!-- Branch to H -->
+    <path d="M 420 230 L 420 345 A 15 15 0 0 0 435 360 L 460 360" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-cyan)" />
+
+    <!-- H to Residual Sum -->
+    <path d="M 540 360 L 562 360" fill="none" stroke="#34D399" stroke-width="2" marker-end="url(#arrow-emerald)" />
+
+    <!-- z_k to Residual Sum -->
+    <path d="M 580 464 L 580 378" fill="none" stroke="#34D399" stroke-width="2" marker-end="url(#arrow-emerald)" />
+
+    <!-- Residual Sum to K_k -->
+    <path d="M 598 360 L 700 360" fill="none" stroke="#A78BFA" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+    <!-- K_k to Sum2 -->
+    <path d="M 800 360 L 840 360 A 20 20 0 0 0 860 340 L 860 248" fill="none" stroke="#A78BFA" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+    <!-- Sum2 to Posterior Capsule -->
+    <path d="M 878 230 L 915 230" fill="none" stroke="#FBBF24" stroke-width="2" marker-end="url(#arrow-amber)" />
+
+    <!-- Posterior Capsule to Output x_hat_k -->
+    <path d="M 1005 230 L 1084 230" fill="none" stroke="#FBBF24" stroke-width="2.5" marker-end="url(#arrow-amber)" />
+
+    <!-- STATE FEEDBACK LOOP -->
+    <!-- Branch from Output down -->
+    <path d="M 1040 230 L 1040 470 A 20 20 0 0 1 1020 490 L 540 490" fill="none" stroke="#FBBF24" stroke-width="2" />
+    <path d="M 1040 230 L 1040 470 A 20 20 0 0 1 1020 490 L 540 490" class="animated-flow" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2" />
+    
+    <!-- Delay to F -->
+    <path d="M 460 490 L 300 490" fill="none" stroke="#FBBF24" stroke-width="2" marker-end="url(#arrow-amber)" />
+    
+    <!-- F back to Sum1 (Complex bypass path) -->
+    <path d="M 220 490 L 110 490 A 20 20 0 0 1 90 470 L 90 310 A 20 20 0 0 1 110 290 L 260 290 L 260 248" fill="none" stroke="#FBBF24" stroke-width="2" marker-end="url(#arrow-amber)" />
+    <path d="M 220 490 L 110 490 A 20 20 0 0 1 90 470 L 90 310 A 20 20 0 0 1 110 290 L 260 290 L 260 248" class="animated-flow" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2" />
+
+
+    <!-- COVARIANCE FLOW PATHS (Lower System) -->
+    <!-- P_prev to Predictor -->
+    <path d="M 165 682 L 200 682" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-cyan)" />
+
+    <!-- Predictor to P_prior -->
+    <path d="M 380 682 L 410 682" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-cyan)" />
+
+    <!-- P_prior to Gain Calc -->
+    <path d="M 490 682 L 660 682" fill="none" stroke="#A78BFA" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+    <!-- P_prior Bypass to Covariance Update -->
+    <path d="M 450 660 L 450 595 A 15 15 0 0 1 465 580 L 880 580 A 15 15 0 0 1 895 595 L 895 682 L 910 682" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-cyan)" />
+
+    <!-- R to Gain Calc -->
+    <path d="M 770 546 L 770 640" fill="none" stroke="#A78BFA" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+    <!-- KALMAN GAIN INTERCONNECTION (The Core Link) -->
+    <path d="M 770 640 L 770 380" fill="none" stroke="#A78BFA" stroke-width="3" stroke-dasharray="6,4" marker-end="url(#arrow-purple)" filter="url(#glow-purple)" />
+    <path d="M 770 640 L 770 380" class="animated-flow-fast" fill="none" stroke="#FFFFFF" stroke-width="2" />
+
+    <!-- Gain K_k Branch to Covariance Update -->
+    <path d="M 770 600 L 960 600 A 15 15 0 0 1 975 615 L 975 640" fill="none" stroke="#A78BFA" stroke-width="2" marker-end="url(#arrow-purple)" />
+
+    <!-- Covariance Update to P_post -->
+    <path d="M 1065 682 L 1095 682" fill="none" stroke="#FBBF24" stroke-width="2" marker-end="url(#arrow-amber)" />
+
+    <!-- COVARIANCE FEEDBACK LOOP -->
+    <!-- P_post down and left -->
+    <path d="M 1135 704 L 1135 760 A 20 20 0 0 1 1115 780 L 620 780" fill="none" stroke="#FBBF24" stroke-width="2" />
+    <path d="M 1135 704 L 1135 760 A 20 20 0 0 1 1115 780 L 620 780" class="animated-flow" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2" />
+
+    <!-- Delay to P_prev -->
+    <path d="M 540 780 L 60 780 A 20 20 0 0 1 40 760 L 40 692 A 10 10 0 0 1 50 682 L 85 682" fill="none" stroke="#FBBF24" stroke-width="2" marker-end="url(#arrow-amber)" />
+    <path d="M 540 780 L 60 780 A 20 20 0 0 1 40 760 L 40 692 A 10 10 0 0 1 50 682 L 85 682" class="animated-flow" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2" />
+  </g>
+
+
+  <!-- 5. Node Circles & Input/Output Terminals -->
+  <g>
+    <!-- u_k Control Input -->
+    <circle cx="80" cy="230" r="6" fill="#38BDF8" filter="url(#glow-cyan)" />
+    <text class="node-title" x="80" y="210" text-anchor="middle">u<tspan baseline-shift="sub" font-size="8">k</tspan></text>
+    <text class="node-sub" x="80" y="248" fill="#38BDF8" text-anchor="middle">Control</text>
+
+    <!-- z_k Measurement Input -->
+    <circle cx="580" cy="460" r="6" fill="#34D399" filter="url(#glow-emerald)" />
+    <text class="node-title" x="580" y="493" text-anchor="middle">z<tspan baseline-shift="sub" font-size="8">k</tspan></text>
+    <text class="node-sub" x="580" y="445" fill="#34D399" text-anchor="middle">Measurement</text>
+
+    <!-- R Measurement Noise -->
+    <circle cx="770" cy="540" r="6" fill="#A78BFA" filter="url(#glow-purple)" />
+    <text class="node-title" x="770" y="520" text-anchor="middle">R</text>
+    <text class="node-sub" x="770" y="558" fill="#A78BFA" text-anchor="middle">Noise Cov.</text>
+
+    <!-- x_hat_k Output -->
+    <circle cx="1090" cy="230" r="6" fill="#FBBF24" filter="url(#glow-amber)" />
+    <text class="node-title" x="1090" y="210" text-anchor="middle">x̂<tspan baseline-shift="sub" font-size="8">k</tspan></text>
+    <text class="node-sub" x="1090" y="248" fill="#FBBF24" text-anchor="middle">Estimate</text>
+  </g>
+
+
+  <!-- 6. Math Summation Junctions -->
+  <g filter="url(#block-shadow)">
+    <!-- Sum 1 (Prediction Sum) -->
+    <circle cx="260" cy="230" r="18" fill="#1E293B" stroke="#38BDF8" stroke-width="2" />
+    <text x="260" y="235" fill="#FFFFFF" font-size="16" font-weight="bold" text-anchor="middle">Σ</text>
+    <text class="plus-minus" x="232" y="225">+</text>
+    <text class="plus-minus" x="255" y="258" text-anchor="middle">+</text>
+
+    <!-- Sum Residual (Innovation Sum) -->
+    <circle cx="580" cy="360" r="18" fill="#1E293B" stroke="#34D399" stroke-width="2" />
+    <text x="580" y="365" fill="#FFFFFF" font-size="16" font-weight="bold" text-anchor="middle">Σ</text>
+    <text class="plus-minus" x="552" y="355">-</text>
+    <text class="plus-minus" x="575" y="388" text-anchor="middle">+</text>
+
+    <!-- Sum 2 (Correction Sum) -->
+    <circle cx="860" cy="230" r="18" fill="#1E293B" stroke="#A78BFA" stroke-width="2" />
+    <text x="860" y="235" fill="#FFFFFF" font-size="16" font-weight="bold" text-anchor="middle">Σ</text>
+    <text class="plus-minus" x="832" y="225">+</text>
+    <text class="plus-minus" x="855" y="258" text-anchor="middle">+</text>
+  </g>
+
+
+  <!-- 7. Mathematical Capsules (Value Indicators) -->
+  <g filter="url(#block-shadow)">
+    <!-- Predicted State x_hat_{k|k-1} -->
+    <rect x="305" y="208" width="90" height="44" rx="8" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5" />
+    <rect x="305" y="208" width="90" height="44" rx="8" fill="rgba(56, 189, 248, 0.05)" />
+    <text class="math-main" x="350" y="228" text-anchor="middle">x̂<tspan baseline-shift="sub" font-size="9">k|k-1</tspan></text>
+    <text class="block-sub" x="350" y="244" text-anchor="middle">Prior Est.</text>
+
+    <!-- Innovation / Residual y_tilde_k -->
+    <rect x="618" y="338" width="60" height="44" rx="8" fill="#1E293B" stroke="#34D399" stroke-width="1.5" />
+    <rect x="618" y="338" width="60" height="44" rx="8" fill="rgba(52, 211, 153, 0.05)" />
+    <text class="math-main" x="648" y="358" text-anchor="middle">ỹ<tspan baseline-shift="sub" font-size="9">k</tspan></text>
+    <text class="block-sub" x="648" y="374" text-anchor="middle">Residual</text>
+
+    <!-- Updated State x_hat_{k|k} -->
+    <rect x="915" y="208" width="90" height="44" rx="8" fill="#1E293B" stroke="#FBBF24" stroke-width="1.5" />
+    <rect x="915" y="208" width="90" height="44" rx="8" fill="rgba(251, 191, 36, 0.05)" />
+    <text class="math-main" x="960" y="228" text-anchor="middle">x̂<tspan baseline-shift="sub" font-size="9">k|k</tspan></text>
+    <text class="block-sub" x="960" y="244" text-anchor="middle">Post Est.</text>
+
+    <!-- Previous Error Covariance P_{k-1|k-1} -->
+    <rect x="85" y="660" width="80" height="44" rx="8" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5" />
+    <text class="math-main" x="125" y="680" text-anchor="middle">P<tspan baseline-shift="sub" font-size="9">k-1|k-1</tspan></text>
+    <text class="block-sub" x="125" y="696" text-anchor="middle">Prev Cov.</text>
+
+    <!-- Prior Error Covariance P_{k|k-1} -->
+    <rect x="410" y="660" width="80" height="44" rx="8" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5" />
+    <text class="math-main" x="450" y="680" text-anchor="middle">P<tspan baseline-shift="sub" font-size="9">k|k-1</tspan></text>
+    <text class="block-sub" x="450" y="696" text-anchor="middle">Prior Cov.</text>
+
+    <!-- Post Error Covariance P_{k|k} -->
+    <rect x="1095" y="660" width="80" height="44" rx="8" fill="#1E293B" stroke="#FBBF24" stroke-width="1.5" />
+    <text class="math-main" x="1135" y="680" text-anchor="middle">P<tspan baseline-shift="sub" font-size="9">k|k</tspan></text>
+    <text class="block-sub" x="1135" y="696" text-anchor="middle">Post Cov.</text>
+  </g>
+
+
+  <!-- 8. Core Control Matrices & Process Blocks -->
+  <g filter="url(#block-shadow)">
+    <!-- B - Control Input Matrix -->
+    <rect x="130" y="200" width="80" height="60" rx="10" fill="#1E293B" stroke="url(#cyan-grad)" stroke-width="2" filter="url(#glow-cyan)" />
+    <text class="block-label" x="170" y="235" text-anchor="middle">B</text>
+    <text class="block-sub" x="170" y="250" text-anchor="middle">Control Model</text>
+
+    <!-- H - Measurement Matrix -->
+    <rect x="460" y="330" width="80" height="60" rx="10" fill="#1E293B" stroke="url(#emerald-grad)" stroke-width="2" filter="url(#glow-emerald)" />
+    <text class="block-label" x="500" y="365" text-anchor="middle">H</text>
+    <text class="block-sub" x="500" y="380" text-anchor="middle">Obs. Model</text>
+
+    <!-- K_k - Kalman Gain -->
+    <rect x="700" y="330" width="100" height="60" rx="10" fill="#1E293B" stroke="url(#purple-grad)" stroke-width="2" filter="url(#glow-purple)" />
+    <text class="block-label" x="750" y="365" text-anchor="middle">K<tspan baseline-shift="sub" font-size="14">k</tspan></text>
+    <text class="block-sub" x="750" y="380" text-anchor="middle">Kalman Gain</text>
+
+    <!-- State Delay Unit z^-1 -->
+    <rect x="460" y="460" width="80" height="60" rx="10" fill="#1E293B" stroke="url(#slate-grad)" stroke-width="2" />
+    <text class="block-label" x="500" y="495" text-anchor="middle">z<tspan baseline-shift="super" font-size="14">-1</tspan></text>
+    <text class="block-sub" x="500" y="510" text-anchor="middle">State Delay</text>
+
+    <!-- F - State Transition Matrix -->
+    <rect x="220" y="460" width="80" height="60" rx="10" fill="#1E293B" stroke="url(#slate-grad)" stroke-width="2" />
+    <text class="block-label" x="260" y="495" text-anchor="middle">F</text>
+    <text class="block-sub" x="260" y="510" text-anchor="middle">Transition</text>
+  </g>
+
+
+  <!-- 9. Lower Covariance & Mathematical Engines -->
+  <g filter="url(#block-shadow)">
+    <!-- Covariance Predict Engine (F P F^T + Q) -->
+    <rect x="200" y="640" width="180" height="65" rx="12" fill="#1E293B" stroke="url(#cyan-grad)" stroke-width="2" filter="url(#glow-cyan)" />
+    <text class="math-main" x="290" y="670" text-anchor="middle">F P<tspan baseline-shift="sub" font-size="9">k-1|k-1</tspan> Fᵀ + Q</text>
+    <text class="block-sub" x="290" y="690" text-anchor="middle">Covariance Predict</text>
+
+    <!-- Kalman Gain Math Engine -->
+    <rect x="660" y="640" width="220" height="65" rx="12" fill="#1E293B" stroke="url(#purple-grad)" stroke-width="2" filter="url(#glow-purple)" />
+    <text class="math-main" x="770" y="668" text-anchor="middle">P<tspan baseline-shift="sub" font-size="9">k|k-1</tspan> Hᵀ S<tspan baseline-shift="sub" font-size="9">k</tspan>⁻¹</text>
+    <text class="math-sub" x="770" y="690" text-anchor="middle">S<tspan baseline-shift="sub" font-size="7">k</tspan> = H P<tspan baseline-shift="sub" font-size="7">k|k-1</tspan> Hᵀ + R</text>
+
+    <!-- Covariance Update Engine -->
+    <rect x="910" y="640" width="155" height="65" rx="12" fill="#1E293B" stroke="url(#purple-grad)" stroke-width="2" filter="url(#glow-purple)" />
+    <text class="math-main" x="987" y="670" text-anchor="middle">(I - K<tspan baseline-shift="sub" font-size="9">k</tspan> H) P<tspan baseline-shift="sub" font-size="9">k|k-1</tspan></text>
+    <text class="block-sub" x="987" y="690" text-anchor="middle">Covariance Update</text>
+
+    <!-- Covariance Delay Unit z^-1 -->
+    <rect x="540" y="750" width="80" height="60" rx="10" fill="#1E293B" stroke="url(#slate-grad)" stroke-width="2" />
+    <text class="block-label" x="580" y="785" text-anchor="middle">z<tspan baseline-shift="super" font-size="14">-1</tspan></text>
+    <text class="block-sub" x="580" y="800" text-anchor="middle">Cov. Delay</text>
+  </g>
+
+
+  <!-- 10. Stage Equations & Reference Guide (High Infographic Density) -->
+  <g>
+    <!-- Prediction Equations -->
+    <text fill="#38BDF8" font-size="11" font-weight="700" letter-spacing="1" x="70" y="555">PREDICTION EQUATIONS</text>
+    <rect x="70" y="565" width="220" height="1" fill="#38BDF8" opacity="0.3" />
+    <text class="math-sub" x="70" y="585" fill="#E2E8F0">State:      x̂<tspan baseline-shift="sub" font-size="8">k|k-1</tspan> = F x̂<tspan baseline-shift="sub" font-size="8">k-1|k-1</tspan> + B u<tspan baseline-shift="sub" font-size="8">k</tspan></text>
+    <text class="math-sub" x="70" y="605" fill="#E2E8F0">Covariance: P<tspan baseline-shift="sub" font-size="8">k|k-1</tspan> = F P<tspan baseline-shift="sub" font-size="8">k-1|k-1</tspan> Fᵀ + Q</text>
+
+    <!-- Measurement Equations -->
+    <text fill="#34D399" font-size="11" font-weight="700" letter-spacing="1" x="500" y="555">OBSERVATION MODEL</text>
+    <rect x="500" y="565" width="190" height="1" fill="#34D399" opacity="0.3" />
+    <text class="math-sub" x="500" y="585" fill="#E2E8F0">Actual Obs: z<tspan baseline-shift="sub" font-size="8">k</tspan> = H x<tspan baseline-shift="sub" font-size="8">k</tspan> + v<tspan baseline-shift="sub" font-size="8">k</tspan></text>
+    <text class="math-sub" x="500" y="605" fill="#E2E8F0">Residual:   ỹ<tspan baseline-shift="sub" font-size="8">k</tspan> = z<tspan baseline-shift="sub" font-size="8">k</tspan> - H x̂<tspan baseline-shift="sub" font-size="8">k|k-1</tspan></text>
+
+    <!-- Update Equations -->
+    <text fill="#A78BFA" font-size="11" font-weight="700" letter-spacing="1" x="750" y="555">UPDATE / CORRECT EQUATIONS</text>
+    <rect x="750" y="565" width="250" height="1" fill="#A78BFA" opacity="0.3" />
+    <text class="math-sub" x="750" y="585" fill="#E2E8F0">Gain:       K<tspan baseline-shift="sub" font-size="8">k</tspan> = P<tspan baseline-shift="sub" font-size="8">k|k-1</tspan> Hᵀ S<tspan baseline-shift="sub" font-size="8">k</tspan>⁻¹</text>
+    <text class="math-sub" x="750" y="605" fill="#E2E8F0">State Up:   x̂<tspan baseline-shift="sub" font-size="8">k|k</tspan> = x̂<tspan baseline-shift="sub" font-size="8">k|k-1</tspan> + K<tspan baseline-shift="sub" font-size="8">k</tspan> ỹ<tspan baseline-shift="sub" font-size="8">k</tspan></text>
+    <text class="math-sub" x="750" y="625" fill="#E2E8F0">Cov Up:     P<tspan baseline-shift="sub" font-size="8">k|k</tspan> = (I - K<tspan baseline-shift="sub" font-size="8">k</tspan> H) P<tspan baseline-shift="sub" font-size="8">k|k-1</tspan></text>
+  </g>
+
+
+  <!-- 11. Custom Legend & Flow Symbols (Bottom Right) -->
+  <g transform="translate(940, 745)">
+    <!-- Legend Box -->
+    <rect width="180" height="60" rx="8" fill="rgba(15, 23, 42, 0.6)" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" />
+    
+    <!-- State Flow Symbol -->
+    <line x1="15" y1="20" x2="45" y2="20" stroke="#FBBF24" stroke-width="2.5" marker-end="url(#arrow-amber)" />
+    <text class="legend-text" x="55" y="23">State Estimate Flow</text>
+
+    <!-- Error Covariance Flow Symbol -->
+    <line x1="15" y1="40" x2="45" y2="40" stroke="#38BDF8" stroke-width="2" stroke-dasharray="3,2" marker-end="url(#arrow-cyan)" />
+    <text class="legend-text" x="55" y="43">Error Covariance Flow</text>
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+\documentclass[border=5mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
+  \definecolor{bg}{HTML}{FFFAF5}
+  \definecolor{fur}{HTML}{C98A5E}
+  \definecolor{furdark}{HTML}{B77A4D}
+  \definecolor{muzzle}{HTML}{EFDCC9}
+  \definecolor{belly}{HTML}{F2E4D5}
+  \definecolor{nose}{HTML}{50362C}
+  \definecolor{ribbon}{HTML}{8F6DE0}
+  \definecolor{stitch}{HTML}{D8B188}
+  \definecolor{shadow}{HTML}{EAD8C8}
+
+  \fill[bg] (-0.2,-0.2) rectangle (12.2,9.2);
+  \fill[shadow] (6,0.9) ellipse (2.2 and 0.26);
+
+  \fill[furdark] (4.55,6.95) circle (0.86);
+  \fill[muzzle] (4.55,6.95) circle (0.44);
+  \fill[furdark] (7.45,6.95) circle (0.86);
+  \fill[muzzle] (7.45,6.95) circle (0.44);
+
+  \fill[fur] (6,5.8) circle (2.05);
+  \fill[muzzle] (6,5.12) ellipse (1.2 and 0.95);
+  \fill[nose] (5.28,5.82) circle (0.12);
+  \fill[nose] (6.72,5.82) circle (0.12);
+  \fill[white,opacity=0.75] (5.2,5.9) circle (0.04);
+  \fill[white,opacity=0.75] (6.64,5.9) circle (0.04);
+  \fill[nose] (6,5.24) ellipse (0.34 and 0.24);
+  \draw[nose,line width=0.08cm] (6,5.05) -- (6,4.85);
+  \draw[nose,line width=0.09cm] (5.64,4.79) .. controls (5.87,4.57) and (5.95,4.52) .. (6,4.53)
+    .. controls (6.05,4.52) and (6.13,4.57) .. (6.36,4.79);
+  \draw[furdark!80!white,line width=0.07cm,opacity=0.8] (5.08,5.58) .. controls (5.26,5.66) and (5.36,5.68) .. (5.48,5.60);
+  \draw[furdark!80!white,line width=0.07cm,opacity=0.8] (6.52,5.60) .. controls (6.64,5.68) and (6.74,5.66) .. (6.92,5.58);
+
+  \fill[fur] (6,2.95) ellipse (2.2 and 2.04);
+  \fill[belly] (6,2.85) ellipse (1.3 and 1.45);
+
+  \fill[fur] (4.1,3.35) ellipse [x radius=0.7, y radius=1.25, rotate=-22];
+  \fill[fur] (7.9,3.35) ellipse [x radius=0.7, y radius=1.25, rotate=22];
+  \fill[fur] (4.8,1.45) ellipse (0.78 and 1.1);
+  \fill[fur] (7.2,1.45) ellipse (0.78 and 1.1);
+  \fill[muzzle] (4.8,1.0) ellipse (0.48 and 0.32);
+  \fill[muzzle] (7.2,1.0) ellipse (0.48 and 0.32);
+  \foreach \x/\y in {4.58/1.02,4.8/1.14,5.02/1.02,6.98/1.02,7.2/1.14,7.42/1.02} {
+    \fill[fur] (\x,\y) circle (0.07);
+  }
+
+  \fill[ribbon] (6,4.38) -- (5.58,3.98) -- (6,3.58) -- (6.42,3.98) -- cycle;
+  \fill[white] (6,3.98) circle (0.16);
+  \draw[stitch,line width=0.12cm] (5.22,3.05) .. controls (5.55,3.25) and (5.8,3.38) .. (6,3.4)
+    .. controls (6.2,3.38) and (6.45,3.25) .. (6.78,3.05);
+  \draw[stitch,line width=0.1cm,opacity=0.85] (5.45,3.45) .. controls (5.72,3.58) and (5.9,3.68) .. (6,3.7)
+    .. controls (6.1,3.68) and (6.28,3.58) .. (6.55,3.45);
+
+  \fill[white!95!yellow] (6.9,2.98) circle (0.42);
+  \draw[ribbon,line width=0.11cm] (6.72,2.98) -- (6.84,2.82) -- (7.14,3.16);
+\end{tikzpicture}
+\end{document}

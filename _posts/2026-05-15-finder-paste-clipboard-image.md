@@ -39,6 +39,25 @@ APPLESCRIPT
 ```swift
 let pasteboard = NSPasteboard.general
 
+func fileURLs(from pasteboard: NSPasteboard) -> [URL] {
+    if let objects = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [NSURL] {
+        return objects.map { $0 as URL }.filter(\.isFileURL)
+    }
+    return []
+}
+
+let sourceURLs = fileURLs(from: pasteboard)
+if !sourceURLs.isEmpty {
+    for sourceURL in sourceURLs {
+        let outputURL = uniqueCopyURL(for: sourceURL, in: destinationURL)
+        try FileManager.default.copyItem(
+            at: sourceURL,
+            to: outputURL
+        )
+    }
+    exit(0)
+}
+
 if let pngData = pasteboard.data(forType: .png) {
     try pngData.write(to: outputURL, options: .atomic)
     exit(0)
@@ -50,6 +69,8 @@ if let image = NSImage(pasteboard: pasteboard),
     exit(0)
 }
 ```
+
+ここで先に file URL を見ているのが大事です。Finder でファイルをコピーしたときも pasteboard には画像っぽいデータが入ることがあり、特に画像ファイルを複数選択していると `NSImage(pasteboard:)` が 1 枚の画像として読めてしまいます。ファイル参照が含まれている場合は画像保存に進まず、複数ファイルや画像ではないファイルをそのまま Finder の開いているフォルダへコピーします。
 
 次に、`~/.config/karabiner/karabiner.json` の各 profile へ、Finder が前面のときだけ動く `Cmd+V` ルールを追加しました。
 
@@ -82,12 +103,23 @@ if let image = NSImage(pasteboard: pasteboard),
 }
 ```
 
-画像ではないものを貼り付けた場合は、スクリプトの中で通常の `Cmd+V` を送り直します。なので、Finder でファイルをコピーして貼り付ける普段の操作はそのまま残ります。
+画像でもファイル参照でもないものを貼り付けた場合は、スクリプトの中で Finder のペーストメニューを直接クリックします。`Cmd+V` を送り直すと Karabiner に再捕捉されるので、メニュー項目を使うのがポイントです。
 
 ```zsh
 fallback_paste() {
-  /usr/bin/osascript \
-    -e 'tell application "System Events" to keystroke "v" using command down'
+  /usr/bin/osascript <<'APPLESCRIPT'
+tell application "System Events"
+  tell process "Finder"
+    tell menu 1 of menu bar item 4 of menu bar 1
+      if exists menu item "ペースト" then
+        click menu item "ペースト"
+      else if exists menu item "Paste" then
+        click menu item "Paste"
+      end if
+    end tell
+  end tell
+end tell
+APPLESCRIPT
 }
 ```
 

@@ -1,0 +1,18 @@
+ゼロトラスト認証とトークン交換 を TikZ で描いてください。
+
+要件:
+- ゼロトラスト認証とトークン交換の流れを描く
+- User, Browser, IdP, API Gateway, Service A, Service B を入れる
+- ID token, access token, service token の流れを区別する
+- 信頼境界を領域として表現する
+- 複雑でも読めるセキュリティ図にする
+
+実装ルール:
+- standalone でそのまま xelatex できる完全な .tex ファイルにする
+- 余計なパッケージは使わず、tikz の基本図形で描く
+- 画像サイズは横長すぎず、1200x900 相当で見やすい構図にする
+
+出力ルール:
+- 説明は不要
+- Markdown の code fence も不要
+- .tex ファイル本体だけを出力する

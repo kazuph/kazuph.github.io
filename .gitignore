@@ -42,5 +42,9 @@ _site/
 .jekyll-metadata
 vendor/
 
+# Python cache files
+__pycache__/
+*.pyc
+
 # Generated from public Zenn pages at build time.
 _posts/zenn/

@@ -1,0 +1,593 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080C16"/>
+      <stop offset="50%" stop-color="#0F1626"/>
+      <stop offset="100%" stop-color="#0A0E1A"/>
+    </linearGradient>
+
+    <!-- Card Background Gradient (Glassmorphism) -->
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#161B22" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0D1117" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Boundary Zone Gradients -->
+    <linearGradient id="zoneClientGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EF4444" stop-opacity="0.01"/>
+      <stop offset="100%" stop-color="#EF4444" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="zoneUserIdGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.01"/>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="zoneEdgeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.01"/>
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="zoneWorkloadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.01"/>
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="zoneServiceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.01"/>
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <!-- Card Border Gradients -->
+    <linearGradient id="userCardBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EF4444" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FF7A7A" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="idpCardBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#60A5FA" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="edgeCardBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#A78BFA" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="stsCardBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="serviceCardBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#34D399" stop-opacity="0.3"/>
+    </linearGradient>
+
+    <!-- Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="0.5" stroke-opacity="0.4"/>
+    </pattern>
+
+    <!-- Glow Filters for Tokens -->
+    <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- Arrow Markers -->
+    <marker id="arrow-grey" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 Z" fill="#6B7280"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 Z" fill="#3B82F6"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 Z" fill="#A78BFA"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 Z" fill="#34D399"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 Z" fill="#FBBF24"/>
+    </marker>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap');
+    text {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      fill: #F3F4F6;
+    }
+    .title {
+      font-weight: 700;
+      font-size: 24px;
+      fill: #FFFFFF;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      font-weight: 400;
+      font-size: 13px;
+      fill: #9CA3AF;
+    }
+    .zone-title {
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .card-title {
+      font-weight: 600;
+      font-size: 15px;
+      fill: #FFFFFF;
+    }
+    .card-subtitle {
+      font-weight: 400;
+      font-size: 11px;
+      fill: #9CA3AF;
+    }
+    .badge-text {
+      font-weight: 700;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+    }
+    .flow-line {
+      fill: none;
+      stroke-width: 2px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .flow-label {
+      font-size: 11px;
+      font-weight: 600;
+      fill: #E5E7EB;
+    }
+    .step-num {
+      font-size: 11px;
+      font-weight: 700;
+      fill: #FFFFFF;
+    }
+  </style>
+
+  <!-- Canvas Background -->
+  <rect width="100%" height="100%" fill="url(#bgGrad)"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+
+  <!-- Ambient Glow Background Blobs -->
+  <circle cx="150" cy="450" r="250" fill="url(#zoneClientGrad)" opacity="0.4"/>
+  <circle cx="480" cy="240" r="200" fill="url(#zoneUserIdGrad)" opacity="0.3"/>
+  <circle cx="480" cy="600" r="250" fill="url(#zoneEdgeGrad)" opacity="0.3"/>
+  <circle cx="920" cy="240" r="250" fill="url(#zoneWorkloadGrad)" opacity="0.3"/>
+  <circle cx="920" cy="600" r="300" fill="url(#zoneServiceGrad)" opacity="0.4"/>
+
+  <!-- TITLE BLOCK -->
+  <g transform="translate(40, 50)">
+    <text class="title" x="0" y="0">ZERO TRUST AUTHENTICATION &amp; TOKEN EXCHANGE FLOW</text>
+    <text class="subtitle" x="0" y="24">End-to-End User Authentication, Edge Policy Enforcement, and Microsegmented Workload Token Exchange (RFC 8693)</text>
+  </g>
+
+  <!-- ==================== TRUST BOUNDARY ZONES ==================== -->
+
+  <!-- ZONE 1: Client Zone (Untrusted) -->
+  <g transform="translate(40, 100)">
+    <rect width="220" height="710" rx="12" fill="url(#zoneClientGrad)" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <rect width="180" height="24" rx="12" x="20" y="-12" fill="#1E1E2F" stroke="#EF4444" stroke-width="1.5"/>
+    <text class="zone-title" x="110" y="3" text-anchor="middle" fill="#EF4444">Untrusted Client Zone</text>
+  </g>
+
+  <!-- ZONE 2: User Identity & Policy Control Plane -->
+  <g transform="translate(290, 100)">
+    <rect width="380" height="310" rx="12" fill="url(#zoneUserIdGrad)" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <rect width="250" height="24" rx="12" x="20" y="-12" fill="#1E1E2F" stroke="#3B82F6" stroke-width="1.5"/>
+    <text class="zone-title" x="145" y="3" text-anchor="middle" fill="#3B82F6">User Identity &amp; Auth Plane</text>
+  </g>
+
+  <!-- ZONE 3: Edge Enforcement Zone (DMZ / PEP) -->
+  <g transform="translate(290, 440)">
+    <rect width="380" height="370" rx="12" fill="url(#zoneEdgeGrad)" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <rect width="240" height="24" rx="12" x="20" y="-12" fill="#1E1E2F" stroke="#8B5CF6" stroke-width="1.5"/>
+    <text class="zone-title" x="140" y="3" text-anchor="middle" fill="#8B5CF6">Edge Enforcement Zone (PEP)</text>
+  </g>
+
+  <!-- ZONE 4: Workload Identity Control Plane -->
+  <g transform="translate(700, 100)">
+    <rect width="460" height="310" rx="12" fill="url(#zoneWorkloadGrad)" stroke="#06B6D4" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <rect width="270" height="24" rx="12" x="20" y="-12" fill="#1E1E2F" stroke="#06B6D4" stroke-width="1.5"/>
+    <text class="zone-title" x="155" y="3" text-anchor="middle" fill="#06B6D4">Workload Identity Control Plane</text>
+  </g>
+
+  <!-- ZONE 5: Micro-segmented Service Zone (Zero Trust Data Plane) -->
+  <g transform="translate(700, 440)">
+    <rect width="460" height="370" rx="12" fill="url(#zoneServiceGrad)" stroke="#10B981" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <rect width="300" height="24" rx="12" x="20" y="-12" fill="#1E1E2F" stroke="#10B981" stroke-width="1.5"/>
+    <text class="zone-title" x="170" y="3" text-anchor="middle" fill="#10B981">Micro-Segmented Data Plane (mTLS)</text>
+
+    <!-- Sub-segment A Perimeter -->
+    <rect x="15" y="40" width="210" height="310" rx="8" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="25" y="58" fill="#10B981" font-size="9" font-weight="700" letter-spacing="0.5">SEGMENT A (API-FRONT)</text>
+
+    <!-- Sub-segment B Perimeter -->
+    <rect x="235" y="40" width="210" height="310" rx="8" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="245" y="58" fill="#10B981" font-size="9" font-weight="700" letter-spacing="0.5">SEGMENT B (CORE-BACK)</text>
+  </g>
+
+  <!-- ==================== FLOW LINES / PATHS ==================== -->
+
+  <!-- 1. Access Request (User -> Browser) -->
+  <path d="M 150 280 L 150 565" class="flow-line" stroke="#9CA3AF" stroke-dasharray="4,4" marker-end="url(#arrow-grey)"/>
+
+  <!-- 2. OIDC Redirect (Browser -> IdP) -->
+  <path d="M 210 570 C 260 510, 310 390, 385 270" class="flow-line" stroke="#3B82F6" stroke-opacity="0.8" marker-end="url(#arrow-blue)"/>
+
+  <!-- 3. Credentials & MFA (User -> IdP) -->
+  <path d="M 240 215 L 385 215" class="flow-line" stroke="#3B82F6" marker-end="url(#arrow-blue)"/>
+
+  <!-- 4. Issue ID & Access Tokens (IdP -> Browser) -->
+  <path d="M 410 300 C 370 410, 300 500, 215 570" class="flow-line" stroke="#A78BFA" marker-end="url(#arrow-purple)"/>
+
+  <!-- 5. Send Access Token (Browser -> API Gateway) -->
+  <path d="M 240 655 L 385 655" class="flow-line" stroke="#A78BFA" marker-end="url(#arrow-purple)"/>
+
+  <!-- 6. Validate & Introspect Token (API Gateway -> IdP) -->
+  <path d="M 465 570 L 465 300" class="flow-line" stroke="#3B82F6" stroke-dasharray="4,2" marker-end="url(#arrow-blue)"/>
+
+  <!-- 7. Exchange Token (API Gateway -> Workload STS) -->
+  <path d="M 545 570 C 580 500, 680 380, 855 260" class="flow-line" stroke="#34D399" marker-end="url(#arrow-green)"/>
+
+  <!-- 8. Call Service A with Service Token A (API Gateway -> Service A) -->
+  <path d="M 570 655 L 710 655" class="flow-line" stroke="#34D399" marker-end="url(#arrow-green)"/>
+
+  <!-- 9. Exchange Token A for Token B (Service A -> Workload STS) -->
+  <path d="M 800 570 C 800 480, 840 400, 890 300" class="flow-line" stroke="#34D399" marker-end="url(#arrow-green)"/>
+
+  <!-- 9b. Return Service Token B (Workload STS -> Service A) -->
+  <path d="M 920 300 C 880 400, 840 480, 830 570" class="flow-line" stroke="#FBBF24" marker-end="url(#arrow-amber)"/>
+
+  <!-- 10. Call Service B with Service Token B (Service A -> Service B) -->
+  <path d="M 890 655 L 1010 655" class="flow-line" stroke="#FBBF24" marker-end="url(#arrow-amber)"/>
+
+  <!-- ==================== FLOW STEP BADGES & LABELS ==================== -->
+
+  <!-- Step 1 -->
+  <g transform="translate(150, 410)">
+    <circle r="11" fill="#1E293B" stroke="#9CA3AF" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">1</text>
+  </g>
+  <text class="flow-label" x="160" y="430" text-anchor="start">1. Access Request</text>
+
+  <!-- Step 2 -->
+  <g transform="translate(280, 440)">
+    <circle r="11" fill="#1E293B" stroke="#3B82F6" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">2</text>
+  </g>
+  <text class="flow-label" x="295" y="444" text-anchor="start">2. Auth Redirect</text>
+
+  <!-- Step 3 -->
+  <g transform="translate(312, 215)">
+    <circle r="11" fill="#1E293B" stroke="#3B82F6" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">3</text>
+  </g>
+  <text class="flow-label" x="312" y="200" text-anchor="middle">3. MFA / User Auth</text>
+
+  <!-- Step 4 -->
+  <g transform="translate(345, 410)">
+    <circle r="11" fill="#1E293B" stroke="#A78BFA" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">4</text>
+  </g>
+  <text class="flow-label" x="360" y="414" text-anchor="start">4. Issue OIDC Tokens</text>
+
+  <!-- Step 5 -->
+  <g transform="translate(312, 655)">
+    <circle r="11" fill="#1E293B" stroke="#A78BFA" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">5</text>
+  </g>
+  <text class="flow-label" x="312" y="692" text-anchor="middle">5. Call API with Access Token</text>
+
+  <!-- Step 6 -->
+  <g transform="translate(465, 435)">
+    <circle r="11" fill="#1E293B" stroke="#3B82F6" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">6</text>
+  </g>
+  <text class="flow-label" x="452" y="439" text-anchor="end">6. Introspect &amp; Validate</text>
+
+  <!-- Step 7 -->
+  <g transform="translate(680, 420)">
+    <circle r="11" fill="#1E293B" stroke="#34D399" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">7</text>
+  </g>
+  <text class="flow-label" x="695" y="424" text-anchor="start">7. Token Exchange (OAuth to Workload ST)</text>
+
+  <!-- Step 8 -->
+  <g transform="translate(640, 655)">
+    <circle r="11" fill="#1E293B" stroke="#34D399" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">8</text>
+  </g>
+  <text class="flow-label" x="640" y="692" text-anchor="middle">8. Call A (ST-A)</text>
+
+  <!-- Step 9 -->
+  <g transform="translate(810, 425)">
+    <circle r="11" fill="#1E293B" stroke="#34D399" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">9</text>
+  </g>
+  <text class="flow-label" x="795" y="429" text-anchor="end">9. Exchange ST-A to ST-B</text>
+
+  <!-- Step 9b -->
+  <g transform="translate(895, 450)">
+    <circle r="11" fill="#1E293B" stroke="#FBBF24" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">9b</text>
+  </g>
+  <text class="flow-label" x="910" y="454" text-anchor="start">9b. Issue ST-B</text>
+
+  <!-- Step 10 -->
+  <g transform="translate(950, 655)">
+    <circle r="11" fill="#1E293B" stroke="#FBBF24" stroke-width="1.5"/>
+    <text class="step-num" text-anchor="middle" y="4">10</text>
+  </g>
+  <text class="flow-label" x="950" y="692" text-anchor="middle">10. Call B (ST-B)</text>
+
+
+  <!-- ==================== COMPONENT CARDS ==================== -->
+
+  <!-- CARD 1: End User (x: 60, y: 170) -->
+  <g transform="translate(60, 150)">
+    <rect width="180" height="130" rx="8" fill="url(#cardBg)" stroke="url(#userCardBorder)" stroke-width="1.5"/>
+    <rect width="180" height="4" rx="2" fill="#EF4444"/>
+    <g transform="translate(10, 12)">
+      <circle cx="16" cy="14" r="5" stroke="#EF4444" stroke-width="1.5" fill="none"/>
+      <path d="M 8 26 C 8 21, 12 19, 16 19 C 20 19, 24 21, 24 26" stroke="#EF4444" stroke-width="1.5" fill="none"/>
+    </g>
+    <text class="card-title" x="50" y="26">End User</text>
+    <text class="card-subtitle" x="50" y="42">Identity &amp; Device Context</text>
+    <line x1="12" y1="56" x2="168" y2="56" stroke="#1E293B" stroke-width="1"/>
+    <text x="12" y="74" fill="#9CA3AF" font-size="10" font-weight="600">IP: 192.168.1.105</text>
+    <text x="12" y="90" fill="#9CA3AF" font-size="10" font-weight="600">MFA: ENROLLED (FIDO2)</text>
+    <rect x="12" y="102" width="75" height="16" rx="4" fill="#EF4444" fill-opacity="0.1"/>
+    <circle cx="20" cy="110" r="2.5" fill="#EF4444"/>
+    <text class="badge-text" x="28" y="113" fill="#EF4444">UNTRUSTED</text>
+  </g>
+
+  <!-- CARD 2: Client Browser (x: 60, y: 570) -->
+  <g transform="translate(60, 570)">
+    <rect width="180" height="130" rx="8" fill="url(#cardBg)" stroke="url(#userCardBorder)" stroke-width="1.5"/>
+    <rect width="180" height="4" rx="2" fill="#EF4444"/>
+    <g transform="translate(10, 12)">
+      <rect x="6" y="8" width="20" height="16" rx="2" stroke="#EF4444" stroke-width="1.5" fill="none"/>
+      <line x1="6" y1="13" x2="26" y2="13" stroke="#EF4444" stroke-width="1.5"/>
+      <circle cx="9" cy="10.5" r="1" fill="#EF4444"/>
+      <circle cx="12" cy="10.5" r="1" fill="#EF4444"/>
+    </g>
+    <text class="card-title" x="50" y="26">Client Browser</text>
+    <text class="card-subtitle" x="50" y="42">SPA React / Native App</text>
+    <line x1="12" y1="56" x2="168" y2="56" stroke="#1E293B" stroke-width="1"/>
+    <text x="12" y="74" fill="#9CA3AF" font-size="10" font-weight="600">Origin: app.local</text>
+    <text x="12" y="90" fill="#9CA3AF" font-size="10" font-weight="600">TLS: 1.3 SECURED</text>
+    <rect x="12" y="102" width="75" height="16" rx="4" fill="#EF4444" fill-opacity="0.1"/>
+    <circle cx="20" cy="110" r="2.5" fill="#EF4444"/>
+    <text class="badge-text" x="28" y="113" fill="#EF4444">CLIENT SIDE</text>
+  </g>
+
+  <!-- CARD 3: Identity Provider (x: 390, y: 170) -->
+  <g transform="translate(390, 170)">
+    <rect width="180" height="130" rx="8" fill="url(#cardBg)" stroke="url(#idpCardBorder)" stroke-width="1.5"/>
+    <rect width="180" height="4" rx="2" fill="#3B82F6"/>
+    <g transform="translate(10, 12)">
+      <rect x="6" y="6" width="20" height="18" rx="2" stroke="#3B82F6" stroke-width="1.5" fill="none"/>
+      <circle cx="13" cy="12" r="3" stroke="#3B82F6" stroke-width="1.5" fill="none"/>
+      <path d="M 16 15 L 22 15 L 22 18 M 19 15 L 19 18" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </g>
+    <text class="card-title" x="50" y="26">IdP (OIDC/OAuth)</text>
+    <text class="card-subtitle" x="50" y="42">OIDC Auth Authority</text>
+    <line x1="12" y1="56" x2="168" y2="56" stroke="#1E293B" stroke-width="1"/>
+    <text x="12" y="74" fill="#9CA3AF" font-size="10" font-weight="600">Issuer: idp.company.com</text>
+    <text x="12" y="90" fill="#9CA3AF" font-size="10" font-weight="600">Keys: JWKS RS256</text>
+    <rect x="12" y="102" width="85" height="16" rx="4" fill="#3B82F6" fill-opacity="0.1"/>
+    <circle cx="20" cy="110" r="2.5" fill="#3B82F6"/>
+    <text class="badge-text" x="28" y="113" fill="#3B82F6">TRUST ANCHOR</text>
+  </g>
+
+  <!-- CARD 4: API Gateway PEP (x: 390, y: 570) -->
+  <g transform="translate(390, 570)">
+    <rect width="180" height="130" rx="8" fill="url(#cardBg)" stroke="url(#edgeCardBorder)" stroke-width="1.5"/>
+    <rect width="180" height="4" rx="2" fill="#8B5CF6"/>
+    <g transform="translate(10, 12)">
+      <path d="M 6 8 L 16 5 L 26 8 C 26 15, 16 21, 16 25 C 16 21, 6 15, 6 8 Z" stroke="#8B5CF6" stroke-width="1.5" fill="none"/>
+      <path d="M 12 13 L 20 13 M 12 17 L 20 17" stroke="#8B5CF6" stroke-width="1.5" fill="none"/>
+    </g>
+    <text class="card-title" x="50" y="26">API Gateway</text>
+    <text class="card-subtitle" x="50" y="42">Edge Enforcement Proxy</text>
+    <line x1="12" y1="56" x2="168" y2="56" stroke="#1E293B" stroke-width="1"/>
+    <text x="12" y="74" fill="#9CA3AF" font-size="10" font-weight="600">Route: /api/v1/workloads</text>
+    <text x="12" y="90" fill="#9CA3AF" font-size="10" font-weight="600">PEP: OPA Policy Active</text>
+    <rect x="12" y="102" width="85" height="16" rx="4" fill="#8B5CF6" fill-opacity="0.1"/>
+    <circle cx="20" cy="110" r="2.5" fill="#8B5CF6"/>
+    <text class="badge-text" x="28" y="113" fill="#8B5CF6">POLICY ENFORCED</text>
+  </g>
+
+  <!-- CARD 5: Workload STS (x: 860, y: 170) -->
+  <g transform="translate(860, 170)">
+    <rect width="180" height="130" rx="8" fill="url(#cardBg)" stroke="url(#stsCardBorder)" stroke-width="1.5"/>
+    <rect width="180" height="4" rx="2" fill="#06B6D4"/>
+    <g transform="translate(10, 12)">
+      <circle cx="16" cy="11" r="4" stroke="#06B6D4" stroke-width="1.5" fill="none"/>
+      <rect x="8" y="16" width="16" height="10" rx="2" stroke="#06B6D4" stroke-width="1.5" fill="none"/>
+      <circle cx="16" cy="21" r="1.5" fill="#06B6D4"/>
+    </g>
+    <text class="card-title" x="50" y="26">Workload STS</text>
+    <text class="card-subtitle" x="50" y="42">SPIFFE Token Authority</text>
+    <line x1="12" y1="56" x2="168" y2="56" stroke="#1E293B" stroke-width="1"/>
+    <text x="12" y="74" fill="#9CA3AF" font-size="10" font-weight="600">ID: spiffe://domain.local</text>
+    <text x="12" y="90" fill="#9CA3AF" font-size="10" font-weight="600">Protocol: RFC 8693 Swap</text>
+    <rect x="12" y="102" width="85" height="16" rx="4" fill="#06B6D4" fill-opacity="0.1"/>
+    <circle cx="20" cy="110" r="2.5" fill="#06B6D4"/>
+    <text class="badge-text" x="28" y="113" fill="#06B6D4">WORKLOAD STS</text>
+  </g>
+
+  <!-- CARD 6: Service A (x: 710, y: 570) -->
+  <g transform="translate(710, 570)">
+    <rect width="180" height="130" rx="8" fill="url(#cardBg)" stroke="url(#serviceCardBorder)" stroke-width="1.5"/>
+    <rect width="180" height="4" rx="2" fill="#10B981"/>
+    <g transform="translate(10, 12)">
+      <rect x="6" y="6" width="20" height="6" rx="1" stroke="#10B981" stroke-width="1.5" fill="none"/>
+      <rect x="6" y="14" width="20" height="6" rx="1" stroke="#10B981" stroke-width="1.5" fill="none"/>
+      <rect x="6" y="22" width="20" height="6" rx="1" stroke="#10B981" stroke-width="1.5" fill="none"/>
+    </g>
+    <text class="card-title" x="50" y="26">Service A</text>
+    <text class="card-subtitle" x="50" y="42">Core API Middleware</text>
+    <line x1="12" y1="56" x2="168" y2="56" stroke="#1E293B" stroke-width="1"/>
+    <text x="12" y="74" fill="#9CA3AF" font-size="10" font-weight="600">ID: spiffe://.../service-a</text>
+    <text x="12" y="90" fill="#9CA3AF" font-size="10" font-weight="600">Access: Scope AuthST-A</text>
+    <rect x="12" y="102" width="85" height="16" rx="4" fill="#10B981" fill-opacity="0.1"/>
+    <circle cx="20" cy="110" r="2.5" fill="#10B981"/>
+    <text class="badge-text" x="28" y="113" fill="#10B981">mTLS ACTIVE</text>
+  </g>
+
+  <!-- CARD 7: Service B (x: 1010, y: 570) -->
+  <g transform="translate(1010, 570)">
+    <rect width="180" height="130" rx="8" fill="url(#cardBg)" stroke="url(#serviceCardBorder)" stroke-width="1.5"/>
+    <rect width="180" height="4" rx="2" fill="#10B981"/>
+    <g transform="translate(10, 12)">
+      <rect x="6" y="6" width="20" height="6" rx="1" stroke="#10B981" stroke-width="1.5" fill="none"/>
+      <rect x="6" y="14" width="20" height="6" rx="1" stroke="#10B981" stroke-width="1.5" fill="none"/>
+      <rect x="6" y="22" width="20" height="6" rx="1" stroke="#10B981" stroke-width="1.5" fill="none"/>
+    </g>
+    <text class="card-title" x="50" y="26">Service B</text>
+    <text class="card-subtitle" x="50" y="42">Internal Core DB Store</text>
+    <line x1="12" y1="56" x2="168" y2="56" stroke="#1E293B" stroke-width="1"/>
+    <text x="12" y="74" fill="#9CA3AF" font-size="10" font-weight="600">ID: spiffe://.../service-b</text>
+    <text x="12" y="90" fill="#9CA3AF" font-size="10" font-weight="600">Access: Token ST-B req.</text>
+    <rect x="12" y="102" width="85" height="16" rx="4" fill="#10B981" fill-opacity="0.1"/>
+    <circle cx="20" cy="110" r="2.5" fill="#10B981"/>
+    <text class="badge-text" x="28" y="113" fill="#10B981">mTLS ACTIVE</text>
+  </g>
+
+
+  <!-- ==================== TOKEN VISUALIZATIONS ==================== -->
+
+  <!-- ID Token (Path 4) -->
+  <g transform="translate(200, 440)">
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#00F0FF" stroke-width="1.5" filter="url(#glow-cyan)"/>
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#00F0FF" stroke-width="1.5"/>
+    <path d="M 12 7 L 16 5 L 20 7 C 20 11, 16 15, 16 17 C 16 15, 12 11, 12 7 Z" stroke="#00F0FF" stroke-width="1" fill="none"/>
+    <text x="26" y="15" fill="#00F0FF" font-size="9" font-weight="700" letter-spacing="0.5">ID TOKEN</text>
+  </g>
+
+  <!-- Access Token (Path 4) -->
+  <g transform="translate(200, 475)">
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#D946EF" stroke-width="1.5" filter="url(#glow-purple)"/>
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#D946EF" stroke-width="1.5"/>
+    <circle cx="14" cy="12" r="2.5" stroke="#D946EF" stroke-width="1" fill="none"/>
+    <path d="M 16.5 12 L 20 12 L 20 14 M 18.5 12 L 18.5 14" stroke="#D946EF" stroke-width="1" fill="none"/>
+    <text x="26" y="15" fill="#D946EF" font-size="9" font-weight="700" letter-spacing="0.5">ACCESS TOKEN</text>
+  </g>
+
+  <!-- Access Token (Path 5) -->
+  <g transform="translate(265, 615)">
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#D946EF" stroke-width="1.5" filter="url(#glow-purple)"/>
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#D946EF" stroke-width="1.5"/>
+    <circle cx="14" cy="12" r="2.5" stroke="#D946EF" stroke-width="1" fill="none"/>
+    <path d="M 16.5 12 L 20 12 L 20 14 M 18.5 12 L 18.5 14" stroke="#D946EF" stroke-width="1" fill="none"/>
+    <text x="26" y="15" fill="#D946EF" font-size="9" font-weight="700" letter-spacing="0.5">ACCESS TOKEN</text>
+  </g>
+
+  <!-- Service Token A (Path 8) -->
+  <g transform="translate(590, 615)">
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#10B981" stroke-width="1.5" filter="url(#glow-green)"/>
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#10B981" stroke-width="1.5"/>
+    <rect x="11" y="9" width="8" height="6" rx="1" stroke="#10B981" stroke-width="1" fill="none"/>
+    <text x="26" y="15" fill="#10B981" font-size="9" font-weight="700" letter-spacing="0.5">WORKLOAD ST-A</text>
+  </g>
+
+  <!-- Service Token B (Path 9b) -->
+  <g transform="translate(860, 480)">
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#FBBF24" stroke-width="1.5" filter="url(#glow-amber)"/>
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#FBBF24" stroke-width="1.5"/>
+    <rect x="11" y="9" width="8" height="6" rx="1" stroke="#FBBF24" stroke-width="1" fill="none"/>
+    <text x="26" y="15" fill="#FBBF24" font-size="9" font-weight="700" letter-spacing="0.5">WORKLOAD ST-B</text>
+  </g>
+
+  <!-- Service Token B (Path 10) -->
+  <g transform="translate(900, 615)">
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#FBBF24" stroke-width="1.5" filter="url(#glow-amber)"/>
+    <rect width="110" height="24" rx="12" fill="#0D1117" stroke="#FBBF24" stroke-width="1.5"/>
+    <rect x="11" y="9" width="8" height="6" rx="1" stroke="#FBBF24" stroke-width="1" fill="none"/>
+    <text x="26" y="15" fill="#FBBF24" font-size="9" font-weight="700" letter-spacing="0.5">WORKLOAD ST-B</text>
+  </g>
+
+  <!-- ==================== MINI EXCHANGES (ON THE CONTROL PLANE) ==================== -->
+
+  <!-- Mini Exchange (Path 7: Gateway -> STS) -->
+  <!-- Left Pill (Access) -->
+  <g transform="translate(605, 430)">
+    <rect width="80" height="18" rx="9" fill="#0D1117" stroke="#D946EF" stroke-width="1.2"/>
+    <text x="40" y="12" fill="#D946EF" font-size="8" font-weight="700" text-anchor="middle">ACCESS TKN</text>
+  </g>
+  <!-- Exchange Icon -->
+  <g transform="translate(692, 420)">
+    <circle cx="10" cy="10" r="9" fill="#1E293B" stroke="#34D399" stroke-width="1"/>
+    <path d="M 6 8 L 14 8 M 14 8 L 11 5 M 14 12 L 6 12 M 6 12 L 9 15" stroke="#34D399" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  <!-- Right Pill (Workload ST-A) -->
+  <g transform="translate(719, 395)">
+    <rect width="80" height="18" rx="9" fill="#0D1117" stroke="#10B981" stroke-width="1.2"/>
+    <text x="40" y="12" fill="#10B981" font-size="8" font-weight="700" text-anchor="middle">WRKLD ST-A</text>
+  </g>
+
+  <!-- Mini Exchange (Path 9: Service A -> STS) -->
+  <!-- Left Pill (Workload ST-A) -->
+  <g transform="translate(745, 450)">
+    <rect width="80" height="18" rx="9" fill="#0D1117" stroke="#10B981" stroke-width="1.2"/>
+    <text x="40" y="12" fill="#10B981" font-size="8" font-weight="700" text-anchor="middle">WRKLD ST-A</text>
+  </g>
+  <!-- Exchange Icon -->
+  <g transform="translate(832, 430)">
+    <circle cx="10" cy="10" r="9" fill="#1E293B" stroke="#FBBF24" stroke-width="1"/>
+    <path d="M 6 8 L 14 8 M 14 8 L 11 5 M 14 12 L 6 12 M 6 12 L 9 15" stroke="#FBBF24" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  <!-- Right Pill (Workload ST-B) -->
+  <g transform="translate(859, 395)">
+    <rect width="80" height="18" rx="9" fill="#0D1117" stroke="#FBBF24" stroke-width="1.2"/>
+    <text x="40" y="12" fill="#FBBF24" font-size="8" font-weight="700" text-anchor="middle">WRKLD ST-B</text>
+  </g>
+
+
+  <!-- ==================== DIAGRAM LEGEND ==================== -->
+  <g transform="translate(40, 835)">
+    <rect width="1120" height="45" rx="8" fill="#0D1117" stroke="#1E293B" stroke-width="1"/>
+
+    <!-- ID Token -->
+    <g transform="translate(20, 11)">
+      <rect width="16" height="16" rx="4" fill="#0D1117" stroke="#00F0FF" stroke-width="1.5"/>
+      <text x="24" y="12" fill="#9CA3AF" font-size="11" font-weight="600">ID Token (User Identity Context)</text>
+    </g>
+
+    <!-- Access Token -->
+    <g transform="translate(240, 11)">
+      <rect width="16" height="16" rx="4" fill="#0D1117" stroke="#D946EF" stroke-width="1.5"/>
+      <text x="24" y="12" fill="#9CA3AF" font-size="11" font-weight="600">Access Token (Public Client API Access)</text>
+    </g>
+
+    <!-- Service Token -->
+    <g transform="translate(490, 11)">
+      <rect width="16" height="16" rx="4" fill="#0D1117" stroke="#10B981" stroke-width="1.5"/>
+      <text x="24" y="12" fill="#9CA3AF" font-size="11" font-weight="600">Service Token (SPIFFE/Workload SVID)</text>
+    </g>
+
+    <!-- Trust Boundary -->
+    <g transform="translate(750, 11)">
+      <line x1="0" y1="8" x2="20" y2="8" stroke="#F87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="28" y="12" fill="#9CA3AF" font-size="11" font-weight="600">Zero Trust Boundary</text>
+    </g>
+
+    <!-- Token Exchange symbol -->
+    <g transform="translate(920, 11)">
+      <circle cx="10" cy="8" r="8" fill="#1E293B" stroke="#34D399" stroke-width="1"/>
+      <text x="24" y="12" fill="#9CA3AF" font-size="11" font-weight="600">Token Exchange Point (RFC 8693)</text>
+    </g>
+  </g>
+
+</svg>

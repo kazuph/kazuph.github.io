@@ -1,0 +1,418 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%">
+  <defs>
+    <!-- Wall Gradient (deep cozy night vibe) -->
+    <linearGradient id="wall-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="40%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#311042" />
+    </linearGradient>
+
+    <!-- Wood Floor Gradient -->
+    <linearGradient id="floor-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5c2509" />
+      <stop offset="20%" stop-color="#451a03" />
+      <stop offset="100%" stop-color="#270e02" />
+    </linearGradient>
+
+    <!-- Warm Hallway Glow -->
+    <linearGradient id="hall-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="50%" stop-color="#fde68a" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+
+    <!-- Neon VR Cyan Glow -->
+    <radialGradient id="vr-cyan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#67e8f9" stop-opacity="1" />
+      <stop offset="30%" stop-color="#06b6d4" stop-opacity="0.8" />
+      <stop offset="70%" stop-color="#0891b2" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#155e75" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Neon VR Pink/Magenta Glow -->
+    <radialGradient id="vr-magenta" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f472b6" stop-opacity="1" />
+      <stop offset="40%" stop-color="#db2777" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#9d174d" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Warm Desk Lamp Glow -->
+    <linearGradient id="lamp-light" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#fef08a" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#fef08a" stop-opacity="0.0" />
+    </linearGradient>
+
+    <!-- Window Sky Gradient -->
+    <linearGradient id="sky-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="100%" stop-color="#1e1b4b" />
+    </linearGradient>
+
+    <!-- VR Glow Filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Strong VR Aura Filter -->
+    <filter id="strong-glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="25" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+    </filter>
+  </defs>
+
+  <!-- ==================== ROOM LAYOUT ==================== -->
+  <!-- Base Wall -->
+  <rect width="1200" height="900" fill="#0f172a" />
+  <!-- Wall Color with gradient -->
+  <rect width="1200" height="600" fill="url(#wall-grad)" />
+  <!-- Wood Floor -->
+  <rect y="600" width="1200" height="300" fill="url(#floor-grad)" />
+  <!-- Baseboard -->
+  <rect y="590" width="1200" height="15" fill="#1e0b02" />
+  <rect y="588" width="1200" height="2" fill="#5c2509" opacity="0.3" />
+
+  <!-- Cozy Ceiling String Lights -->
+  <path d="M 0,35 Q 150,85 300,35 Q 450,85 600,35 Q 750,85 900,35 Q 1050,85 1200,35" fill="none" stroke="#334155" stroke-width="2" />
+  <!-- Bulbs -->
+  <g filter="url(#glow)">
+    <circle cx="120" cy="55" r="7" fill="#fde047" />
+    <circle cx="270" cy="50" r="7" fill="#67e8f9" />
+    <circle cx="420" cy="55" r="7" fill="#fde047" />
+    <circle cx="570" cy="50" r="7" fill="#f472b6" />
+    <circle cx="720" cy="55" r="7" fill="#fde047" />
+    <circle cx="870" cy="50" r="7" fill="#67e8f9" />
+    <circle cx="1020" cy="55" r="7" fill="#fde047" />
+    <circle cx="1170" cy="50" r="7" fill="#f472b6" />
+  </g>
+
+  <!-- Cozy Rug under the Boy -->
+  <ellipse cx="680" cy="740" rx="270" ry="80" fill="#115e59" opacity="0.8" />
+  <ellipse cx="680" cy="740" rx="250" ry="70" fill="none" stroke="#14b8a6" stroke-width="3" opacity="0.3" stroke-dasharray="15 10" />
+
+  <!-- ==================== BACKGROUND ELEMENTS ==================== -->
+
+  <!-- Left: Cozy Teenager's Bed -->
+  <!-- Bed Shadows -->
+  <rect x="290" y="550" width="230" height="80" fill="#000000" opacity="0.5" filter="url(#soft-shadow)" />
+  <!-- Bed Frame -->
+  <rect x="280" y="490" width="15" height="120" fill="#451a03" rx="4" />
+  <rect x="295" y="535" width="220" height="60" fill="#1e293b" rx="2" />
+  <!-- Mattress & Sheets -->
+  <rect x="295" y="515" width="220" height="30" fill="#f8fafc" rx="4" />
+  <!-- Colorful Blanket -->
+  <path d="M 360,515 L 515,515 L 515,585 C 515,590 510,595 500,595 L 360,595 Z" fill="#0369a1" />
+  <path d="M 390,515 L 515,515 L 515,595 L 430,595 Z" fill="#0284c7" />
+  <!-- Pillows -->
+  <rect x="305" y="490" width="55" height="30" rx="8" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1" />
+  <rect x="300" y="495" width="55" height="28" rx="8" fill="#ffffff" />
+
+  <!-- Above Bed: Floating Shelves -->
+  <rect x="320" y="270" width="180" height="10" fill="#451a03" rx="2" />
+  <!-- Books on Shelf -->
+  <rect x="340" y="220" width="14" height="50" fill="#ef4444" rx="1" />
+  <rect x="354" y="225" width="12" height="45" fill="#10b981" rx="1" />
+  <rect x="366" y="220" width="15" height="50" fill="#3b82f6" rx="1" />
+  <rect x="381" y="225" width="12" height="45" fill="#f59e0b" rx="1" transform="rotate(12 381 270)" />
+  <!-- Small Potted Succulent -->
+  <polygon points="440,270 460,270 457,250 443,250" fill="#b45309" />
+  <circle cx="450" cy="242" r="10" fill="#22c55e" />
+  <circle cx="444" cy="245" r="8" fill="#15803d" />
+  <circle cx="456" cy="244" r="7" fill="#16a34a" />
+
+  <!-- Rocket/Space Poster on Wall -->
+  <rect x="550" y="120" width="120" height="160" fill="#1e1b4b" stroke="#475569" stroke-width="6" rx="4" />
+  <!-- Poster Design -->
+  <circle cx="610" cy="200" r="35" fill="#f43f5e" opacity="0.3" />
+  <path d="M 610,145 C 618,170 622,190 622,215 L 598,215 C 598,190 602,170 610,145 Z" fill="#f8fafc" />
+  <path d="M 598,215 L 590,230 L 602,225 Z" fill="#ef4444" />
+  <path d="M 622,215 L 630,230 L 618,225 Z" fill="#ef4444" />
+  <circle cx="610" cy="180" r="4" fill="#38bdf8" />
+  <path d="M 610,215 Q 610,240 605,245 Q 610,240 615,245" fill="none" stroke="#f97316" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Right: Study Desk & Window -->
+  <!-- Window -->
+  <rect x="860" y="100" width="240" height="260" rx="12" fill="url(#sky-grad)" stroke="#1e293b" stroke-width="12" />
+  <!-- Window Grid -->
+  <line x1="980" y1="100" x2="980" y2="360" stroke="#1e293b" stroke-width="6" />
+  <line x1="860" y1="230" x2="1100" y2="230" stroke="#1e293b" stroke-width="6" />
+  <!-- Moon and Stars outside -->
+  <path d="M 910,140 A 20,20 0 1,0 935,165 A 16,16 0 1,1 910,140 Z" fill="#fef08a" />
+  <circle cx="1040" cy="150" r="2.5" fill="#ffffff" opacity="0.8" />
+  <circle cx="1000" cy="180" r="1.5" fill="#ffffff" opacity="0.5" />
+  <circle cx="1060" cy="280" r="2" fill="#ffffff" opacity="0.7" />
+  <!-- Cozy Curtains -->
+  <path d="M 850,90 Q 890,200 870,370 L 840,370 Z" fill="#0f766e" />
+  <path d="M 1110,90 Q 1070,200 1090,370 L 1120,370 Z" fill="#0f766e" />
+
+  <!-- The Study Desk -->
+  <!-- Desk Shadow -->
+  <rect x="850" y="550" width="320" height="210" fill="#000000" opacity="0.6" filter="url(#soft-shadow)" />
+  <!-- Desk Body -->
+  <rect x="870" y="540" width="290" height="20" fill="#7c2d12" rx="3" />
+  <rect x="890" y="560" width="20" height="200" fill="#451a03" />
+  <rect x="1110" y="560" width="20" height="200" fill="#451a03" />
+  <!-- Computer Monitor -->
+  <rect x="990" y="500" width="40" height="40" fill="#334155" />
+  <polygon points="980,540 1040,540 1030,530 990,530" fill="#1e293b" />
+  <rect x="930" y="380" width="160" height="120" rx="8" fill="#0f172a" stroke="#334155" stroke-width="4" />
+  <!-- PC Screen Glow / Wallpaper -->
+  <rect x="936" y="386" width="148" height="108" rx="4" fill="#1e1b4b" />
+  <circle cx="1010" cy="445" r="30" fill="#db2777" opacity="0.6" filter="url(#glow)" />
+  <polygon points="936,470 1084,470 1084,494 936,494" fill="#312e81" opacity="0.8" />
+  <path d="M 940,490 L 970,475 L 1010,488 L 1050,470 L 1080,490" fill="none" stroke="#22d3ee" stroke-width="2" />
+  <!-- Desk Accessories -->
+  <!-- Retro Desk Lamp -->
+  <path d="M 900,540 L 915,540 L 910,535 Z" fill="#ef4444" />
+  <path d="M 908,535 Q 890,470 920,440" fill="none" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+  <path d="M 915,435 L 935,445 L 925,455 L 905,445 Z" fill="#ef4444" />
+  <!-- Lamp Light Cone -->
+  <polygon points="923,448 830,590 1010,590" fill="url(#lamp-light)" />
+  <!-- Keyboard with RGB glowing dots -->
+  <rect x="960" y="530" width="70" height="10" rx="2" fill="#1e293b" />
+  <circle cx="970" cy="535" r="1.5" fill="#f43f5e" />
+  <circle cx="980" cy="535" r="1.5" fill="#10b981" />
+  <circle cx="990" cy="535" r="1.5" fill="#3b82f6" />
+  <circle cx="1000" cy="535" r="1.5" fill="#f59e0b" />
+  <circle cx="1010" cy="535" r="1.5" fill="#a855f7" />
+  <!-- Gaming Chair (Partially hidden) -->
+  <path d="M 920,580 L 965,580 L 960,690 L 915,690 Z" fill="#0f172a" />
+  <rect x="905" y="570" width="70" height="15" rx="5" fill="#ef4444" />
+  <rect x="925" y="470" width="10" height="100" rx="3" fill="#1e293b" />
+
+  <!-- Toys on the Floor -->
+  <!-- Soccer Ball -->
+  <circle cx="430" cy="740" r="22" fill="#ffffff" stroke="#334155" stroke-width="2" />
+  <polygon points="430,724 437,729 435,738 425,738 423,729" fill="#334155" />
+  <line x1="430" y1="724" x2="430" y2="718" stroke="#334155" stroke-width="2" />
+  <line x1="437" y1="729" x2="445" y2="725" stroke="#334155" stroke-width="2" />
+  <line x1="435" y1="738" x2="441" y2="746" stroke="#334155" stroke-width="2" />
+  <line x1="425" y1="738" x2="419" y2="746" stroke="#334155" stroke-width="2" />
+  <line x1="423" y1="729" x2="415" y2="725" stroke="#334155" stroke-width="2" />
+  <!-- Rubik's Cube -->
+  <g transform="translate(480, 725) rotate(15)">
+    <rect x="0" y="0" width="25" height="25" rx="3" fill="#0f172a" />
+    <rect x="2" y="2" width="6" height="6" fill="#ef4444" rx="1" />
+    <rect x="10" y="2" width="6" height="6" fill="#3b82f6" rx="1" />
+    <rect x="18" y="2" width="6" height="6" fill="#10b981" rx="1" />
+    <rect x="2" y="10" width="6" height="6" fill="#f59e0b" rx="1" />
+    <rect x="10" y="10" width="6" height="6" fill="#ef4444" rx="1" />
+    <rect x="18" y="10" width="6" height="6" fill="#ffffff" rx="1" />
+    <rect x="2" y="18" width="6" height="6" fill="#10b981" rx="1" />
+    <rect x="10" y="18" width="6" height="6" fill="#f59e0b" rx="1" />
+    <rect x="18" y="18" width="6" height="6" fill="#3b82f6" rx="1" />
+  </g>
+
+
+  <!-- ==================== THE MOTHER (At the door) ==================== -->
+  <!-- Door Frame & Wall Cutout on Left -->
+  <g id="doorway">
+    <!-- Hallway Background (bright and warm) -->
+    <rect x="60" y="120" width="200" height="480" fill="url(#hall-grad)" />
+    <!-- Hallway Floor -->
+    <polygon points="60,600 260,600 240,650 60,650" fill="#fcd34d" opacity="0.7" />
+    
+    <!-- Opened Door Panel (Swinging Outward) -->
+    <polygon points="60,120 15,140 15,620 60,600" fill="#7c2d12" stroke="#451a03" stroke-width="2" />
+    <circle cx="30" cy="380" r="4" fill="#fbbf24" /> <!-- Door Handle -->
+
+    <!-- Door Frame Molding (Front) -->
+    <path d="M 55,600 L 55,115 L 265,115 L 265,600" fill="none" stroke="#e2e8f0" stroke-width="10" stroke-linejoin="round" />
+    <path d="M 55,600 L 55,115 L 265,115 L 265,600" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linejoin="round" />
+    
+    <!-- Shadow cast by Mother -->
+    <ellipse cx="230" cy="610" rx="35" ry="12" fill="#000000" opacity="0.3" filter="url(#soft-shadow)" />
+
+    <!-- Mother Figure -->
+    <g id="mother">
+      <!-- Legs/Pants (Dark Slate Blue) -->
+      <path d="M 210,510 L 238,510 L 246,605 C 246,608 238,608 238,605 L 227,550 L 217,605 C 217,608 209,608 209,605 Z" fill="#334155" />
+      <!-- Shoes -->
+      <path d="M 207,605 Q 213,600 219,605 Z" fill="#475569" />
+      <path d="M 236,605 Q 242,600 248,605 Z" fill="#475569" />
+
+      <!-- Torso & Cozy Knit Sweater (Warm Coral Peach) -->
+      <path d="M 198,390 C 193,430 205,510 205,520 L 242,520 C 242,510 252,430 248,390 Z" fill="#fda4af" />
+      <!-- Left Arm (Holding Cozy Mug) -->
+      <path d="M 202,392 Q 182,435 210,458" fill="none" stroke="#fda4af" stroke-width="14" stroke-linecap="round" />
+      <circle cx="210" cy="460" r="7" fill="#ffedd5" />
+      <!-- Teal Mug -->
+      <rect x="210" y="448" width="16" height="20" rx="3" fill="#0d9488" />
+      <path d="M 226,453 Q 231,458 226,463" fill="none" stroke="#0d9488" stroke-width="2.5" />
+      <!-- Steam from Mug -->
+      <path d="M 214,440 Q 216,435 214,430 M 222,442 Q 224,437 222,432" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
+
+      <!-- Right Arm (Leaning gently on the Door Frame) -->
+      <!-- Shoulder to elbow, elbow resting on frame at X=260 -->
+      <path d="M 246,392 Q 266,430 254,475" fill="none" stroke="#fda4af" stroke-width="15" stroke-linecap="round" />
+      <!-- Hand resting on frame -->
+      <circle cx="253" cy="480" r="8" fill="#ffedd5" />
+
+      <!-- Neck -->
+      <rect x="219" y="365" width="12" height="28" fill="#ffedd5" />
+      <rect x="219" y="375" width="12" height="15" fill="#fdb885" opacity="0.5" /> <!-- Shadow -->
+
+      <!-- Head & Face Profile (Looking right) -->
+      <circle cx="225" cy="345" r="22" fill="#ffedd5" />
+      <!-- Nose profile -->
+      <path d="M 245,348 L 251,352 L 245,356 Z" fill="#ffedd5" />
+      
+      <!-- Gentle, Happy Eyes (Closed-eye smile) -->
+      <path d="M 233,346 Q 237,341 241,346" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" />
+      <!-- Soft Smile -->
+      <path d="M 235,358 Q 240,361 243,357" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round" />
+      <!-- Rosy Cheek -->
+      <circle cx="231" cy="353" r="4.5" fill="#f43f5e" opacity="0.4" />
+
+      <!-- Hair bun & sleek dark hair -->
+      <!-- Back hair & Bun -->
+      <circle cx="203" cy="336" r="10" fill="#27272a" />
+      <!-- Hair Base -->
+      <path d="M 205,350 C 200,320 220,315 240,323 C 248,335 245,355 240,360 C 235,350 228,335 215,337 C 208,338 206,345 205,350 Z" fill="#27272a" />
+    </g>
+  </g>
+
+
+  <!-- ==================== THE SON (Active VR Player) ==================== -->
+  <!-- Shadow cast by Son -->
+  <ellipse cx="660" cy="750" rx="90" ry="25" fill="#000000" opacity="0.6" filter="url(#soft-shadow)" />
+
+  <g id="son">
+    <!-- Active Legs (Wide stance, leaning forward/dodging) -->
+    <!-- Left Leg (Bent Forward) -->
+    <path d="M 605,620 L 550,715 L 585,720 L 635,625 Z" fill="#1d4ed8" />
+    <!-- Knee shadow/crease -->
+    <path d="M 575,670 L 595,678" fill="none" stroke="#1e3a8a" stroke-width="4" stroke-linecap="round" />
+    
+    <!-- Right Leg (Extended Backwards) -->
+    <path d="M 655,620 L 730,710 L 705,718 L 630,625 Z" fill="#1d4ed8" />
+    <!-- Knee shadow -->
+    <path d="M 685,665 L 705,680" fill="none" stroke="#1e3a8a" stroke-width="4" stroke-linecap="round" />
+
+    <!-- Left Sneaker (Red and White sporty design) -->
+    <path d="M 550,715 C 535,715 530,732 570,732 C 580,732 585,722 575,715 Z" fill="#ef4444" />
+    <path d="M 532,727 H 578 V 732 H 532 Z" fill="#ffffff" rx="1" /> <!-- Sole -->
+    
+    <!-- Right Sneaker -->
+    <path d="M 705,718 C 720,708 745,723 735,733 C 725,738 710,738 705,718 Z" fill="#ef4444" />
+    <path d="M 710,729 L 740,723 L 742,727 L 712,733 Z" fill="#ffffff" /> <!-- Sole -->
+
+    <!-- Torso (Dynamic orange hoodie, leaning forward) -->
+    <path d="M 600,620 Q 635,625 665,620 L 700,515 Q 655,495 620,510 Z" fill="#f59e0b" />
+    <!-- Hoodie Shadow Layer -->
+    <path d="M 605,610 Q 635,615 655,610 L 680,535 Q 650,520 625,530 Z" fill="#d97706" />
+    <!-- White Hood Strings -->
+    <path d="M 645,510 Q 640,545 635,550 M 660,513 Q 665,548 668,553" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
+
+    <!-- Left Arm & VR Controller (Reaching forward/left) -->
+    <path d="M 620,510 Q 565,510 500,490" fill="none" stroke="#f59e0b" stroke-width="26" stroke-linecap="round" />
+    <!-- Sleeve Cuff -->
+    <path d="M 505,492 C 502,485 498,495 501,490" fill="none" stroke="#d97706" stroke-width="28" stroke-linecap="round" />
+    <!-- Hand -->
+    <circle cx="485" cy="485" r="11" fill="#ffedd5" />
+    <!-- VR Controller (Left) -->
+    <g transform="translate(480, 465) rotate(-20)">
+      <rect x="0" y="0" width="13" height="26" rx="4" fill="#1e293b" />
+      <!-- Glowing tracking ring -->
+      <ellipse cx="6" cy="5" rx="22" ry="9" fill="none" stroke="#67e8f9" stroke-width="4.5" filter="url(#glow)" />
+      <!-- Controller strap -->
+      <path d="M 6,24 Q 6,36 12,32" fill="none" stroke="#475569" stroke-width="2" />
+    </g>
+
+    <!-- Right Arm & VR Controller (Swinging upward/right) -->
+    <path d="M 690,518 Q 755,490 815,425" fill="none" stroke="#f59e0b" stroke-width="26" stroke-linecap="round" />
+    <!-- Sleeve Cuff -->
+    <path d="M 810,430 C 814,425 808,435 812,430" fill="none" stroke="#d97706" stroke-width="28" stroke-linecap="round" />
+    <!-- Hand -->
+    <circle cx="826" cy="415" r="11" fill="#ffedd5" />
+    <!-- VR Controller (Right) -->
+    <g transform="translate(822, 395) rotate(35)">
+      <rect x="0" y="0" width="13" height="26" rx="4" fill="#1e293b" />
+      <!-- Glowing tracking ring -->
+      <ellipse cx="6" cy="5" rx="22" ry="9" fill="none" stroke="#f472b6" stroke-width="4.5" filter="url(#glow)" />
+      <!-- Controller strap -->
+      <path d="M 6,24 Q 6,36 0,32" fill="none" stroke="#475569" stroke-width="2" />
+    </g>
+
+    <!-- Neck -->
+    <rect x="645,455" width="18" height="25" fill="#fdb885" transform="rotate(12 654 467)" />
+
+    <!-- Head & VR Headset -->
+    <g id="boy-head">
+      <!-- Head Base -->
+      <circle cx="665" cy="430" r="23" fill="#ffedd5" />
+      <!-- Big happy grin (visible under headset) -->
+      <path d="M 670,442 Q 682,452 688,438" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round" />
+      
+      <!-- Messy Teenager Hair -->
+      <path d="M 638,422 C 632,400 640,390 650,395 C 652,385 665,387 672,397 C 680,393 686,403 683,413 C 673,408 665,412 638,422 Z" fill="#27272a" />
+      
+      <!-- Sleek VR Headset (White with glowing cyan visor face) -->
+      <!-- Headset Strap -->
+      <path d="M 648,409 Q 635,415 642,425" fill="none" stroke="#0f172a" stroke-width="7" stroke-linecap="round" />
+      <!-- Visor Body -->
+      <path d="M 650,405 L 696,415 L 686,444 L 642,434 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+      <!-- Front Glass Faceplate -->
+      <path d="M 674,410 L 696,415 L 686,444 L 666,439 Z" fill="#0f172a" />
+      <!-- Glowing LED Light Strip on Headset -->
+      <path d="M 681,417 L 691,419 M 677,431 L 682,432" fill="none" stroke="#67e8f9" stroke-width="3.5" stroke-linecap="round" filter="url(#glow)" />
+    </g>
+  </g>
+
+
+  <!-- ==================== IMMERSIVE VR VISUALS (Floating in Air) ==================== -->
+  <!-- These elements visually represent the VR game only the boy can see, adding rich storytelling -->
+  
+  <!-- Glowing neon action lines / slash trails -->
+  <path d="M 830,410 C 760,350 680,340 600,370" fill="none" stroke="#f472b6" stroke-width="5" stroke-linecap="round" stroke-dasharray="12 6" opacity="0.6" filter="url(#glow)" />
+  <path d="M 470,470 C 530,410 600,410 650,420" fill="none" stroke="#67e8f9" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 4" opacity="0.5" filter="url(#glow)" />
+
+  <!-- Floating Virtual target shield/ring -->
+  <circle cx="850" cy="380" r="45" fill="none" stroke="#67e8f9" stroke-width="3" stroke-dasharray="20 40" opacity="0.6" filter="url(#glow)" />
+  <circle cx="850" cy="380" r="35" fill="none" stroke="#f472b6" stroke-width="1.5" opacity="0.4" filter="url(#glow)" />
+
+  <!-- Floating Holographic Game UI Elements -->
+  <!-- Score Counter -->
+  <g transform="translate(710, 270)" filter="url(#glow)" opacity="0.8">
+    <rect width="90" height="30" rx="6" fill="#0f172a" stroke="#67e8f9" stroke-width="2" />
+    <text x="45" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#67e8f9" text-anchor="middle">SCORE: 9850</text>
+  </g>
+
+  <!-- Glowing virtual geometric shapes / cubes (Beat Saber style) -->
+  <!-- Blue glowing cube (right) -->
+  <g transform="translate(890, 390) rotate(25)" filter="url(#glow)">
+    <rect width="25" height="25" rx="4" fill="#0891b2" stroke="#67e8f9" stroke-width="2" opacity="0.8" />
+    <line x1="2" y1="12" x2="23" y2="12" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+  </g>
+  <!-- Pink glowing cube (left) -->
+  <g transform="translate(420, 420) rotate(-15)" filter="url(#glow)">
+    <rect width="25" height="25" rx="4" fill="#db2777" stroke="#f472b6" stroke-width="2" opacity="0.8" />
+    <line x1="12" y1="2" x2="12" y2="23" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+  </g>
+
+  <!-- Ambient glowing floating particles -->
+  <g filter="url(#glow)">
+    <circle cx="580" cy="390" r="3" fill="#67e8f9" opacity="0.8" />
+    <circle cx="740" cy="350" r="4" fill="#f472b6" opacity="0.7" />
+    <circle cx="790" cy="480" r="3" fill="#67e8f9" opacity="0.6" />
+    <circle cx="510" cy="330" r="5" fill="#f472b6" opacity="0.5" />
+    <polygon points="690,320 695,330 685,330" fill="#67e8f9" opacity="0.7" />
+    <polygon points="820,310 825,318 815,318" fill="#f472b6" opacity="0.6" />
+  </g>
+
+  <!-- Light flares projecting from VR Controllers -->
+  <circle cx="482" cy="478" r="60" fill="url(#vr-cyan)" opacity="0.45" />
+  <circle cx="830" cy="425" r="70" fill="url(#vr-magenta)" opacity="0.4" />
+
+</svg>

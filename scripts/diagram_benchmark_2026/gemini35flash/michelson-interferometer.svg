@@ -1,0 +1,406 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Fonts Import and Styles -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap');
+      .title { font-family: 'Montserrat', sans-serif; font-weight: 700; fill: #ffffff; letter-spacing: 3px; font-size: 28px; }
+      .subtitle { font-family: 'Montserrat', sans-serif; font-weight: 300; fill: #64748b; letter-spacing: 2px; font-size: 11px; }
+      .label { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; fill: #f8fafc; letter-spacing: 0.5px; }
+      .sublabel { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 11px; fill: #94a3b8; }
+      .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #38bdf8; }
+      .formula { font-family: 'JetBrains Mono', monospace; font-size: 12px; fill: #fb7185; }
+    </style>
+
+    <!-- Glowing Laser Filters -->
+    <filter id="laser-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="laser-glow-intense" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur1" />
+      <feGaussianBlur stdDeviation="3" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur1" />
+        <feMergeNode in="blur2" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Color Gradients -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#05070f" />
+      <stop offset="50%" stop-color="#0b0f19" />
+      <stop offset="100%" stop-color="#05070f" />
+    </linearGradient>
+    <linearGradient id="laser-body" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569" />
+      <stop offset="25%" stop-color="#1e293b" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="75%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+    <linearGradient id="laser-tip" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#94a3b8" />
+      <stop offset="50%" stop-color="#475569" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+    <linearGradient id="mount-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="brass-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="mirror-glass" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(56, 189, 248, 0.5)" />
+      <stop offset="100%" stop-color="rgba(56, 189, 248, 0.1)" />
+    </linearGradient>
+    <linearGradient id="mirror-glass-v" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(56, 189, 248, 0.5)" />
+      <stop offset="100%" stop-color="rgba(56, 189, 248, 0.1)" />
+    </linearGradient>
+    <linearGradient id="bs-glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(56, 189, 248, 0.6)" />
+      <stop offset="30%" stop-color="rgba(56, 189, 248, 0.2)" />
+      <stop offset="70%" stop-color="rgba(244, 63, 94, 0.2)" />
+      <stop offset="100%" stop-color="rgba(244, 63, 94, 0.6)" />
+    </linearGradient>
+
+    <!-- Lab Table Breadboard Pattern -->
+    <pattern id="breadboard" width="50" height="50" patternUnits="userSpaceOnUse">
+      <circle cx="25" cy="25" r="2.5" fill="#1e293b" opacity="0.4" />
+      <circle cx="25" cy="25" r="1.2" fill="#090d16" opacity="0.6" />
+    </pattern>
+
+    <!-- Clip Path for Observation Screen -->
+    <clipPath id="screen-clip">
+      <rect x="530" y="690" width="140" height="90" rx="4" />
+    </clipPath>
+
+    <!-- Double-ended Arrow Markers -->
+    <marker id="arrow-left" viewBox="0 0 10 10" refX="0" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 10 1.5 L 2 5 L 10 8.5 Z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrow-right" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 Z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <!-- ==================== BACKGROUND ==================== -->
+  <!-- Dark Premium Canvas -->
+  <rect width="1200" height="900" fill="url(#bg-grad)" />
+  <!-- Optical Table Grid Pattern -->
+  <rect width="1200" height="900" fill="url(#breadboard)" />
+
+  <!-- Outer Elegant Frame -->
+  <rect x="20" y="20" width="1160" height="860" rx="8" fill="none" stroke="#1e293b" stroke-width="1.5" opacity="0.8"/>
+  <path d="M 30 50 L 30 30 L 50 30" stroke="#475569" stroke-width="2.5" fill="none"/>
+  <path d="M 1150 30 L 1170 30 L 1170 50" stroke="#475569" stroke-width="2.5" fill="none"/>
+  <path d="M 30 850 L 30 870 L 50 870" stroke="#475569" stroke-width="2.5" fill="none"/>
+  <path d="M 1150 870 L 1170 870 L 1170 850" stroke="#475569" stroke-width="2.5" fill="none"/>
+
+  <!-- Subtle Blueprint Graphics in Background -->
+  <circle cx="600" cy="480" r="160" fill="none" stroke="#1e293b" stroke-width="1.5" stroke-dasharray="6,12" opacity="0.3"/>
+  <circle cx="600" cy="480" r="320" fill="none" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,8" opacity="0.2"/>
+  <line x1="100" y1="480" x2="1100" y2="480" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,8" opacity="0.2"/>
+  <line x1="600" y1="80" x2="600" y2="820" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,8" opacity="0.2"/>
+  <line x1="320" y1="200" x2="880" y2="760" stroke="#1e293b" stroke-width="0.8" stroke-dasharray="3,6" opacity="0.15"/>
+  <line x1="320" y1="760" x2="880" y2="200" stroke="#1e293b" stroke-width="0.8" stroke-dasharray="3,6" opacity="0.15"/>
+
+  <!-- ==================== HEADER INFO ==================== -->
+  <g transform="translate(60, 75)" filter="url(#shadow)">
+    <text x="0" y="0" class="title">MICHELSON INTERFEROMETER</text>
+    <text x="0" y="20" class="subtitle">HIGH-PRECISION WAVE INTERFEROMETRY SYSTEM SCHEMATIC</text>
+    <!-- Cyan decorative line -->
+    <line x1="0" y1="32" x2="180" y2="32" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- ==================== LASER SOURCE (LEFT) ==================== -->
+  <g transform="translate(130, 440)" filter="url(#shadow)">
+    <!-- Base Plate/Mount -->
+    <rect x="-10" y="10" width="130" height="60" rx="4" fill="url(#mount-grad)" stroke="#475569" stroke-width="1.5"/>
+    <rect x="-5" y="15" width="120" height="50" rx="2" fill="#0b0f19" opacity="0.6"/>
+    <!-- Cooling Fins -->
+    <line x1="10" y1="10" x2="10" y2="70" stroke="#334155" stroke-width="2"/>
+    <line x1="20" y1="10" x2="20" y2="70" stroke="#334155" stroke-width="2"/>
+    <line x1="30" y1="10" x2="30" y2="70" stroke="#334155" stroke-width="2"/>
+    <line x1="40" y1="10" x2="40" y2="70" stroke="#334155" stroke-width="2"/>
+    <line x1="50" y1="10" x2="50" y2="70" stroke="#334155" stroke-width="2"/>
+    <!-- Main Laser Tube -->
+    <rect x="0" y="20" width="105" height="40" rx="3" fill="url(#laser-body)" stroke="#64748b" stroke-width="1"/>
+    <!-- Metal Aperture Collar -->
+    <rect x="105" y="25" width="15" height="30" rx="2" fill="url(#laser-tip)" stroke="#475569" stroke-width="1"/>
+    <circle cx="120" cy="40" r="10" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <!-- Power Indication LED -->
+    <circle cx="15" cy="30" r="3" fill="#22c55e" filter="url(#soft-glow)"/>
+    <circle cx="15" cy="50" r="3" fill="#3b82f6" filter="url(#soft-glow)"/>
+    <!-- Labels -->
+    <text x="25" y="44" font-family="'JetBrains Mono', monospace" font-size="9" fill="#94a3b8" letter-spacing="0.5">LASER ON</text>
+    <text x="60" y="-15" class="label" text-anchor="middle">Laser Source</text>
+    <text x="60" y="0" class="sublabel" text-anchor="middle">He-Ne (λ = 632.8 nm)</text>
+  </g>
+
+  <!-- ==================== BEAM SPLITTER (CENTER) ==================== -->
+  <g transform="translate(600, 480)" filter="url(#shadow)">
+    <!-- Rotary Stage Base -->
+    <circle cx="0" cy="0" r="48" fill="url(#mount-grad)" stroke="#475569" stroke-width="1.5"/>
+    <circle cx="0" cy="0" r="38" fill="#0b0f19" opacity="0.8" stroke="#1e293b" stroke-width="1"/>
+    <!-- Angular ticks around stage -->
+    <line x1="0" y1="-38" x2="0" y2="-44" stroke="#475569" stroke-width="1"/>
+    <line x1="38" y1="0" x2="44" y2="0" stroke="#475569" stroke-width="1"/>
+    <line x1="0" y1="38" x2="0" y2="44" stroke="#475569" stroke-width="1"/>
+    <line x1="-38" y1="0" x2="-44" y2="0" stroke="#475569" stroke-width="1"/>
+    <line x1="27" y1="-27" x2="31" y2="-31" stroke="#475569" stroke-width="1"/>
+    <line x1="-27" y1="-27" x2="-31" y2="-31" stroke="#475569" stroke-width="1"/>
+    <line x1="27" y1="27" x2="31" y2="31" stroke="#475569" stroke-width="1"/>
+    <line x1="-27" y1="27" x2="-31" y2="31" stroke="#475569" stroke-width="1"/>
+
+    <!-- Brass Adjustment Thumb-screws -->
+    <circle cx="-32" cy="-32" r="7" fill="url(#brass-grad)" stroke="#78350f" stroke-width="0.5"/>
+    <circle cx="-32" cy="-32" r="3" fill="#78350f" />
+    <circle cx="32" cy="32" r="7" fill="url(#brass-grad)" stroke="#78350f" stroke-width="0.5"/>
+    <circle cx="32" cy="32" r="3" fill="#78350f" />
+
+    <!-- Glass Beam Splitter Slab (Rotated 45 Degrees) -->
+    <g transform="rotate(45)">
+      <!-- Optic Glass Chassis -->
+      <rect x="-8" y="-45" width="16" height="90" rx="2" fill="url(#bs-glass)" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" filter="url(#soft-glow)" />
+      <!-- Semi-Reflective Interface Line -->
+      <line x1="0" y1="-45" x2="0" y2="45" stroke="#f43f5e" stroke-width="2.5" opacity="0.8" filter="url(#laser-glow)"/>
+      <line x1="0" y1="-45" x2="0" y2="45" stroke="#38bdf8" stroke-width="1.2" opacity="0.9"/>
+    </g>
+
+    <!-- Descriptions and Arrows -->
+    <text x="-65" y="-55" class="label" text-anchor="end">Beam Splitter</text>
+    <text x="-65" y="-40" class="sublabel" text-anchor="end">50:50 Non-Polarizing</text>
+    <text x="25" y="-20" class="mono" font-size="10" opacity="0.8">R = 50%</text>
+    <text x="25" y="32" class="mono" font-size="10" opacity="0.8">T = 50%</text>
+  </g>
+
+  <!-- ==================== MIRROR A (MOVABLE, RIGHT) ==================== -->
+  <g transform="translate(1010, 480)" filter="url(#shadow)">
+    <!-- Base / Translation Slide Rail -->
+    <rect x="15" y="-55" width="55" height="110" rx="3" fill="url(#mount-grad)" stroke="#475569" stroke-width="1.5"/>
+    <!-- Sliding Guides -->
+    <rect x="-5" y="-25" width="22" height="8" fill="#64748b" rx="1"/>
+    <rect x="-5" y="17" width="22" height="8" fill="#64748b" rx="1"/>
+    
+    <!-- Micrometer Actuator Cylinder -->
+    <rect x="70" y="-15" width="35" height="30" rx="2" fill="url(#laser-body)" stroke="#475569" stroke-width="1"/>
+    <!-- Micrometer knurling lines -->
+    <line x1="80" y1="-15" x2="80" y2="15" stroke="#1e293b" stroke-width="1"/>
+    <line x1="86" y1="-15" x2="86" y2="15" stroke="#1e293b" stroke-width="1"/>
+    <line x1="92" y1="-15" x2="92" y2="15" stroke="#1e293b" stroke-width="1"/>
+    <line x1="98" y1="-15" x2="98" y2="15" stroke="#1e293b" stroke-width="1"/>
+    
+    <!-- Mirror Mount Bracket -->
+    <rect x="-15" y="-45" width="12" height="90" rx="2" fill="url(#mount-grad)" stroke="#475569" stroke-width="1.5"/>
+    <!-- Mirror Substrate (Glass) -->
+    <rect x="-22" y="-38" width="7" height="76" fill="url(#mirror-glass)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="0.8"/>
+    <!-- Reflective Coating (Silver Surface facing Left) -->
+    <line x1="-22" y1="-38" x2="-22" y2="38" stroke="#ffffff" stroke-width="2" filter="url(#soft-glow)"/>
+    <line x1="-22" y1="-38" x2="-22" y2="38" stroke="#e2e8f0" stroke-width="0.8"/>
+
+    <!-- Path-Length Shift Indicator (Δd) -->
+    <g transform="translate(45, -75)">
+      <line x1="-25" y1="0" x2="25" y2="0" stroke="#38bdf8" stroke-width="2" marker-start="url(#arrow-left)" marker-end="url(#arrow-right)"/>
+      <text x="0" y="-10" class="mono" text-anchor="middle">Δd (Movable)</text>
+    </g>
+
+    <!-- Labels -->
+    <text x="25" y="80" class="label" text-anchor="middle">Mirror A</text>
+    <text x="25" y="95" class="sublabel" text-anchor="middle">(Movable Reference)</text>
+  </g>
+
+  <!-- ==================== MIRROR B (FIXED, TOP) ==================== -->
+  <g transform="translate(600, 150)" filter="url(#shadow)">
+    <!-- Fixed Mounting Base -->
+    <rect x="-55" y="-70" width="110" height="45" rx="3" fill="url(#mount-grad)" stroke="#475569" stroke-width="1.5"/>
+    <!-- Heavy Solid Posts -->
+    <rect x="-35" y="-25" width="12" height="20" fill="#334155" stroke="#475569" stroke-width="1"/>
+    <rect x="23" y="-25" width="12" height="20" fill="#334155" stroke="#475569" stroke-width="1"/>
+    
+    <!-- Mirror Mount Bracket -->
+    <rect x="-45" y="-5" width="90" height="12" rx="2" fill="url(#mount-grad)" stroke="#475569" stroke-width="1.5"/>
+    <!-- Mirror Substrate (Glass) -->
+    <rect x="-38" y="7" width="76" height="7" fill="url(#mirror-glass-v)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="0.8"/>
+    <!-- Reflective Coating (Silver Surface facing Down) -->
+    <line x1="-38" y1="14" x2="38" y2="14" stroke="#ffffff" stroke-width="2" filter="url(#soft-glow)"/>
+    <line x1="-38" y1="14" x2="38" y2="14" stroke="#e2e8f0" stroke-width="0.8"/>
+
+    <!-- Labels -->
+    <text x="0" y="-85" class="label" text-anchor="middle">Mirror B</text>
+    <text x="0" y="-70" class="sublabel" text-anchor="middle">(Fixed Reference)</text>
+  </g>
+
+  <!-- ==================== SCREEN / DETECTOR (BOTTOM) ==================== -->
+  <g transform="translate(600, 755)" filter="url(#shadow)">
+    <!-- Heavy Duty Metal Base -->
+    <path d="M -45 65 L 45 65 L 30 35 L -30 35 Z" fill="url(#mount-grad)" stroke="#475569" stroke-width="1.5"/>
+    <rect x="-10" y="10" width="20" height="30" fill="#334155" stroke="#475569" stroke-width="1"/>
+    <!-- Detector Housing -->
+    <rect x="-80" y="-75" width="160" height="100" rx="6" fill="url(#mount-grad)" stroke="#475569" stroke-width="2"/>
+    <!-- Projection Screen Dark Area -->
+    <rect x="-70" y="-65" width="140" height="80" rx="3" fill="#020617" stroke="#1e293b" stroke-width="1.5"/>
+
+    <!-- Circular Interference Fringe Projection -->
+    <g clip-path="url(#screen-clip)">
+      <!-- Bright glowing red fringes centered in detector screen -->
+      <circle cx="0" cy="-25" r="4" fill="#ff3366" filter="url(#laser-glow)" opacity="0.95"/>
+      <circle cx="0" cy="-25" r="14" fill="none" stroke="#ff3366" stroke-width="4.5" filter="url(#laser-glow)" opacity="0.85"/>
+      <circle cx="0" cy="-25" r="26" fill="none" stroke="#ff3366" stroke-width="5.5" filter="url(#laser-glow)" opacity="0.65"/>
+      <circle cx="0" cy="-25" r="38" fill="none" stroke="#ff3366" stroke-width="6.5" filter="url(#laser-glow)" opacity="0.45"/>
+      <circle cx="0" cy="-25" r="50" fill="none" stroke="#ff3366" stroke-width="7.5" filter="url(#laser-glow)" opacity="0.25"/>
+      <circle cx="0" cy="-25" r="62" fill="none" stroke="#ff3366" stroke-width="8.5" filter="url(#laser-glow)" opacity="0.10"/>
+    </g>
+
+    <!-- Labels -->
+    <text x="0" y="90" class="label" text-anchor="middle">Observation Screen</text>
+    <text x="0" y="105" class="sublabel" text-anchor="middle">Interference Fringe Pattern</text>
+  </g>
+
+  <!-- ==================== LASER BEAMS & PROPAGATION PATHS ==================== -->
+  
+  <!-- === 1. DEEP OUTER GLOW (Rendered underneath everything) === -->
+  <g filter="url(#laser-glow-intense)" opacity="0.4">
+    <!-- Input: Laser -> BS -->
+    <line x1="250" y1="480" x2="600" y2="480" stroke="#ff0055" stroke-width="8"/>
+    <!-- Path A (Outgoing): BS -> Mirror A (y-offset = -3px) -->
+    <line x1="600" y1="477" x2="988" y2="477" stroke="#ff0055" stroke-width="8"/>
+    <!-- Path A (Returning): Mirror A -> BS (y-offset = +3px) -->
+    <line x1="988" y1="483" x2="597" y2="483" stroke="#ff0055" stroke-width="8"/>
+    <!-- Path A reflected downward: BS -> Screen (x-offset = -3px) -->
+    <line x1="597" y1="483" x2="597" y2="690" stroke="#ff0055" stroke-width="8"/>
+
+    <!-- Path B (Outgoing): BS -> Mirror B (x-offset = -3px) -->
+    <line x1="600" y1="480" x2="597" y2="477" stroke="#ff0055" stroke-width="8"/>
+    <line x1="597" y1="477" x2="597" y2="164" stroke="#ff0055" stroke-width="8"/>
+    <!-- Path B (Returning): Mirror B -> BS (x-offset = +3px) -->
+    <line x1="603" y1="164" x2="603" y2="477" stroke="#ff0055" stroke-width="8"/>
+    <!-- Path B transmitted downward: BS -> Screen (x-offset = +3px) -->
+    <line x1="603" y1="477" x2="603" y2="690" stroke="#ff0055" stroke-width="8"/>
+  </g>
+
+  <!-- === 2. MEDIUM CORE GLOW === -->
+  <g filter="url(#laser-glow)" opacity="0.85">
+    <!-- Input: Laser -> BS -->
+    <line x1="250" y1="480" x2="600" y2="480" stroke="#ff3366" stroke-width="3.5"/>
+    <!-- Path A (Outgoing): BS -> Mirror A -->
+    <line x1="600" y1="477" x2="988" y2="477" stroke="#ff3366" stroke-width="3.5"/>
+    <!-- Path A (Returning): Mirror A -> BS -->
+    <line x1="988" y1="483" x2="597" y2="483" stroke="#ff3366" stroke-width="3.5"/>
+    <!-- Path A reflected downward: BS -> Screen -->
+    <line x1="597" y1="483" x2="597" y2="690" stroke="#ff3366" stroke-width="3.5"/>
+
+    <!-- Path B (Outgoing): BS -> Mirror B -->
+    <line x1="600" y1="480" x2="597" y2="477" stroke="#ff3366" stroke-width="3.5"/>
+    <line x1="597" y1="477" x2="597" y2="164" stroke="#ff3366" stroke-width="3.5"/>
+    <!-- Path B (Returning): Mirror B -> BS -->
+    <line x1="603" y1="164" x2="603" y2="477" stroke="#ff3366" stroke-width="3.5"/>
+    <!-- Path B transmitted downward: BS -> Screen -->
+    <line x1="603" y1="477" x2="603" y2="690" stroke="#ff3366" stroke-width="3.5"/>
+  </g>
+
+  <!-- === 3. SHARP WHITE CORE === -->
+  <g opacity="0.95">
+    <!-- Input: Laser -> BS -->
+    <line x1="250" y1="480" x2="600" y2="480" stroke="#ffffff" stroke-width="1.2"/>
+    <!-- Path A (Outgoing): BS -> Mirror A -->
+    <line x1="600" y1="477" x2="988" y2="477" stroke="#ffffff" stroke-width="1.2"/>
+    <!-- Path A (Returning): Mirror A -> BS -->
+    <line x1="988" y1="483" x2="597" y2="483" stroke="#ffffff" stroke-width="1.2"/>
+    <!-- Path A reflected downward: BS -> Screen -->
+    <line x1="597" y1="483" x2="597" y2="690" stroke="#ffffff" stroke-width="1.2"/>
+
+    <!-- Path B (Outgoing): BS -> Mirror B -->
+    <line x1="600" y1="480" x2="597" y2="477" stroke="#ffffff" stroke-width="1.2"/>
+    <line x1="597" y1="477" x2="597" y2="164" stroke="#ffffff" stroke-width="1.2"/>
+    <!-- Path B (Returning): Mirror B -> BS -->
+    <line x1="603" y1="164" x2="603" y2="477" stroke="#ffffff" stroke-width="1.2"/>
+    <!-- Path B transmitted downward: BS -> Screen -->
+    <line x1="603" y1="477" x2="603" y2="690" stroke="#ffffff" stroke-width="1.2"/>
+  </g>
+
+  <!-- === 4. DIRECTION FLOW CHEVRONS === -->
+  <g opacity="0.9">
+    <!-- Laser Source to Beam Splitter (Right) -->
+    <path d="M 400 475 L 406 480 L 400 485 M 408 475 L 414 480 L 408 485" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)"/>
+    
+    <!-- Path A Outgoing to Mirror A (Right) -->
+    <path d="M 780 472 L 786 477 L 780 482 M 788 472 L 794 477 L 788 482" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)"/>
+    
+    <!-- Path A Returning to BS (Left) -->
+    <path d="M 830 488 L 824 483 L 830 478 M 822 488 L 816 483 L 822 478" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)"/>
+    
+    <!-- Path B Outgoing to Mirror B (Up) -->
+    <path d="M 592 310 L 597 304 L 602 310 M 592 318 L 597 312 L 602 318" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)"/>
+    
+    <!-- Path B Returning to BS (Down) -->
+    <path d="M 608 340 L 603 346 L 598 340 M 608 332 L 603 338 L 598 332" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)"/>
+    
+    <!-- Recombined Beams Down to Screen -->
+    <!-- Left component (Path A) -->
+    <path d="M 592 590 L 597 596 L 602 590" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)"/>
+    <!-- Right component (Path B) -->
+    <path d="M 598 592 L 603 598 L 608 592" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft-glow)"/>
+  </g>
+
+  <!-- ==================== ANNOTATIONS AND FORMULAS ==================== -->
+  
+  <!-- Waveform Overlay Schematic on Horizontal Arm (Path A) -->
+  <g transform="translate(680, 465)" opacity="0.3">
+    <path d="M 0 0 C 10 -15, 20 15, 30 0 S 50 -15, 60 0 S 80 -15, 90 0" fill="none" stroke="#38bdf8" stroke-width="1"/>
+  </g>
+  
+  <!-- Waveform Overlay Schematic on Vertical Arm (Path B) -->
+  <g transform="translate(605, 240) rotate(90)" opacity="0.3">
+    <path d="M 0 0 C 10 -15, 20 15, 30 0 S 50 -15, 60 0 S 80 -15, 90 0" fill="none" stroke="#fb7185" stroke-width="1"/>
+  </g>
+
+  <!-- Math & Physics Formulas Floating Card (Bottom-Right) -->
+  <g transform="translate(860, 660)" filter="url(#shadow)">
+    <!-- Glassmorphic panel -->
+    <rect x="0" y="0" width="280" height="150" rx="8" fill="rgba(15, 23, 42, 0.7)" stroke="#334155" stroke-width="1.5"/>
+    <rect x="8" y="8" width="264" height="134" rx="4" fill="#020617" opacity="0.4"/>
+    
+    <!-- Title -->
+    <text x="20" y="32" font-family="'Montserrat', sans-serif" font-weight="600" font-size="12" fill="#38bdf8" letter-spacing="1">INTERFERENCE PRINCIPLE</text>
+    
+    <!-- Mathematical Formulations -->
+    <text x="20" y="65" class="formula">Path Difference: Δx = 2(d₁ - d₂)</text>
+    <text x="20" y="88" class="formula">Phase Difference: Δφ = (2π/λ) · Δx</text>
+    
+    <!-- Legend details -->
+    <text x="20" y="115" font-family="'Montserrat', sans-serif" font-weight="400" font-size="10" fill="#94a3b8">Constructive: Δx = mλ</text>
+    <text x="20" y="130" font-family="'Montserrat', sans-serif" font-weight="400" font-size="10" fill="#94a3b8">Destructive: Δx = (m + ½)λ</text>
+    
+    <!-- Small decorative grid inside card -->
+    <circle cx="255" cy="20" r="3" fill="#fb7185" />
+    <circle cx="245" cy="20" r="3" fill="#38bdf8" />
+  </g>
+
+  <!-- Physics Formula floating near Beam Splitter -->
+  <g transform="translate(480, 290)" filter="url(#shadow)">
+    <text x="0" y="0" class="mono" font-size="12" fill="#38bdf8">d₂ (Reference Arm)</text>
+  </g>
+  <g transform="translate(780, 525)" filter="url(#shadow)">
+    <text x="0" y="0" class="mono" font-size="12" fill="#38bdf8">d₁ (Measurement Arm)</text>
+  </g>
+
+</svg>

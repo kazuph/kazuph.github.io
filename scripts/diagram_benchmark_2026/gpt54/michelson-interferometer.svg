@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <rect width="1200" height="900" fill="#fbfaf6"/>
+  <rect x="100" y="390" width="120" height="44" rx="12" fill="#f87171"/>
+  <line x1="220" y1="412" x2="480" y2="412" stroke="#f87171" stroke-width="4"/>
+  <polygon points="462,404 480,412 462,420" fill="#f87171"/>
+  <rect x="480" y="390" width="60" height="44" transform="rotate(45 510 412)" fill="#e5e7eb" stroke="#4b5563" stroke-width="4"/>
+  <line x1="510" y1="412" x2="510" y2="170" stroke="#60a5fa" stroke-width="4"/>
+  <polygon points="502,188 510,170 518,188" fill="#60a5fa"/>
+  <line x1="510" y1="412" x2="810" y2="412" stroke="#60a5fa" stroke-width="4"/>
+  <polygon points="792,404 810,412 792,420" fill="#60a5fa"/>
+  <line x1="510" y1="170" x2="510" y2="412" stroke="#60a5fa" stroke-width="4" stroke-dasharray="10 8"/>
+  <line x1="810" y1="412" x2="510" y2="412" stroke="#60a5fa" stroke-width="4" stroke-dasharray="10 8"/>
+  <rect x="452" y="120" width="116" height="44" rx="12" fill="#cbd5e1" stroke="#475569" stroke-width="4"/>
+  <rect x="752" y="390" width="116" height="44" rx="12" fill="#cbd5e1" stroke="#475569" stroke-width="4"/>
+  <rect x="920" y="360" width="110" height="106" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="4"/>
+  <line x1="868" y1="412" x2="920" y2="412" stroke="#60a5fa" stroke-width="4"/>
+  <polygon points="902,404 920,412 902,420" fill="#60a5fa"/>
+  <text x="112" y="376" font-size="30" fill="#991b1b">Laser</text>
+  <text x="430" y="96" font-size="30" fill="#334155">Mirror A</text>
+  <text x="736" y="376" font-size="30" fill="#334155">Mirror B</text>
+  <text x="456" y="510" font-size="30" fill="#334155">Beam Splitter</text>
+  <text x="938" y="346" font-size="30" fill="#b45309">Screen</text>
+
+</svg>

@@ -1,0 +1,13 @@
+カルマンフィルターのブロック線図 を、1200x900 の SVG で描いてください。
+
+要件:
+- カルマンフィルターのブロック線図を描く
+- Prediction, Update, Measurement, State estimate を分ける
+- 入力とフィードバックの向きを矢印で示す
+- Kalman gain や residual など主要な情報流も入れる
+- 制御図として見やすく整理する
+
+出力ルール:
+- 説明は不要
+- Markdown の code fence も不要
+- SVG 本体だけを出力する
