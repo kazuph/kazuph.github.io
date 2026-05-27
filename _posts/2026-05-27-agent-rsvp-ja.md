@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "agent-rsvpをZig/AppKitで日本語速読アプリにフォークした"
+title: "Zig/AppKitで速読ツールを極小デスクトップアプリ化した [127KB]"
 date: 2026-05-27
 description: "agent-rsvp を日本語向けにフォークし、Zig/AppKit の小さなネイティブアプリとして作り直した記録です。"
 full_ai: true
