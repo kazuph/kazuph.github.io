@@ -109,7 +109,9 @@ $ ls -lh ~/.local/share/agent-rsvp/agent-rsvp-native
 | 現行 `agent-rsvp-native` | Zig のサイズ優先ビルド | 109KB / 127KB | 済 |
 | Zero Native RSVP 相当 | Zig 0.16.0 + system WebView + サイズ優先ビルド | 442KB | 済 |
 
-Objective-C だけでも、Swift でも、小さい AppKit アプリは作れます。では Zig の功労は何かというと、C/Objective-C を「外部の別世界」ではなく、Zig プロジェクトの普通の材料として扱えることです。`addCSourceFile` で Objective-C のソースを足し、`linkFramework` で macOS フレームワークを明示的にリンクし、配布用の成果物としてインストールする。この流れを Zig の標準ビルドだけで書けます。
+Objective-C だけでも、Swift でも、小さい AppKit アプリは作れます。では Zig を使った意味は何かというと、AppKit 直描きという macOS ネイティブの最短経路を保ったまま、npm CLI から呼べる小さな配布用バイナリとして再現可能に組み立てられることです。
+
+ここで効いているのは、Zig が C/Objective-C をプロジェクトの普通の材料として扱える点です。`addCSourceFile` で Objective-C のソースを足し、`linkFramework` で macOS フレームワークを明示的にリンクし、配布用の成果物としてインストールする。この流れを Zig の標準ビルドだけで書けます。
 
 Rust でも Go でも、AppKit アプリを作ること自体は不可能ではありません。ただ、Rust なら `build.rs`、`cc` crate、`objc2` などの Objective-C runtime binding、macOS framework link の指定が必要になります。Go なら cgo と Objective-C wrapper を挟み、さらに Go runtime も乗ります。今回のような「macOS 専用で、AppKit に薄く乗るだけの極小 GUI」では、その接続層が本体より重くなりやすい。
 
