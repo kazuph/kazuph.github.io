@@ -78,6 +78,14 @@ RSVP では、表示される語や句のどこを見るかが大事です。英
 
 今回の `agent-rsvp-ja` は `zero-native` フレームワークを直接依存として組み込んだものではありません。ですが、「巨大なランタイムを抱えず、Zig で薄いネイティブ shell を作る」という方向性はかなり近いです。
 
+使わなかった理由は、UI が WebView ではなかったからです。
+
+今回必要だった画面は、テキストを1〜数行描くだけです。HTML/CSS のレイアウト、DOM、JavaScript bridge、ローカル origin、WebView のセキュリティモデルは、普通のアプリを作るなら便利ですが、この用途では持ち込む部品が多すぎます。欲しかったのは Web UI ではなく、固定位置に文字を描くための小さな描画面でした。
+
+Zero Native を system WebView で使う場合、ブラウザランタイム自体はOS側の WebView を使うので、Electron のように Chromium 一式を抱えるわけではありません。なので「Zero Nativeを使うと必ず巨大になる」という話ではありません。
+
+ただし今回のように AppKit の `drawRect:` で文字を直接描けるだけのアプリでは、WebView runtime、bridge、HTML/CSS/JS 側の配布物、アプリ manifest などを足すより、Cocoa/AppKit に直接乗ったほうがさらに薄くできます。Zero Native は「Web UI を極小ネイティブアプリにする」ための選択肢で、今回は「Web UI すら不要だった」という判断です。
+
 実際、手元でビルドした `agent-rsvp-native` は次のサイズでした。
 
 ```console
@@ -97,6 +105,32 @@ native/main.zig       Zig の entry point
 native/macos_app.m    AppKit のウィンドウ、描画、キー操作、本文整形
 build.zig             Zig/AppKit バイナリのビルド
 ```
+
+ここで注意点があります。GitHub の Languages 表示を見ると、Zig は数%で、ほとんど Objective-C に見えます。これはその通りです。
+
+このフォークは「アプリ全体を Zig で書いた」というものではありません。実態は、Zig の build system と小さな entry point で Objective-C/AppKit の実装を束ね、`ReleaseSmall` のネイティブバイナリとして出している構成です。
+
+```zig
+exe.addCSourceFile(.{
+    .file = b.path("native/macos_app.m"),
+    .flags = &.{ "-fobjc-arc" },
+});
+exe.linkFramework("Cocoa");
+exe.linkFramework("NaturalLanguage");
+```
+
+Zig 側の役割は、UIを大量に書くことではなく、次のあたりです。
+
+- 小さい単体バイナリとしてビルドする
+- Objective-C の `.m` を同じ build graph に入れる
+- Cocoa / NaturalLanguage framework へ明示的にリンクする
+- npm 配布用の Node CLI とネイティブ本体を分ける
+
+Objective-C/AppKit 側に寄せたのは、AppKit がもともと Objective-C のAPIとして自然に扱えるからです。ウィンドウ、`NSView`、`drawRect:`、キーイベント、`NSOpenPanel` は、薄いデスクトップアプリなら Objective-C で素直に書けます。
+
+Swift で書き直したら必ず大きくなるかというと、そこは単純ではありません。手元で最小の Swift/AppKit ウィンドウを `swiftc -Osize` でビルドすると、51KB 程度のバイナリになりました。現代の macOS では Swift runtime がシステム側にあるため、単純な Swift アプリが必ず巨大になるわけではありません。
+
+ただ、今回の目的は Swift の型システムやUIフレームワークを活用することではなく、テキストを高速に描く小さいアプリを作ることでした。Objective-C/AppKit で十分に薄く、Zig build にそのまま載せられ、結果として 127KB に収まっています。ここでは「Zigのコード量が多いこと」ではなく、「Zig build + AppKit 直描きで、WebViewもターミナルも挟まず、小さいまま高速に動くこと」を重視しています。
 
 CLI は npm パッケージとして扱いやすいように Node 側に残しています。実際の表示は `agent-rsvp-native` が担当します。
 
