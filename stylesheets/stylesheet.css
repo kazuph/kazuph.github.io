@@ -577,6 +577,7 @@ a:hover {
   margin-left: -1px;
 }
 
+#post-filter-all:checked ~ .post-filter label[for="post-filter-all"],
 #post-filter-human:checked ~ .post-filter label[for="post-filter-human"],
 #post-filter-full-ai:checked ~ .post-filter label[for="post-filter-full-ai"] {
   color: #ffffff;
@@ -984,6 +985,17 @@ a:hover {
   height: auto;
 }
 
+.post-body figure {
+  margin: 22px 0;
+}
+
+.post-body figcaption {
+  margin-top: 6px;
+  color: #54677a;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
 .post-body .is-lightbox-target {
   cursor: zoom-in;
 }
@@ -1198,6 +1210,10 @@ body.media-lightbox-open {
   border-radius: 6px;
   box-shadow: none;
   font-size: 0.9em;
+}
+
+.post-body figcaption code {
+  font-size: 0.92em;
 }
 
 .post-body table {
