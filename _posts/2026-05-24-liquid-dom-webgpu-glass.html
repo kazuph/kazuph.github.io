@@ -415,60 +415,9 @@ full_ai: true
     </div>
   </div>
 
-  <h2>本家サンプルの読み替え</h2>
-  <p>
-    本家 repository には、低レベル API の挙動を見る <code>minimal</code>、実UIの見せ方を見る <code>showcase</code>、パラメータ調整用の <code>editor</code>、Three.js 連携を見る <code>three</code> 系の demo があります。このページでは全部を iframe 的に貼るのではなく、記事の中で同じ構成要素を使いながら、何を確認するためのサンプルなのかを日本語で整理しています。
-  </p>
-  <div class="liquid-samples">
-    <div class="liquid-sample">
-      <strong>minimal: 小さいGlassの基本</strong>
-      <p><code>Scene</code> に <code>Container</code> を置き、その中に <code>Glass</code> と <code>Html</code> を入れる最小構成。Liquid DOM が CSS ではなく WebGPU canvas に描いていることを確認する入口です。</p>
-    </div>
-    <div class="liquid-sample">
-      <strong>minimal: SDF overlap</strong>
-      <p>複数の <code>Glass</code> が近づいたとき、個別の角丸矩形ではなく、同じフィールドの中で液体のようにつながる様子を見るサンプル。この記事冒頭の積み上がるデモはこの考え方を強めています。</p>
-    </div>
-    <div class="liquid-sample">
-      <strong>minimal: Layout scene</strong>
-      <p><code>VStack</code> や <code>HStack</code> のようなレイアウトツリーから Glass scene を組むサンプル。DOM の配置とガラスの配置を別々に手書きしないための実験です。</p>
-    </div>
-    <div class="liquid-sample">
-      <strong>minimal: Pointer events</strong>
-      <p>Glass ごとの hit testing と pointer interaction を見るサンプル。この記事では落下中のピースをドラッグして列移動できる形で、同じ方向の確認をしています。</p>
-    </div>
-    <div class="liquid-sample">
-      <strong>showcase: 実UI部品</strong>
-      <p>通知、動画コントロール、ミュージックサイドバー、コントロールセンター、メニューなど、Apple 的な液体ガラスUIを実部品として見せる demo 群です。見た目の説得力を見る場所です。</p>
-    </div>
-    <div class="liquid-sample">
-      <strong>editor / three: 調整と連携</strong>
-      <p><code>editor</code> は blur、spacing、thickness などの効き方を触るためのもの。<code>three</code>、<code>three-react</code>、<code>three-r3f</code> は Three.js のレンダリング結果を背景として Liquid DOM と重ねるための連携サンプルです。</p>
-    </div>
-  </div>
-
-  <h2>CSSで捏造しないための境界線</h2>
-  <p>
-    このページにも配置や余白のための CSS はあります。ただし、ガラス表現そのものを CSS の <code>backdrop-filter</code> や半透明背景で代替していません。Liquid DOM の import、scene graph の生成、<code>Renderer.render()</code> の frame loop が成功したときだけ、デモ領域に Liquid DOM の canvas が出ます。HTML-in-Canvas がない環境では DOM-backed <code>Html</code> は追加せず、Liquid DOM の <code>Glass</code> shape だけを描画します。
-  </p>
-
-  <pre><code>import { Container, Glass, Html, Renderer, Scene } from 'https://esm.sh/@liquid-dom/core@0.1.0?bundle'</code></pre>
-
   <h2>Liquid DOM の構成</h2>
   <p>
     <code>@liquid-dom/core</code> は DOM-backed liquid-glass renderer です。低レベルの scene graph と WebGPU renderer を持ち、React を使わなくても <code>Scene</code> に <code>Html</code> や <code>Container</code> を追加して描画できます。React から使う場合は <code>@liquid-dom/react</code>、Three.js 連携には <code>@liquid-dom/three</code> や <code>@liquid-dom/r3f</code> が用意されています。
-  </p>
-
-  <h2>必要な環境</h2>
-  <p>
-    Liquid DOM の rendering には WebGPU が必要です。さらに DOM-backed な <code>Html</code> content を正しく GPU texture としてコピーするには、Chrome の実験的な HTML-in-Canvas / Canvas Draw Element API が必要です。対応していない環境では、通常 DOM の記事本文はそのまま読めますが、デモ領域の status は <code>active-glass-only</code>、<code>webgpu-unavailable</code>、<code>render-error</code> のいずれかになります。
-  </p>
-  <p>
-    Chrome で試す場合は、アドレスバーに <code>chrome://flags/#canvas-draw-element</code> を直接入力し、<strong>Canvas Draw Element</strong> を Enable にして Chrome を再起動します。これは通常の Web URL ではなく Chrome 内部の設定画面です。WebGPU 自体も必要なので、環境によっては <code>chrome://gpu</code> で WebGPU が有効か確認します。
-  </p>
-
-  <h2>本家サンプルの確認</h2>
-  <p>
-    本家 repository の demo は <code>minimal</code>、<code>showcase</code>、<code>editor</code>、<code>three</code>、<code>three-react</code>、<code>three-r3f</code> をすべて build してローカル起動しました。いずれもページは読み込めますが、<code>Canvas Draw Element</code> が無効な Chrome では DOM-backed な <code>Html</code> を texture 化する部分で <code>copyElementImageToTexture</code> が使えず、showcase 以外は描画時に止まります。showcase はこの状態を検出して、同じ <code>chrome://flags/#canvas-draw-element</code> を案内します。
   </p>
 
   <h2>確認したソース</h2>
