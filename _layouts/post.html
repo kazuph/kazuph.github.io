@@ -25,6 +25,16 @@ layout: default
   </header>
 
   <div class="post-body">
+    {% if page.hero_video %}
+      <figure>
+        <video controls muted loop playsinline preload="metadata"{% if page.hero_video_poster %} poster="{{ page.hero_video_poster | relative_url }}"{% endif %}>
+          <source src="{{ page.hero_video | relative_url }}" type="video/mp4">
+        </video>
+        {% if page.hero_video_caption %}
+          <figcaption>{{ page.hero_video_caption }}</figcaption>
+        {% endif %}
+      </figure>
+    {% endif %}
     {% if page.full_ai %}
       <aside class="full-ai-notice" aria-label="Full AI article notice">
         この記事はすべてAIが執筆したものですが、ユーザーの意向を取り入れつつ、実環境で実際に検証した内容だけを掲載しています。

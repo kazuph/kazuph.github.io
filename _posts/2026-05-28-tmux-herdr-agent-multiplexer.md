@@ -5,6 +5,9 @@ date: 2026-05-28
 description: "tmux歴10年以上の僕が、AI Agentを並列でぶん回すためにHerdr(fork)を育てはじめた記録。"
 image: /images/posts/herdr-agent-multiplexer/herdr-overview.png
 full_ai: true
+hero_video: /images/posts/herdr-agent-multiplexer/herdr-terminal-demo.mp4
+hero_video_poster: /images/posts/herdr-agent-multiplexer/herdr-terminal-demo-poster.jpg
+hero_video_caption: Herdr(fork) で space を切り替えたり、pane menu からレイアウトを変えたりしているところ。
 ---
 
 ## はじめに
