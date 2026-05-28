@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="abstract monochrome desktop wallpaper">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f9fb"/>
+      <stop offset="0.38" stop-color="#d6dde3"/>
+      <stop offset="0.72" stop-color="#8d99a3"/>
+      <stop offset="1" stop-color="#2b333a"/>
+    </linearGradient>
+    <radialGradient id="mistA" cx="26%" cy="23%" r="46%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.78"/>
+      <stop offset="0.42" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mistB" cx="78%" cy="68%" r="52%">
+      <stop offset="0" stop-color="#cdd6dc" stop-opacity="0.36"/>
+      <stop offset="0.5" stop-color="#cdd6dc" stop-opacity="0.11"/>
+      <stop offset="1" stop-color="#cdd6dc" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soften">
+      <feGaussianBlur stdDeviation="34"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#base)"/>
+  <path d="M-120 780 C260 420 440 740 720 390 C940 116 1170 164 1720 -80 L1720 1080 L-120 1080 Z" fill="#111820" opacity="0.24"/>
+  <path d="M-80 80 C260 260 430 130 720 250 C1000 366 1190 250 1680 440" fill="none" stroke="#f8fafc" stroke-opacity="0.22" stroke-width="3"/>
+  <path d="M-80 142 C290 330 460 202 742 316 C1010 424 1230 318 1680 530" fill="none" stroke="#0b0e12" stroke-opacity="0.26" stroke-width="2"/>
+  <rect width="1600" height="1000" fill="url(#mistA)"/>
+  <rect width="1600" height="1000" fill="url(#mistB)"/>
+  <g filter="url(#soften)" opacity="0.52">
+    <ellipse cx="1160" cy="230" rx="270" ry="120" fill="#f6f8fa"/>
+    <ellipse cx="450" cy="760" rx="360" ry="150" fill="#4f5962"/>
+  </g>
+</svg>

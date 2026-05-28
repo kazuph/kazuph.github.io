@@ -1,0 +1,1069 @@
+---
+layout: post
+title: "Liquid DOM を読んで、このページだけで液体ガラスを試した"
+date: 2026-05-24
+description: "WebGPU と HTML-in-Canvas で DOM を液体ガラスとして合成する Liquid DOM を読み、このページだけで @liquid-dom/core を読み込んで動かした記録。"
+full_ai: true
+---
+
+<style>
+  .liquid-article {
+    --liquid-ink: #17202a;
+    --liquid-muted: #5d6b7a;
+    --liquid-line: #d9e4ee;
+    color: var(--liquid-ink);
+  }
+
+  .site-pet {
+    display: none;
+  }
+
+  .liquid-article h2 {
+    margin-top: 2.4rem;
+  }
+
+  .liquid-kicker {
+    color: var(--liquid-muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .liquid-requirements-note {
+    background: #fff8d7;
+    border: 1px solid #e7d27a;
+    color: #2d2610;
+    line-height: 1.75;
+    margin: 1.2rem 0 1.6rem;
+    padding: 14px 16px;
+  }
+
+  .liquid-requirements-note strong {
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .liquid-flag-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 0.9rem;
+  }
+
+  .liquid-flag-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .liquid-flag-link {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(45, 38, 16, 0.22);
+    color: #123f6d;
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    padding: 5px 7px;
+    text-decoration: underline;
+  }
+
+  .liquid-flag-copy {
+    appearance: none;
+    background: #2d2610;
+    border: 0;
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    padding: 5px 9px;
+  }
+
+  .liquid-hero-shot {
+    border: 1px solid var(--liquid-line);
+    display: block;
+    height: auto;
+    margin: 1.5rem 0 2rem;
+    width: 100%;
+  }
+
+  .liquid-fusion-shell {
+    background: #05070b;
+    border: 1px solid #1d2633;
+    color: #eef3f8;
+    margin: 2rem 0;
+    overflow: hidden;
+  }
+
+  .liquid-fusion-stage {
+    background: #0b0f14 url("/images/posts/liquid-dom/wallpaper.svg") center / cover no-repeat;
+    height: 440px;
+    position: relative;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .liquid-fusion-mount {
+    inset: 0;
+    position: absolute;
+  }
+
+  .liquid-fusion-mount canvas {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .liquid-fusion-caption {
+    display: none;
+  }
+
+  .liquid-fusion-caption code {
+    background: rgba(255, 255, 255, 0.12);
+    color: inherit;
+    padding: 2px 6px;
+  }
+
+  .liquid-eye-face {
+    align-items: center;
+    box-sizing: border-box;
+    color: #05070b;
+    display: flex;
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+    font-size: 34px;
+    height: 100%;
+    justify-content: center;
+    line-height: 1;
+    text-shadow: 0 1px 14px rgba(255, 255, 255, 0.55);
+    width: 100%;
+  }
+
+  .liquid-wallpaper-source {
+    background: #0b0f14 url("/images/posts/liquid-dom/wallpaper-photo.jpg") center / cover no-repeat;
+    height: 100%;
+    width: 100%;
+  }
+
+  .liquid-demo-shell {
+    border: 1px solid var(--liquid-line);
+    margin: 2rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .liquid-demo-stage {
+    background: #0b0f14 url("/images/posts/liquid-dom/wallpaper-photo.jpg") center / cover no-repeat;
+    min-height: 520px;
+    overflow: hidden;
+    position: relative;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .liquid-dom-mount {
+    inset: 0;
+    position: absolute;
+  }
+
+  .liquid-dvd-label-layer {
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+  }
+
+  .liquid-dom-mount canvas {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .liquid-demo-source {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1.1fr 0.9fr;
+    inset: 0;
+    padding: 32px;
+    position: absolute;
+  }
+
+  .liquid-source-card,
+  .liquid-source-panel,
+  .liquid-source-strip {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+  }
+
+  .liquid-source-card {
+    align-self: center;
+    justify-self: center;
+    max-width: 640px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .liquid-source-card h3 {
+    color: white;
+    font-size: clamp(2.4rem, 6vw, 5.6rem);
+    letter-spacing: 0;
+    margin: 0;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7);
+  }
+
+  .liquid-source-card p,
+  .liquid-source-panel p,
+  .liquid-glass-content p {
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  .liquid-source-panel {
+    display: none;
+  }
+
+  .liquid-source-strip {
+    display: none;
+  }
+
+  .liquid-chip {
+    background: rgba(13, 19, 28, 0.72);
+    color: white;
+    font-size: 0.82rem;
+    padding: 8px 10px;
+  }
+
+  .liquid-glass-content {
+    box-sizing: border-box;
+    color: #101820;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    height: 100%;
+    padding: 22px;
+    width: 100%;
+  }
+
+  .liquid-language-line {
+    display: none;
+    color: white;
+    font-size: clamp(1rem, 1.55vw, 1.48rem);
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.45;
+    margin: 0.35rem 0;
+    max-width: 520px;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.74);
+  }
+
+  .liquid-dvd-label {
+    align-items: center;
+    background: transparent;
+    border-radius: 999px;
+    box-sizing: border-box;
+    color: #07111b;
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    font-weight: 800;
+    height: 100%;
+    justify-content: center;
+    letter-spacing: 0;
+    line-height: 1.22;
+    padding: 6px;
+    text-align: center;
+    text-shadow: 0 1px 16px rgba(255, 255, 255, 0.62);
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .liquid-dvd-label span {
+    display: block;
+    max-width: 100%;
+  }
+
+  .liquid-dvd-label small {
+    display: block;
+    font-size: 0.62em;
+    font-weight: 700;
+    margin-top: 0.16em;
+  }
+
+  .liquid-fusion-wallpaper-source {
+    background: #0b0f14 url("/images/posts/liquid-dom/wallpaper.svg") center / cover no-repeat;
+    height: 100%;
+    width: 100%;
+  }
+
+  .liquid-glass-content strong {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .liquid-demo-status {
+    display: none;
+  }
+
+  .liquid-demo-status code {
+    background: rgba(255, 255, 255, 0.14);
+    color: inherit;
+    padding: 2px 6px;
+  }
+
+  .liquid-samples {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 1.4rem 0 2rem;
+  }
+
+  .liquid-sample {
+    border: 1px solid var(--liquid-line);
+    padding: 16px;
+  }
+
+  .liquid-sample strong {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .liquid-sample p {
+    color: var(--liquid-muted);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  @media (max-width: 760px) {
+    .liquid-fusion-stage {
+      height: 380px;
+    }
+
+    .liquid-demo-stage {
+      min-height: 620px;
+    }
+
+    .liquid-demo-source,
+    .liquid-samples {
+      grid-template-columns: 1fr;
+    }
+
+    .liquid-source-strip {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+
+<div class="liquid-article">
+  <aside class="liquid-requirements-note">
+    <strong>Liquid DOM のデモは、WebGPU と HTML-in-Canvas の両方に依存します。</strong>
+    まず <code>chrome://gpu</code> で WebGPU が hardware accelerated になっているか確認します。無効な環境では WebGPU flag を有効化して再起動します。さらに DOM を canvas/GPU 側へ渡す HTML-in-Canvas を試すには、Chrome Canary 149 以降で HTML-in-Canvas 側の flag も有効化して再起動します。
+    <div class="liquid-flag-list">
+      <div class="liquid-flag-row">
+        <span>WebGPU:</span>
+        <a class="liquid-flag-link" href="chrome://flags/#enable-unsafe-webgpu">chrome://flags/#enable-unsafe-webgpu</a>
+        <button class="liquid-flag-copy" type="button" data-copy-flag="chrome://flags/#enable-unsafe-webgpu">copy</button>
+      </div>
+      <div class="liquid-flag-row">
+        <span>HTML-in-Canvas:</span>
+        <a class="liquid-flag-link" href="chrome://flags/#canvas-draw-element">chrome://flags/#canvas-draw-element</a>
+        <button class="liquid-flag-copy" type="button" data-copy-flag="chrome://flags/#canvas-draw-element">copy</button>
+      </div>
+    </div>
+  </aside>
+
+  <p class="liquid-kicker">
+    Liquid DOM は、CSS の glassmorphism ではなく、WebGPU の renderer と DOM-backed な scene graph で液体ガラスを描く実験的な UI ライブラリです。このページではサイト全体のレイアウトは変えず、この記事が表示された場合だけ <code>@liquid-dom/core@0.1.0</code> を読み込み、下のデモ領域だけで Liquid DOM を起動しています。
+  </p>
+
+  <img class="liquid-hero-shot" src="/images/posts/liquid-dom/puyo-sample.png" alt="Liquid DOMのGlassが落ち物ゲームのピースのように近づいて融合するスクリーンショット" width="804" height="570" loading="eager" decoding="sync">
+
+  <section class="liquid-fusion-shell" data-liquid-fusion-demo>
+    <div class="liquid-fusion-stage">
+      <div class="liquid-fusion-mount" data-liquid-fusion-mount></div>
+    </div>
+    <div class="liquid-fusion-caption">
+      <span>Liquid DOM fusion: <code data-liquid-fusion-status>initializing</code></span>
+      <span data-liquid-fusion-detail>loading @liquid-dom/core</span>
+    </div>
+  </section>
+
+  <h2>このページで試すもの</h2>
+  <p>
+    まず背景となる普通の DOM を置き、その上に Liquid DOM の <code>Scene</code>、<code>Container</code>、<code>Glass</code>、<code>Html</code> を重ねます。ガラスの見た目は CSS では作らず、Liquid DOM の <code>Renderer</code> が生成する <code>&lt;canvas layoutsubtree&gt;</code> に描かせます。
+  </p>
+
+  <div class="liquid-demo-shell" data-liquid-dom-demo>
+    <div class="liquid-demo-stage">
+      <div class="liquid-demo-source" aria-hidden="true">
+        <div class="liquid-source-card">
+          <h3>Liquid DOM</h3>
+        </div>
+        <div class="liquid-source-panel">
+          <p>写真背景と文字は通常の HTML。Liquid DOM の <code>Html</code> が、それを WebGPU 側の質感へ持っていきます。</p>
+        </div>
+        <div class="liquid-source-strip">
+          <span class="liquid-chip">WebGPU</span>
+          <span class="liquid-chip">Scene</span>
+          <span class="liquid-chip">Container</span>
+          <span class="liquid-chip">Glass</span>
+          <span class="liquid-chip">Html</span>
+        </div>
+      </div>
+      <div class="liquid-dom-mount" data-liquid-dom-mount></div>
+      <div class="liquid-dvd-label-layer" data-liquid-dvd-label-layer></div>
+    </div>
+    <div class="liquid-demo-status">
+      <span>Liquid DOM status: <code data-liquid-dom-status>initializing</code></span>
+      <span data-liquid-dom-detail aria-live="polite">loading @liquid-dom/core</span>
+    </div>
+  </div>
+
+  <h2>本家サンプルの読み替え</h2>
+  <p>
+    本家 repository には、低レベル API の挙動を見る <code>minimal</code>、実UIの見せ方を見る <code>showcase</code>、パラメータ調整用の <code>editor</code>、Three.js 連携を見る <code>three</code> 系の demo があります。このページでは全部を iframe 的に貼るのではなく、記事の中で同じ構成要素を使いながら、何を確認するためのサンプルなのかを日本語で整理しています。
+  </p>
+  <div class="liquid-samples">
+    <div class="liquid-sample">
+      <strong>minimal: 小さいGlassの基本</strong>
+      <p><code>Scene</code> に <code>Container</code> を置き、その中に <code>Glass</code> と <code>Html</code> を入れる最小構成。Liquid DOM が CSS ではなく WebGPU canvas に描いていることを確認する入口です。</p>
+    </div>
+    <div class="liquid-sample">
+      <strong>minimal: SDF overlap</strong>
+      <p>複数の <code>Glass</code> が近づいたとき、個別の角丸矩形ではなく、同じフィールドの中で液体のようにつながる様子を見るサンプル。この記事冒頭の積み上がるデモはこの考え方を強めています。</p>
+    </div>
+    <div class="liquid-sample">
+      <strong>minimal: Layout scene</strong>
+      <p><code>VStack</code> や <code>HStack</code> のようなレイアウトツリーから Glass scene を組むサンプル。DOM の配置とガラスの配置を別々に手書きしないための実験です。</p>
+    </div>
+    <div class="liquid-sample">
+      <strong>minimal: Pointer events</strong>
+      <p>Glass ごとの hit testing と pointer interaction を見るサンプル。この記事では落下中のピースをドラッグして列移動できる形で、同じ方向の確認をしています。</p>
+    </div>
+    <div class="liquid-sample">
+      <strong>showcase: 実UI部品</strong>
+      <p>通知、動画コントロール、ミュージックサイドバー、コントロールセンター、メニューなど、Apple 的な液体ガラスUIを実部品として見せる demo 群です。見た目の説得力を見る場所です。</p>
+    </div>
+    <div class="liquid-sample">
+      <strong>editor / three: 調整と連携</strong>
+      <p><code>editor</code> は blur、spacing、thickness などの効き方を触るためのもの。<code>three</code>、<code>three-react</code>、<code>three-r3f</code> は Three.js のレンダリング結果を背景として Liquid DOM と重ねるための連携サンプルです。</p>
+    </div>
+  </div>
+
+  <h2>CSSで捏造しないための境界線</h2>
+  <p>
+    このページにも配置や余白のための CSS はあります。ただし、ガラス表現そのものを CSS の <code>backdrop-filter</code> や半透明背景で代替していません。Liquid DOM の import、scene graph の生成、<code>Renderer.render()</code> の frame loop が成功したときだけ、デモ領域に Liquid DOM の canvas が出ます。HTML-in-Canvas がない環境では DOM-backed <code>Html</code> は追加せず、Liquid DOM の <code>Glass</code> shape だけを描画します。
+  </p>
+
+  <pre><code>import { Container, Glass, Html, Renderer, Scene } from 'https://esm.sh/@liquid-dom/core@0.1.0?bundle'</code></pre>
+
+  <h2>Liquid DOM の構成</h2>
+  <p>
+    <code>@liquid-dom/core</code> は DOM-backed liquid-glass renderer です。低レベルの scene graph と WebGPU renderer を持ち、React を使わなくても <code>Scene</code> に <code>Html</code> や <code>Container</code> を追加して描画できます。React から使う場合は <code>@liquid-dom/react</code>、Three.js 連携には <code>@liquid-dom/three</code> や <code>@liquid-dom/r3f</code> が用意されています。
+  </p>
+
+  <h2>必要な環境</h2>
+  <p>
+    Liquid DOM の rendering には WebGPU が必要です。さらに DOM-backed な <code>Html</code> content を正しく GPU texture としてコピーするには、Chrome の実験的な HTML-in-Canvas / Canvas Draw Element API が必要です。対応していない環境では、通常 DOM の記事本文はそのまま読めますが、デモ領域の status は <code>active-glass-only</code>、<code>webgpu-unavailable</code>、<code>render-error</code> のいずれかになります。
+  </p>
+  <p>
+    Chrome で試す場合は、アドレスバーに <code>chrome://flags/#canvas-draw-element</code> を直接入力し、<strong>Canvas Draw Element</strong> を Enable にして Chrome を再起動します。これは通常の Web URL ではなく Chrome 内部の設定画面です。WebGPU 自体も必要なので、環境によっては <code>chrome://gpu</code> で WebGPU が有効か確認します。
+  </p>
+
+  <h2>本家サンプルの確認</h2>
+  <p>
+    本家 repository の demo は <code>minimal</code>、<code>showcase</code>、<code>editor</code>、<code>three</code>、<code>three-react</code>、<code>three-r3f</code> をすべて build してローカル起動しました。いずれもページは読み込めますが、<code>Canvas Draw Element</code> が無効な Chrome では DOM-backed な <code>Html</code> を texture 化する部分で <code>copyElementImageToTexture</code> が使えず、showcase 以外は描画時に止まります。showcase はこの状態を検出して、同じ <code>chrome://flags/#canvas-draw-element</code> を案内します。
+  </p>
+
+  <h2>確認したソース</h2>
+  <ul>
+    <li><a href="https://github.com/AndrewPrifer/liquid-dom">AndrewPrifer/liquid-dom</a></li>
+    <li><a href="https://www.npmjs.com/package/@liquid-dom/core">@liquid-dom/core on npm</a></li>
+    <li><a href="https://wicg.github.io/html-in-canvas/">WICG HTML-in-Canvas</a></li>
+    <li><a href="https://developer.chrome.com/docs/web-platform/webgpu/overview">Chrome WebGPU overview</a></li>
+  </ul>
+</div>
+
+<script type="module">
+  document.querySelectorAll('[data-copy-flag]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const value = button.getAttribute('data-copy-flag');
+      if (!value) return;
+      try {
+        await navigator.clipboard.writeText(value);
+        button.textContent = 'copied';
+        window.setTimeout(() => {
+          button.textContent = 'copy';
+        }, 1200);
+      } catch (_error) {
+        window.prompt('Copy this Chrome flag URL', value);
+      }
+    });
+  });
+
+  const fusionRoot = document.querySelector('[data-liquid-fusion-demo]');
+  const fusionMount = fusionRoot?.querySelector('[data-liquid-fusion-mount]');
+  const fusionStatus = fusionRoot?.querySelector('[data-liquid-fusion-status]');
+  const fusionDetail = fusionRoot?.querySelector('[data-liquid-fusion-detail]');
+  const root = document.querySelector('[data-liquid-dom-demo]');
+  const mount = root?.querySelector('[data-liquid-dom-mount]');
+  const status = root?.querySelector('[data-liquid-dom-status]');
+  const detail = root?.querySelector('[data-liquid-dom-detail]');
+
+  const setFusionStatus = (value, message) => {
+    if (fusionStatus) fusionStatus.textContent = value;
+    if (fusionDetail) fusionDetail.textContent = message;
+    document.documentElement.dataset.liquidFusionArticleStatus = value;
+  };
+
+  const setStatus = (value, message) => {
+    if (status) status.textContent = value;
+    if (detail) detail.textContent = message;
+    document.documentElement.dataset.liquidDomArticleStatus = value;
+  };
+
+  const makeEye = (scale = 1) => {
+    const element = document.createElement('div');
+    element.className = 'liquid-eye-face';
+    element.style.fontSize = `${Math.round(34 * scale)}px`;
+    element.textContent = '👀';
+    return element;
+  };
+
+  const setupFusionDemo = ({ Container, Glass, Html, Renderer, Scene, canCopyElementImage }) => {
+    if (!fusionRoot || !fusionMount) {
+      setFusionStatus('missing-root', 'fusion demo root was not found');
+      return null;
+    }
+
+    const stage = fusionRoot.querySelector('.liquid-fusion-stage');
+    const bounds = stage.getBoundingClientRect();
+    const width = Math.max(320, Math.round(bounds.width));
+    const height = Math.max(420, Math.round(bounds.height));
+    const cols = 9;
+    const cell = width / cols;
+    const radius = Math.max(26, Math.min(48, cell * 0.48));
+    const size = radius * 2;
+
+    const scene = new Scene();
+    if (canCopyElementImage) {
+      const wallpaper = document.createElement('div');
+      wallpaper.className = 'liquid-fusion-wallpaper-source';
+      scene.add(new Html({
+        width,
+        height,
+        zIndex: -1,
+        element: wallpaper,
+      }));
+    }
+
+    const container = new Container({
+      x: 0,
+      y: 0,
+      blur: 16,
+      spacing: 28,
+      thickness: 104,
+      displacementFactor: 1.18,
+      displacementBlur: 9,
+      dispersion: 0.012,
+      tint: { r: 0.96, g: 0.98, b: 1, a: 0.22 },
+      shadowColor: { r: 0, g: 0, b: 0, a: 0.34 },
+      shadowBlur: 28,
+      shadowOffsetY: 18,
+    });
+
+    const makeGlass = (x, y, scale = 1) => {
+      const pieceSize = size * scale;
+      const node = new Glass({
+        x,
+        y,
+        width: pieceSize,
+        height: pieceSize,
+        cornerRadius: 999,
+        cornerSmoothing: 0.72,
+      });
+      if (canCopyElementImage) {
+        node.add(new Html({
+          x: 0,
+          y: 0,
+          width: pieceSize,
+          height: pieceSize,
+          element: makeEye(scale),
+        }));
+      }
+      return node;
+    };
+
+    const left = (cell - size) / 2;
+    const floor = height - size - 4;
+    const maxRows = Math.max(7, Math.floor((height - size) / (cell * 0.72)));
+    const heights = Array.from({ length: cols }, () => 0);
+    const shapes = [
+      [[0, 0], [1, 0]],
+      [[0, 0], [0, 1]],
+      [[0, 0], [1, 0], [0, 1]],
+      [[0, 0], [1, 0], [2, 0]],
+      [[0, 0], [1, 0], [1, 1], [2, 1]],
+      [[0, 0], [1, 0], [2, 0], [1, 1]],
+      [[0, 0], [0, 1], [1, 1]],
+    ];
+    const pieces = Array.from({ length: 160 }, (_, index) => ({
+      node: makeGlass(left + (index % cols) * cell, height + radius * 4, 1),
+      x: 0,
+      y: height + radius * 4,
+      col: 0,
+      rowOffset: 0,
+      row: 0,
+      active: false,
+      settled: false,
+    }));
+    pieces.forEach(({ node }) => container.add(node));
+    scene.add(container);
+
+    const renderer = new Renderer({ scene, maxDpr: 2 });
+    renderer.canvas.className = 'liquid-fusion-canvas';
+    renderer.canvas.style.width = '100%';
+    renderer.canvas.style.height = '100%';
+    fusionMount.replaceChildren(renderer.canvas);
+
+    const xForCol = (col) => left + col * cell;
+    const yForRow = (row) => floor - row * cell;
+    let stopped = false;
+    let activeGroup = null;
+    let nextIndex = 0;
+    let lastTime = performance.now();
+    let dragging = false;
+
+    const resetPile = () => {
+      heights.fill(0);
+      pieces.forEach((piece) => {
+        piece.active = false;
+        piece.settled = false;
+        piece.row = 0;
+        piece.x = width + radius * 4;
+        piece.y = height + radius * 4;
+        piece.node.x = piece.x;
+        piece.node.y = piece.y;
+      });
+      activeGroup = null;
+      nextIndex = 0;
+    };
+
+    const shapeWidth = (shape) => Math.max(...shape.map(([col]) => col)) + 1;
+    const shapeHeight = (shape) => Math.max(...shape.map(([, row]) => row)) + 1;
+    const landingRowFor = (shape, baseCol) => Math.max(...shape.map(([dx, dy]) => heights[baseCol + dx] - dy));
+    const canFit = (shape, baseCol) => baseCol >= 0 && baseCol + shapeWidth(shape) <= cols;
+    const recomputeHeights = () => {
+      heights.fill(0);
+      pieces.forEach((piece) => {
+        if (!piece.settled) return;
+        heights[piece.col] = Math.max(heights[piece.col], piece.row + 1);
+      });
+    };
+
+    const spawn = () => {
+      if (Math.max(...heights) >= maxRows - 1) {
+        resetPile();
+      }
+      if (nextIndex + 4 >= pieces.length) {
+        setFusionStatus('stack-paused', 'All prepared pieces are now visible in the stack');
+        return;
+      }
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
+      const widthInCols = shapeWidth(shape);
+      const maxBaseCol = cols - widthInCols;
+      const baseCol = Math.floor(Math.random() * (maxBaseCol + 1));
+      const groupPieces = shape.map(([dx, dy], index) => {
+        const piece = pieces[nextIndex + index];
+        piece.col = baseCol + dx;
+        piece.rowOffset = dy;
+        piece.row = 0;
+        piece.x = xForCol(piece.col);
+        piece.y = -cell * (shapeHeight(shape) - dy + 0.5);
+        piece.active = true;
+        piece.settled = false;
+        piece.node.x = piece.x;
+        piece.node.y = piece.y;
+        return piece;
+      });
+      nextIndex += shape.length;
+      activeGroup = {
+        baseCol,
+        shape,
+        pieces: groupPieces,
+        y: -cell * (shapeHeight(shape) + 0.5),
+      };
+    };
+
+    const syncGroup = () => {
+      if (!activeGroup) return;
+      activeGroup.pieces.forEach((piece) => {
+        piece.x = xForCol(piece.col);
+        piece.y = activeGroup.y - piece.rowOffset * cell;
+        piece.node.x = piece.x;
+        piece.node.y = piece.y;
+      });
+    };
+
+    const settle = () => {
+      if (!activeGroup) return;
+      const baseRow = Math.max(0, landingRowFor(activeGroup.shape, activeGroup.baseCol));
+      activeGroup.pieces.forEach((piece) => {
+        const row = baseRow + piece.rowOffset;
+        piece.row = row;
+        piece.x = xForCol(piece.col);
+        piece.y = yForRow(row);
+        piece.node.x = piece.x;
+        piece.node.y = piece.y;
+        piece.active = false;
+        piece.settled = true;
+      });
+      activeGroup.shape.forEach(([dx, dy]) => {
+        const col = activeGroup.baseCol + dx;
+        heights[col] = Math.max(heights[col], baseRow + dy + 1);
+      });
+      activeGroup = null;
+      if (Math.max(...heights) >= maxRows - 1) {
+        window.setTimeout(() => {
+          if (!activeGroup) resetPile();
+        }, 700);
+      }
+    };
+
+    const stagePoint = (event) => {
+      const rect = stage.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+      };
+    };
+
+    stage.addEventListener('pointerdown', (event) => {
+      const point = stagePoint(event);
+      if (!activeGroup) {
+        const hit = [...pieces].reverse().find((piece) => {
+          if (!piece.settled) return false;
+          const cx = piece.x + radius;
+          const cy = piece.y + radius;
+          return Math.hypot(point.x - cx, point.y - cy) <= radius * 1.35;
+        });
+        if (!hit) return;
+        hit.settled = false;
+        hit.active = true;
+        hit.rowOffset = 0;
+        recomputeHeights();
+        activeGroup = {
+          baseCol: hit.col,
+          shape: [[0, 0]],
+          pieces: [hit],
+          y: hit.y,
+        };
+      }
+      dragging = true;
+      stage.setPointerCapture?.(event.pointerId);
+      const maxBaseCol = cols - shapeWidth(activeGroup.shape);
+      const nextBaseCol = Math.min(maxBaseCol, Math.max(0, Math.round(point.x / cell - shapeWidth(activeGroup.shape) / 2)));
+      if (canFit(activeGroup.shape, nextBaseCol)) {
+        activeGroup.baseCol = nextBaseCol;
+        activeGroup.shape.forEach(([dx], index) => {
+          activeGroup.pieces[index].col = nextBaseCol + dx;
+        });
+      }
+      activeGroup.y = Math.max(-cell * shapeHeight(activeGroup.shape), Math.min(point.y, yForRow(landingRowFor(activeGroup.shape, activeGroup.baseCol)) - radius * 0.28));
+      syncGroup();
+      event.preventDefault();
+    });
+
+    stage.addEventListener('pointermove', (event) => {
+      if (!dragging || !activeGroup) return;
+      const point = stagePoint(event);
+      const maxBaseCol = cols - shapeWidth(activeGroup.shape);
+      const nextBaseCol = Math.min(maxBaseCol, Math.max(0, Math.round(point.x / cell - shapeWidth(activeGroup.shape) / 2)));
+      if (canFit(activeGroup.shape, nextBaseCol)) {
+        activeGroup.baseCol = nextBaseCol;
+        activeGroup.shape.forEach(([dx], index) => {
+          activeGroup.pieces[index].col = nextBaseCol + dx;
+        });
+      }
+      activeGroup.y = Math.max(-cell * shapeHeight(activeGroup.shape), Math.min(point.y, yForRow(landingRowFor(activeGroup.shape, activeGroup.baseCol)) - radius * 0.28));
+      syncGroup();
+      event.preventDefault();
+    });
+
+    const endDrag = (event) => {
+      if (!dragging) return;
+      dragging = false;
+      stage.releasePointerCapture?.(event.pointerId);
+    };
+    stage.addEventListener('pointerup', endDrag);
+    stage.addEventListener('pointercancel', endDrag);
+
+    spawn();
+
+    const render = (time) => {
+      if (stopped) return;
+      const delta = Math.min(50, time - lastTime);
+      lastTime = time;
+
+      if (!activeGroup) spawn();
+      if (activeGroup && !dragging) {
+        activeGroup.y += delta * 0.095;
+        const landingY = yForRow(landingRowFor(activeGroup.shape, activeGroup.baseCol));
+        if (activeGroup.y >= landingY) {
+          settle();
+        } else {
+          syncGroup();
+        }
+      }
+
+      pieces.forEach((piece) => {
+        if (!piece.active && !piece.settled) return;
+        piece.node.x = piece.x;
+        piece.node.y = piece.y;
+      });
+
+      try {
+        renderer.render();
+      } catch (error) {
+        stopped = true;
+        console.error(error);
+        setFusionStatus('render-error', error instanceof Error ? error.message : String(error));
+        return;
+      }
+      requestAnimationFrame(render);
+    };
+
+    requestAnimationFrame(render);
+    setFusionStatus(
+      canCopyElementImage ? 'active-draggable-stack' : 'active-liquid-stack',
+      canCopyElementImage
+        ? 'Glass pieces fall, stack at the bottom, and the active piece can be dragged'
+        : 'Glass pieces fall and stack; enable Canvas Draw Element to show Html eyes'
+    );
+    return { scene, container, renderer, heights, pieces };
+  };
+
+  if (!root || !mount) {
+    setStatus('missing-root', 'demo root was not found');
+  } else if (!('gpu' in navigator)) {
+    setStatus('webgpu-unavailable', 'navigator.gpu is not available in this browser');
+    setFusionStatus('webgpu-unavailable', 'navigator.gpu is not available in this browser');
+  } else {
+    try {
+      const { Container, Glass, Html, Renderer, Scene } = await import('https://esm.sh/@liquid-dom/core@0.1.0?bundle');
+      const canCopyElementImage = Boolean(globalThis.GPUQueue?.prototype?.copyElementImageToTexture);
+      const fusionDemo = setupFusionDemo({ Container, Glass, Html, Renderer, Scene, canCopyElementImage });
+
+      const scene = new Scene();
+      const stage = root.querySelector('.liquid-demo-stage');
+      const labelLayer = root.querySelector('[data-liquid-dvd-label-layer]');
+      const bounds = stage.getBoundingClientRect();
+      const width = Math.max(320, Math.round(bounds.width));
+      const height = Math.max(360, Math.round(bounds.height));
+
+      if (canCopyElementImage) {
+        const wallpaper = document.createElement('div');
+        wallpaper.className = 'liquid-wallpaper-source';
+        scene.add(new Html({
+          width,
+          height,
+          zIndex: -2,
+          element: wallpaper,
+        }));
+
+        const source = root.querySelector('.liquid-demo-source').cloneNode(true);
+        source.removeAttribute('aria-hidden');
+        source.style.display = 'grid';
+        scene.add(new Html({
+          width,
+          height,
+          zIndex: -1,
+          element: source,
+        }));
+      }
+
+      const container = new Container({
+        x: 0,
+        y: 0,
+        blur: 18,
+        spacing: 22,
+        thickness: 96,
+        displacementFactor: 1.15,
+        displacementBlur: 8,
+        dispersion: 0.035,
+        tint: { r: 0.92, g: 0.98, b: 1, a: 0.2 },
+        shadowColor: { r: 0.05, g: 0.09, b: 0.14, a: 0.2 },
+        shadowBlur: 34,
+        shadowOffsetY: 18,
+      });
+
+      const makeLabel = (main, sub, scale = 1) => {
+        const element = document.createElement('div');
+        element.className = 'liquid-dvd-label';
+        element.style.position = 'absolute';
+        element.style.fontSize = `${Math.round(20 * scale)}px`;
+        element.innerHTML = `<span>${main}</span><small>${sub}</small>`;
+        return element;
+      };
+
+      const makeDvdGlass = ({ x, y, width: glassWidth, height: glassHeight, smoothing, main, sub, scale }) => {
+        const glassRadius = Math.min(glassWidth, glassHeight) / 2;
+        const node = new Glass({
+          x,
+          y,
+          width: glassWidth,
+          height: glassHeight,
+          cornerRadius: glassRadius,
+          cornerSmoothing: smoothing,
+        });
+        const label = makeLabel(main, sub, scale);
+        label.style.width = `${glassWidth}px`;
+        label.style.height = `${glassHeight}px`;
+        label.style.borderRadius = `${glassRadius}px`;
+        labelLayer?.append(label);
+        return { node, label };
+      };
+
+      const bodies = [
+        {
+          ...makeDvdGlass({
+            x: width * 0.12,
+            y: height * 0.18,
+            width: 210,
+            height: 112,
+            smoothing: 0.68,
+            main: '液体DOM',
+            sub: '日本語',
+            scale: 1,
+          }),
+          vx: 2.6,
+          vy: 1.8,
+        },
+        {
+          ...makeDvdGlass({
+            x: width * 0.58,
+            y: height * 0.28,
+            width: 154,
+            height: 154,
+            smoothing: 0.72,
+            main: 'LIQUID',
+            sub: 'English',
+            scale: 0.92,
+          }),
+          vx: -2.1,
+          vy: 2.3,
+        },
+        {
+          ...makeDvdGlass({
+            x: width * 0.32,
+            y: height * 0.64,
+            width: 240,
+            height: 88,
+            smoothing: 0.56,
+            main: 'Liquid DOM',
+            sub: 'Web UI',
+            scale: 0.94,
+          }),
+          vx: 2.9,
+          vy: -1.9,
+        },
+      ];
+
+      bodies.forEach(({ node }) => container.add(node));
+      scene.add(container);
+
+      const renderer = new Renderer({ scene, maxDpr: 2 });
+      renderer.canvas.className = 'liquid-dom-canvas';
+      renderer.canvas.style.width = '100%';
+      renderer.canvas.style.height = '100%';
+      mount.replaceChildren(renderer.canvas);
+
+      let frame = 0;
+      let stopped = false;
+      let draggingBody = null;
+      let dragOffset = { x: 0, y: 0 };
+      const demoPoint = (event) => {
+        const rect = stage.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top,
+        };
+      };
+      stage.addEventListener('pointerdown', (event) => {
+        const point = demoPoint(event);
+        const hit = [...bodies].reverse().find((body) => (
+          point.x >= body.node.x &&
+          point.x <= body.node.x + body.node.width &&
+          point.y >= body.node.y &&
+          point.y <= body.node.y + body.node.height
+        ));
+        if (!hit) return;
+        draggingBody = hit;
+        dragOffset = {
+          x: point.x - hit.node.x,
+          y: point.y - hit.node.y,
+        };
+        stage.setPointerCapture?.(event.pointerId);
+        event.preventDefault();
+      });
+      stage.addEventListener('pointermove', (event) => {
+        if (!draggingBody) return;
+        const point = demoPoint(event);
+        draggingBody.node.x = Math.min(Math.max(point.x - dragOffset.x, 0), width - draggingBody.node.width);
+        draggingBody.node.y = Math.min(Math.max(point.y - dragOffset.y, 0), height - draggingBody.node.height);
+        draggingBody.label.style.transform = `translate3d(${Math.round(draggingBody.node.x)}px, ${Math.round(draggingBody.node.y)}px, 0)`;
+        event.preventDefault();
+      });
+      const endDvdDrag = (event) => {
+        if (!draggingBody) return;
+        stage.releasePointerCapture?.(event.pointerId);
+        draggingBody = null;
+      };
+      stage.addEventListener('pointerup', endDvdDrag);
+      stage.addEventListener('pointercancel', endDvdDrag);
+
+      const render = () => {
+        if (stopped) return;
+        frame += 1;
+        bodies.forEach((body) => {
+          if (body === draggingBody) {
+            body.label.style.transform = `translate3d(${Math.round(body.node.x)}px, ${Math.round(body.node.y)}px, 0)`;
+            return;
+          }
+          body.node.x += body.vx;
+          body.node.y += body.vy;
+          if (body.node.x <= 0 || body.node.x + body.node.width >= width) {
+            body.vx *= -1;
+            body.node.x = Math.min(Math.max(body.node.x, 0), width - body.node.width);
+          }
+          if (body.node.y <= 0 || body.node.y + body.node.height >= height) {
+            body.vy *= -1;
+            body.node.y = Math.min(Math.max(body.node.y, 0), height - body.node.height);
+          }
+          body.label.style.transform = `translate3d(${Math.round(body.node.x)}px, ${Math.round(body.node.y)}px, 0)`;
+        });
+        try {
+          renderer.render();
+        } catch (error) {
+          stopped = true;
+          console.error(error);
+          setStatus('render-error', error instanceof Error ? error.message : String(error));
+          return;
+        }
+        requestAnimationFrame(render);
+      };
+
+      render();
+      if (!stopped) {
+        setStatus(
+          'active-bouncing-glass',
+          canCopyElementImage
+            ? 'Liquid DOM canvas mounted; Glass nodes bounce over the wallpaper'
+            : 'Liquid DOM canvas mounted without DOM-backed Html nodes'
+        );
+      }
+      window.__liquidDomArticle = { scene, container, renderer };
+      window.__liquidFusionDemo = fusionDemo;
+    } catch (error) {
+      console.error(error);
+      setStatus('render-error', error instanceof Error ? error.message : String(error));
+      setFusionStatus('render-error', error instanceof Error ? error.message : String(error));
+    }
+  }
+</script>
