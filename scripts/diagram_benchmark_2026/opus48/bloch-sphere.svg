@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <radialGradient id="ball" cx="40%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#f5f9ff"/>
+      <stop offset="70%" stop-color="#dbe8f6"/>
+      <stop offset="100%" stop-color="#bdd0e6"/>
+    </radialGradient>
+    <marker id="ax" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#475569"/></marker>
+    <marker id="vc" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#2563eb"/></marker>
+  </defs>
+  <rect width="1200" height="900" fill="#fbfcfe"/>
+  <text x="600" y="70" text-anchor="middle" font-size="30" font-weight="bold" fill="#1e293b">Bloch Sphere</text>
+
+  <!-- O at (600,470), R=320 -->
+  <circle cx="600" cy="470" r="320" fill="url(#ball)" stroke="#475569" stroke-opacity="0.4" stroke-width="2"/>
+  <!-- equator -->
+  <ellipse cx="600" cy="470" rx="320" ry="115" fill="none" stroke="#94a3b8" stroke-width="2"/>
+  <path d="M280 470 A320 115 0 0 0 920 470" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="7 6"/>
+
+  <!-- axes -->
+  <line x1="600" y1="470" x2="600" y2="120" stroke="#475569" stroke-width="3" marker-end="url(#ax)"/>
+  <text x="615" y="120" font-size="26" fill="#1e293b">z</text>
+  <line x1="600" y1="470" x2="985" y2="485" stroke="#475569" stroke-width="3" marker-end="url(#ax)"/>
+  <text x="995" y="492" font-size="26" fill="#1e293b">y</text>
+  <line x1="600" y1="470" x2="360" y2="690" stroke="#475569" stroke-width="3" marker-end="url(#ax)"/>
+  <text x="330" y="715" font-size="26" fill="#1e293b">x</text>
+  <line x1="600" y1="470" x2="600" y2="790" stroke="#475569" stroke-width="2" stroke-opacity="0.6"/>
+
+  <!-- poles -->
+  <text x="620" y="165" font-size="22" fill="#1e293b">|0⟩</text>
+  <text x="620" y="815" font-size="22" fill="#1e293b">|1⟩</text>
+
+  <!-- state vector to (755,265) -->
+  <line x1="600" y1="470" x2="755" y2="265" stroke="#2563eb" stroke-width="4" marker-end="url(#vc)"/>
+  <circle cx="755" cy="265" r="8" fill="#2563eb"/>
+  <text x="765" y="255" font-size="24" fill="#2563eb">|ψ⟩</text>
+  <!-- projection -->
+  <line x1="755" y1="265" x2="755" y2="424" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.6"/>
+  <line x1="600" y1="470" x2="755" y2="424" stroke="#059669" stroke-width="1.5" stroke-dasharray="6 5" opacity="0.7"/>
+
+  <!-- theta arc -->
+  <path d="M600 320 A150 150 0 0 1 690 350" fill="none" stroke="#dc2626" stroke-width="3"/>
+  <text x="650" y="350" font-size="24" fill="#dc2626">θ</text>
+  <!-- phi arc -->
+  <path d="M710 460 A110 40 0 0 1 758 422" fill="none" stroke="#059669" stroke-width="3"/>
+  <text x="745" y="450" font-size="24" fill="#059669">φ</text>
+</svg>

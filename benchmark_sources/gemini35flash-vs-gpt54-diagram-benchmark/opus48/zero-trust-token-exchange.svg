@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="idt" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#2563eb"/></marker>
+    <marker id="act" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#16a34a"/></marker>
+    <marker id="svt" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#7c3aed"/></marker>
+  </defs>
+  <rect width="1200" height="900" fill="#ffffff"/>
+  <text x="600" y="58" text-anchor="middle" font-size="29" font-weight="bold" fill="#1f2933">Zero Trust Auth &amp; Token Exchange</text>
+
+  <!-- zones -->
+  <rect x="40" y="150" width="270" height="560" rx="14" fill="#fef2f2" stroke="#f87171" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="175" y="185" text-anchor="middle" font-size="18" font-weight="bold" fill="#dc2626">Untrusted (public)</text>
+  <rect x="820" y="110" width="350" height="560" rx="14" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="995" y="145" text-anchor="middle" font-size="18" font-weight="bold" fill="#15803d">Trusted zone</text>
+  <line x1="575" y1="100" x2="575" y2="800" stroke="#9ca3af" stroke-width="2" stroke-dasharray="9 7"/>
+  <text x="575" y="90" text-anchor="middle" font-size="16" fill="#6b7280">policy enforcement</text>
+
+  <!-- nodes -->
+  <g>
+    <rect x="75" y="240" width="200" height="90" rx="12" fill="#0ea5e926" stroke="#0ea5e9" stroke-width="3"/>
+    <text x="175" y="292" text-anchor="middle" font-size="20" fill="#1f2933">User</text>
+    <rect x="75" y="500" width="200" height="90" rx="12" fill="#0ea5e926" stroke="#0ea5e9" stroke-width="3"/>
+    <text x="175" y="552" text-anchor="middle" font-size="20" fill="#1f2933">Browser</text>
+    <rect x="470" y="150" width="200" height="90" rx="12" fill="#6366f126" stroke="#6366f1" stroke-width="3"/>
+    <text x="570" y="202" text-anchor="middle" font-size="20" fill="#1f2933">IdP</text>
+    <rect x="470" y="500" width="210" height="90" rx="12" fill="#f59e0b26" stroke="#f59e0b" stroke-width="3"/>
+    <text x="575" y="540" text-anchor="middle" font-size="19" fill="#1f2933">API</text>
+    <text x="575" y="566" text-anchor="middle" font-size="19" fill="#1f2933">Gateway</text>
+    <rect x="900" y="350" width="200" height="90" rx="12" fill="#10b98126" stroke="#10b981" stroke-width="3"/>
+    <text x="1000" y="402" text-anchor="middle" font-size="20" fill="#1f2933">Service A</text>
+    <rect x="900" y="600" width="200" height="90" rx="12" fill="#10b98126" stroke="#10b981" stroke-width="3"/>
+    <text x="1000" y="652" text-anchor="middle" font-size="20" fill="#1f2933">Service B</text>
+  </g>
+
+  <!-- flows -->
+  <line x1="175" y1="330" x2="175" y2="495" stroke="#2563eb" stroke-width="3" marker-end="url(#idt)"/>
+  <text x="190" y="420" font-size="15" fill="#2563eb">login</text>
+  <polyline points="275,520 380,520 380,210 465,205" fill="none" stroke="#2563eb" stroke-width="3" marker-end="url(#idt)"/>
+  <text x="320" y="350" font-size="15" fill="#2563eb">authn</text>
+  <line x1="570" y1="240" x2="572" y2="495" stroke="#2563eb" stroke-width="3" marker-end="url(#idt)"/>
+  <text x="585" y="370" font-size="15" fill="#2563eb">ID token</text>
+  <line x1="275" y1="555" x2="465" y2="552" stroke="#2563eb" stroke-width="3" marker-end="url(#idt)"/>
+  <text x="370" y="590" text-anchor="middle" font-size="15" fill="#2563eb">request + ID token</text>
+  <polyline points="680,530 800,440 895,400" fill="none" stroke="#16a34a" stroke-width="3" marker-end="url(#act)"/>
+  <text x="790" y="450" font-size="15" fill="#16a34a">access token</text>
+  <line x1="1000" y1="440" x2="1000" y2="595" stroke="#7c3aed" stroke-width="3" marker-end="url(#svt)"/>
+  <text x="1015" y="525" font-size="15" fill="#7c3aed">service token (exchange)</text>
+
+  <!-- legend -->
+  <g font-size="16">
+    <line x1="70" y1="760" x2="110" y2="760" stroke="#2563eb" stroke-width="3"/>
+    <text x="118" y="765" fill="#2563eb">ID token</text>
+    <line x1="280" y1="760" x2="320" y2="760" stroke="#16a34a" stroke-width="3"/>
+    <text x="328" y="765" fill="#16a34a">access token</text>
+    <line x1="540" y1="760" x2="580" y2="760" stroke="#7c3aed" stroke-width="3"/>
+    <text x="588" y="765" fill="#7c3aed">service token</text>
+  </g>
+</svg>

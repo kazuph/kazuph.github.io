@@ -1,0 +1,89 @@
+\documentclass[border=6mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
+  \definecolor{wall}{HTML}{DCEBF2}
+  \definecolor{floor}{HTML}{D9C3A5}
+  \definecolor{floord}{HTML}{C6AC88}
+  \definecolor{bed}{HTML}{E89BB0}
+  \definecolor{bedd}{HTML}{D07A93}
+  \definecolor{shelf}{HTML}{B0805A}
+  \definecolor{desk}{HTML}{9C6B45}
+  \definecolor{skin}{HTML}{F1C7A1}
+  \definecolor{son}{HTML}{4FA0C9}
+  \definecolor{mom}{HTML}{C76B86}
+  \definecolor{vr}{HTML}{2D3440}
+  \definecolor{vrglow}{HTML}{55D6C2}
+  \definecolor{hair}{HTML}{42332A}
+  \definecolor{door}{HTML}{9C6B45}
+
+  % room
+  \fill[wall] (0,0) rectangle (12,9);
+  \fill[floor] (0,0) rectangle (12,2.4);
+  \draw[floord,line width=0.03cm] (0,2.4) -- (12,2.4);
+
+  % door on the right (mother enters)
+  \fill[door!70] (10.0,2.4) rectangle (12,8.2);
+  \fill[wall!85] (10.3,2.4) rectangle (11.9,8.0);
+  \fill[door] (10.55,5.2) circle (0.1);
+
+  % window-ish poster + shelf (left)
+  \fill[shelf] (0.6,5.0) rectangle (3.4,5.3);
+  \fill[shelf] (0.6,6.2) rectangle (3.4,6.5);
+  \fill[bedd] (1.0,5.3) rectangle (1.5,6.2);
+  \fill[son] (1.8,5.3) rectangle (2.3,6.2);
+  \fill[floord] (2.6,5.3) rectangle (3.1,6.2);
+
+  % bed (left-front)
+  \fill[bedd] (0.4,2.4) rectangle (3.6,4.3);
+  \fill[bed] (0.4,3.6) rectangle (3.6,4.3);
+  \fill[white] (0.6,3.7) rectangle (1.5,4.15);
+
+  % desk (center-back)
+  \fill[desk] (4.4,3.0) rectangle (7.0,3.3);
+  \fill[desk] (4.5,2.4) rectangle (4.75,3.0);
+  \fill[desk] (6.65,2.4) rectangle (6.9,3.0);
+  \fill[vr] (6.0,3.3) rectangle (6.7,3.9); % small monitor base console
+  \fill[vrglow] (6.1,3.4) rectangle (6.6,3.8);
+
+  % son (center, standing, VR goggles, holding controllers, mid-motion)
+  \fill[son] (5.2,2.7) .. controls (4.8,3.6) and (4.9,4.6) .. (5.4,4.9)
+            .. controls (6.0,5.05) and (6.4,4.3) .. (6.2,3.4)
+            -- (6.0,2.7) -- cycle;
+  \fill[skin] (5.6,5.4) circle (0.5);
+  \fill[hair] (5.6,5.7) ellipse (0.56 and 0.34);
+  % VR goggles
+  \fill[vr] (5.05,5.35) rectangle (6.15,5.65);
+  \fill[vrglow] (5.15,5.42) rectangle (5.55,5.58);
+  \fill[vrglow] (5.65,5.42) rectangle (6.05,5.58);
+  \draw[vr,line width=0.06cm] (5.05,5.5) .. controls (4.7,5.6) .. (4.95,5.85);
+  % arms raised with controllers
+  \fill[son] (5.0,4.6) -- (4.2,5.5) -- (4.5,5.75) -- (5.3,4.85) -- cycle;
+  \fill[son] (6.1,4.6) -- (6.95,5.5) -- (6.65,5.75) -- (5.85,4.85) -- cycle;
+  \fill[vr] (4.25,5.55) circle (0.22);
+  \fill[vr] (6.9,5.55) circle (0.22);
+  % legs in motion
+  \fill[vr!85] (5.35,2.7) -- (5.05,1.4) -- (5.45,1.4) -- (5.65,2.7) -- cycle;
+  \fill[vr!85] (5.9,2.7) -- (6.3,1.5) -- (6.7,1.6) -- (6.2,2.7) -- cycle;
+  \fill[white] (4.9,1.25) ellipse (0.32 and 0.16);
+  \fill[white] (6.4,1.35) ellipse (0.32 and 0.16);
+
+  % mother (right doorway, watching)
+  \fill[mom] (10.7,2.4) .. controls (10.3,3.4) and (10.4,4.6) .. (10.9,5.0)
+            .. controls (11.5,5.1) and (11.7,4.0) .. (11.5,3.0)
+            -- (11.3,2.4) -- cycle;
+  \fill[skin] (11.1,5.5) circle (0.5);
+  \fill[hair] (11.1,5.85) ellipse (0.6 and 0.5);
+  \fill[hair] (10.62,5.5) ellipse (0.18 and 0.55);
+  % mother face turned left (toward son): eye + slight smile on left
+  \fill[vr] (10.86,5.5) circle (0.05);
+  \draw[vr,line width=0.03cm] (10.72,5.3) .. controls (10.86,5.22) .. (11.0,5.32);
+
+  % gaze line: mother -> son
+  \draw[mom,line width=0.04cm,dash pattern=on 4pt off 3pt,->,>=stealth] (10.6,5.5) -- (6.3,5.5);
+  % son's attention forward (out of screen / play)
+  \draw[son,line width=0.03cm,dash pattern=on 3pt off 3pt] (5.05,5.5) -- (3.0,5.6);
+\end{tikzpicture}
+\end{document}

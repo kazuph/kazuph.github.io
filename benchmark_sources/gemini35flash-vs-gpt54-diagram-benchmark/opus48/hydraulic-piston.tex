@@ -1,0 +1,71 @@
+\documentclass[border=6mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+\usepackage{xeCJK}
+\setCJKmainfont{Hiragino Sans}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round,
+  >={Stealth[length=3mm]},font=\sffamily]
+  \definecolor{bg}{HTML}{F7F4EC}
+  \definecolor{steel}{HTML}{B9C2CC}
+  \definecolor{steeld}{HTML}{8C97A3}
+  \definecolor{rod}{HTML}{6E7884}
+  \definecolor{oilL}{HTML}{6FB1E0}
+  \definecolor{oilR}{HTML}{F0A35E}
+  \definecolor{seal}{HTML}{3C4450}
+  \definecolor{lbl}{HTML}{2B313A}
+  \definecolor{flow}{HTML}{C0392B}
+
+  \fill[bg] (-0.3,-0.3) rectangle (12.3,9.3);
+
+  % cylinder body (cross-section)
+  \fill[steel] (1.5,3.0) rectangle (9.6,6.6);
+  \draw[steeld,line width=0.06cm] (1.5,3.0) rectangle (9.6,6.6);
+  % bore (inner chamber)
+  \fill[white] (1.9,3.4) rectangle (9.2,6.2);
+
+  % left chamber (pressurized oil)
+  \fill[oilL] (1.9,3.4) rectangle (4.7,6.2);
+  % right chamber
+  \fill[oilR] (5.5,3.4) rectangle (9.2,6.2);
+
+  % piston head
+  \fill[seal] (4.7,3.4) rectangle (5.5,6.2);
+  \fill[steeld] (4.78,3.5) rectangle (5.42,6.1);
+  % piston rings
+  \foreach \y in {3.9,4.45,5.0,5.55} { \fill[seal] (4.7,\y) rectangle (5.5,\y+0.14); }
+
+  % rod going right through end cap
+  \fill[rod] (5.5,4.55) rectangle (11.0,5.05);
+  \draw[steeld,line width=0.05cm] (5.5,4.55) rectangle (11.0,5.05);
+  % end cap + seal where rod exits
+  \fill[seal] (9.2,3.4) rectangle (9.6,6.2);
+  \fill[steel] (9.2,4.45) rectangle (9.6,5.15);
+
+  % port arrows: pressurized oil IN to left chamber
+  \draw[->,flow,line width=0.08cm] (3.1,1.9) -- (3.1,3.35);
+  \node[lbl,anchor=north,font=\small] at (3.1,1.8) {高圧オイル流入};
+  % oil OUT from right chamber
+  \draw[->,flow,line width=0.08cm] (7.3,3.35) -- (7.3,1.9);
+  \node[lbl,anchor=north,font=\small] at (7.3,1.8) {オイル排出};
+  % piston motion arrow
+  \draw[->,seal,line width=0.09cm] (4.55,6.9) -- (6.1,6.9);
+  \node[lbl,anchor=south,font=\small] at (5.3,7.0) {ピストン移動};
+
+  % labels with leader lines
+  \node[lbl,font=\small,anchor=south west] at (0.2,6.95) {シリンダー};
+  \draw[lbl,line width=0.03cm] (1.4,6.95) -- (2.3,6.6);
+  \node[lbl,font=\small,anchor=east] at (5.1,8.4) {ピストン};
+  \draw[lbl,line width=0.03cm] (5.1,8.3) -- (5.1,6.25);
+  \node[lbl,font=\small,anchor=west] at (10.4,5.9) {ロッド};
+  \draw[lbl,line width=0.03cm] (10.6,5.8) -- (10.4,5.1);
+  \node[oilL!50!black,font=\small,anchor=north] at (3.3,3.3) {圧力室A};
+  \node[oilR!60!black,font=\small,anchor=north] at (7.35,3.3) {圧力室B};
+  \node[lbl,font=\small,anchor=west] at (9.7,3.0) {シール};
+  \draw[lbl,line width=0.03cm] (9.65,3.1) -- (9.4,3.9);
+
+  % title
+  \node[lbl,font=\bfseries] at (6,8.9) {油圧ピストン 断面構造};
+\end{tikzpicture}
+\end{document}

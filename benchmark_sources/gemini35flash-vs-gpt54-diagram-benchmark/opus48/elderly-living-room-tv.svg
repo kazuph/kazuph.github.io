@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <!-- room -->
+  <rect width="1200" height="900" fill="#f6e9d4"/>
+  <rect x="0" y="640" width="1200" height="260" fill="#c79a6b"/>
+  <line x1="0" y1="640" x2="1200" y2="640" stroke="#b5875a" stroke-width="3"/>
+
+  <!-- window + curtains -->
+  <rect x="80" y="140" width="260" height="340" fill="#eadbc0"/>
+  <rect x="100" y="160" width="220" height="300" fill="#6fc3d6" opacity="0.4"/>
+  <line x1="210" y1="160" x2="210" y2="460" stroke="#eadbc0" stroke-width="6"/>
+  <polygon points="70,120 140,120 120,500 60,500" fill="#d98e73"/>
+  <polygon points="350,120 280,120 300,500 360,500" fill="#d98e73"/>
+
+  <!-- ceiling lamp -->
+  <line x1="860" y1="0" x2="860" y2="200" stroke="#9c6b3f" stroke-width="6"/>
+  <polygon points="790,200 930,200 900,270 820,270" fill="#f4b85e"/>
+  <ellipse cx="860" cy="275" rx="160" ry="50" fill="#f4b85e" opacity="0.3"/>
+
+  <!-- TV cabinet + TV -->
+  <rect x="840" y="530" width="320" height="110" fill="#9c6b3f"/>
+  <rect x="870" y="260" width="280" height="270" fill="#2c3033"/>
+  <rect x="895" y="285" width="230" height="220" fill="#6fc3d6"/>
+  <rect x="920" y="310" width="80" height="170" fill="#6fc3d6" opacity="0.6"/>
+
+  <!-- coffee table -->
+  <rect x="460" y="630" width="260" height="70" fill="#9c6b3f"/>
+  <rect x="470" y="700" width="25" height="70" fill="#b5875a"/>
+  <rect x="685" y="700" width="25" height="70" fill="#b5875a"/>
+  <ellipse cx="550" cy="628" rx="34" ry="13" fill="#f4b85e"/>
+
+  <!-- sofa -->
+  <rect x="160" y="380" width="360" height="260" fill="#a9543f"/>
+  <rect x="160" y="510" width="360" height="130" fill="#c56b5a"/>
+  <rect x="140" y="430" width="50" height="210" fill="#a9543f"/>
+  <rect x="490" y="430" width="50" height="210" fill="#a9543f"/>
+
+  <!-- grandma (seated, facing right toward TV) -->
+  <path d="M290 610 C250 540 255 440 305 410 C370 390 410 460 400 540 L390 610 Z" fill="#7e8fb0"/>
+  <circle cx="360" cy="370" r="52" fill="#f0c9a6"/>
+  <ellipse cx="360" cy="345" rx="60" ry="42" fill="#e8e8ea"/>
+  <ellipse cx="318" cy="370" rx="16" ry="30" fill="#e8e8ea"/>
+  <ellipse cx="402" cy="370" rx="16" ry="30" fill="#e8e8ea"/>
+  <circle cx="378" cy="368" r="5" fill="#2c3033"/>
+  <path d="M370 388 Q386 398 402 384" fill="none" stroke="#2c3033" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="395" cy="500" rx="50" ry="22" fill="#7e8fb0"/>
+  <ellipse cx="330" cy="640" rx="30" ry="18" fill="#f0c9a6"/>
+  <ellipse cx="400" cy="640" rx="30" ry="18" fill="#f0c9a6"/>
+
+  <!-- gaze line toward TV -->
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#a9543f"/>
+    </marker>
+  </defs>
+  <line x1="415" y1="370" x2="880" y2="400" stroke="#a9543f" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#ar)"/>
+
+  <!-- rug -->
+  <ellipse cx="360" cy="780" rx="280" ry="50" fill="#d98e73" opacity="0.5"/>
+</svg>

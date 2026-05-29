@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="b" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#f87171"/></marker>
+    <marker id="b2" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#fca5a5"/></marker>
+  </defs>
+  <rect width="1200" height="900" fill="#0f172a"/>
+  <text x="600" y="60" text-anchor="middle" font-size="29" font-weight="bold" fill="#e2e8f0">Michelson Interferometer</text>
+
+  <!-- BS center (500,460); Laser left; Mirror A top (500,150); Mirror B right (1020,460); Screen bottom (500,810) -->
+  <!-- laser -->
+  <rect x="40" y="415" width="90" height="90" fill="#cbd5e1"/>
+  <rect x="130" y="445" width="22" height="30" fill="#f87171"/>
+  <text x="85" y="400" text-anchor="middle" font-size="20" fill="#e2e8f0">Laser</text>
+
+  <!-- beam splitter -->
+  <line x1="445" y1="515" x2="555" y2="405" stroke="#fcd34d" stroke-width="9"/>
+  <text x="560" y="400" font-size="19" fill="#fcd34d">Beam Splitter</text>
+
+  <!-- mirror A (top) -->
+  <rect x="400" y="150" width="200" height="24" fill="#1e3a5f"/>
+  <line x1="400" y1="148" x2="600" y2="148" stroke="#93c5fd" stroke-width="9"/>
+  <text x="500" y="135" text-anchor="middle" font-size="20" fill="#e2e8f0">Mirror A</text>
+
+  <!-- mirror B (right) -->
+  <rect x="1020" y="360" width="24" height="200" fill="#1e3a5f"/>
+  <line x1="1018" y1="360" x2="1018" y2="560" stroke="#93c5fd" stroke-width="9"/>
+  <text x="1056" y="466" font-size="20" fill="#e2e8f0">Mirror B</text>
+
+  <!-- screen (bottom) -->
+  <rect x="410" y="800" width="180" height="55" fill="#cbd5e1"/>
+  <text x="500" y="885" text-anchor="middle" font-size="20" fill="#e2e8f0">Screen</text>
+
+  <!-- beams -->
+  <line x1="152" y1="460" x2="448" y2="460" stroke="#f87171" stroke-width="5" marker-end="url(#b)"/>
+  <line x1="492" y1="455" x2="492" y2="180" stroke="#f87171" stroke-width="4" marker-end="url(#b)"/>
+  <line x1="508" y1="180" x2="508" y2="455" stroke="#fca5a5" stroke-width="4" marker-end="url(#b2)"/>
+  <line x1="552" y1="455" x2="1015" y2="455" stroke="#f87171" stroke-width="4" marker-end="url(#b)"/>
+  <line x1="1015" y1="465" x2="552" y2="465" stroke="#fca5a5" stroke-width="4" marker-end="url(#b2)"/>
+  <line x1="500" y1="505" x2="500" y2="795" stroke="#f87171" stroke-width="5" marker-end="url(#b)"/>
+
+  <!-- arm labels -->
+  <text x="520" y="320" font-size="16" fill="#fca5a5">arm 1</text>
+  <text x="780" y="445" text-anchor="middle" font-size="16" fill="#fca5a5">arm 2</text>
+</svg>

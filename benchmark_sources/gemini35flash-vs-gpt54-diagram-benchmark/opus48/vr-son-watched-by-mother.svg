@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <marker id="amom" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#c76b86"/>
+    </marker>
+    <marker id="ason" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#4fa0c9"/>
+    </marker>
+  </defs>
+
+  <!-- room -->
+  <rect width="1200" height="900" fill="#dcebf2"/>
+  <rect x="0" y="660" width="1200" height="240" fill="#d9c3a5"/>
+  <line x1="0" y1="660" x2="1200" y2="660" stroke="#c6ac88" stroke-width="3"/>
+
+  <!-- door (mother enters from right) -->
+  <rect x="1000" y="80" width="200" height="580" fill="#9c6b45"/>
+  <rect x="1030" y="100" width="160" height="560" fill="#dcebf2"/>
+  <circle cx="1055" cy="380" r="10" fill="#9c6b45"/>
+
+  <!-- shelf + toys (left) -->
+  <rect x="60" y="250" width="280" height="28" fill="#b0805a"/>
+  <rect x="60" y="370" width="280" height="28" fill="#b0805a"/>
+  <rect x="100" y="278" width="50" height="90" fill="#d07a93"/>
+  <rect x="180" y="278" width="50" height="90" fill="#4fa0c9"/>
+  <rect x="260" y="278" width="50" height="90" fill="#c6ac88"/>
+
+  <!-- bed -->
+  <rect x="40" y="460" width="320" height="200" fill="#d07a93"/>
+  <rect x="40" y="460" width="320" height="70" fill="#e89bb0"/>
+  <rect x="60" y="475" width="90" height="45" fill="#ffffff"/>
+
+  <!-- desk -->
+  <rect x="440" y="570" width="260" height="30" fill="#9c6b45"/>
+  <rect x="450" y="600" width="25" height="60" fill="#9c6b45"/>
+  <rect x="665" y="600" width="25" height="60" fill="#9c6b45"/>
+  <rect x="600" y="510" width="70" height="60" fill="#2d3440"/>
+  <rect x="610" y="520" width="50" height="40" fill="#55d6c2"/>
+
+  <!-- son -->
+  <path d="M520 630 L485 470 L540 380 L620 430 L600 630 Z" fill="#4fa0c9"/>
+  <circle cx="560" cy="350" r="50" fill="#f1c7a1"/>
+  <ellipse cx="560" cy="318" rx="56" ry="34" fill="#42332a"/>
+  <rect x="505" y="335" width="110" height="32" rx="6" fill="#2d3440"/>
+  <rect x="515" y="343" width="40" height="16" fill="#55d6c2"/>
+  <rect x="565" y="343" width="40" height="16" fill="#55d6c2"/>
+  <path d="M505 350 Q478 360 495 380" fill="none" stroke="#2d3440" stroke-width="6"/>
+  <polygon points="500,440 420,540 450,565 530,475" fill="#4fa0c9"/>
+  <polygon points="610,440 695,540 665,565 585,475" fill="#4fa0c9"/>
+  <circle cx="427" cy="545" r="22" fill="#2d3440"/>
+  <circle cx="690" cy="545" r="22" fill="#2d3440"/>
+  <polygon points="535,630 505,760 545,760 565,630" fill="#3a4250"/>
+  <polygon points="590,630 630,750 670,740 620,630" fill="#3a4250"/>
+  <ellipse cx="490" cy="765" rx="32" ry="16" fill="#ffffff"/>
+  <ellipse cx="640" cy="755" rx="32" ry="16" fill="#ffffff"/>
+
+  <!-- mother (right doorway) -->
+  <path d="M1070 660 L1040 500 L1090 410 L1160 480 L1130 660 Z" fill="#c76b86"/>
+  <circle cx="1110" cy="350" r="50" fill="#f1c7a1"/>
+  <ellipse cx="1110" cy="315" rx="60" ry="50" fill="#42332a"/>
+  <ellipse cx="1062" cy="350" rx="18" ry="55" fill="#42332a"/>
+  <circle cx="1086" cy="350" r="5" fill="#2d3440"/>
+  <path d="M1072 372 Q1086 380 1100 370" fill="none" stroke="#2d3440" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- gaze: mother -> son -->
+  <line x1="1060" y1="350" x2="640" y2="350" stroke="#c76b86" stroke-width="4" stroke-dasharray="10 7" marker-end="url(#amom)"/>
+  <!-- son attention forward -->
+  <line x1="505" y1="350" x2="320" y2="360" stroke="#4fa0c9" stroke-width="3" stroke-dasharray="7 6" marker-end="url(#ason)"/>
+</svg>

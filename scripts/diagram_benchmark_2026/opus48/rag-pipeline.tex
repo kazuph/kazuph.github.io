@@ -1,0 +1,50 @@
+\documentclass[border=6mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+
+\begin{document}
+\begin{tikzpicture}[
+  >={Stealth[length=3mm]},font=\sffamily,
+  node distance=10mm,
+  b/.style={rectangle,rounded corners=3pt,draw=#1!70!black,fill=#1!16,
+            line width=0.4mm,minimum width=26mm,minimum height=12mm,align=center},
+  db/.style={cylinder,shape border rotate=90,aspect=0.32,draw=teal!70!black,
+             fill=teal!16,line width=0.4mm,minimum width=24mm,minimum height=18mm,align=center},
+  on/.style={->,line width=0.45mm,draw=blue!60!black},
+  off/.style={->,line width=0.45mm,draw=gray!60!black,dashed},
+]
+  % online row (bottom)
+  \node[b=blue] (q) at (0,0) {User\\Query};
+  \node[b=blue,right=14mm of q] (emb) {Embed /\\Retrieve};
+  \node[db,above right=2mm and 14mm of emb] (vdb) {Vector\\DB};
+  \node[b=orange,below right=2mm and 14mm of vdb] (ctx) {Retrieved\\Context};
+  \node[b=violet,right=14mm of ctx] (llm) {LLM};
+  \node[b=green,right=14mm of llm] (ans) {Answer};
+
+  % offline ingestion (top)
+  \node[b=gray] (docs) at (0.0,4.4) {Documents};
+  \node[b=gray,right=14mm of docs] (chunk) {Chunk /\\Embed};
+
+  % online edges
+  \draw[on] (q) -- (emb);
+  \draw[on] (emb) -- (vdb);
+  \draw[on] (vdb) -- (ctx);
+  \draw[on] (ctx) -- (llm);
+  \draw[on] (q.south) |- ([yshift=-9mm]q.south) -| node[below,pos=0.25,font=\small]{prompt} (llm.south);
+  \draw[on] (llm) -- (ans);
+
+  % offline edges
+  \draw[off] (docs) -- (chunk);
+  \draw[off] (chunk) -| node[above,pos=0.25,font=\small]{index} (vdb.north);
+
+  % background lanes
+  \begin{scope}[on background layer]
+    \node[fit=(docs)(chunk),draw=gray!50,dashed,rounded corners,
+          fill=gray!6,inner sep=5mm,label={[gray!70!black,font=\small\bfseries]north west:Offline ingestion}] {};
+    \node[fit=(q)(emb)(ctx)(llm)(ans),draw=blue!40,rounded corners,
+          fill=blue!4,inner sep=5mm,label={[blue!60!black,font=\small\bfseries]south west:Online query}] {};
+  \end{scope}
+
+  \node[font=\bfseries] at (5.5,6.2) {RAG Pipeline};
+\end{tikzpicture}
+\end{document}

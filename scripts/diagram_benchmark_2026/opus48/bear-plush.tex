@@ -1,0 +1,73 @@
+\documentclass[border=6mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
+  \definecolor{bg}{HTML}{FFF6EC}
+  \definecolor{fur}{HTML}{CB9367}
+  \definecolor{furdk}{HTML}{B67C51}
+  \definecolor{furlt}{HTML}{E3BD98}
+  \definecolor{muzzle}{HTML}{F1DEC8}
+  \definecolor{belly}{HTML}{F4E6D5}
+  \definecolor{paw}{HTML}{F0DAC1}
+  \definecolor{nose}{HTML}{4A332A}
+  \definecolor{patch}{HTML}{F2A65A}
+  \definecolor{ribbon}{HTML}{E27D9A}
+  \definecolor{shadow}{HTML}{EEDCC8}
+
+  % canvas (~12 x 9)
+  \fill[bg] (-0.3,-0.3) rectangle (12.3,9.3);
+  \fill[shadow] (6,1.0) ellipse (3.0 and 0.34);
+
+  % ears (left/right symmetric)
+  \foreach \sx in {-1,1}{
+    \fill[furdk] ($(6,7.0)+(\sx*1.55,0.95)$) circle (0.95);
+    \fill[furlt] ($(6,7.0)+(\sx*1.55,0.95)$) circle (0.5);
+  }
+
+  % body (soft, slightly wide)
+  \fill[fur] (6,3.7) ellipse (2.55 and 2.45);
+  \fill[belly] (6,3.35) ellipse (1.55 and 1.7);
+  % chest patch
+  \fill[patch] (6,4.15) circle (0.62);
+  \draw[furdk,line width=0.04cm,dash pattern=on 2pt off 2pt] (6,4.15) circle (0.62);
+  \node[font=\bfseries\sffamily,nose,scale=1.1] at (6,4.15) {\(\heartsuit\)};
+
+  % arms (short, rounded)
+  \foreach \sx in {-1,1}{
+    \fill[fur] ($(6,4.4)+(\sx*2.45,0)$) ellipse (0.85 and 1.15);
+    \fill[paw] ($(6,3.65)+(\sx*2.5,0)$) ellipse (0.5 and 0.55);
+  }
+
+  % legs (short, rounded) with paw pads
+  \foreach \sx in {-1,1}{
+    \fill[fur] ($(6,1.55)+(\sx*1.25,0)$) ellipse (1.05 and 0.95);
+    \fill[paw] ($(6,1.4)+(\sx*1.25,0)$) ellipse (0.62 and 0.5);
+    \fill[patch] ($(6,1.4)+(\sx*1.25,0)$) ellipse (0.32 and 0.24);
+  }
+
+  % head
+  \fill[fur] (6,7.0) circle (2.05);
+  \fill[muzzle] (6,6.2) ellipse (1.2 and 0.95);
+
+  % eyes
+  \foreach \sx in {-1,1}{
+    \fill[nose] ($(6,7.25)+(\sx*0.78,0)$) circle (0.24);
+    \fill[white] ($(6,7.36)+(\sx*0.72,0)$) circle (0.08);
+  }
+  % rosy cheeks
+  \foreach \sx in {-1,1}{ \fill[ribbon!55] ($(6,6.55)+(\sx*1.15,0)$) ellipse (0.3 and 0.2); }
+
+  % nose + mouth
+  \fill[nose] (6,6.55) ellipse (0.26 and 0.2);
+  \draw[nose,line width=0.05cm] (6,6.35) -- (6,6.05);
+  \draw[nose,line width=0.05cm] (6,6.05) .. controls (5.7,5.85) and (5.35,6.0) .. (5.3,6.2);
+  \draw[nose,line width=0.05cm] (6,6.05) .. controls (6.3,5.85) and (6.65,6.0) .. (6.7,6.2);
+
+  % ribbon at neck
+  \fill[ribbon] (4.95,5.35) -- (5.85,5.6) -- (5.85,4.9) -- cycle;
+  \fill[ribbon] (7.05,5.35) -- (6.15,5.6) -- (6.15,4.9) -- cycle;
+  \fill[ribbon!80] (6,5.25) circle (0.28);
+\end{tikzpicture}
+\end{document}

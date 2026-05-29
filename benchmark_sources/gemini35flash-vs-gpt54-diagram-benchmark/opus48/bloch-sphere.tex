@@ -1,0 +1,59 @@
+\documentclass[border=6mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.markings}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round,
+  >={Stealth[length=3mm]},font=\sffamily]
+  \definecolor{bg}{HTML}{FBFCFE}
+  \definecolor{sph}{HTML}{E5EEF8}
+  \definecolor{axis}{HTML}{475569}
+  \definecolor{eq}{HTML}{94A3B8}
+  \definecolor{vec}{HTML}{2563EB}
+  \definecolor{th}{HTML}{DC2626}
+  \definecolor{ph}{HTML}{059669}
+  \definecolor{lbl}{HTML}{1E293B}
+
+  \def\R{3.2}
+  \coordinate (O) at (6,4.3);
+
+  \fill[bg] (-0.3,-0.3) rectangle (12.3,9.3);
+
+  % sphere
+  \shade[ball color=sph!60] (O) circle (\R);
+  \draw[axis!40,line width=0.04cm] (O) circle (\R);
+  % equator ellipse
+  \draw[eq,line width=0.04cm] (O) ellipse (\R and {0.36*\R});
+  \draw[eq,dashed,line width=0.03cm] ($(O)+(-\R,0)$) arc (180:360:{\R} and {0.36*\R});
+
+  % axes: z up, x front-left (down-left), y right
+  \draw[->,axis,line width=0.05cm] (O) -- ($(O)+(0,\R+0.9)$) node[above,lbl]{$z$};
+  \draw[->,axis,line width=0.05cm] (O) -- ($(O)+(\R+0.9,-0.15)$) node[right,lbl]{$y$};
+  \draw[->,axis,line width=0.05cm] (O) -- ($(O)+(-0.62*\R,-0.66*\R)$) node[below left,lbl]{$x$};
+  % negative z tick
+  \draw[axis!60,line width=0.04cm] (O) -- ($(O)+(0,-\R)$);
+
+  % poles |0>, |1>
+  \node[lbl,above right,font=\small] at ($(O)+(0,\R)$) {$|0\rangle$};
+  \node[lbl,below right,font=\small] at ($(O)+(0,-\R)$) {$|1\rangle$};
+
+  % state vector |psi> at theta from z, projected
+  % choose theta=48deg from z, phi in azimuth
+  \coordinate (P) at ($(O)+(1.55,2.05)$); % tip on sphere
+  \draw[->,vec,line width=0.07cm] (O) -- (P) node[above right,vec,font=\small]{$|\psi\rangle$};
+  \fill[vec] (P) circle (0.07);
+  % projection to equator plane
+  \coordinate (Pp) at ($(O)+(1.55,0.46)$); % foot in plane (apparent)
+  \draw[vec!50,dashed,line width=0.03cm] (P) -- (Pp);
+  \draw[ph!70,dashed,line width=0.03cm] (O) -- (Pp);
+
+  % theta arc (from z axis to vector)
+  \draw[th,line width=0.05cm] ($(O)+(0,1.5)$) arc (90:53:1.5);
+  \node[th,font=\small] at ($(O)+(0.5,1.75)$) {$\theta$};
+  % phi arc (in equatorial plane, from x/y reference to projection)
+  \draw[ph,line width=0.05cm] ($(O)+(1.1,-0.1)$) arc (-6:18:1.1);
+  \node[ph,font=\small] at ($(O)+(1.45,0.18)$) {$\phi$};
+
+  \node[lbl,font=\bfseries] at (6,8.7) {Bloch Sphere};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="on" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="off" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="900" fill="#ffffff"/>
+  <text x="600" y="60" text-anchor="middle" font-size="30" font-weight="bold" fill="#1f2933">RAG Pipeline</text>
+
+  <!-- lanes -->
+  <rect x="40" y="110" width="640" height="210" rx="14" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="70" y="140" font-size="20" font-weight="bold" fill="#6b7280">Offline ingestion</text>
+  <rect x="40" y="430" width="1120" height="410" rx="14" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="70" y="820" font-size="20" font-weight="bold" fill="#2563eb">Online query</text>
+
+  <!-- offline boxes -->
+  <rect x="100" y="185" width="200" height="90" rx="12" fill="#6b728026" stroke="#6b7280" stroke-width="3"/>
+  <text x="200" y="237" text-anchor="middle" font-size="20" fill="#1f2933">Documents</text>
+  <rect x="380" y="185" width="200" height="90" rx="12" fill="#6b728026" stroke="#6b7280" stroke-width="3"/>
+  <text x="480" y="227" text-anchor="middle" font-size="19" fill="#1f2933">Chunk /</text>
+  <text x="480" y="253" text-anchor="middle" font-size="19" fill="#1f2933">Embed</text>
+
+  <!-- vector db cylinder, straddling lanes -->
+  <g>
+    <ellipse cx="700" cy="330" rx="80" ry="24" fill="#0d948826" stroke="#0d9488" stroke-width="3"/>
+    <rect x="620" y="330" width="160" height="110" fill="#0d948826"/>
+    <line x1="620" y1="330" x2="620" y2="440" stroke="#0d9488" stroke-width="3"/>
+    <line x1="780" y1="330" x2="780" y2="440" stroke="#0d9488" stroke-width="3"/>
+    <ellipse cx="700" cy="440" rx="80" ry="24" fill="#0d948826" stroke="#0d9488" stroke-width="3"/>
+    <text x="700" y="382" text-anchor="middle" font-size="19" fill="#1f2933">Vector</text>
+    <text x="700" y="407" text-anchor="middle" font-size="19" fill="#1f2933">DB</text>
+  </g>
+
+  <!-- online boxes (single row, y center ~590) -->
+  <rect x="70" y="545" width="160" height="90" rx="12" fill="#2563eb26" stroke="#2563eb" stroke-width="3"/>
+  <text x="150" y="585" text-anchor="middle" font-size="19" fill="#1f2933">User</text>
+  <text x="150" y="611" text-anchor="middle" font-size="19" fill="#1f2933">Query</text>
+  <rect x="300" y="545" width="180" height="90" rx="12" fill="#2563eb26" stroke="#2563eb" stroke-width="3"/>
+  <text x="390" y="585" text-anchor="middle" font-size="19" fill="#1f2933">Embed /</text>
+  <text x="390" y="611" text-anchor="middle" font-size="19" fill="#1f2933">Retrieve</text>
+  <rect x="615" y="545" width="180" height="90" rx="12" fill="#d9770626" stroke="#d97706" stroke-width="3"/>
+  <text x="705" y="585" text-anchor="middle" font-size="19" fill="#1f2933">Retrieved</text>
+  <text x="705" y="611" text-anchor="middle" font-size="19" fill="#1f2933">Context</text>
+  <rect x="860" y="545" width="120" height="90" rx="12" fill="#7c3aed26" stroke="#7c3aed" stroke-width="3"/>
+  <text x="920" y="597" text-anchor="middle" font-size="20" fill="#1f2933">LLM</text>
+  <rect x="1010" y="545" width="150" height="90" rx="12" fill="#05966926" stroke="#059669" stroke-width="3"/>
+  <text x="1085" y="597" text-anchor="middle" font-size="20" fill="#1f2933">Answer</text>
+
+  <!-- offline edges -->
+  <line x1="300" y1="230" x2="375" y2="230" stroke="#6b7280" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#off)"/>
+  <polyline points="580,230 700,230 700,303" fill="none" stroke="#6b7280" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#off)"/>
+  <text x="615" y="220" font-size="16" fill="#6b7280">index</text>
+
+  <!-- online edges -->
+  <line x1="230" y1="590" x2="295" y2="590" stroke="#2563eb" stroke-width="3" marker-end="url(#on)"/>
+  <polyline points="480,575 620,460 632,452" fill="none" stroke="#2563eb" stroke-width="3" marker-end="url(#on)"/>
+  <polyline points="700,442 700,520 705,540" fill="none" stroke="#2563eb" stroke-width="3" marker-end="url(#on)"/>
+  <line x1="795" y1="590" x2="855" y2="590" stroke="#2563eb" stroke-width="3" marker-end="url(#on)"/>
+  <line x1="980" y1="590" x2="1005" y2="590" stroke="#2563eb" stroke-width="3" marker-end="url(#on)"/>
+  <!-- original query (prompt) into LLM bottom -->
+  <polyline points="150,635 150,770 920,770 920,640" fill="none" stroke="#2563eb" stroke-width="3" marker-end="url(#on)"/>
+  <text x="540" y="760" text-anchor="middle" font-size="16" fill="#2563eb">original query (prompt)</text>
+</svg>

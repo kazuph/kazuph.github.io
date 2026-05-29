@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="Hiragino Sans, 'Noto Sans CJK JP', sans-serif">
+  <defs>
+    <marker id="flow" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="mv" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#3c4450"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="900" fill="#f7f4ec"/>
+  <text x="600" y="70" text-anchor="middle" font-size="30" font-weight="bold" fill="#2b313a">油圧ピストン 断面構造</text>
+
+  <!-- cylinder body -->
+  <rect x="150" y="300" width="810" height="360" fill="#b9c2cc" stroke="#8c97a3" stroke-width="6"/>
+  <rect x="190" y="340" width="730" height="280" fill="#ffffff"/>
+  <!-- chambers -->
+  <rect x="190" y="340" width="280" height="280" fill="#6fb1e0"/>
+  <rect x="550" y="340" width="370" height="280" fill="#f0a35e"/>
+  <!-- piston -->
+  <rect x="470" y="340" width="80" height="280" fill="#3c4450"/>
+  <rect x="478" y="350" width="64" height="260" fill="#8c97a3"/>
+  <rect x="470" y="390" width="80" height="14" fill="#3c4450"/>
+  <rect x="470" y="445" width="80" height="14" fill="#3c4450"/>
+  <rect x="470" y="500" width="80" height="14" fill="#3c4450"/>
+  <rect x="470" y="555" width="80" height="14" fill="#3c4450"/>
+  <!-- rod -->
+  <rect x="550" y="455" width="550" height="50" fill="#6e7884" stroke="#8c97a3" stroke-width="4"/>
+  <!-- end seal -->
+  <rect x="920" y="340" width="40" height="280" fill="#3c4450"/>
+  <rect x="920" y="445" width="40" height="70" fill="#b9c2cc"/>
+
+  <!-- flow arrows -->
+  <line x1="310" y1="760" x2="310" y2="625" stroke="#c0392b" stroke-width="8" marker-end="url(#flow)"/>
+  <text x="310" y="800" text-anchor="middle" font-size="22" fill="#2b313a">高圧オイル流入</text>
+  <line x1="730" y1="625" x2="730" y2="760" stroke="#c0392b" stroke-width="8" marker-end="url(#flow)"/>
+  <text x="730" y="800" text-anchor="middle" font-size="22" fill="#2b313a">オイル排出</text>
+  <line x1="455" y1="210" x2="610" y2="210" stroke="#3c4450" stroke-width="8" marker-end="url(#mv)"/>
+  <text x="530" y="190" text-anchor="middle" font-size="22" fill="#2b313a">ピストン移動</text>
+
+  <!-- labels -->
+  <text x="60" y="180" font-size="22" fill="#2b313a">シリンダー</text>
+  <line x1="150" y1="195" x2="230" y2="300" stroke="#2b313a" stroke-width="2"/>
+  <text x="500" y="700" text-anchor="middle" font-size="22" fill="#2b313a">ピストン</text>
+  <line x1="510" y1="685" x2="510" y2="625" stroke="#2b313a" stroke-width="2"/>
+  <text x="1010" y="560" font-size="22" fill="#2b313a">ロッド</text>
+  <line x1="1040" y1="545" x2="1000" y2="505" stroke="#2b313a" stroke-width="2"/>
+  <text x="330" y="335" text-anchor="middle" font-size="20" fill="#1f5f8b">圧力室A</text>
+  <text x="735" y="335" text-anchor="middle" font-size="20" fill="#a85a1f">圧力室B</text>
+  <text x="975" y="305" font-size="20" fill="#2b313a">シール</text>
+  <line x1="985" y1="318" x2="940" y2="390" stroke="#2b313a" stroke-width="2"/>
+</svg>
