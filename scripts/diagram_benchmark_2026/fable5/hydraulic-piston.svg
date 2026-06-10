@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="10" height="10" fill="#FFFFFF"/>
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#788490" stroke-width="3"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="context-stroke"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+  <text x="600" y="80" text-anchor="middle" font-size="30" font-weight="bold" fill="#28323C">Hydraulic cylinder — cross section</text>
+
+  <!-- cylinder walls (hatched) -->
+  <g stroke="#1A1E23" stroke-width="4">
+    <rect x="150" y="300" width="760" height="46" fill="url(#hatch)"/>
+    <rect x="150" y="574" width="760" height="46" fill="url(#hatch)"/>
+    <rect x="104" y="300" width="46" height="320" fill="url(#hatch)"/>
+    <rect x="910" y="300" width="46" height="125" fill="url(#hatch)"/>
+    <rect x="910" y="495" width="46" height="125" fill="url(#hatch)"/>
+  </g>
+
+  <!-- chambers -->
+  <rect x="150" y="346" width="304" height="228" fill="#F0965A"/>
+  <rect x="530" y="346" width="380" height="228" fill="#FAD6A0"/>
+
+  <!-- piston with seals -->
+  <rect x="454" y="348" width="76" height="224" fill="#606E7C" stroke="#1A1E23" stroke-width="3.5"/>
+  <rect x="463" y="352" width="58" height="14" fill="#3C3C42"/>
+  <rect x="463" y="554" width="58" height="14" fill="#3C3C42"/>
+
+  <!-- rod and rod seals -->
+  <rect x="530" y="426" width="560" height="68" fill="#96A0AA" stroke="#1A1E23" stroke-width="3.5"/>
+  <rect x="912" y="412" width="42" height="14" fill="#3C3C42"/>
+  <rect x="912" y="494" width="42" height="14" fill="#3C3C42"/>
+
+  <!-- center line -->
+  <line x1="80" y1="460" x2="1140" y2="460" stroke="#787878" stroke-width="2" stroke-dasharray="18 8 4 8"/>
+
+  <!-- ports -->
+  <rect x="255" y="240" width="46" height="60" fill="#F0965A" stroke="#1A1E23" stroke-width="3.5"/>
+  <rect x="760" y="240" width="46" height="60" fill="#FAD6A0" stroke="#1A1E23" stroke-width="3.5"/>
+  <line x1="278" y1="165" x2="278" y2="252" stroke="#B05A1E" stroke-width="5" marker-end="url(#arrow)"/>
+  <text x="278" y="142" text-anchor="middle" font-size="20" fill="#B05A1E">IN (high pressure)</text>
+  <line x1="783" y1="285" x2="783" y2="170" stroke="#A07840" stroke-width="5" marker-end="url(#arrow)"/>
+  <text x="783" y="142" text-anchor="middle" font-size="20" fill="#A07840">OUT (return)</text>
+
+  <!-- flow arrows inside chambers -->
+  <g stroke="#B05A1E" stroke-width="4" marker-end="url(#arrow)">
+    <line x1="190" y1="460" x2="280" y2="460"/>
+    <line x1="225" y1="400" x2="320" y2="400"/>
+    <line x1="225" y1="520" x2="320" y2="520"/>
+  </g>
+  <g stroke="#A07840" stroke-width="4" marker-end="url(#arrow)">
+    <line x1="650" y1="392" x2="745" y2="372"/>
+    <line x1="635" y1="535" x2="730" y2="550"/>
+  </g>
+
+  <!-- piston motion arrow -->
+  <line x1="560" y1="245" x2="690" y2="245" stroke="#46525E" stroke-width="7" marker-end="url(#arrow)"/>
+  <text x="625" y="222" text-anchor="middle" font-size="20" fill="#46525E">piston motion</text>
+
+  <!-- labels -->
+  <g stroke="#6E6E78" stroke-width="2">
+    <line x1="230" y1="690" x2="230" y2="600"/>
+    <line x1="105" y1="660" x2="125" y2="615"/>
+    <line x1="350" y1="720" x2="350" y2="540"/>
+    <line x1="492" y1="760" x2="490" y2="578"/>
+    <line x1="660" y1="720" x2="660" y2="545"/>
+    <line x1="1010" y1="660" x2="1010" y2="498"/>
+    <line x1="1010" y1="350" x2="945" y2="408"/>
+  </g>
+  <g font-size="20" fill="#28323C" text-anchor="middle">
+    <text x="230" y="718">Cylinder barrel</text>
+    <text x="100" y="688">End cap</text>
+    <text x="350" y="748">Cap-side chamber A</text>
+    <text x="492" y="788">Piston + seals</text>
+    <text x="660" y="748">Rod-side chamber B</text>
+    <text x="1010" y="688">Piston rod</text>
+    <text x="1035" y="335">Rod seal / gland</text>
+  </g>
+</svg>

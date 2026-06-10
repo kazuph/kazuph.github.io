@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7fafc"/>
+      <stop offset="100%" stop-color="#e9eef5"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dce6ee"/>
+      <stop offset="45%" stop-color="#8fa2b1"/>
+      <stop offset="100%" stop-color="#566b7b"/>
+    </linearGradient>
+    <linearGradient id="metalLight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f6fb"/>
+      <stop offset="55%" stop-color="#b4c4d0"/>
+      <stop offset="100%" stop-color="#728594"/>
+    </linearGradient>
+    <linearGradient id="joint" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe7b0"/>
+      <stop offset="48%" stop-color="#f2a64a"/>
+      <stop offset="100%" stop-color="#b86624"/>
+    </linearGradient>
+    <linearGradient id="jointDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8c875"/>
+      <stop offset="100%" stop-color="#8a441c"/>
+    </linearGradient>
+    <linearGradient id="tool" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c9f3ee"/>
+      <stop offset="100%" stop-color="#218f88"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="10" dy="14" stdDeviation="10" flood-color="#203040" flood-opacity="0.22"/>
+    </filter>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d86f22"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2d6f9f"/>
+    </marker>
+    <style>
+      .label{font-family:Arial,Helvetica,sans-serif;font-size:26px;font-weight:700;fill:#1c2b36}
+      .small{font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:700;fill:#34495a}
+      .note{font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:600;fill:#536777}
+      .axis{fill:none;stroke:#d86f22;stroke-width:5;stroke-linecap:round;marker-end:url(#arrowOrange)}
+      .axis2{fill:none;stroke:#2d6f9f;stroke-width:4;stroke-linecap:round;marker-end:url(#arrowBlue)}
+      .callout{fill:none;stroke:#607383;stroke-width:2;stroke-dasharray:6 5}
+      .edge{stroke:#405563;stroke-width:3}
+      .highlight{fill:none;stroke:#ffffff;stroke-width:5;stroke-linecap:round;opacity:.45}
+    </style>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <ellipse cx="560" cy="785" rx="430" ry="70" fill="#b8c5cf" opacity="0.28"/>
+  <path d="M130 760 C300 705 650 700 980 748" fill="none" stroke="#d2dae2" stroke-width="3"/>
+
+  <g filter="url(#shadow)">
+    <g id="base">
+      <ellipse cx="220" cy="735" rx="120" ry="38" fill="#566b7b"/>
+      <path d="M100 675 Q220 625 340 675 L340 735 Q220 785 100 735 Z" fill="url(#metal)" class="edge"/>
+      <ellipse cx="220" cy="675" rx="120" ry="38" fill="url(#metalLight)" class="edge"/>
+      <ellipse cx="220" cy="675" rx="70" ry="22" fill="#7d909e"/>
+      <text x="138" y="815" class="small">BASE</text>
+    </g>
+
+    <g id="robot">
+      <g id="link1">
+        <path d="M198 650 C190 585 196 515 220 455 C236 417 291 431 292 474 C290 541 284 603 262 665 C246 699 207 690 198 650 Z" fill="url(#metalLight)" class="edge"/>
+        <path d="M226 456 C242 522 238 600 214 668" class="highlight"/>
+      </g>
+
+      <g id="j1">
+        <ellipse cx="220" cy="650" rx="70" ry="24" fill="url(#jointDark)" class="edge"/>
+        <circle cx="220" cy="650" r="48" fill="url(#joint)" class="edge"/>
+        <circle cx="220" cy="650" r="19" fill="#7f431f"/>
+      </g>
+
+      <g id="j2">
+        <ellipse cx="255" cy="462" rx="74" ry="48" transform="rotate(-20 255 462)" fill="url(#jointDark)" class="edge"/>
+        <circle cx="255" cy="462" r="45" fill="url(#joint)" class="edge"/>
+        <circle cx="255" cy="462" r="17" fill="#7f431f"/>
+      </g>
+
+      <g id="link2">
+        <path d="M290 430 L515 300 Q545 288 565 315 L580 335 Q596 363 566 383 L330 500 Q300 515 283 485 L270 462 Q257 442 290 430 Z" fill="url(#metal)" class="edge"/>
+        <path d="M315 445 L537 329" class="highlight"/>
+      </g>
+
+      <g id="j3">
+        <ellipse cx="555" cy="340" rx="76" ry="48" transform="rotate(-28 555 340)" fill="url(#jointDark)" class="edge"/>
+        <circle cx="555" cy="340" r="44" fill="url(#joint)" class="edge"/>
+        <circle cx="555" cy="340" r="16" fill="#7f431f"/>
+      </g>
+
+      <g id="link3">
+        <path d="M585 368 L660 475 Q681 505 655 530 L632 552 Q604 575 581 540 L505 410 Q491 383 521 362 L545 346 Q566 333 585 368 Z" fill="url(#metalLight)" class="edge"/>
+        <path d="M552 384 L624 516" class="highlight"/>
+      </g>
+
+      <g id="j4">
+        <ellipse cx="635" cy="520" rx="66" ry="42" transform="rotate(34 635 520)" fill="url(#jointDark)" class="edge"/>
+        <circle cx="635" cy="520" r="39" fill="url(#joint)" class="edge"/>
+        <circle cx="635" cy="520" r="14" fill="#7f431f"/>
+      </g>
+
+      <g id="link4">
+        <path d="M666 497 L775 410 Q801 390 826 414 L845 433 Q869 458 842 482 L719 572 Q690 592 666 563 L650 543 Q631 520 666 497 Z" fill="url(#metal)" class="edge"/>
+        <path d="M690 514 L811 431" class="highlight"/>
+      </g>
+
+      <g id="j5">
+        <ellipse cx="825" cy="445" rx="62" ry="40" transform="rotate(-18 825 445)" fill="url(#jointDark)" class="edge"/>
+        <circle cx="825" cy="445" r="37" fill="url(#joint)" class="edge"/>
+        <circle cx="825" cy="445" r="13" fill="#7f431f"/>
+      </g>
+
+      <g id="link5">
+        <path d="M854 468 L922 548 Q941 570 925 594 L910 615 Q890 642 865 616 L786 530 Q767 508 790 485 L810 465 Q833 443 854 468 Z" fill="url(#metalLight)" class="edge"/>
+        <path d="M822 489 L889 590" class="highlight"/>
+      </g>
+
+      <g id="j6">
+        <ellipse cx="897" cy="585" rx="54" ry="35" transform="rotate(37 897 585)" fill="url(#jointDark)" class="edge"/>
+        <circle cx="897" cy="585" r="32" fill="url(#joint)" class="edge"/>
+        <circle cx="897" cy="585" r="12" fill="#7f431f"/>
+      </g>
+
+      <g id="link6">
+        <path d="M923 567 L1005 528 Q1027 518 1042 538 L1051 552 Q1067 577 1041 591 L954 633 Q930 644 916 619 L906 600 Q894 579 923 567 Z" fill="url(#metal)" class="edge"/>
+        <path d="M941 582 L1029 548" class="highlight"/>
+      </g>
+
+      <g id="j7">
+        <ellipse cx="1034" cy="560" rx="48" ry="31" transform="rotate(-12 1034 560)" fill="url(#jointDark)" class="edge"/>
+        <circle cx="1034" cy="560" r="28" fill="url(#joint)" class="edge"/>
+        <circle cx="1034" cy="560" r="10" fill="#7f431f"/>
+      </g>
+
+      <g id="tool">
+        <path d="M1062 550 L1112 532 Q1134 525 1145 544 L1149 552 Q1157 570 1138 581 L1088 607 Q1066 619 1054 596 L1047 581 Q1038 560 1062 550 Z" fill="url(#tool)" class="edge"/>
+        <path d="M1128 542 L1166 522" fill="none" stroke="#218f88" stroke-width="10" stroke-linecap="round"/>
+        <path d="M1136 574 L1175 592" fill="none" stroke="#218f88" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="1080" cy="578" r="8" fill="#0f5f5a"/>
+        <text x="1088" y="650" class="small">END EFFECTOR</text>
+      </g>
+    </g>
+  </g>
+
+  <g id="axis-arrows">
+    <path class="axis" d="M168 622 C190 588 252 588 274 622"/>
+    <path class="axis" d="M213 427 C237 397 291 404 312 438"/>
+    <path class="axis" d="M515 306 C548 276 599 294 612 336"/>
+    <path class="axis" d="M602 494 C633 466 681 482 693 520"/>
+    <path class="axis" d="M788 418 C820 389 867 405 878 443"/>
+    <path class="axis" d="M863 564 C892 536 934 551 943 586"/>
+    <path class="axis" d="M1004 535 C1032 512 1070 526 1077 559"/>
+
+    <path class="axis2" d="M220 715 C178 718 158 689 178 663"/>
+    <path class="axis2" d="M258 514 C291 526 323 506 326 472"/>
+    <path class="axis2" d="M588 384 C622 384 646 354 637 321"/>
+    <path class="axis2" d="M650 563 C682 574 712 553 713 520"/>
+    <path class="axis2" d="M840 487 C873 494 899 471 895 439"/>
+    <path class="axis2" d="M907 628 C936 635 959 615 957 586"/>
+    <path class="axis2" d="M1044 594 C1070 600 1092 583 1090 559"/>
+  </g>
+
+  <g id="labels">
+    <text x="136" y="598" class="label">J1</text>
+    <text x="176" y="406" class="label">J2</text>
+    <text x="555" y="265" class="label">J3</text>
+    <text x="544" y="564" class="label">J4</text>
+    <text x="824" y="377" class="label">J5</text>
+    <text x="818" y="648" class="label">J6</text>
+    <text x="1015" y="499" class="label">J7</text>
+
+    <path class="callout" d="M160 590 L204 652"/>
+    <path class="callout" d="M210 408 L248 461"/>
+    <path class="callout" d="M585 273 L558 337"/>
+    <path class="callout" d="M575 554 L630 521"/>
+    <path class="callout" d="M845 382 L827 444"/>
+    <path class="callout" d="M850 637 L895 586"/>
+    <path class="callout" d="M1034 505 L1034 559"/>
+
+    <text x="238" y="715" class="note">yaw base axis</text>
+    <text x="318" y="456" class="note">shoulder pitch</text>
+    <text x="616" y="316" class="note">upper-arm roll</text>
+    <text x="705" y="524" class="note">elbow pitch</text>
+    <text x="882" y="432" class="note">forearm roll</text>
+    <text x="948" y="612" class="note">wrist pitch</text>
+    <text x="1082" y="552" class="note">tool roll</text>
+  </g>
+
+  <g id="legend" transform="translate(64 56)">
+    <rect x="0" y="0" width="314" height="126" rx="8" fill="#ffffff" opacity="0.88" stroke="#cad3dc"/>
+    <text x="20" y="35" class="small">7-AXIS ROBOT ARM</text>
+    <line x1="22" y1="64" x2="82" y2="64" stroke="#d86f22" stroke-width="5" marker-end="url(#arrowOrange)" stroke-linecap="round"/>
+    <text x="98" y="70" class="note">primary joint rotation</text>
+    <line x1="22" y1="96" x2="82" y2="96" stroke="#2d6f9f" stroke-width="4" marker-end="url(#arrowBlue)" stroke-linecap="round"/>
+    <text x="98" y="102" class="note">axis orientation cue</text>
+  </g>
+
+  <g id="depth-cues" opacity="0.38">
+    <path d="M220 675 L255 462 L555 340 L635 520 L825 445 L897 585 L1034 560" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="10 8"/>
+    <circle cx="220" cy="675" r="4" fill="#ffffff"/>
+    <circle cx="255" cy="462" r="4" fill="#ffffff"/>
+    <circle cx="555" cy="340" r="4" fill="#ffffff"/>
+    <circle cx="635" cy="520" r="4" fill="#ffffff"/>
+    <circle cx="825" cy="445" r="4" fill="#ffffff"/>
+    <circle cx="897" cy="585" r="4" fill="#ffffff"/>
+    <circle cx="1034" cy="560" r="4" fill="#ffffff"/>
+  </g>
+</svg>

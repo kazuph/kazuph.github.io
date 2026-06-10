@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#32323C"/>
+    </marker>
+    <marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#787882"/>
+    </marker>
+    <marker id="aK" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#2850A0"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+  <text x="600" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#28323C">Transformer architecture</text>
+
+  <!-- ===================== encoder column (cx=310) ===================== -->
+  <rect x="170" y="300" width="290" height="330" rx="14" fill="none" stroke="#9A9AA4" stroke-width="2.5"/>
+  <text x="180" y="292" font-size="17" font-weight="bold" fill="#5A5A64">Encoder ×N</text>
+
+  <!-- Add & Norm (top) -->
+  <rect x="200" y="318" width="220" height="34" rx="7" fill="#FAF0C8" stroke="#C8A028" stroke-width="2.5"/>
+  <text x="310" y="341" text-anchor="middle" font-size="15">Add &amp; Norm</text>
+  <!-- Feed Forward -->
+  <rect x="200" y="380" width="220" height="42" rx="7" fill="#D9E6F2" stroke="#4678A8" stroke-width="2.5"/>
+  <text x="310" y="407" text-anchor="middle" font-size="15">Feed Forward</text>
+  <!-- Add & Norm -->
+  <rect x="200" y="450" width="220" height="34" rx="7" fill="#FAF0C8" stroke="#C8A028" stroke-width="2.5"/>
+  <text x="310" y="473" text-anchor="middle" font-size="15">Add &amp; Norm</text>
+  <!-- Multi-Head Attention -->
+  <rect x="200" y="512" width="220" height="50" rx="7" fill="#F7E3CC" stroke="#C87828" stroke-width="2.5"/>
+  <text x="310" y="533" text-anchor="middle" font-size="15">Multi-Head</text>
+  <text x="310" y="553" text-anchor="middle" font-size="15">Attention</text>
+
+  <!-- positional encoding + embedding -->
+  <circle cx="310" cy="660" r="16" fill="#FFFFFF" stroke="#1A1A22" stroke-width="2.5"/>
+  <text x="310" y="666" text-anchor="middle" font-size="17">+</text>
+  <text x="278" y="654" text-anchor="end" font-size="13" fill="#46464E">Positional</text>
+  <text x="278" y="671" text-anchor="end" font-size="13" fill="#46464E">Encoding</text>
+  <rect x="200" y="706" width="220" height="42" rx="7" fill="#E3E0F0" stroke="#6E64A8" stroke-width="2.5"/>
+  <text x="310" y="733" text-anchor="middle" font-size="15">Input Embedding</text>
+  <text x="310" y="800" text-anchor="middle" font-size="15" fill="#46464E">Inputs</text>
+
+  <!-- encoder signal arrows (bottom-up) -->
+  <g stroke="#32323C" stroke-width="3" fill="none">
+    <line x1="310" y1="782" x2="310" y2="754" marker-end="url(#aS)"/>
+    <line x1="310" y1="706" x2="310" y2="682" marker-end="url(#aS)"/>
+    <line x1="310" y1="644" x2="310" y2="568" marker-end="url(#aS)"/>
+    <line x1="310" y1="512" x2="310" y2="490" marker-end="url(#aS)"/>
+    <line x1="310" y1="450" x2="310" y2="428" marker-end="url(#aS)"/>
+    <line x1="310" y1="380" x2="310" y2="358" marker-end="url(#aS)"/>
+  </g>
+
+  <!-- encoder residuals (left side) -->
+  <g stroke="#787882" stroke-width="2.5" fill="none">
+    <polyline points="310,600 188,600 188,467 194,467" marker-end="url(#aR)"/>
+    <polyline points="310,438 188,438 188,335 194,335" marker-end="url(#aR)"/>
+  </g>
+
+  <!-- ===================== decoder column (cx=790) ===================== -->
+  <rect x="650" y="170" width="290" height="460" rx="14" fill="none" stroke="#9A9AA4" stroke-width="2.5"/>
+  <text x="940" y="162" text-anchor="end" font-size="17" font-weight="bold" fill="#5A5A64">Decoder ×N</text>
+
+  <!-- Add & Norm (top) -->
+  <rect x="680" y="188" width="220" height="34" rx="7" fill="#FAF0C8" stroke="#C8A028" stroke-width="2.5"/>
+  <text x="790" y="211" text-anchor="middle" font-size="15">Add &amp; Norm</text>
+  <!-- Feed Forward -->
+  <rect x="680" y="250" width="220" height="42" rx="7" fill="#D9E6F2" stroke="#4678A8" stroke-width="2.5"/>
+  <text x="790" y="277" text-anchor="middle" font-size="15">Feed Forward</text>
+  <!-- Add & Norm -->
+  <rect x="680" y="320" width="220" height="34" rx="7" fill="#FAF0C8" stroke="#C8A028" stroke-width="2.5"/>
+  <text x="790" y="343" text-anchor="middle" font-size="15">Add &amp; Norm</text>
+  <!-- Cross attention -->
+  <rect x="680" y="382" width="220" height="50" rx="7" fill="#F7E3CC" stroke="#C87828" stroke-width="2.5"/>
+  <text x="790" y="403" text-anchor="middle" font-size="15">Multi-Head Attention</text>
+  <text x="790" y="423" text-anchor="middle" font-size="14">(cross: enc → dec)</text>
+  <!-- Add & Norm -->
+  <rect x="680" y="462" width="220" height="34" rx="7" fill="#FAF0C8" stroke="#C8A028" stroke-width="2.5"/>
+  <text x="790" y="485" text-anchor="middle" font-size="15">Add &amp; Norm</text>
+  <!-- Masked MHA -->
+  <rect x="680" y="524" width="220" height="50" rx="7" fill="#F7E3CC" stroke="#C87828" stroke-width="2.5"/>
+  <text x="790" y="545" text-anchor="middle" font-size="15">Masked Multi-Head</text>
+  <text x="790" y="565" text-anchor="middle" font-size="15">Attention</text>
+
+  <!-- positional encoding + embedding -->
+  <circle cx="790" cy="660" r="16" fill="#FFFFFF" stroke="#1A1A22" stroke-width="2.5"/>
+  <text x="790" y="666" text-anchor="middle" font-size="17">+</text>
+  <text x="822" y="654" font-size="13" fill="#46464E">Positional</text>
+  <text x="822" y="671" font-size="13" fill="#46464E">Encoding</text>
+  <rect x="680" y="706" width="220" height="42" rx="7" fill="#E3E0F0" stroke="#6E64A8" stroke-width="2.5"/>
+  <text x="790" y="733" text-anchor="middle" font-size="15">Output Embedding</text>
+  <text x="790" y="800" text-anchor="middle" font-size="15" fill="#46464E">Outputs (shifted right)</text>
+
+  <!-- head: Linear, Softmax -->
+  <rect x="680" y="118" width="220" height="38" rx="7" fill="#DCEDE2" stroke="#46825A" stroke-width="2.5"/>
+  <text x="790" y="143" text-anchor="middle" font-size="15">Linear</text>
+  <rect x="680" y="64" width="220" height="38" rx="7" fill="#DCEDE2" stroke="#46825A" stroke-width="2.5"/>
+  <text x="790" y="89" text-anchor="middle" font-size="15">Softmax</text>
+  <text x="1010" y="89" font-size="15" fill="#46464E">→ Output probabilities</text>
+
+  <!-- decoder signal arrows (bottom-up) -->
+  <g stroke="#32323C" stroke-width="3" fill="none">
+    <line x1="790" y1="782" x2="790" y2="754" marker-end="url(#aS)"/>
+    <line x1="790" y1="706" x2="790" y2="682" marker-end="url(#aS)"/>
+    <line x1="790" y1="644" x2="790" y2="580" marker-end="url(#aS)"/>
+    <line x1="790" y1="524" x2="790" y2="502" marker-end="url(#aS)"/>
+    <line x1="790" y1="462" x2="790" y2="438" marker-end="url(#aS)"/>
+    <line x1="790" y1="382" x2="790" y2="360" marker-end="url(#aS)"/>
+    <line x1="790" y1="320" x2="790" y2="298" marker-end="url(#aS)"/>
+    <line x1="790" y1="250" x2="790" y2="228" marker-end="url(#aS)"/>
+    <line x1="790" y1="188" x2="790" y2="162" marker-end="url(#aS)"/>
+    <line x1="790" y1="118" x2="790" y2="108" marker-end="url(#aS)"/>
+  </g>
+  <text x="800" y="452" font-size="14" fill="#32323C">Q</text>
+
+  <!-- decoder residuals (right side) -->
+  <g stroke="#787882" stroke-width="2.5" fill="none">
+    <polyline points="790,610 922,610 922,479 906,479" marker-end="url(#aR)"/>
+    <polyline points="790,448 922,448 922,337 906,337" marker-end="url(#aR)"/>
+    <polyline points="790,306 922,306 922,205 906,205" marker-end="url(#aR)"/>
+  </g>
+
+  <!-- encoder output to cross attention: K, V -->
+  <polyline points="310,318 310,265 545,265 545,407 672,407" fill="none" stroke="#2850A0" stroke-width="3" marker-end="url(#aK)"/>
+  <text x="555" y="392" font-size="14" fill="#2850A0">K, V</text>
+
+  <!-- legend -->
+  <line x1="170" y1="845" x2="240" y2="845" stroke="#787882" stroke-width="3"/>
+  <text x="252" y="851" font-size="14" fill="#46464E">residual connection</text>
+</svg>

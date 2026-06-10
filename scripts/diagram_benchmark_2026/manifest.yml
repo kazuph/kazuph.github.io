@@ -1,11 +1,20 @@
-confirmed_at: 2026-05-22
+confirmed_at: 2026-06-10
 models:
+  - id: fable-5
+    name: Claude Fable 5
+    runner: claude-code (this session)
   - id: gemini-35-flash
     name: Gemini 3.5 Flash
     runner: agy
+  - id: gpt-55
+    name: GPT-5.5
+    runner: codex exec
   - id: gpt-54
-    name: GPT-5.4
+    name: GPT-5.4 (archived, 2026-05-22)
     runner: copilot-cli
+  - id: opus-48
+    name: Claude Opus 4.8 (archived, 2026-05-29)
+    runner: claude-code
 formats:
   - id: tikz
     name: TikZ
@@ -70,3 +79,11 @@ cases:
     title: マイケルソン干渉計
     category: physics
     source: ai-designed
+  - id: summer-fireworks-festival
+    title: 夏祭りの花火大会
+    category: illustration
+    source: ai-designed (added 2026-06-10)
+  - id: transformer-architecture
+    title: Transformerのアーキテクチャ図
+    category: ai-systems
+    source: ai-designed (added 2026-06-10)

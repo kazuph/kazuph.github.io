@@ -1,0 +1,173 @@
+\documentclass[tikz,border=6mm]{standalone}
+\usetikzlibrary{arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round,>=Stealth]
+
+% room
+\fill[blue!4] (0,0) rectangle (12,9);
+\fill[brown!12] (0,0) rectangle (12,2.2);
+\draw[thick] (0,2.2) -- (12,2.2);
+\draw[thick] (0,0) rectangle (12,9);
+
+% back wall perspective lines
+\draw[gray!45] (0,2.2) -- (1.7,4.2);
+\draw[gray!45] (12,2.2) -- (10.3,4.2);
+\draw[gray!35] (1.7,4.2) -- (10.3,4.2);
+
+% door and mother side
+\fill[brown!22] (9.35,2.2) rectangle (11.35,8.35);
+\draw[very thick,brown!70!black] (9.35,2.2) rectangle (11.35,8.35);
+\draw[thick,brown!60!black] (9.65,2.2) -- (9.65,8.35);
+\fill[yellow!75!black] (11.05,5.35) circle (0.06);
+\draw[thick] (9.35,8.35) -- (9.0,8.8);
+\draw[thick] (11.35,8.35) -- (11.7,8.8);
+
+% bed
+\fill[teal!18] (0.45,2.3) rectangle (3.95,3.45);
+\draw[thick] (0.45,2.3) rectangle (3.95,3.45);
+\fill[white] (0.75,3.0) rectangle (1.65,3.35);
+\draw[thick] (0.75,3.0) rectangle (1.65,3.35);
+\fill[cyan!35] (1.6,2.55) rectangle (3.75,3.25);
+\draw[thick] (1.6,2.55) rectangle (3.75,3.25);
+\draw[thick] (0.45,2.3) -- (0.45,1.9);
+\draw[thick] (3.95,2.3) -- (3.95,1.9);
+
+% desk
+\fill[brown!35] (0.8,4.45) rectangle (3.7,4.78);
+\draw[thick] (0.8,4.45) rectangle (3.7,4.78);
+\draw[thick] (1.1,4.45) -- (1.1,2.75);
+\draw[thick] (3.4,4.45) -- (3.4,2.75);
+\fill[gray!25] (1.65,4.78) rectangle (2.75,5.42);
+\draw[thick] (1.65,4.78) rectangle (2.75,5.42);
+\fill[gray!55] (2.06,4.62) rectangle (2.34,4.78);
+\draw[thick] (2.06,4.62) rectangle (2.34,4.78);
+\draw[thick] (1.45,4.55) -- (1.0,5.18);
+\draw[thick] (1.0,5.18) -- (1.28,5.32);
+\fill[yellow!35] (3.0,4.78) circle (0.18);
+\draw[thick] (3.0,4.78) circle (0.18);
+
+% shelf
+\fill[orange!15] (4.35,4.55) rectangle (6.05,8.15);
+\draw[thick] (4.35,4.55) rectangle (6.05,8.15);
+\foreach \y in {5.25,6.15,7.05} {
+  \draw[thick] (4.35,\y) -- (6.05,\y);
+}
+\foreach \x/\c in {4.55/red!40,4.8/green!45,5.05/blue!35,5.32/yellow!50,5.62/purple!30} {
+  \fill[\c] (\x,5.25) rectangle +(0.18,0.72);
+  \draw (\x,5.25) rectangle +(0.18,0.72);
+}
+\fill[red!45] (4.65,6.35) circle (0.18);
+\fill[blue!45] (5.15,6.32) rectangle (5.75,6.78);
+\draw[thick] (5.15,6.32) rectangle (5.75,6.78);
+\fill[green!35] (4.7,7.25) rectangle (5.35,7.62);
+\draw[thick] (4.7,7.25) rectangle (5.35,7.62);
+\fill[pink!35] (5.48,7.18) circle (0.22);
+\draw[thick] (5.48,7.18) circle (0.22);
+
+% rug/play area
+\fill[purple!12] (4.2,1.0) ellipse (2.55 and 0.8);
+\draw[thick,purple!45] (4.2,1.0) ellipse (2.55 and 0.8);
+
+% son body
+\coordinate (sonhead) at (5.7,4.55);
+\coordinate (sonbody) at (5.7,3.35);
+
+% legs in motion
+\draw[line width=5pt,blue!55!black] (5.45,2.55) -- (4.9,1.62);
+\draw[line width=5pt,blue!55!black] (5.95,2.55) -- (6.65,1.72);
+\draw[line width=2pt,black] (4.67,1.55) -- (5.18,1.55);
+\draw[line width=2pt,black] (6.45,1.62) -- (6.95,1.48);
+
+% torso and neck
+\draw[line width=9pt,green!55!black] (sonbody) -- (5.7,4.1);
+\draw[line width=3pt] (5.7,4.1) -- (5.7,4.35);
+
+% head
+\fill[orange!25] (sonhead) circle (0.42);
+\draw[thick] (sonhead) circle (0.42);
+\fill[brown!70!black] (5.35,4.72) .. controls (5.5,5.05) and (5.95,5.05) .. (6.05,4.7)
+  .. controls (5.88,4.85) and (5.55,4.86) .. (5.35,4.72);
+
+% VR goggles
+\fill[black!82] (5.2,4.45) rectangle (6.28,4.75);
+\draw[very thick] (5.2,4.45) rectangle (6.28,4.75);
+\fill[cyan!35] (5.36,4.51) rectangle (5.68,4.68);
+\fill[cyan!35] (5.82,4.51) rectangle (6.14,4.68);
+\draw[thick] (6.28,4.6) -- (6.48,4.56);
+\draw[thick] (5.2,4.6) -- (4.98,4.57);
+
+% smiling mouth visible below goggles
+\draw[thick] (5.55,4.28) .. controls (5.72,4.15) and (5.9,4.18) .. (6.02,4.31);
+
+% arms and controllers
+\draw[line width=4pt,orange!35!black] (5.45,3.85) -- (4.65,4.45);
+\draw[line width=4pt,orange!35!black] (5.95,3.82) -- (6.95,4.55);
+\fill[orange!25] (4.55,4.5) circle (0.13);
+\fill[orange!25] (7.05,4.6) circle (0.13);
+
+\fill[gray!75] (4.18,4.53) rectangle (4.55,4.78);
+\draw[thick] (4.18,4.53) rectangle (4.55,4.78);
+\draw[thick] (4.36,4.78) circle (0.18);
+\fill[gray!75] (7.02,4.55) rectangle (7.42,4.82);
+\draw[thick] (7.02,4.55) rectangle (7.42,4.82);
+\draw[thick] (7.23,4.82) circle (0.18);
+
+% motion arcs and excitement
+\draw[thick,red!55,->] (4.35,5.15) arc (160:80:0.75);
+\draw[thick,red!55,->] (7.35,5.15) arc (20:95:0.75);
+\draw[thick,orange!70!black] (6.62,5.28) -- (6.83,5.66);
+\draw[thick,orange!70!black] (6.92,5.12) -- (7.32,5.3);
+\draw[thick,orange!70!black] (4.78,5.25) -- (4.48,5.58);
+\draw[thick,orange!70!black] (4.5,5.02) -- (4.08,5.16);
+
+% mother at entrance
+\fill[orange!20] (10.55,5.58) circle (0.36);
+\draw[thick] (10.55,5.58) circle (0.36);
+\fill[brown!65!black] (10.2,5.78) .. controls (10.32,6.25) and (10.95,6.28) .. (11.05,5.78)
+  .. controls (10.88,5.98) and (10.42,5.98) .. (10.2,5.78);
+\draw[thick] (10.42,5.52) -- (10.5,5.5);
+\draw[thick] (10.72,5.52) -- (10.8,5.5);
+\draw[thick] (10.42,5.35) .. controls (10.58,5.22) and (10.75,5.24) .. (10.86,5.37);
+
+\fill[magenta!28] (10.18,3.75) -- (10.92,3.75) -- (11.1,5.18) -- (10.0,5.18) -- cycle;
+\draw[thick] (10.18,3.75) -- (10.92,3.75) -- (11.1,5.18) -- (10.0,5.18) -- cycle;
+\draw[line width=4pt,orange!35!black] (10.05,4.85) -- (9.52,4.35);
+\draw[line width=4pt,orange!35!black] (11.05,4.85) -- (11.42,4.18);
+\fill[orange!20] (9.45,4.28) circle (0.11);
+\fill[orange!20] (11.46,4.1) circle (0.11);
+\draw[line width=4pt,blue!45!black] (10.35,3.75) -- (10.2,2.55);
+\draw[line width=4pt,blue!45!black] (10.72,3.75) -- (10.92,2.55);
+\draw[line width=2pt] (10.0,2.48) -- (10.35,2.48);
+\draw[line width=2pt] (10.78,2.48) -- (11.15,2.48);
+
+% sight lines: mother watching son, son facing virtual play area
+\draw[very thick,blue!65,->] (10.25,5.46) -- (6.33,4.62);
+\draw[very thick,blue!65,->] (10.83,5.45) -- (6.35,4.52);
+\draw[very thick,cyan!70!black,->] (5.08,4.58) -- (3.75,4.88);
+\draw[very thick,cyan!70!black,->] (5.08,4.5) -- (3.85,4.18);
+
+% virtual targets in son's direction
+\draw[thick,dashed,cyan!70!black] (3.25,4.85) circle (0.35);
+\draw[thick,dashed,cyan!70!black] (3.25,4.85) -- (3.25,5.35);
+\draw[thick,dashed,cyan!70!black] (3.25,4.85) -- (3.75,4.85);
+\draw[thick,dashed,cyan!70!black] (3.25,4.85) -- (3.25,4.35);
+\draw[thick,dashed,cyan!70!black] (3.25,4.85) -- (2.75,4.85);
+
+% small room details
+\draw[thick] (7.05,7.15) rectangle (8.25,8.0);
+\fill[yellow!25] (7.05,7.15) rectangle (8.25,8.0);
+\draw[thick] (7.2,7.3) -- (8.1,7.85);
+\draw[thick] (8.1,7.3) -- (7.2,7.85);
+
+\fill[red!35] (7.25,2.28) circle (0.28);
+\draw[thick] (7.25,2.28) circle (0.28);
+\draw[thick] (7.05,2.08) -- (7.45,2.48);
+\draw[thick] (7.45,2.08) -- (7.05,2.48);
+
+% base shadows
+\fill[black!10] (5.75,1.55) ellipse (1.25 and 0.22);
+\fill[black!10] (10.55,2.43) ellipse (0.85 and 0.18);
+
+\end{tikzpicture}
+\end{document}

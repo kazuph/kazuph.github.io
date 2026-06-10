@@ -1,0 +1,678 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 背景グラデーション (夜空) -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#020111" />
+      <stop offset="35%" stop-color="#050520" />
+      <stop offset="70%" stop-color="#0e113a" />
+      <stop offset="100%" stop-color="#22153c" />
+    </linearGradient>
+
+    <!-- 天の川グラデーション -->
+    <linearGradient id="milkyWayGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5522aa" stop-opacity="0" />
+      <stop offset="30%" stop-color="#aa55dd" stop-opacity="0.15" />
+      <stop offset="50%" stop-color="#ffccff" stop-opacity="0.2" />
+      <stop offset="70%" stop-color="#55aaff" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#112266" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- 提灯のグラデーション (発光) -->
+    <radialGradient id="lanternGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="25%" stop-color="#ffea88" />
+      <stop offset="60%" stop-color="#ff7700" />
+      <stop offset="100%" stop-color="#d80000" />
+    </radialGradient>
+
+    <!-- 提灯の周囲のグロー効果 -->
+    <radialGradient id="lanternGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff7700" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#ff4400" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#ff3300" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- 屋台内の光グラデーション (オレンジ・黄) -->
+    <linearGradient id="stallLight1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffaa00" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#ff3300" stop-opacity="0.95" />
+    </linearGradient>
+
+    <!-- 屋台内の光グラデーション (ピンク・紫) -->
+    <linearGradient id="stallLight2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff55aa" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#990088" stop-opacity="0.95" />
+    </linearGradient>
+
+    <!-- 屋台の周囲の暖色の空気感 -->
+    <radialGradient id="ambientOrange" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff6600" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#ff3300" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- 地面の反射光 -->
+    <radialGradient id="groundLight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff5500" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#ff3300" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- 花火のぼんやりした光の広がり -->
+    <radialGradient id="fireworkGlow-blue" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#88ffff" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#0088ff" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#002288" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="fireworkGlow-red" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff99bb" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#ff0055" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#660022" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="fireworkGlow-gold" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffcc" stop-opacity="0.4" />
+      <stop offset="50%" stop-color="#ffaa00" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#663300" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- 花火の火花のカラーグラデーション -->
+    <linearGradient id="sparkGrad-blue" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#0044ff" stop-opacity="0" />
+      <stop offset="30%" stop-color="#00ccff" stop-opacity="0.7" />
+      <stop offset="85%" stop-color="#ddffff" stop-opacity="1" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="1" />
+    </linearGradient>
+
+    <linearGradient id="sparkGrad-red" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#cc0044" stop-opacity="0" />
+      <stop offset="30%" stop-color="#ff3366" stop-opacity="0.7" />
+      <stop offset="85%" stop-color="#ffeedd" stop-opacity="1" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="1" />
+    </linearGradient>
+
+    <linearGradient id="sparkGrad-gold" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#cc5500" stop-opacity="0" />
+      <stop offset="30%" stop-color="#ffbb00" stop-opacity="0.7" />
+      <stop offset="85%" stop-color="#ffffdd" stop-opacity="1" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="1" />
+    </linearGradient>
+
+    <!-- グローフィルター -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- === 提灯パーツ === -->
+    <g id="lantern">
+      <circle cx="0" cy="5" r="28" fill="url(#lanternGlow)" />
+      <ellipse cx="0" cy="0" rx="13" ry="17" fill="url(#lanternGrad)" filter="url(#glow)" />
+      <rect x="-10" y="-19" width="20" height="3" rx="1" fill="#151324" />
+      <rect x="-10" y="16" width="20" height="3" rx="1" fill="#151324" />
+      <line x1="0" y1="19" x2="0" y2="28" stroke="#d80000" stroke-width="1.5" />
+      <!-- 簡易「祭」文字のシルエット -->
+      <g stroke="#151324" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8">
+        <path d="M -5,-6 L 0,-9 L 5,-6" />
+        <path d="M -2,-4 L 2,-4" />
+        <path d="M -4,-1 L -1,-1 L -1,2 M 1,-1 L 4,-1 L 4,2" />
+        <path d="M -5,5 L 5,5" />
+        <path d="M 0,5 L 0,11" />
+        <path d="M -3,8 L -5,11" />
+        <path d="M 3,8 L 5,11" />
+      </g>
+    </g>
+
+    <!-- === 青色花火の火花ユニット === -->
+    <g id="spark-blue-long">
+      <path d="M 0,0 L 0,-180" stroke="url(#sparkGrad-blue)" stroke-width="2.5" stroke-linecap="round" />
+      <circle cx="0" cy="-180" r="3.5" fill="#ffffff" filter="url(#glow)" />
+      <circle cx="0" cy="-130" r="2" fill="#88ffff" />
+    </g>
+    <g id="spark-blue-medium">
+      <path d="M 0,0 L 0,-120" stroke="url(#sparkGrad-blue)" stroke-width="2" stroke-linecap="round" />
+      <circle cx="0" cy="-120" r="2.5" fill="#aaffff" />
+    </g>
+    <g id="spark-blue-short">
+      <path d="M 0,0 L 0,-70" stroke="url(#sparkGrad-blue)" stroke-width="1.5" stroke-linecap="round" />
+      <circle cx="0" cy="-70" r="1.5" fill="#ffffff" />
+    </g>
+
+    <!-- === 赤色花火の火花ユニット === -->
+    <g id="spark-red-long">
+      <path d="M 0,0 L 0,-200" stroke="url(#sparkGrad-red)" stroke-width="2.5" stroke-linecap="round" />
+      <circle cx="0" cy="-200" r="3.5" fill="#ffffff" filter="url(#glow)" />
+      <circle cx="0" cy="-140" r="2" fill="#ff99bb" />
+    </g>
+    <g id="spark-red-medium">
+      <path d="M 0,0 L 0,-135" stroke="url(#sparkGrad-red)" stroke-width="2" stroke-linecap="round" />
+      <circle cx="0" cy="-135" r="2.5" fill="#ffccee" />
+    </g>
+    <g id="spark-red-short">
+      <path d="M 0,0 L 0,-80" stroke="url(#sparkGrad-red)" stroke-width="1.5" stroke-linecap="round" />
+      <circle cx="0" cy="-80" r="1.5" fill="#ffffff" />
+    </g>
+
+    <!-- === 金色花火の火花ユニット === -->
+    <g id="spark-gold-long">
+      <path d="M 0,0 L 0,-220" stroke="url(#sparkGrad-gold)" stroke-width="2.5" stroke-linecap="round" />
+      <circle cx="0" cy="-220" r="3.5" fill="#ffffff" filter="url(#glow)" />
+      <circle cx="0" cy="-150" r="2" fill="#ffdd88" />
+    </g>
+    <g id="spark-gold-medium">
+      <path d="M 0,0 L 0,-150" stroke="url(#sparkGrad-gold)" stroke-width="2" stroke-linecap="round" />
+      <circle cx="0" cy="-150" r="2.5" fill="#ffeedd" />
+    </g>
+    <g id="spark-gold-short">
+      <path d="M 0,0 L 0,-90" stroke="url(#sparkGrad-gold)" stroke-width="1.5" stroke-linecap="round" />
+      <circle cx="0" cy="-90" r="1.5" fill="#ffffff" />
+    </g>
+
+    <!-- === 花火グループ (青) === -->
+    <g id="firework-blue">
+      <circle cx="0" cy="0" r="220" fill="url(#fireworkGlow-blue)" />
+      <circle cx="0" cy="0" r="10" fill="#ffffff" filter="url(#glow)" />
+      <!-- 外レイヤー (16本) -->
+      <g>
+        <use href="#spark-blue-long" transform="rotate(0)" />
+        <use href="#spark-blue-long" transform="rotate(22.5)" />
+        <use href="#spark-blue-long" transform="rotate(45)" />
+        <use href="#spark-blue-long" transform="rotate(67.5)" />
+        <use href="#spark-blue-long" transform="rotate(90)" />
+        <use href="#spark-blue-long" transform="rotate(112.5)" />
+        <use href="#spark-blue-long" transform="rotate(135)" />
+        <use href="#spark-blue-long" transform="rotate(157.5)" />
+        <use href="#spark-blue-long" transform="rotate(180)" />
+        <use href="#spark-blue-long" transform="rotate(202.5)" />
+        <use href="#spark-blue-long" transform="rotate(225)" />
+        <use href="#spark-blue-long" transform="rotate(247.5)" />
+        <use href="#spark-blue-long" transform="rotate(270)" />
+        <use href="#spark-blue-long" transform="rotate(292.5)" />
+        <use href="#spark-blue-long" transform="rotate(315)" />
+        <use href="#spark-blue-long" transform="rotate(337.5)" />
+      </g>
+      <!-- 中レイヤー (16本、ずらし) -->
+      <g transform="rotate(11.25)">
+        <use href="#spark-blue-medium" transform="rotate(0)" />
+        <use href="#spark-blue-medium" transform="rotate(22.5)" />
+        <use href="#spark-blue-medium" transform="rotate(45)" />
+        <use href="#spark-blue-medium" transform="rotate(67.5)" />
+        <use href="#spark-blue-medium" transform="rotate(90)" />
+        <use href="#spark-blue-medium" transform="rotate(112.5)" />
+        <use href="#spark-blue-medium" transform="rotate(135)" />
+        <use href="#spark-blue-medium" transform="rotate(157.5)" />
+        <use href="#spark-blue-medium" transform="rotate(180)" />
+        <use href="#spark-blue-medium" transform="rotate(202.5)" />
+        <use href="#spark-blue-medium" transform="rotate(225)" />
+        <use href="#spark-blue-medium" transform="rotate(247.5)" />
+        <use href="#spark-blue-medium" transform="rotate(270)" />
+        <use href="#spark-blue-medium" transform="rotate(292.5)" />
+        <use href="#spark-blue-medium" transform="rotate(315)" />
+        <use href="#spark-blue-medium" transform="rotate(337.5)" />
+      </g>
+      <!-- 内レイヤー (12本) -->
+      <g transform="rotate(5.6)">
+        <use href="#spark-blue-short" transform="rotate(0)" />
+        <use href="#spark-blue-short" transform="rotate(30)" />
+        <use href="#spark-blue-short" transform="rotate(60)" />
+        <use href="#spark-blue-short" transform="rotate(90)" />
+        <use href="#spark-blue-short" transform="rotate(120)" />
+        <use href="#spark-blue-short" transform="rotate(150)" />
+        <use href="#spark-blue-short" transform="rotate(180)" />
+        <use href="#spark-blue-short" transform="rotate(210)" />
+        <use href="#spark-blue-short" transform="rotate(240)" />
+        <use href="#spark-blue-short" transform="rotate(270)" />
+        <use href="#spark-blue-short" transform="rotate(300)" />
+        <use href="#spark-blue-short" transform="rotate(330)" />
+      </g>
+    </g>
+
+    <!-- === 花火グループ (赤) === -->
+    <g id="firework-red">
+      <circle cx="0" cy="0" r="240" fill="url(#fireworkGlow-red)" />
+      <circle cx="0" cy="0" r="11" fill="#ffffff" filter="url(#glow)" />
+      <!-- 外レイヤー (16本) -->
+      <g>
+        <use href="#spark-red-long" transform="rotate(0)" />
+        <use href="#spark-red-long" transform="rotate(22.5)" />
+        <use href="#spark-red-long" transform="rotate(45)" />
+        <use href="#spark-red-long" transform="rotate(67.5)" />
+        <use href="#spark-red-long" transform="rotate(90)" />
+        <use href="#spark-red-long" transform="rotate(112.5)" />
+        <use href="#spark-red-long" transform="rotate(135)" />
+        <use href="#spark-red-long" transform="rotate(157.5)" />
+        <use href="#spark-red-long" transform="rotate(180)" />
+        <use href="#spark-red-long" transform="rotate(202.5)" />
+        <use href="#spark-red-long" transform="rotate(225)" />
+        <use href="#spark-red-long" transform="rotate(247.5)" />
+        <use href="#spark-red-long" transform="rotate(270)" />
+        <use href="#spark-red-long" transform="rotate(292.5)" />
+        <use href="#spark-red-long" transform="rotate(315)" />
+        <use href="#spark-red-long" transform="rotate(337.5)" />
+      </g>
+      <!-- 中レイヤー (16本) -->
+      <g transform="rotate(11.25)">
+        <use href="#spark-red-medium" transform="rotate(0)" />
+        <use href="#spark-red-medium" transform="rotate(22.5)" />
+        <use href="#spark-red-medium" transform="rotate(45)" />
+        <use href="#spark-red-medium" transform="rotate(67.5)" />
+        <use href="#spark-red-medium" transform="rotate(90)" />
+        <use href="#spark-red-medium" transform="rotate(112.5)" />
+        <use href="#spark-red-medium" transform="rotate(135)" />
+        <use href="#spark-red-medium" transform="rotate(157.5)" />
+        <use href="#spark-red-medium" transform="rotate(180)" />
+        <use href="#spark-red-medium" transform="rotate(202.5)" />
+        <use href="#spark-red-medium" transform="rotate(225)" />
+        <use href="#spark-red-medium" transform="rotate(247.5)" />
+        <use href="#spark-red-medium" transform="rotate(270)" />
+        <use href="#spark-red-medium" transform="rotate(292.5)" />
+        <use href="#spark-red-medium" transform="rotate(315)" />
+        <use href="#spark-red-medium" transform="rotate(337.5)" />
+      </g>
+      <!-- 内レイヤー (12本) -->
+      <g transform="rotate(5.6)">
+        <use href="#spark-red-short" transform="rotate(0)" />
+        <use href="#spark-red-short" transform="rotate(30)" />
+        <use href="#spark-red-short" transform="rotate(60)" />
+        <use href="#spark-red-short" transform="rotate(90)" />
+        <use href="#spark-red-short" transform="rotate(120)" />
+        <use href="#spark-red-short" transform="rotate(150)" />
+        <use href="#spark-red-short" transform="rotate(180)" />
+        <use href="#spark-red-short" transform="rotate(210)" />
+        <use href="#spark-red-short" transform="rotate(240)" />
+        <use href="#spark-red-short" transform="rotate(270)" />
+        <use href="#spark-red-short" transform="rotate(300)" />
+        <use href="#spark-red-short" transform="rotate(330)" />
+      </g>
+    </g>
+
+    <!-- === 花火グループ (金) === -->
+    <g id="firework-gold">
+      <circle cx="0" cy="0" r="260" fill="url(#fireworkGlow-gold)" />
+      <circle cx="0" cy="0" r="12" fill="#ffffff" filter="url(#glow)" />
+      <!-- 外レイヤー (16本) -->
+      <g>
+        <use href="#spark-gold-long" transform="rotate(0)" />
+        <use href="#spark-gold-long" transform="rotate(22.5)" />
+        <use href="#spark-gold-long" transform="rotate(45)" />
+        <use href="#spark-gold-long" transform="rotate(67.5)" />
+        <use href="#spark-gold-long" transform="rotate(90)" />
+        <use href="#spark-gold-long" transform="rotate(112.5)" />
+        <use href="#spark-gold-long" transform="rotate(135)" />
+        <use href="#spark-gold-long" transform="rotate(157.5)" />
+        <use href="#spark-gold-long" transform="rotate(180)" />
+        <use href="#spark-gold-long" transform="rotate(202.5)" />
+        <use href="#spark-gold-long" transform="rotate(225)" />
+        <use href="#spark-gold-long" transform="rotate(247.5)" />
+        <use href="#spark-gold-long" transform="rotate(270)" />
+        <use href="#spark-gold-long" transform="rotate(292.5)" />
+        <use href="#spark-gold-long" transform="rotate(315)" />
+        <use href="#spark-gold-long" transform="rotate(337.5)" />
+      </g>
+      <!-- 中レイヤー (16本) -->
+      <g transform="rotate(11.25)">
+        <use href="#spark-gold-medium" transform="rotate(0)" />
+        <use href="#spark-gold-medium" transform="rotate(22.5)" />
+        <use href="#spark-gold-medium" transform="rotate(45)" />
+        <use href="#spark-gold-medium" transform="rotate(67.5)" />
+        <use href="#spark-gold-medium" transform="rotate(90)" />
+        <use href="#spark-gold-medium" transform="rotate(112.5)" />
+        <use href="#spark-gold-medium" transform="rotate(135)" />
+        <use href="#spark-gold-medium" transform="rotate(157.5)" />
+        <use href="#spark-gold-medium" transform="rotate(180)" />
+        <use href="#spark-gold-medium" transform="rotate(202.5)" />
+        <use href="#spark-gold-medium" transform="rotate(225)" />
+        <use href="#spark-gold-medium" transform="rotate(247.5)" />
+        <use href="#spark-gold-medium" transform="rotate(270)" />
+        <use href="#spark-gold-medium" transform="rotate(292.5)" />
+        <use href="#spark-gold-medium" transform="rotate(315)" />
+        <use href="#spark-gold-medium" transform="rotate(337.5)" />
+      </g>
+      <!-- 内レイヤー (12本) -->
+      <g transform="rotate(5.6)">
+        <use href="#spark-gold-short" transform="rotate(0)" />
+        <use href="#spark-gold-short" transform="rotate(30)" />
+        <use href="#spark-gold-short" transform="rotate(60)" />
+        <use href="#spark-gold-short" transform="rotate(90)" />
+        <use href="#spark-gold-short" transform="rotate(120)" />
+        <use href="#spark-gold-short" transform="rotate(150)" />
+        <use href="#spark-gold-short" transform="rotate(180)" />
+        <use href="#spark-gold-short" transform="rotate(210)" />
+        <use href="#spark-gold-short" transform="rotate(240)" />
+        <use href="#spark-gold-short" transform="rotate(270)" />
+        <use href="#spark-gold-short" transform="rotate(300)" />
+        <use href="#spark-gold-short" transform="rotate(330)" />
+      </g>
+    </g>
+
+    <!-- === 星のきらめきパーツ === -->
+    <g id="star-sparkle">
+      <path d="M -6,0 L 6,0 M 0,-6 L 0,6" stroke="#ffffff" stroke-width="0.8" opacity="0.75" />
+      <circle cx="0" cy="0" r="1.8" fill="#ffffff" filter="url(#glow)" />
+    </g>
+
+    <!-- === 人物シルエット定義 (逆光と重ねるため共通化) === -->
+    <!-- 肩車親子 -->
+    <g id="silhouette-family">
+      <path d="M -28,180 C -28,120 -22,70 -15,55 C -22,50 -25,42 -22,35 C -20,30 -12,32 -8,35 C -3,36 3,36 8,35 C 12,32 20,30 22,35 C 25,42 22,50 15,55 C 22,70 28,120 28,180 Z" />
+      <circle cx="0" cy="32" r="11" />
+      <path d="M -10,25 C -12,10 -8,-10 -6,-18 C -12,-16 -18,-12 -22,-8 C -24,-6 -26,-10 -24,-12 C -18,-18 -8,-22 -3,-20 C -3,-20 -2,-22 0,-22 C 2,-22 3,-20 3,-20 C 8,-22 18,-18 24,-12 C 26,-10 24,-6 22,-8 C 18,-12 12,-16 6,-18 C 8,-10 12,10 10,25 Z" />
+      <circle cx="0" cy="-28" r="8" />
+    </g>
+
+    <!-- 見上げるカップル -->
+    <g id="silhouette-couple">
+      <!-- 男性 (左) -->
+      <path d="M -32,180 C -32,120 -28,65 -23,50 C -30,48 -32,40 -29,34 C -26,28 -18,32 -14,36 C -9,40 -7,55 -7,180 Z" />
+      <circle cx="-19" cy="25" r="10.5" />
+      <path d="M -20,52 Q 0,25 35,2 C 38,-1 41,3 38,6 Q 5,28 -14,62 Z" />
+      <!-- 女性 (右、浴衣) -->
+      <path d="M -5,180 C -5,130 2,80 8,55 C 5,50 3,44 6,38 C 9,32 17,35 20,40 C 25,50 25,100 25,180 Z" />
+      <circle cx="12" cy="30" r="9" />
+      <circle cx="18" cy="24" r="4.5" />
+      <!-- うちわ -->
+      <path d="M 18,52 Q 32,50 35,40" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" />
+      <line x1="34" y1="42" x2="40" y2="30" stroke="#000000" stroke-width="1.8" />
+      <circle cx="43" cy="22" r="10.5" />
+    </g>
+
+    <!-- 浴衣の女性二人組 -->
+    <g id="silhouette-friends">
+      <!-- 左の女性 -->
+      <path d="M -28,180 C -28,120 -22,75 -15,58 C -19,53 -21,46 -18,40 C -15,34 -7,36 -4,40 C 1,50 2,100 2,180 Z" />
+      <circle cx="-11" cy="32" r="9.5" />
+      <path d="M -18,30 C -24,32 -27,38 -25,45 C -21,45 -17,40 -17,35" />
+      <path d="M -15,58 Q -28,52 -32,42" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" />
+      <line x1="-30" y1="44" x2="-36" y2="34" stroke="#000000" stroke-width="1.8" />
+      <circle cx="-38" cy="32" r="9.5" />
+      <!-- 右の女性 -->
+      <path d="M -1,180 C -1,120 4,78 9,60 C 6,55 4,48 7,42 C 10,36 18,38 21,42 C 26,52 27,100 27,180 Z" />
+      <circle cx="14" cy="33" r="9.5" />
+      <circle cx="20" cy="28" r="4" />
+      <!-- 巾着 -->
+      <path d="M 16,58 Q 23,75 20,85" stroke="#000000" stroke-width="2.2" fill="none" stroke-linecap="round" />
+      <ellipse cx="20" cy="93" rx="6.5" ry="8.5" />
+    </g>
+
+    <!-- 単体人物A (男性風) -->
+    <g id="silhouette-single-a">
+      <path d="M -12,180 C -12,120 -8,70 -4,52 C -8,48 -9,42 -7,36 C -5,30 3,32 5,36 C 9,44 10,90 10,180 Z" />
+      <circle cx="-1" cy="28" r="8.5" />
+    </g>
+
+    <!-- 単体人物B (腕組み) -->
+    <g id="silhouette-single-b">
+      <path d="M -15,180 C -15,115 -12,65 -8,50 C -12,45 -12,38 -10,32 C -7,26 4,28 6,32 C 10,40 12,90 12,180 Z" />
+      <circle cx="-2" cy="24" r="9" />
+      <path d="M -10,58 Q 0,62 10,58" stroke="#000000" stroke-width="3.5" stroke-linecap="round" fill="none" />
+    </g>
+
+    <!-- 屋台を見上げる子供 -->
+    <g id="silhouette-child">
+      <path d="M -8,110 C -8,80 -5,45 -2,35 C -5,33 -6,28 -5,23 C -4,18 2,19 3,22 C 5,28 6,65 6,110 Z" />
+      <circle cx="-1" cy="15" r="5.5" />
+    </g>
+
+    <!-- ビネット効果グラデーション -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="60%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.55" />
+    </radialGradient>
+  </defs>
+
+  <!-- === 1. 背景夜空 === -->
+  <rect width="1200" height="900" fill="url(#skyGrad)" />
+  <rect width="1200" height="900" fill="url(#milkyWayGrad)" style="mix-blend-mode: screen;" />
+
+  <!-- === 2. 星空のディテール === -->
+  <g fill="#ffffff" opacity="0.6">
+    <circle cx="80" cy="120" r="1" />
+    <circle cx="150" cy="80" r="1.5" opacity="0.8" />
+    <circle cx="220" cy="190" r="1" />
+    <circle cx="340" cy="100" r="2" opacity="0.9" />
+    <circle cx="420" cy="220" r="1" />
+    <circle cx="480" cy="70" r="1.5" opacity="0.7" />
+    <circle cx="550" cy="150" r="1" />
+    <circle cx="700" cy="90" r="2" opacity="0.8" />
+    <circle cx="780" cy="180" r="1" />
+    <circle cx="850" cy="100" r="1.5" opacity="0.6" />
+    <circle cx="950" cy="130" r="1" />
+    <circle cx="1020" cy="70" r="2" opacity="0.9" />
+    <circle cx="1100" cy="200" r="1" />
+    <circle cx="1150" cy="110" r="1.5" opacity="0.7" />
+  </g>
+  <!-- きらめく代表的な星 -->
+  <use href="#star-sparkle" x="120" y="150" />
+  <use href="#star-sparkle" x="290" y="90" />
+  <use href="#star-sparkle" x="450" y="180" />
+  <use href="#star-sparkle" x="720" y="120" />
+  <use href="#star-sparkle" x="980" y="100" />
+  <use href="#star-sparkle" x="1080" y="160" />
+
+  <!-- === 3. 遠景の山々のシルエット === -->
+  <path d="M 0,780 Q 200,740 450,765 T 900,750 T 1200,775 L 1200,900 L 0,900 Z" fill="#08061a" />
+
+  <!-- === 4. 打ち上げ花火 (3発) === -->
+  <!-- 左奥: 青色花火 -->
+  <use href="#firework-blue" x="280" y="280" transform="scale(0.9)" />
+  <g fill="#aaffff" opacity="0.7">
+    <circle cx="210" cy="230" r="2.2" filter="url(#glow)" />
+    <circle cx="340" cy="330" r="1.5" />
+    <circle cx="180" cy="290" r="1.8" />
+    <circle cx="310" cy="190" r="2" filter="url(#glow)" />
+  </g>
+
+  <!-- 右奥: 赤・ピンク花火 -->
+  <use href="#firework-red" x="920" y="240" transform="scale(1.05)" />
+  <g fill="#ff99cc" opacity="0.7">
+    <circle cx="840" cy="190" r="2.2" filter="url(#glow)" />
+    <circle cx="980" cy="280" r="1.5" />
+    <circle cx="870" cy="290" r="1.8" />
+    <circle cx="960" cy="170" r="2" filter="url(#glow)" />
+  </g>
+
+  <!-- 中央手前: 特大金色しだれ花火 -->
+  <use href="#firework-gold" x="600" y="360" transform="scale(1.25)" />
+  <!-- しだれ柳の重力垂れ下がり光条 -->
+  <g stroke="url(#sparkGrad-gold)" stroke-width="2" fill="none" opacity="0.8" filter="url(#glow)">
+    <path d="M 600,360 Q 580,470 520,570" />
+    <path d="M 600,360 Q 590,485 560,585" />
+    <path d="M 600,360 Q 600,490 600,595" />
+    <path d="M 600,360 Q 610,485 640,585" />
+    <path d="M 600,360 Q 620,470 680,570" />
+    <!-- 先端の消え入りそうな光の粉 -->
+    <circle cx="520" cy="570" r="2.5" fill="#ffffff" />
+    <circle cx="560" cy="585" r="2.5" fill="#ffffff" />
+    <circle cx="600" cy="595" r="2.5" fill="#ffffff" />
+    <circle cx="640" cy="585" r="2.5" fill="#ffffff" />
+    <circle cx="680" cy="570" r="2.5" fill="#ffffff" />
+  </g>
+  <!-- 金色花火の火の粉散布 -->
+  <g fill="#ffdd88" opacity="0.85">
+    <circle cx="500" cy="300" r="2.5" filter="url(#glow)" />
+    <circle cx="700" cy="420" r="1.8" />
+    <circle cx="530" cy="440" r="2" />
+    <circle cx="670" cy="280" r="2.2" filter="url(#glow)" />
+    <circle cx="480" cy="380" r="1.5" />
+    <circle cx="720" cy="340" r="1.8" />
+  </g>
+
+  <!-- 左端・右端の近景木々シルエット (フレーミング効果) -->
+  <g fill="#04030f">
+    <!-- 左上から伸びる木の枝葉 -->
+    <path d="M -20,-20 Q 180,10 220,130 Q 150,170 60,120 Q 20,180 -20,150 Z" />
+    <path d="M -20,100 Q 90,140 120,240 Q 60,250 10,190 Q -20,220 -30,180 Z" />
+    <!-- 右端の木 (屋台背後) -->
+    <path d="M 1220,450 Q 1120,500 1080,620 Q 1150,640 1220,580 Z" />
+    <path d="M 1220,350 Q 1160,380 1130,460 Q 1190,480 1220,440 Z" />
+  </g>
+
+  <!-- === 5. 中景: 提灯ロープと吊り下げ提灯の列 === -->
+  <g stroke="#0e0c1a" stroke-width="1.8" fill="none">
+    <!-- 緩やかにたわむロープ -->
+    <path d="M 50,550 Q 350,650 700,680" />
+    <!-- 提灯を吊るす短い紐 -->
+    <line x1="115" y1="568" x2="115" y2="578" />
+    <line x1="245" y1="602" x2="245" y2="612" />
+    <line x1="375" y1="628" x2="375" y2="638" />
+    <line x1="505" y1="647" x2="505" y2="657" />
+    <line x1="635" y1="667" x2="635" y2="677" />
+  </g>
+  <!-- 提灯の配置 ( scale=0.65, y_lantern = y_line_end + 14 ) -->
+  <use href="#lantern" transform="translate(115, 592) scale(0.65)" />
+  <use href="#lantern" transform="translate(245, 626) scale(0.65)" />
+  <use href="#lantern" transform="translate(375, 652) scale(0.65)" />
+  <use href="#lantern" transform="translate(505, 671) scale(0.65)" />
+  <use href="#lantern" transform="translate(635, 691) scale(0.65)" />
+
+
+  <!-- === 6. 中景・右側: 提灯付きの屋台群 === -->
+  <!-- 屋台周辺の暖かい空気発光 -->
+  <circle cx="835" cy="740" r="180" fill="url(#ambientOrange)" />
+  <circle cx="1085" cy="730" r="180" fill="url(#ambientOrange)" />
+
+  <!-- 屋台1 (たこ焼き屋) -->
+  <g>
+    <!-- 店内の光 -->
+    <rect x="720" y="700" width="220" height="85" fill="url(#stallLight1)" />
+    <!-- 店員のシルエット -->
+    <circle cx="835" cy="735" r="11" fill="#060512" />
+    <path d="M 818,746 C 818,746 822,752 835,752 C 848,752 852,746 852,746 L 855,785 L 815,785 Z" fill="#060512" />
+    <!-- カウンター上の小物シルエット (舟皿など) -->
+    <rect x="735" y="773" width="35" height="12" fill="#060512" rx="2" />
+    <ellipse cx="890" cy="780" rx="15" ry="5" fill="#060512" />
+    <!-- 屋台構造物シルエット (柱・梁・屋根・のれん・土台) -->
+    <g fill="#060512">
+      <!-- 左右の柱 -->
+      <rect x="710" y="690" width="10" height="165" />
+      <rect x="940" y="690" width="10" height="165" />
+      <!-- 屋根 -->
+      <path d="M 690,665 L 970,665 L 980,695 L 680,695 Z" />
+      <!-- 波打つのれん -->
+      <path d="M 705,695 L 955,695 L 955,725 Q 935,730 925,725 Q 905,720 895,725 Q 875,730 865,725 Q 845,720 835,725 Q 815,730 805,725 Q 785,720 775,725 Q 755,730 745,725 Q 725,720 705,725 Z" />
+      <!-- カウンターテーブル -->
+      <rect x="695" y="780" width="270" height="12" />
+      <!-- カウンター下の腰板 -->
+      <rect x="715" y="792" width="230" height="65" />
+    </g>
+    <!-- 屋台提灯 (軒先に3連) -->
+    <use href="#lantern" transform="translate(750, 720) scale(0.72)" />
+    <use href="#lantern" transform="translate(830, 720) scale(0.72)" />
+    <use href="#lantern" transform="translate(910, 720) scale(0.72)" />
+  </g>
+
+  <!-- 屋台2 (かき氷・わたあめ屋) -->
+  <g>
+    <!-- 店内の光 -->
+    <rect x="990" y="690" width="190" height="85" fill="url(#stallLight2)" />
+    <!-- 店員のシルエット -->
+    <circle cx="1065" cy="725" r="10" fill="#060512" />
+    <path d="M 1050,735 Q 1065,737 1080,735 L 1082,775 L 1048,775 Z" fill="#060512" />
+    <!-- かき氷機のシルエット -->
+    <path d="M 1110,740 L 1128,740 L 1128,775 L 1110,775 Z M 1114,740 L 1114,732 L 1124,732 L 1124,740" fill="#060512" />
+    <!-- 構造物シルエット -->
+    <g fill="#060512">
+      <!-- 左右の柱 -->
+      <rect x="980" y="680" width="10" height="175" />
+      <rect x="1180" y="680" width="10" height="175" />
+      <!-- 屋根 -->
+      <path d="M 965,655 L 1205,655 L 1215,685 L 955,685 Z" />
+      <!-- のれん -->
+      <path d="M 975,685 L 1195,685 L 1195,715 Q 1175,720 1165,715 Q 1145,710 1135,715 Q 1115,720 1105,715 Q 1085,710 1075,715 Q 1055,720 1045,715 Q 1025,710 1015,715 Q 995,720 975,715 Z" />
+      <!-- カウンター -->
+      <rect x="965" y="770" width="240" height="12" />
+      <!-- 腰板 -->
+      <rect x="985" y="782" width="200" height="73" />
+    </g>
+    <!-- 屋台提灯 (2連) -->
+    <use href="#lantern" transform="translate(1030, 712) scale(0.72)" />
+    <use href="#lantern" transform="translate(1140, 712) scale(0.72)" />
+  </g>
+
+
+  <!-- === 7. 地面 (中景〜近景の土手) === -->
+  <!-- 中景地面 -->
+  <path d="M 0,815 Q 350,795 750,810 T 1200,795 L 1200,850 L 0,850 Z" fill="#050412" />
+  <!-- 手前土手 -->
+  <path d="M 0,845 Q 250,830 550,845 T 1200,830 L 1200,900 L 0,900 Z" fill="#030209" />
+
+  <!-- 屋台前地面の照り返し (提灯光の反射) -->
+  <ellipse cx="830" cy="840" rx="140" ry="20" fill="url(#groundLight)" />
+  <ellipse cx="1080" cy="835" rx="120" ry="18" fill="url(#groundLight)" />
+
+
+  <!-- === 8. 近景: 人々のシルエットと逆光エッジ === -->
+  <!-- 左の人々 (青色花火の逆光) -->
+  <g>
+    <use href="#silhouette-single-a" x="90" y="665" fill="#00ccff" transform="translate(-1, -1.8)" opacity="0.65" filter="url(#glow)" />
+    <use href="#silhouette-single-a" x="90" y="665" fill="#030209" />
+  </g>
+
+  <!-- 見上げるカップル (中央寄り左、青と金の間: 紫〜ピンク逆光) -->
+  <g>
+    <use href="#silhouette-couple" x="210" y="668" fill="#ff33aa" transform="translate(-0.8, -2)" opacity="0.7" filter="url(#glow)" />
+    <use href="#silhouette-couple" x="210" y="668" fill="#030209" />
+  </g>
+
+  <!-- 単体人物B (中央寄り、金色の強い逆光) -->
+  <g>
+    <use href="#silhouette-single-b" x="320" y="662" fill="#ffbb00" transform="translate(0, -2)" opacity="0.75" filter="url(#glow)" />
+    <use href="#silhouette-single-b" x="320" y="662" fill="#030209" />
+  </g>
+
+  <!-- 肩車親子 (中央、金色の特大逆光) -->
+  <g>
+    <use href="#silhouette-family" x="440" y="655" fill="#ffdd66" transform="translate(0, -2.2)" opacity="0.8" filter="url(#glow)" />
+    <use href="#silhouette-family" x="440" y="655" fill="#030209" />
+  </g>
+
+  <!-- 単体人物A (中央右寄り、金色と赤の間: オレンジ逆光) -->
+  <g>
+    <use href="#silhouette-single-a" x="550" y="665" fill="#ff7700" transform="translate(0.5, -1.8)" opacity="0.7" filter="url(#glow)" />
+    <use href="#silhouette-single-a" x="550" y="665" fill="#030209" />
+  </g>
+
+  <!-- 浴衣の女性二人組 (中央右、赤色花火の逆光) -->
+  <g>
+    <use href="#silhouette-friends" x="650" y="670" fill="#ff3355" transform="translate(1, -1.8)" opacity="0.7" filter="url(#glow)" />
+    <use href="#silhouette-friends" x="650" y="670" fill="#030209" />
+  </g>
+
+  <!-- 屋台前の客たち (右側、提灯と屋台光の強い暖色逆光) -->
+  <g>
+    <!-- たこ焼き屋の前の子供 -->
+    <use href="#silhouette-child" x="770" y="700" fill="#ff5500" transform="translate(0, -1.5)" opacity="0.75" filter="url(#glow)" />
+    <use href="#silhouette-child" x="770" y="700" fill="#050410" />
+
+    <!-- たこ焼き屋の前の大人 -->
+    <use href="#silhouette-single-b" x="890" y="640" transform="scale(0.93)" fill="#ff5500" opacity="0.7" filter="url(#glow)" />
+    <!-- 縮小を伴うため別定義のuseをうまく重ねる -->
+    <g transform="translate(890, 640) scale(0.93)">
+      <use href="#silhouette-single-b" fill="#050410" />
+    </g>
+
+    <!-- 屋台間の通行人 (金色と提灯の混ざった光) -->
+    <use href="#silhouette-single-a" x="965" y="670" fill="#ffaa00" transform="translate(0.8, -1.8)" opacity="0.65" filter="url(#glow)" />
+    <use href="#silhouette-single-a" x="965" y="670" fill="#050410" />
+
+    <!-- かき氷屋の前の客 (ピンク・紫光の反射) -->
+    <use href="#silhouette-friends" x="1060" y="665" fill="#ff33bb" transform="translate(1, -1.8)" opacity="0.7" filter="url(#glow)" />
+    <use href="#silhouette-friends" x="1060" y="665" fill="#050410" />
+  </g>
+
+  <!-- 手前の草むらシルエット (ディテールアップ) -->
+  <path d="M 0,900 L 0,880 Q 30,865 60,885 Q 90,890 120,875 Q 160,860 190,880 Q 240,890 280,870 Q 320,855 360,880 L 1200,900 Z" fill="#020107" />
+
+  <!-- === 9. 全体の空気感仕上げ (ビネット) === -->
+  <rect width="1200" height="900" fill="url(#vignette)" pointer-events="none" style="mix-blend-mode: multiply;" />
+</svg>

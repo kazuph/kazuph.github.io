@@ -1,0 +1,104 @@
+\documentclass[tikz,border=5mm]{standalone}
+\usepackage{xeCJK}
+\usetikzlibrary{arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+  x=1cm,y=1cm,
+  line/.style={draw=black,line width=1pt},
+  thickline/.style={draw=black,line width=1.4pt},
+  flow/.style={-{Stealth[length=3mm]},line width=1.2pt,blue!70},
+  label/.style={font=\small,align=center},
+  chamber/.style={fill=blue!10,draw=none},
+  metal/.style={fill=gray!20,draw=black,line width=1pt},
+  piston/.style={fill=gray!45,draw=black,line width=1.1pt},
+  fluid/.style={fill=cyan!18,draw=blue!30,line width=.5pt}
+]
+
+% frame guide size: 12 x 9 composition
+\fill[white] (0,0) rectangle (12,9);
+
+% Cylinder body
+\fill[metal] (1.0,2.5) rectangle (10.6,6.5);
+\fill[white] (1.4,3.0) rectangle (10.2,6.0);
+
+% Chambers
+\fill[fluid] (1.4,3.0) rectangle (5.45,6.0);
+\fill[fluid] (6.25,3.0) rectangle (10.2,6.0);
+
+% Piston
+\fill[piston] (5.45,2.85) rectangle (6.25,6.15);
+\draw[thickline] (5.45,2.85) rectangle (6.25,6.15);
+
+% Seals
+\draw[line width=2pt,black] (5.55,3.15) -- (5.55,5.85);
+\draw[line width=2pt,black] (6.15,3.15) -- (6.15,5.85);
+
+% Rod
+\fill[metal] (6.25,4.15) rectangle (11.4,4.85);
+\draw[thickline] (6.25,4.15) rectangle (11.4,4.85);
+
+% Cylinder outlines
+\draw[thickline] (1.0,2.5) rectangle (10.6,6.5);
+\draw[thickline] (1.4,3.0) rectangle (10.2,6.0);
+
+% End caps
+\fill[gray!30,draw=black,line width=1pt] (0.75,2.35) rectangle (1.4,6.65);
+\fill[gray!30,draw=black,line width=1pt] (10.2,2.35) rectangle (10.85,6.65);
+\draw[thickline] (10.85,4.15) -- (11.4,4.15);
+\draw[thickline] (10.85,4.85) -- (11.4,4.85);
+
+% Ports
+\fill[gray!25,draw=black,line width=1pt] (2.0,6.5) rectangle (2.7,7.25);
+\fill[gray!25,draw=black,line width=1pt] (8.9,6.5) rectangle (9.6,7.25);
+\draw[thickline] (2.35,6.5) -- (2.35,6.0);
+\draw[thickline] (9.25,6.5) -- (9.25,6.0);
+
+% Flow arrows
+\draw[flow] (2.35,8.0) -- (2.35,7.25);
+\draw[flow] (2.35,5.75) -- (3.7,5.75);
+\draw[flow] (9.25,5.75) -- (8.0,5.75);
+\draw[flow] (9.25,7.25) -- (9.25,8.0);
+
+% Internal pressure indication
+\draw[flow] (2.0,4.0) -- (4.5,4.0);
+\draw[flow] (9.8,4.0) -- (7.1,4.0);
+
+% Motion arrow for rod
+\draw[-{Stealth[length=3.5mm]},line width=1.2pt,red!70] (7.3,3.35) -- (9.3,3.35);
+\node[label,red!70] at (8.3,3.05) {ロッド移動方向};
+
+% Labels
+\node[label] at (5.8,6.85) {ピストン};
+\draw[-{Stealth[length=2mm]}] (5.8,6.6) -- (5.8,6.15);
+
+\node[label] at (8.8,5.15) {ロッド};
+\draw[-{Stealth[length=2mm]}] (8.8,5.0) -- (8.8,4.85);
+
+\node[label] at (5.8,2.25) {シール};
+\draw[-{Stealth[length=2mm]}] (5.55,2.45) -- (5.55,3.15);
+\draw[-{Stealth[length=2mm]}] (6.15,2.45) -- (6.15,3.15);
+
+\node[label] at (5.8,1.45) {シリンダー};
+\draw[-{Stealth[length=2mm]}] (5.8,1.75) -- (5.8,2.5);
+
+\node[label,blue!70] at (3.4,4.75) {左圧力室\\高圧油};
+\node[label,blue!70] at (8.2,4.75) {右圧力室\\戻り油};
+
+\node[label] at (2.35,8.35) {入口ポート};
+\node[label] at (9.25,8.35) {出口ポート};
+
+\node[label,blue!70] at (3.7,6.25) {流体の流れ};
+\node[label,blue!70] at (8.0,6.25) {排出};
+
+% Section hatching on outer body
+\foreach \x in {1.1,1.5,...,10.4} {
+  \draw[gray!55,line width=.35pt] (\x,2.5) -- ++(0.6,0.5);
+  \draw[gray!55,line width=.35pt] (\x,6.5) -- ++(0.6,-0.5);
+}
+
+% Title
+\node[font=\large\bfseries] at (6,8.75) {油圧ピストンの断面構造};
+
+\end{tikzpicture}
+\end{document}

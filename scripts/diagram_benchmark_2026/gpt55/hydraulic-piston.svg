@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title>油圧ピストンの断面構造解説</title>
+  <desc>シリンダー、ピストン、ロッド、左右の圧力室、流体の流れ、主要部品ラベルを示す教育用断面図</desc>
+
+  <defs>
+    <marker id="arrowBlue" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L12,7 L2,12 Z" fill="#1f78c8"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L12,7 L2,12 Z" fill="#d1493f"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#555"/>
+    </marker>
+    <linearGradient id="steel" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#e9edf2"/>
+      <stop offset="0.45" stop-color="#aeb8c2"/>
+      <stop offset="0.55" stop-color="#8794a1"/>
+      <stop offset="1" stop-color="#d8dde3"/>
+    </linearGradient>
+    <linearGradient id="rodSteel" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f7f8fa"/>
+      <stop offset="0.5" stop-color="#b7c0ca"/>
+      <stop offset="1" stop-color="#eef1f4"/>
+    </linearGradient>
+    <pattern id="fluidLeft" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(25)">
+      <rect width="18" height="18" fill="#cfe9ff"/>
+      <rect x="0" y="0" width="5" height="18" fill="#acd6fb" opacity="0.65"/>
+    </pattern>
+    <pattern id="fluidRight" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(-25)">
+      <rect width="18" height="18" fill="#ffd8d3"/>
+      <rect x="0" y="0" width="5" height="18" fill="#f7aaa3" opacity="0.65"/>
+    </pattern>
+    <filter id="softShadow" x="-20%" y="-30%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+    <style>
+      .bg { fill: #fbfcfd; }
+      .title { font: 700 38px "Hiragino Sans", "Yu Gothic", "Noto Sans JP", Arial, sans-serif; fill: #17212b; }
+      .label { font: 700 24px "Hiragino Sans", "Yu Gothic", "Noto Sans JP", Arial, sans-serif; fill: #17212b; }
+      .small { font: 500 18px "Hiragino Sans", "Yu Gothic", "Noto Sans JP", Arial, sans-serif; fill: #344454; }
+      .tiny { font: 500 15px "Hiragino Sans", "Yu Gothic", "Noto Sans JP", Arial, sans-serif; fill: #344454; }
+      .callout { fill: #ffffff; stroke: #c8d0d8; stroke-width: 2; }
+      .line { stroke: #555; stroke-width: 3; fill: none; marker-end: url(#arrowGray); }
+      .blueLine { stroke: #1f78c8; stroke-width: 7; fill: none; marker-end: url(#arrowBlue); stroke-linecap: round; }
+      .redLine { stroke: #d1493f; stroke-width: 7; fill: none; marker-end: url(#arrowRed); stroke-linecap: round; }
+      .edge { stroke: #26313d; stroke-width: 5; fill: none; }
+      .thinEdge { stroke: #26313d; stroke-width: 3; fill: none; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="900"/>
+  <text class="title" x="600" y="70" text-anchor="middle">油圧ピストンの断面構造</text>
+  <text class="small" x="600" y="105" text-anchor="middle">圧油が左右の圧力室に出入りし、ピストンとロッドを直線運動させる</text>
+
+  <g transform="translate(0,0)">
+    <rect x="145" y="280" width="910" height="260" rx="18" fill="#dce3ea" stroke="#26313d" stroke-width="6" filter="url(#softShadow)"/>
+    <rect x="175" y="318" width="850" height="184" rx="8" fill="#f5f7f9" stroke="#7b8794" stroke-width="3"/>
+
+    <rect x="175" y="318" width="390" height="184" fill="url(#fluidLeft)" opacity="0.96"/>
+    <rect x="635" y="318" width="390" height="184" fill="url(#fluidRight)" opacity="0.96"/>
+
+    <rect x="565" y="300" width="70" height="220" rx="8" fill="#3d4650" stroke="#17212b" stroke-width="5"/>
+    <rect x="578" y="316" width="44" height="188" rx="5" fill="#697785"/>
+    <rect x="555" y="320" width="12" height="180" fill="#111820" opacity="0.8"/>
+    <rect x="633" y="320" width="12" height="180" fill="#111820" opacity="0.8"/>
+
+    <rect x="635" y="380" width="420" height="60" fill="url(#rodSteel)" stroke="#26313d" stroke-width="5"/>
+    <rect x="1025" y="368" width="80" height="84" rx="8" fill="url(#steel)" stroke="#26313d" stroke-width="5"/>
+    <circle cx="1095" cy="410" r="22" fill="#f7f8fa" stroke="#26313d" stroke-width="4"/>
+
+    <rect x="118" y="340" width="58" height="140" rx="8" fill="url(#steel)" stroke="#26313d" stroke-width="5"/>
+    <rect x="1024" y="340" width="58" height="140" rx="8" fill="url(#steel)" stroke="#26313d" stroke-width="5"/>
+
+    <line class="thinEdge" x1="175" y1="318" x2="175" y2="502"/>
+    <line class="thinEdge" x1="1025" y1="318" x2="1025" y2="502"/>
+    <line class="edge" x1="145" y1="280" x2="1055" y2="280"/>
+    <line class="edge" x1="145" y1="540" x2="1055" y2="540"/>
+
+    <path d="M250 318 C280 350, 285 470, 320 502" stroke="#77bdf2" stroke-width="5" fill="none" opacity="0.7"/>
+    <path d="M420 318 C450 355, 450 468, 485 502" stroke="#77bdf2" stroke-width="5" fill="none" opacity="0.7"/>
+    <path d="M720 318 C750 350, 755 470, 790 502" stroke="#ec8b83" stroke-width="5" fill="none" opacity="0.7"/>
+    <path d="M890 318 C920 355, 920 468, 955 502" stroke="#ec8b83" stroke-width="5" fill="none" opacity="0.7"/>
+
+    <text class="label" x="370" y="415" text-anchor="middle" fill="#115d9b">左圧力室</text>
+    <text class="small" x="370" y="445" text-anchor="middle">圧油が入る側</text>
+    <text class="label" x="830" y="415" text-anchor="middle" fill="#a3332c">右圧力室</text>
+    <text class="small" x="830" y="445" text-anchor="middle">油が戻る側</text>
+
+    <path class="blueLine" d="M95 650 L95 585 Q95 560 120 560 L285 560 Q310 560 310 505"/>
+    <path class="redLine" d="M915 505 Q915 560 940 560 L1110 560 Q1135 560 1135 650"/>
+    <text class="label" x="95" y="690" text-anchor="middle" fill="#1f78c8">圧油入口</text>
+    <text class="small" x="95" y="718" text-anchor="middle">ポンプから</text>
+    <text class="label" x="1135" y="690" text-anchor="middle" fill="#d1493f">戻り油出口</text>
+    <text class="small" x="1135" y="718" text-anchor="middle">タンクへ</text>
+
+    <path class="blueLine" d="M300 245 C365 210, 475 210, 540 245"/>
+    <text class="small" x="420" y="200" text-anchor="middle" fill="#1f78c8">流体の流れ</text>
+    <path class="redLine" d="M930 245 C865 210, 755 210, 690 245"/>
+    <text class="small" x="810" y="200" text-anchor="middle" fill="#d1493f">戻り流れ</text>
+
+    <path d="M565 255 L590 255 L600 285 L610 255 L635 255" fill="#ffffff" stroke="#26313d" stroke-width="3"/>
+    <text class="label" x="600" y="240" text-anchor="middle">ピストン</text>
+
+    <rect class="callout" x="60" y="165" width="205" height="62" rx="8"/>
+    <text class="label" x="162" y="204" text-anchor="middle">シリンダー</text>
+    <path class="line" d="M260 205 C315 215, 360 250, 415 280"/>
+
+    <rect class="callout" x="895" y="158" width="185" height="62" rx="8"/>
+    <text class="label" x="987" y="197" text-anchor="middle">ロッド</text>
+    <path class="line" d="M988 220 C990 280, 925 345, 830 382"/>
+
+    <rect class="callout" x="845" y="610" width="205" height="66" rx="8"/>
+    <text class="label" x="948" y="650" text-anchor="middle">ロッド側端部</text>
+    <path class="line" d="M948 610 C965 560, 1015 505, 1048 455"/>
+
+    <rect class="callout" x="165" y="610" width="210" height="66" rx="8"/>
+    <text class="label" x="270" y="650" text-anchor="middle">ポート</text>
+    <path class="line" d="M270 610 C275 585, 290 560, 310 535"/>
+
+    <rect class="callout" x="475" y="620" width="250" height="72" rx="8"/>
+    <text class="label" x="600" y="650" text-anchor="middle">シール</text>
+    <text class="tiny" x="600" y="674" text-anchor="middle">圧力室間の漏れを防ぐ</text>
+    <path class="line" d="M575 620 C560 580, 558 535, 560 486"/>
+    <path class="line" d="M625 620 C640 580, 642 535, 640 486"/>
+
+    <g transform="translate(500 735)">
+      <rect x="0" y="0" width="200" height="56" rx="8" fill="#eaf5ff" stroke="#1f78c8" stroke-width="3"/>
+      <path d="M35 28 L110 28" stroke="#1f78c8" stroke-width="7" marker-end="url(#arrowBlue)" stroke-linecap="round"/>
+      <text class="small" x="135" y="35" text-anchor="middle">供給</text>
+    </g>
+    <g transform="translate(500 805)">
+      <rect x="0" y="0" width="200" height="56" rx="8" fill="#fff0ee" stroke="#d1493f" stroke-width="3"/>
+      <path d="M35 28 L110 28" stroke="#d1493f" stroke-width="7" marker-end="url(#arrowRed)" stroke-linecap="round"/>
+      <text class="small" x="135" y="35" text-anchor="middle">戻り</text>
+    </g>
+
+    <path d="M640 410 L760 410" stroke="#26313d" stroke-width="4" marker-end="url(#arrowGray)" stroke-linecap="round"/>
+    <text class="small" x="700" y="365" text-anchor="middle">ロッド伸長方向</text>
+  </g>
+</svg>

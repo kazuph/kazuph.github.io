@@ -1,0 +1,248 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="夏祭りの花火大会">
+  <defs>
+    <linearGradient id="nightSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#07112d"/>
+      <stop offset="45%" stop-color="#0b1e46"/>
+      <stop offset="78%" stop-color="#10284f"/>
+      <stop offset="100%" stop-color="#09101f"/>
+    </linearGradient>
+
+    <radialGradient id="horizonGlow" cx="50%" cy="74%" r="58%">
+      <stop offset="0%" stop-color="#f6b35d" stop-opacity="0.32"/>
+      <stop offset="38%" stop-color="#e87545" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#07112d" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="lanternGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff0a7" stop-opacity="0.95"/>
+      <stop offset="58%" stop-color="#ffb84e" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ff8a2a" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="bigGlow" x="-90%" y="-90%" width="280%" height="280%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <g id="person">
+      <circle cx="0" cy="-45" r="10" fill="#070912"/>
+      <path d="M-9 -34 C-14 -18 -13 0 -11 28 L11 28 C13 0 14 -18 9 -34 Z" fill="#070912"/>
+      <path d="M-7 23 L-15 58 M7 23 L16 58" stroke="#070912" stroke-width="8" stroke-linecap="round"/>
+    </g>
+
+    <g id="lantern">
+      <ellipse cx="0" cy="0" rx="22" ry="30" fill="#ff5848"/>
+      <ellipse cx="0" cy="0" rx="15" ry="27" fill="#ffcc6a" opacity="0.72"/>
+      <path d="M-17 -18 C-7 -10 7 -10 17 -18 M-19 0 C-7 7 7 7 19 0 M-17 18 C-7 10 7 10 17 18" fill="none" stroke="#7b1520" stroke-width="2" opacity="0.55"/>
+      <rect x="-12" y="-35" width="24" height="8" rx="2" fill="#231014"/>
+      <rect x="-12" y="27" width="24" height="8" rx="2" fill="#231014"/>
+      <circle cx="0" cy="0" r="48" fill="url(#lanternGlow)" opacity="0.48"/>
+    </g>
+
+    <g id="fireworkRed">
+      <circle cx="0" cy="0" r="5" fill="#fff7b8"/>
+      <g stroke-linecap="round" filter="url(#softGlow)">
+        <line x1="0" y1="0" x2="0" y2="-170" stroke="#fff7a8" stroke-width="4"/>
+        <line x1="0" y1="0" x2="58" y2="-155" stroke="#ff695f" stroke-width="4"/>
+        <line x1="0" y1="0" x2="118" y2="-112" stroke="#ffb347" stroke-width="4"/>
+        <line x1="0" y1="0" x2="158" y2="-50" stroke="#ff4976" stroke-width="4"/>
+        <line x1="0" y1="0" x2="166" y2="25" stroke="#ffd266" stroke-width="4"/>
+        <line x1="0" y1="0" x2="126" y2="105" stroke="#ff665c" stroke-width="4"/>
+        <line x1="0" y1="0" x2="55" y2="155" stroke="#ffcc6b" stroke-width="4"/>
+        <line x1="0" y1="0" x2="-28" y2="166" stroke="#ff4c7a" stroke-width="4"/>
+        <line x1="0" y1="0" x2="-98" y2="132" stroke="#ffd36d" stroke-width="4"/>
+        <line x1="0" y1="0" x2="-153" y2="63" stroke="#ff665c" stroke-width="4"/>
+        <line x1="0" y1="0" x2="-168" y2="-18" stroke="#ffba56" stroke-width="4"/>
+        <line x1="0" y1="0" x2="-131" y2="-97" stroke="#ff4d75" stroke-width="4"/>
+        <line x1="0" y1="0" x2="-67" y2="-151" stroke="#fff0a7" stroke-width="4"/>
+      </g>
+      <g fill="#fff0a7" opacity="0.92">
+        <circle cx="0" cy="-178" r="5"/><circle cx="62" cy="-164" r="5"/><circle cx="125" cy="-119" r="5"/>
+        <circle cx="168" cy="-53" r="5"/><circle cx="176" cy="27" r="5"/><circle cx="134" cy="112" r="5"/>
+        <circle cx="58" cy="164" r="5"/><circle cx="-30" cy="176" r="5"/><circle cx="-104" cy="140" r="5"/>
+        <circle cx="-163" cy="67" r="5"/><circle cx="-178" cy="-19" r="5"/><circle cx="-139" cy="-103" r="5"/>
+        <circle cx="-71" cy="-160" r="5"/>
+      </g>
+    </g>
+
+    <g id="fireworkBlue">
+      <circle cx="0" cy="0" r="4" fill="#dfffff"/>
+      <g stroke-linecap="round" filter="url(#softGlow)">
+        <line x1="0" y1="0" x2="0" y2="-125" stroke="#c7ffff" stroke-width="3"/>
+        <line x1="0" y1="0" x2="45" y2="-116" stroke="#67d8ff" stroke-width="3"/>
+        <line x1="0" y1="0" x2="94" y2="-82" stroke="#8affdf" stroke-width="3"/>
+        <line x1="0" y1="0" x2="124" y2="-22" stroke="#69b8ff" stroke-width="3"/>
+        <line x1="0" y1="0" x2="110" y2="60" stroke="#9fffe6" stroke-width="3"/>
+        <line x1="0" y1="0" x2="47" y2="117" stroke="#72c8ff" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-25" y2="123" stroke="#dfffff" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-87" y2="89" stroke="#8affdf" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-125" y2="17" stroke="#65c7ff" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-101" y2="-73" stroke="#d9ffff" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-48" y2="-115" stroke="#78dbff" stroke-width="3"/>
+      </g>
+      <g fill="#dfffff" opacity="0.9">
+        <circle cx="0" cy="-132" r="4"/><circle cx="48" cy="-123" r="4"/><circle cx="100" cy="-87" r="4"/>
+        <circle cx="132" cy="-23" r="4"/><circle cx="117" cy="64" r="4"/><circle cx="50" cy="124" r="4"/>
+        <circle cx="-27" cy="131" r="4"/><circle cx="-92" cy="95" r="4"/><circle cx="-133" cy="18" r="4"/>
+        <circle cx="-107" cy="-78" r="4"/><circle cx="-51" cy="-122" r="4"/>
+      </g>
+    </g>
+
+    <g id="fireworkGreen">
+      <circle cx="0" cy="0" r="4" fill="#f4ffd0"/>
+      <g stroke-linecap="round" filter="url(#softGlow)">
+        <line x1="0" y1="0" x2="0" y2="-105" stroke="#f5ffd1" stroke-width="3"/>
+        <line x1="0" y1="0" x2="54" y2="-92" stroke="#b9ff60" stroke-width="3"/>
+        <line x1="0" y1="0" x2="101" y2="-29" stroke="#6effaa" stroke-width="3"/>
+        <line x1="0" y1="0" x2="91" y2="55" stroke="#d8ff69" stroke-width="3"/>
+        <line x1="0" y1="0" x2="30" y2="101" stroke="#83ffbd" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-52" y2="92" stroke="#e7ff7b" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-101" y2="30" stroke="#77ffaa" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-88" y2="-58" stroke="#cfff65" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-34" y2="-100" stroke="#f5ffd1" stroke-width="3"/>
+      </g>
+      <g fill="#f3ffc8" opacity="0.88">
+        <circle cx="0" cy="-112" r="4"/><circle cx="58" cy="-98" r="4"/><circle cx="108" cy="-31" r="4"/>
+        <circle cx="97" cy="59" r="4"/><circle cx="32" cy="108" r="4"/><circle cx="-55" cy="98" r="4"/>
+        <circle cx="-108" cy="32" r="4"/><circle cx="-94" cy="-62" r="4"/><circle cx="-36" cy="-107" r="4"/>
+      </g>
+    </g>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#nightSky)"/>
+  <rect width="1200" height="900" fill="url(#horizonGlow)"/>
+
+  <g fill="#ffffff">
+    <circle cx="83" cy="75" r="1.7" opacity="0.75"/><circle cx="166" cy="151" r="1.1" opacity="0.55"/>
+    <circle cx="247" cy="58" r="1.5" opacity="0.65"/><circle cx="342" cy="130" r="1.2" opacity="0.6"/>
+    <circle cx="453" cy="69" r="1.8" opacity="0.7"/><circle cx="526" cy="184" r="1.1" opacity="0.5"/>
+    <circle cx="642" cy="92" r="1.5" opacity="0.68"/><circle cx="723" cy="157" r="1.2" opacity="0.55"/>
+    <circle cx="824" cy="52" r="1.8" opacity="0.75"/><circle cx="920" cy="138" r="1.1" opacity="0.56"/>
+    <circle cx="1031" cy="79" r="1.4" opacity="0.65"/><circle cx="1121" cy="169" r="1.8" opacity="0.72"/>
+    <circle cx="91" cy="243" r="1.2" opacity="0.46"/><circle cx="208" cy="296" r="1.7" opacity="0.62"/>
+    <circle cx="397" cy="240" r="1.1" opacity="0.52"/><circle cx="589" cy="284" r="1.5" opacity="0.6"/>
+    <circle cx="771" cy="251" r="1.2" opacity="0.55"/><circle cx="999" cy="270" r="1.6" opacity="0.68"/>
+    <path d="M1081 219 l4 8 8 4 -8 4 -4 8 -4 -8 -8 -4 8 -4z" opacity="0.55"/>
+    <path d="M296 204 l3 6 6 3 -6 3 -3 6 -3 -6 -6 -3 6 -3z" opacity="0.5"/>
+  </g>
+
+  <g opacity="0.22" fill="none" stroke="#c9f3ff" stroke-width="2">
+    <path d="M210 396 C270 350 330 343 390 365"/>
+    <path d="M770 382 C836 332 916 330 974 372"/>
+  </g>
+
+  <g transform="translate(350 265)" opacity="0.98">
+    <circle cx="0" cy="0" r="205" fill="#ff5b61" opacity="0.06" filter="url(#bigGlow)"/>
+    <use href="#fireworkRed"/>
+    <g opacity="0.44" stroke="#ffcf76" stroke-width="2" stroke-linecap="round">
+      <path d="M-35 20 C-55 58 -70 96 -74 132"/>
+      <path d="M45 15 C66 54 75 93 70 125"/>
+      <path d="M-7 -24 C-20 -58 -31 -91 -29 -122"/>
+    </g>
+  </g>
+
+  <g transform="translate(825 240)" opacity="0.96">
+    <circle cx="0" cy="0" r="155" fill="#67d8ff" opacity="0.075" filter="url(#bigGlow)"/>
+    <use href="#fireworkBlue"/>
+  </g>
+
+  <g transform="translate(652 390)" opacity="0.92">
+    <circle cx="0" cy="0" r="132" fill="#9dff75" opacity="0.065" filter="url(#bigGlow)"/>
+    <use href="#fireworkGreen"/>
+  </g>
+
+  <g opacity="0.45" stroke-linecap="round">
+    <path d="M347 668 C355 600 356 514 350 390" stroke="#ffcf76" stroke-width="3"/>
+    <path d="M824 660 C818 575 820 466 825 355" stroke="#91e6ff" stroke-width="2.5"/>
+    <path d="M652 675 C660 590 657 500 652 432" stroke="#caff74" stroke-width="2.4"/>
+  </g>
+
+  <path d="M0 716 C150 700 258 721 394 705 C544 687 654 719 796 700 C942 681 1059 704 1200 690 L1200 900 L0 900 Z" fill="#07101b" opacity="0.84"/>
+  <path d="M0 774 C128 759 241 780 371 764 C521 746 671 775 808 756 C957 735 1079 754 1200 741 L1200 900 L0 900 Z" fill="#05070d"/>
+
+  <g opacity="0.38">
+    <ellipse cx="210" cy="823" rx="132" ry="13" fill="#ffb84e"/>
+    <ellipse cx="600" cy="829" rx="190" ry="16" fill="#e87545"/>
+    <ellipse cx="930" cy="814" rx="150" ry="13" fill="#ffd36d"/>
+  </g>
+
+  <g transform="translate(82 610)">
+    <rect x="0" y="100" width="315" height="150" fill="#191014"/>
+    <rect x="15" y="118" width="285" height="72" fill="#3b1b18"/>
+    <rect x="35" y="134" width="78" height="44" fill="#ffbd5a" opacity="0.42"/>
+    <rect x="131" y="134" width="78" height="44" fill="#ffbd5a" opacity="0.36"/>
+    <rect x="226" y="134" width="54" height="44" fill="#ffbd5a" opacity="0.32"/>
+    <path d="M-22 100 L157 -8 L337 100 Z" fill="#251014"/>
+    <path d="M-3 93 L157 1 L318 93 Z" fill="#92312a"/>
+    <path d="M33 72 L157 23 L281 72 Z" fill="#c74936"/>
+    <path d="M-15 101 L329 101" stroke="#ffd56c" stroke-width="5" opacity="0.7"/>
+    <path d="M20 105 C75 86 239 86 295 105" fill="none" stroke="#1c0b10" stroke-width="5"/>
+    <g transform="translate(43 94) scale(.62)"><use href="#lantern"/></g>
+    <g transform="translate(103 86) scale(.58)"><use href="#lantern"/></g>
+    <g transform="translate(164 82) scale(.66)"><use href="#lantern"/></g>
+    <g transform="translate(228 87) scale(.58)"><use href="#lantern"/></g>
+    <g transform="translate(287 96) scale(.62)"><use href="#lantern"/></g>
+    <rect x="0" y="245" width="315" height="18" fill="#09080c"/>
+  </g>
+
+  <g transform="translate(794 632)">
+    <rect x="0" y="78" width="320" height="135" fill="#141014"/>
+    <rect x="20" y="100" width="280" height="62" fill="#342019"/>
+    <rect x="39" y="115" width="95" height="34" fill="#ffcf74" opacity="0.38"/>
+    <rect x="153" y="115" width="112" height="34" fill="#ffcf74" opacity="0.3"/>
+    <path d="M-25 78 L160 -19 L345 78 Z" fill="#200e12"/>
+    <path d="M-6 71 L160 -10 L326 71 Z" fill="#31506d"/>
+    <path d="M34 56 L160 5 L287 56 Z" fill="#426f91"/>
+    <path d="M-17 79 L337 79" stroke="#ffe184" stroke-width="5" opacity="0.68"/>
+    <path d="M22 82 C80 65 241 65 300 82" fill="none" stroke="#160a0e" stroke-width="5"/>
+    <g transform="translate(48 75) scale(.58)"><use href="#lantern"/></g>
+    <g transform="translate(108 68) scale(.63)"><use href="#lantern"/></g>
+    <g transform="translate(172 65) scale(.58)"><use href="#lantern"/></g>
+    <g transform="translate(236 69) scale(.63)"><use href="#lantern"/></g>
+    <g transform="translate(296 76) scale(.56)"><use href="#lantern"/></g>
+    <rect x="0" y="208" width="320" height="18" fill="#08070b"/>
+  </g>
+
+  <g opacity="0.98">
+    <use href="#person" transform="translate(448 792) scale(.92)"/>
+    <use href="#person" transform="translate(505 814) scale(.72)"/>
+    <use href="#person" transform="translate(566 798) scale(.86)"/>
+    <use href="#person" transform="translate(630 823) scale(.66)"/>
+    <use href="#person" transform="translate(698 800) scale(.83)"/>
+    <use href="#person" transform="translate(749 819) scale(.68)"/>
+    <use href="#person" transform="translate(356 830) scale(.63)"/>
+    <use href="#person" transform="translate(170 827) scale(.65)"/>
+    <use href="#person" transform="translate(1118 818) scale(.68)"/>
+  </g>
+
+  <g stroke="#070912" stroke-width="5" stroke-linecap="round" opacity="0.98">
+    <path d="M534 755 C546 733 570 723 589 735"/>
+    <path d="M681 758 C697 738 720 734 737 750"/>
+    <path d="M235 769 C254 752 275 753 292 768"/>
+  </g>
+
+  <g opacity="0.52" fill="none" stroke-linecap="round">
+    <path d="M264 770 C327 753 381 754 430 770" stroke="#ffbe5d" stroke-width="3"/>
+    <path d="M805 758 C866 741 955 743 1017 762" stroke="#ffd983" stroke-width="3"/>
+    <path d="M444 846 C543 825 666 827 779 849" stroke="#ef7049" stroke-width="2.5"/>
+  </g>
+
+  <g opacity="0.38" filter="url(#softGlow)">
+    <circle cx="163" cy="673" r="72" fill="#ffb84e"/>
+    <circle cx="957" cy="689" r="78" fill="#ffd36d"/>
+    <circle cx="606" cy="777" r="52" fill="#ff8b4f"/>
+  </g>
+
+  <path d="M0 862 C140 845 271 866 407 850 C553 833 663 861 812 845 C966 828 1087 847 1200 833 L1200 900 L0 900 Z" fill="#03050a" opacity="0.95"/>
+</svg>

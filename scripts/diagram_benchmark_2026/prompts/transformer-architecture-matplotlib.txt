@@ -1,0 +1,20 @@
+Transformer のアーキテクチャ図 を matplotlib で描く Python スクリプトを書いてください。
+
+要件:
+- Transformer の encoder-decoder アーキテクチャ図を描く
+- Input Embedding, Positional Encoding, Multi-Head Attention, Feed Forward, Add & Norm, Linear, Softmax を入れる
+- Encoder スタックと Decoder スタックを左右に分けて配置する
+- 残差接続が Add & Norm に入る流れを矢印で分かるように描く
+- Decoder 側の Masked Multi-Head Attention と、Encoder から渡る Cross-Attention を区別する
+- 論文スタイルの読みやすいブロック図として整理する
+
+実装ルール:
+- matplotlib だけを使う
+- 出力ファイルパスは sys.argv[1] から受け取る
+- 画像は 1200x900 相当で保存する
+- 軸や余計なラベルは出さない
+
+出力ルール:
+- 説明は不要
+- Markdown の code fence も不要
+- Python コード本体だけを出力する

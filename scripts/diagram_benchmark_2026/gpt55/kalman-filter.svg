@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Kalman filter block diagram">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#263238"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#1565c0"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#ef6c00"/>
+    </marker>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.16"/>
+    </filter>
+    <style>
+      .title { font: 700 32px Arial, Helvetica, sans-serif; fill: #1f2933; }
+      .section-title { font: 700 22px Arial, Helvetica, sans-serif; fill: #263238; }
+      .block-title { font: 700 18px Arial, Helvetica, sans-serif; fill: #1f2933; }
+      .block-text { font: 15px Arial, Helvetica, sans-serif; fill: #37474f; }
+      .small { font: 13px Arial, Helvetica, sans-serif; fill: #455a64; }
+      .label { font: 15px Arial, Helvetica, sans-serif; fill: #263238; }
+      .equation { font: 14px "Times New Roman", serif; fill: #263238; }
+      .arrow { stroke: #263238; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .arrow-blue { stroke: #1565c0; stroke-width: 3; fill: none; marker-end: url(#arrowBlue); }
+      .arrow-green { stroke: #2e7d32; stroke-width: 3; fill: none; marker-end: url(#arrowGreen); }
+      .arrow-orange { stroke: #ef6c00; stroke-width: 3; fill: none; marker-end: url(#arrowOrange); }
+      .thin { stroke-width: 2.2; }
+      .dashed { stroke-dasharray: 8 7; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="900" fill="#f6f8fb"/>
+  <text x="600" y="54" text-anchor="middle" class="title">Kalman Filter Block Diagram</text>
+
+  <rect x="70" y="115" width="430" height="285" rx="8" fill="#eaf4ff" stroke="#90caf9" stroke-width="2"/>
+  <text x="95" y="152" class="section-title">Prediction</text>
+
+  <rect x="110" y="190" width="155" height="82" rx="8" fill="#ffffff" stroke="#64b5f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="187.5" y="222" text-anchor="middle" class="block-title">Prior State</text>
+  <text x="187.5" y="248" text-anchor="middle" class="equation">x̂ₖ₋₁|ₖ₋₁, Pₖ₋₁|ₖ₋₁</text>
+
+  <rect x="315" y="185" width="150" height="92" rx="8" fill="#ffffff" stroke="#64b5f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="390" y="216" text-anchor="middle" class="block-title">Time Update</text>
+  <text x="390" y="241" text-anchor="middle" class="equation">x̂ₖ|ₖ₋₁ = F x̂ + B u</text>
+  <text x="390" y="262" text-anchor="middle" class="equation">Pₖ|ₖ₋₁ = FPFᵀ + Q</text>
+
+  <rect x="205" y="310" width="155" height="60" rx="8" fill="#fffdf6" stroke="#fbc02d" stroke-width="2"/>
+  <text x="282.5" y="335" text-anchor="middle" class="block-title">Control Input</text>
+  <text x="282.5" y="357" text-anchor="middle" class="equation">uₖ</text>
+
+  <rect x="700" y="115" width="400" height="285" rx="8" fill="#effaf0" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="725" y="152" class="section-title">Measurement</text>
+
+  <rect x="745" y="190" width="150" height="82" rx="8" fill="#ffffff" stroke="#81c784" stroke-width="2" filter="url(#shadow)"/>
+  <text x="820" y="222" text-anchor="middle" class="block-title">Sensor</text>
+  <text x="820" y="248" text-anchor="middle" class="equation">zₖ</text>
+
+  <rect x="930" y="185" width="130" height="92" rx="8" fill="#ffffff" stroke="#81c784" stroke-width="2" filter="url(#shadow)"/>
+  <text x="995" y="216" text-anchor="middle" class="block-title">Model</text>
+  <text x="995" y="241" text-anchor="middle" class="equation">H x̂ₖ|ₖ₋₁</text>
+  <text x="995" y="262" text-anchor="middle" class="equation">R</text>
+
+  <rect x="570" y="450" width="420" height="275" rx="8" fill="#fff4e6" stroke="#ffcc80" stroke-width="2"/>
+  <text x="595" y="487" class="section-title">Update</text>
+
+  <circle cx="640" cy="560" r="34" fill="#ffffff" stroke="#fb8c00" stroke-width="3" filter="url(#shadow)"/>
+  <line x1="621" y1="560" x2="659" y2="560" stroke="#fb8c00" stroke-width="3"/>
+  <line x1="640" y1="541" x2="640" y2="579" stroke="#fb8c00" stroke-width="3"/>
+  <text x="640" y="617" text-anchor="middle" class="block-title">Residual</text>
+  <text x="640" y="639" text-anchor="middle" class="equation">yₖ = zₖ − Hx̂ₖ|ₖ₋₁</text>
+
+  <rect x="735" y="517" width="170" height="86" rx="8" fill="#ffffff" stroke="#fb8c00" stroke-width="2" filter="url(#shadow)"/>
+  <text x="820" y="549" text-anchor="middle" class="block-title">Kalman Gain</text>
+  <text x="820" y="574" text-anchor="middle" class="equation">Kₖ = P Hᵀ(HPHᵀ+R)⁻¹</text>
+
+  <rect x="735" y="640" width="170" height="60" rx="8" fill="#ffffff" stroke="#fb8c00" stroke-width="2" filter="url(#shadow)"/>
+  <text x="820" y="665" text-anchor="middle" class="block-title">Correction</text>
+  <text x="820" y="687" text-anchor="middle" class="equation">Kₖ yₖ</text>
+
+  <rect x="70" y="535" width="365" height="190" rx="8" fill="#f2efff" stroke="#b39ddb" stroke-width="2"/>
+  <text x="95" y="572" class="section-title">State Estimate</text>
+
+  <rect x="120" y="620" width="260" height="72" rx="8" fill="#ffffff" stroke="#9575cd" stroke-width="2" filter="url(#shadow)"/>
+  <text x="250" y="650" text-anchor="middle" class="block-title">Posterior Estimate</text>
+  <text x="250" y="675" text-anchor="middle" class="equation">x̂ₖ|ₖ = x̂ₖ|ₖ₋₁ + Kₖyₖ</text>
+
+  <rect x="470" y="765" width="260" height="62" rx="8" fill="#ffffff" stroke="#78909c" stroke-width="2" filter="url(#shadow)"/>
+  <text x="600" y="792" text-anchor="middle" class="block-title">Covariance Update</text>
+  <text x="600" y="815" text-anchor="middle" class="equation">Pₖ|ₖ = (I − KₖH)Pₖ|ₖ₋₁</text>
+
+  <path d="M265 231 L315 231" class="arrow-blue"/>
+  <text x="290" y="218" text-anchor="middle" class="label">previous estimate</text>
+
+  <path d="M282.5 310 L282.5 285 Q282.5 231 315 231" class="arrow-orange thin"/>
+  <text x="235" y="294" text-anchor="middle" class="label">control</text>
+
+  <path d="M465 231 L610 231 Q650 231 650 310 L650 522" class="arrow-blue"/>
+  <text x="555" y="215" text-anchor="middle" class="label">predicted state x̂ₖ|ₖ₋₁</text>
+
+  <path d="M465 252 L710 252 Q760 252 760 500 L760 517" class="arrow-blue dashed thin"/>
+  <text x="602" y="277" text-anchor="middle" class="label">predicted covariance Pₖ|ₖ₋₁</text>
+
+  <path d="M895 231 L930 231" class="arrow-green"/>
+  <text x="912" y="218" text-anchor="middle" class="label">zₖ</text>
+
+  <path d="M820 272 L820 340 Q820 430 671 540" class="arrow-green"/>
+  <text x="782" y="360" text-anchor="middle" class="label">measurement</text>
+
+  <path d="M995 277 L995 360 Q995 450 674 560" class="arrow thin"/>
+  <text x="1002" y="350" class="label">expected measurement</text>
+
+  <path d="M674 560 L735 560" class="arrow-orange"/>
+  <text x="704" y="544" text-anchor="middle" class="label">yₖ</text>
+
+  <path d="M820 603 L820 640" class="arrow-orange"/>
+  <text x="848" y="625" class="label">gain</text>
+
+  <path d="M735 670 L430 670 L380 670" class="arrow-orange"/>
+  <text x="558" y="652" text-anchor="middle" class="label">correction Kₖyₖ</text>
+
+  <path d="M465 231 L520 231 Q548 231 548 635 Q548 656 380 656" class="arrow-blue thin"/>
+  <text x="488" y="617" class="label">prior x̂ₖ|ₖ₋₁</text>
+
+  <path d="M380 681 L470 796" class="arrow"/>
+  <text x="438" y="724" class="label">updated P</text>
+
+  <path d="M730 796 L1045 796 Q1120 796 1120 231 Q1120 160 1060 160 L995 185" class="arrow dashed thin"/>
+  <text x="1015" y="776" text-anchor="middle" class="label">P feedback to next gain</text>
+
+  <path d="M120 656 L70 656 Q35 656 35 231 Q35 185 110 185 L110 231" class="arrow dashed"/>
+  <text x="63" y="454" text-anchor="middle" class="label" transform="rotate(-90 63 454)">feedback to next prediction</text>
+
+  <path d="M250 620 L250 445 Q250 415 390 415 Q520 415 520 231 L465 231" class="arrow-blue dashed thin"/>
+  <text x="345" y="433" text-anchor="middle" class="label">state feedback loop</text>
+
+  <rect x="820" y="55" width="280" height="32" rx="16" fill="#ffffff" stroke="#cfd8dc" stroke-width="1.5"/>
+  <line x1="845" y1="71" x2="895" y2="71" class="arrow-blue thin"/>
+  <text x="905" y="76" class="small">state / covariance flow</text>
+
+  <line x1="845" y1="99" x2="895" y2="99" class="arrow-green thin"/>
+  <text x="905" y="104" class="small">measurement flow</text>
+
+  <line x1="845" y1="127" x2="895" y2="127" class="arrow-orange thin"/>
+  <text x="905" y="132" class="small">update information</text>
+</svg>

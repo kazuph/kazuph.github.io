@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aId" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#2850A0"/>
+    </marker>
+    <marker id="aAc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#2D7332"/>
+    </marker>
+    <marker id="aSv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#C86414"/>
+    </marker>
+    <marker id="aPl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#5A5A64"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+  <text x="600" y="62" text-anchor="middle" font-size="29" font-weight="bold" fill="#28323C">Zero trust auth &amp; token exchange</text>
+
+  <!-- trust zones -->
+  <rect x="40" y="110" width="290" height="640" rx="18" fill="#FBEFEF" stroke="#A04040" stroke-width="3" stroke-dasharray="12 8"/>
+  <text x="62" y="145" font-size="17" font-weight="bold" fill="#A04040">Untrusted (Internet)</text>
+
+  <rect x="370" y="110" width="330" height="270" rx="18" fill="#F4ECF6" stroke="#8C5AA0" stroke-width="3" stroke-dasharray="12 8"/>
+  <text x="392" y="145" font-size="17" font-weight="bold" fill="#8C5AA0">Identity zone</text>
+
+  <rect x="370" y="430" width="790" height="320" rx="18" fill="#EDF5EE" stroke="#3C6E48" stroke-width="3" stroke-dasharray="12 8"/>
+  <text x="392" y="465" font-size="17" font-weight="bold" fill="#3C6E48">Zero trust perimeter (every call verified)</text>
+
+  <!-- actors -->
+  <rect x="100" y="180" width="180" height="80" rx="10" fill="#DCE4F1" stroke="#4A6EA8" stroke-width="3"/>
+  <text x="190" y="228" text-anchor="middle" font-size="19" font-weight="bold">User</text>
+
+  <rect x="100" y="560" width="180" height="95" rx="10" fill="#DCE4F1" stroke="#4A6EA8" stroke-width="3"/>
+  <text x="190" y="600" text-anchor="middle" font-size="19" font-weight="bold">Browser</text>
+  <text x="190" y="630" text-anchor="middle" font-size="13" fill="#46464E">SPA client</text>
+
+  <rect x="440" y="200" width="200" height="95" rx="10" fill="#EADDF0" stroke="#8C5AA0" stroke-width="3"/>
+  <text x="540" y="240" text-anchor="middle" font-size="19" font-weight="bold">IdP</text>
+  <text x="540" y="270" text-anchor="middle" font-size="13" fill="#46464E">OIDC provider</text>
+
+  <rect x="430" y="540" width="220" height="95" rx="10" fill="#F7E6D2" stroke="#C87832" stroke-width="3"/>
+  <text x="540" y="580" text-anchor="middle" font-size="19" font-weight="bold">API Gateway</text>
+  <text x="540" y="610" text-anchor="middle" font-size="13" fill="#46464E">token validation</text>
+
+  <rect x="760" y="540" width="170" height="95" rx="10" fill="#DCEDE2" stroke="#46825A" stroke-width="3"/>
+  <text x="845" y="595" text-anchor="middle" font-size="19" font-weight="bold">Service A</text>
+
+  <rect x="990" y="540" width="170" height="95" rx="10" fill="#DCEDE2" stroke="#46825A" stroke-width="3"/>
+  <text x="1075" y="595" text-anchor="middle" font-size="19" font-weight="bold">Service B</text>
+
+  <!-- flows -->
+  <!-- 1 login -->
+  <line x1="190" y1="260" x2="190" y2="552" stroke="#5A5A64" stroke-width="4" marker-end="url(#aPl)"/>
+  <circle cx="172" cy="400" r="15" fill="#1A1A22"/>
+  <text x="172" y="406" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFFFFF">1</text>
+  <text x="208" y="406" font-size="15" fill="#32323C">login</text>
+
+  <!-- 2 authenticate, ID token -->
+  <path d="M285 575 Q360 420 432 280" fill="none" stroke="#2850A0" stroke-width="4" marker-end="url(#aId)"/>
+  <circle cx="352" cy="430" r="15" fill="#1A1A22"/>
+  <text x="352" y="436" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFFFFF">2</text>
+  <text x="285" y="372" font-size="15" fill="#32323C">authenticate /</text>
+  <text x="285" y="394" font-size="15" fill="#32323C">ID token</text>
+
+  <!-- 3 access token -->
+  <line x1="282" y1="606" x2="422" y2="592" stroke="#2D7332" stroke-width="4" stroke-dasharray="14 6" marker-end="url(#aAc)"/>
+  <circle cx="352" cy="572" r="15" fill="#1A1A22"/>
+  <text x="352" y="578" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFFFFF">3</text>
+  <text x="352" y="640" text-anchor="middle" font-size="15" fill="#32323C">access token</text>
+
+  <!-- 4 verify with IdP -->
+  <line x1="540" y1="532" x2="540" y2="303" stroke="#5A5A64" stroke-width="4" marker-end="url(#aPl)" marker-start="url(#aPl)"/>
+  <circle cx="518" cy="420" r="15" fill="#1A1A22"/>
+  <text x="518" y="426" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFFFFF">4</text>
+  <text x="558" y="414" font-size="15" fill="#32323C">verify signature</text>
+  <text x="558" y="436" font-size="15" fill="#32323C">(JWKS)</text>
+
+  <!-- 5 token exchange -> service token -->
+  <line x1="650" y1="588" x2="752" y2="588" stroke="#C86414" stroke-width="4" stroke-dasharray="5 5" marker-end="url(#aSv)"/>
+  <circle cx="700" cy="565" r="15" fill="#1A1A22"/>
+  <text x="700" y="571" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFFFFF">5</text>
+  <text x="700" y="660" text-anchor="middle" font-size="15" fill="#32323C">token exchange</text>
+  <text x="700" y="682" text-anchor="middle" font-size="15" fill="#32323C">service token</text>
+
+  <!-- 6 scoped service token -->
+  <line x1="930" y1="588" x2="982" y2="588" stroke="#C86414" stroke-width="4" stroke-dasharray="5 5" marker-end="url(#aSv)"/>
+  <circle cx="956" cy="565" r="15" fill="#1A1A22"/>
+  <text x="956" y="571" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFFFFF">6</text>
+  <text x="956" y="660" text-anchor="middle" font-size="15" fill="#32323C">scoped</text>
+  <text x="956" y="682" text-anchor="middle" font-size="15" fill="#32323C">service token</text>
+
+  <!-- legend -->
+  <rect x="740" y="150" width="420" height="190" rx="12" fill="#FFFFFF" stroke="#5A5A64" stroke-width="2.5"/>
+  <text x="765" y="190" font-size="17" font-weight="bold" fill="#28323C">Tokens</text>
+  <line x1="765" y1="225" x2="855" y2="225" stroke="#2850A0" stroke-width="4.5"/>
+  <text x="875" y="231" font-size="15" fill="#28323C">ID token (identity)</text>
+  <line x1="765" y1="268" x2="855" y2="268" stroke="#2D7332" stroke-width="4.5" stroke-dasharray="14 6"/>
+  <text x="875" y="274" font-size="15" fill="#28323C">access token (API scope)</text>
+  <line x1="765" y1="311" x2="855" y2="311" stroke="#C86414" stroke-width="4.5" stroke-dasharray="5 5"/>
+  <text x="875" y="317" font-size="15" fill="#28323C">service token (per-hop)</text>
+</svg>

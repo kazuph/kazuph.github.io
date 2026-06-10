@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Georgia, 'Times New Roman', serif">
+  <defs>
+    <radialGradient id="ball" cx="42%" cy="36%" r="72%">
+      <stop offset="0" stop-color="#DCE6F5"/>
+      <stop offset="0.7" stop-color="#B8CCE8"/>
+      <stop offset="1" stop-color="#94AED2"/>
+    </radialGradient>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#1A1A22"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#B43232"/>
+    </marker>
+    <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#2850A0"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#2D7332"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+  <text x="470" y="90" text-anchor="middle" font-size="34" font-weight="bold" font-family="Helvetica, Arial, sans-serif" fill="#28323C">Bloch sphere</text>
+
+  <!-- sphere centered at (470,490), R=270 -->
+  <circle cx="470" cy="490" r="270" fill="url(#ball)" stroke="#5A5A64" stroke-width="3"/>
+
+  <!-- equator: front solid, back dashed -->
+  <path d="M200 490 A 270 86 0 0 0 740 490" fill="none" stroke="#5A5A64" stroke-width="3"/>
+  <path d="M740 490 A 270 86 0 0 0 200 490" fill="none" stroke="#8C8C96" stroke-width="2.5" stroke-dasharray="10 8"/>
+  <!-- meridian -->
+  <path d="M470 220 A 76 270 0 0 0 470 760" fill="none" stroke="#B4B4BE" stroke-width="2" stroke-dasharray="10 8"/>
+
+  <!-- axes -->
+  <line x1="470" y1="490" x2="470" y2="110" stroke="#1A1A22" stroke-width="3.5" marker-end="url(#ak)"/>
+  <text x="488" y="125" font-size="28" font-style="italic">z</text>
+  <line x1="470" y1="490" x2="248" y2="655" stroke="#1A1A22" stroke-width="3.5" marker-end="url(#ak)"/>
+  <text x="218" y="685" font-size="28" font-style="italic">x</text>
+  <line x1="470" y1="490" x2="855" y2="490" stroke="#1A1A22" stroke-width="3.5" marker-end="url(#ak)"/>
+  <text x="872" y="500" font-size="28" font-style="italic">y</text>
+
+  <!-- basis labels -->
+  <text x="486" y="212" font-size="27">|0&#x27E9;</text>
+  <text x="486" y="792" font-size="27">|1&#x27E9;</text>
+
+  <!-- state vector -->
+  <line x1="470" y1="490" x2="625" y2="312" stroke="#B43232" stroke-width="5" marker-end="url(#ar)"/>
+  <circle cx="625" cy="312" r="6" fill="#B43232"/>
+  <text x="648" y="295" font-size="28" fill="#B43232">|&#x3C8;&#x27E9;</text>
+
+  <!-- projection dashes -->
+  <line x1="625" y1="312" x2="645" y2="537" stroke="#5A5A64" stroke-width="2.5" stroke-dasharray="9 7"/>
+  <line x1="470" y1="490" x2="645" y2="537" stroke="#5A5A64" stroke-width="2.5" stroke-dasharray="9 7"/>
+
+  <!-- theta arc from z-axis down to vector -->
+  <path d="M470 378 A 112 112 0 0 1 568 392" fill="none" stroke="#2850A0" stroke-width="3.5" marker-end="url(#ab)"/>
+  <text x="508" y="352" font-size="26" font-style="italic" fill="#2850A0">&#x3B8;</text>
+
+  <!-- phi arc along equator from x-axis to projection -->
+  <path d="M376 558 A 115 38 0 0 0 580 520" fill="none" stroke="#2D7332" stroke-width="3.5" marker-end="url(#ag)"/>
+  <text x="478" y="595" font-size="26" font-style="italic" fill="#2D7332">&#x3C6;</text>
+
+  <!-- state formula -->
+  <text x="830" y="240" font-size="26">|&#x3C8;&#x27E9; = cos(&#x3B8;/2) |0&#x27E9; + e</text>
+  <text x="1107" y="228" font-size="19">i&#x3C6;</text>
+  <text x="830" y="285" font-size="26" xml:space="preserve">        sin(&#x3B8;/2) |1&#x27E9;</text>
+
+  <!-- footnote -->
+  <text x="830" y="350" font-size="19" fill="#5A5A64" font-family="Helvetica, Arial, sans-serif">&#x3B8;: polar angle from z</text>
+  <text x="830" y="382" font-size="19" fill="#5A5A64" font-family="Helvetica, Arial, sans-serif">&#x3C6;: azimuth from x in xy-plane</text>
+</svg>

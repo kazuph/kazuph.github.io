@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#d62828"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#1d4ed8"/>
+    </marker>
+    <style>
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 30px; fill: #111827; text-anchor: middle; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 22px; fill: #374151; text-anchor: middle; }
+      .optic { fill: #f8fafc; stroke: #111827; stroke-width: 4; }
+      .beam { fill: none; stroke: #d62828; stroke-width: 7; stroke-linecap: round; marker-end: url(#arrow); }
+      .return { fill: none; stroke: #1d4ed8; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 14 12; marker-end: url(#arrowBlue); }
+      .stand { stroke: #6b7280; stroke-width: 5; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="900" fill="#ffffff"/>
+
+  <g id="laser">
+    <rect x="90" y="390" width="190" height="90" rx="10" class="optic"/>
+    <rect x="60" y="415" width="35" height="40" rx="5" fill="#e5e7eb" stroke="#111827" stroke-width="4"/>
+    <circle cx="280" cy="435" r="14" fill="#d62828" stroke="#111827" stroke-width="3"/>
+    <text x="185" y="545" class="label">Laser</text>
+  </g>
+
+  <g id="beam-splitter" transform="translate(600 450)">
+    <rect x="-70" y="-12" width="140" height="24" transform="rotate(-45)" fill="#dbeafe" stroke="#111827" stroke-width="4"/>
+    <line x1="-70" y1="70" x2="70" y2="-70" stroke="#60a5fa" stroke-width="3"/>
+    <circle cx="0" cy="0" r="8" fill="#111827"/>
+    <text x="0" y="125" class="label">Beam Splitter</text>
+  </g>
+
+  <g id="mirror-a">
+    <line x1="600" y1="175" x2="600" y2="255" stroke="#111827" stroke-width="8" stroke-linecap="round"/>
+    <line x1="555" y1="175" x2="645" y2="255" stroke="#9ca3af" stroke-width="4"/>
+    <line x1="645" y1="175" x2="555" y2="255" stroke="#9ca3af" stroke-width="4"/>
+    <line x1="600" y1="255" x2="600" y2="315" class="stand"/>
+    <text x="600" y="135" class="label">Mirror A</text>
+  </g>
+
+  <g id="mirror-b">
+    <line x1="845" y1="410" x2="925" y2="410" stroke="#111827" stroke-width="8" stroke-linecap="round"/>
+    <line x1="845" y1="365" x2="925" y2="455" stroke="#9ca3af" stroke-width="4"/>
+    <line x1="925" y1="365" x2="845" y2="455" stroke="#9ca3af" stroke-width="4"/>
+    <line x1="845" y1="410" x2="785" y2="410" class="stand"/>
+    <text x="885" y="340" class="label">Mirror B</text>
+  </g>
+
+  <g id="screen">
+    <rect x="540" y="705" width="120" height="22" rx="4" fill="#111827"/>
+    <rect x="555" y="725" width="90" height="95" rx="6" fill="#fef3c7" stroke="#111827" stroke-width="4"/>
+    <circle cx="600" cy="772" r="32" fill="none" stroke="#d62828" stroke-width="3"/>
+    <circle cx="600" cy="772" r="18" fill="none" stroke="#d62828" stroke-width="3"/>
+    <circle cx="600" cy="772" r="5" fill="#d62828"/>
+    <text x="600" y="865" class="label">Screen</text>
+  </g>
+
+  <line x1="294" y1="435" x2="570" y2="435" class="beam"/>
+  <line x1="600" y1="430" x2="600" y2="260" class="beam"/>
+  <line x1="620" y1="450" x2="835" y2="410" class="beam"/>
+
+  <line x1="600" y1="260" x2="600" y2="420" class="return"/>
+  <line x1="835" y1="410" x2="625" y2="448" class="return"/>
+
+  <line x1="600" y1="475" x2="600" y2="695" class="beam"/>
+
+  <text x="445" y="410" class="small">incoming beam</text>
+  <text x="635" y="335" class="small">arm A</text>
+  <text x="735" y="390" class="small">arm B</text>
+  <text x="635" y="610" class="small">combined beam</text>
+</svg>

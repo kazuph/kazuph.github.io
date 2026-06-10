@@ -1,0 +1,19 @@
+Transformer のアーキテクチャ図 を TikZ で描いてください。
+
+要件:
+- Transformer の encoder-decoder アーキテクチャ図を描く
+- Input Embedding, Positional Encoding, Multi-Head Attention, Feed Forward, Add & Norm, Linear, Softmax を入れる
+- Encoder スタックと Decoder スタックを左右に分けて配置する
+- 残差接続が Add & Norm に入る流れを矢印で分かるように描く
+- Decoder 側の Masked Multi-Head Attention と、Encoder から渡る Cross-Attention を区別する
+- 論文スタイルの読みやすいブロック図として整理する
+
+実装ルール:
+- standalone でそのまま xelatex できる完全な .tex ファイルにする
+- 余計なパッケージは使わず、tikz の基本図形で描く
+- 画像サイズは横長すぎず、1200x900 相当で見やすい構図にする
+
+出力ルール:
+- 説明は不要
+- Markdown の code fence も不要
+- .tex ファイル本体だけを出力する

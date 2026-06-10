@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <!-- room -->
+  <rect x="0" y="0" width="1200" height="640" fill="#DEECF2"/>
+  <rect x="0" y="640" width="1200" height="260" fill="#D8BA8E"/>
+  <g stroke="#C4A476" stroke-width="3">
+    <line x1="0" y1="900" x2="100" y2="640"/>
+    <line x1="200" y1="900" x2="300" y2="640"/>
+    <line x1="400" y1="900" x2="500" y2="640"/>
+    <line x1="600" y1="900" x2="700" y2="640"/>
+    <line x1="800" y1="900" x2="900" y2="640"/>
+    <line x1="1000" y1="900" x2="1100" y2="640"/>
+  </g>
+
+  <!-- bed on the left -->
+  <rect x="40" y="680" width="320" height="90" fill="#78A0C8"/>
+  <rect x="40" y="630" width="320" height="50" fill="#EBF2F8"/>
+  <rect x="28" y="590" width="26" height="200" fill="#54759A"/>
+  <rect x="356" y="610" width="26" height="160" fill="#54759A"/>
+  <ellipse cx="95" cy="640" rx="55" ry="28" fill="#FFFFFF" stroke="#54759A" stroke-width="3"/>
+
+  <!-- desk with monitor -->
+  <rect x="420" y="535" width="240" height="24" fill="#B08458"/>
+  <line x1="440" y1="559" x2="440" y2="660" stroke="#B08458" stroke-width="10"/>
+  <line x1="640" y1="559" x2="640" y2="660" stroke="#B08458" stroke-width="10"/>
+  <rect x="490" y="455" width="110" height="80" rx="6" fill="#3C3C46"/>
+  <rect x="500" y="465" width="90" height="60" fill="#A8C8E0"/>
+
+  <!-- wall shelf -->
+  <rect x="440" y="260" width="300" height="20" fill="#B08458"/>
+  <rect x="470" y="200" width="30" height="60" fill="#E67878"/>
+  <rect x="510" y="195" width="30" height="65" fill="#78A0C8"/>
+  <rect x="550" y="205" width="30" height="55" fill="#F09650"/>
+  <circle cx="660" cy="234" r="25" fill="#E67878"/>
+
+  <!-- poster -->
+  <rect x="140" y="140" width="160" height="200" fill="#FFFFFF" stroke="#78A0C8" stroke-width="5"/>
+  <circle cx="220" cy="210" r="40" fill="#E67878"/>
+  <line x1="170" y1="300" x2="270" y2="260" stroke="#78A0C8" stroke-width="5"/>
+
+  <!-- son playing VR -->
+  <!-- legs in motion -->
+  <polygon points="700,775 745,670 795,670 770,780" fill="#5A78AA"/>
+  <polygon points="860,750 805,670 855,655 905,720" fill="#5A78AA"/>
+  <rect x="675" y="768" width="60" height="27" rx="8" fill="#3C3C46"/>
+  <rect x="895" y="718" width="55" height="27" rx="8" fill="#3C3C46"/>
+  <!-- torso leaning -->
+  <polygon points="735,675 855,660 840,515 750,525" fill="#F09650"/>
+  <!-- left arm with controller -->
+  <polygon points="750,550 670,460 695,435 780,520" fill="#F09650"/>
+  <circle cx="678" cy="450" r="17" fill="#F8D8BA"/>
+  <rect x="650" y="415" width="35" height="25" rx="7" fill="#50505A"/>
+  <!-- right arm with controller -->
+  <polygon points="830,540 915,450 890,425 805,510" fill="#F09650"/>
+  <circle cx="905" cy="440" r="17" fill="#F8D8BA"/>
+  <rect x="895" y="405" width="35" height="25" rx="7" fill="#50505A"/>
+  <!-- head with VR goggles -->
+  <circle cx="795" cy="465" r="50" fill="#F8D8BA"/>
+  <path d="M745 455 A 55 55 0 0 1 850 445 L 838 472 A 42 42 0 0 0 757 480 Z" fill="#5A3E28"/>
+  <rect x="750" y="438" width="80" height="37" rx="10" fill="#3C3C46"/>
+  <path d="M828 445 a22 22 0 0 1 0 44" fill="none" stroke="#50505A" stroke-width="5"/>
+  <ellipse cx="798" cy="502" rx="12" ry="9" fill="#E67878"/>
+  <!-- motion marks -->
+  <line x1="645" y1="395" x2="670" y2="405" stroke="#50505A" stroke-width="4"/>
+  <line x1="955" y1="385" x2="930" y2="400" stroke="#50505A" stroke-width="4"/>
+  <line x1="805" y1="390" x2="800" y2="405" stroke="#50505A" stroke-width="4"/>
+
+  <!-- door frame with mother peeking -->
+  <rect x="1000" y="145" width="190" height="515" fill="#8C643E"/>
+  <rect x="1015" y="155" width="160" height="490" fill="#EFF5F8"/>
+  <polygon points="1015,645 1100,615 1100,185 1015,155" fill="#A87C50"/>
+  <circle cx="1080" cy="410" r="7" fill="#50505A"/>
+
+  <!-- mother -->
+  <polygon points="1100,630 1175,630 1175,400 1115,400" fill="#96B48C"/>
+  <circle cx="1130" cy="355" r="42" fill="#F8D8BA"/>
+  <path d="M1088 350 A 48 48 0 0 1 1178 338 L 1178 400 L 1162 400 L 1162 372 A 34 34 0 0 0 1098 380 Z" fill="#785032"/>
+  <rect x="1162" y="355" width="16" height="70" fill="#785032"/>
+  <circle cx="1112" cy="355" r="5" fill="#1A1410"/>
+  <path d="M1105 380 Q1117 388 1130 382" fill="none" stroke="#1A1410" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="1102" cy="510" r="14" fill="#F8D8BA"/>
+
+  <!-- gaze line from mother to son -->
+  <path d="M1105 360 Q960 380 860 440" fill="none" stroke="#8C8C8C" stroke-width="3" stroke-dasharray="10 8"/>
+  <polygon points="860,440 884,428 880,452" fill="#8C8C8C"/>
+</svg>

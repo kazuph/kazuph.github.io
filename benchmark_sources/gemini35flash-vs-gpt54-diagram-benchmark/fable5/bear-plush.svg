@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#FCF6EC"/>
+
+  <!-- legs -->
+  <ellipse cx="405" cy="710" rx="105" ry="85" fill="#CD965F" stroke="#AC7644" stroke-width="6"/>
+  <ellipse cx="795" cy="710" rx="105" ry="85" fill="#CD965F" stroke="#AC7644" stroke-width="6"/>
+  <ellipse cx="405" cy="720" rx="62" ry="48" fill="#EBBE96" stroke="#AC7644" stroke-width="4"/>
+  <ellipse cx="795" cy="720" rx="62" ry="48" fill="#EBBE96" stroke="#AC7644" stroke-width="4"/>
+  <circle cx="382" cy="700" r="9" fill="#AC7644"/>
+  <circle cx="405" cy="692" r="9" fill="#AC7644"/>
+  <circle cx="428" cy="700" r="9" fill="#AC7644"/>
+  <circle cx="772" cy="700" r="9" fill="#AC7644"/>
+  <circle cx="795" cy="692" r="9" fill="#AC7644"/>
+  <circle cx="818" cy="700" r="9" fill="#AC7644"/>
+
+  <!-- arms -->
+  <ellipse cx="340" cy="470" rx="72" ry="105" fill="#CD965F" stroke="#AC7644" stroke-width="6" transform="rotate(25 340 470)"/>
+  <ellipse cx="860" cy="470" rx="72" ry="105" fill="#CD965F" stroke="#AC7644" stroke-width="6" transform="rotate(-25 860 470)"/>
+
+  <!-- body -->
+  <ellipse cx="600" cy="540" rx="235" ry="205" fill="#CD965F" stroke="#AC7644" stroke-width="6"/>
+  <ellipse cx="600" cy="555" rx="155" ry="140" fill="#F0D6B2"/>
+
+  <!-- chest patch -->
+  <circle cx="600" cy="455" r="52" fill="#F4C478" stroke="#96643C" stroke-width="4"/>
+  <circle cx="600" cy="455" r="44" fill="none" stroke="#96643C" stroke-width="3" stroke-dasharray="8 8"/>
+  <path d="M600 462
+           C600 444, 582 444, 582 460
+           C582 474, 596 480, 600 488
+           C604 480, 618 474, 618 460
+           C618 444, 600 444, 600 462 Z"
+        fill="none" stroke="#96643C" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- ears -->
+  <circle cx="445" cy="175" r="78" fill="#CD965F" stroke="#AC7644" stroke-width="6"/>
+  <circle cx="755" cy="175" r="78" fill="#CD965F" stroke="#AC7644" stroke-width="6"/>
+  <circle cx="445" cy="175" r="42" fill="#EBBE96" stroke="#AC7644" stroke-width="4"/>
+  <circle cx="755" cy="175" r="42" fill="#EBBE96" stroke="#AC7644" stroke-width="4"/>
+
+  <!-- head -->
+  <circle cx="600" cy="310" r="200" fill="#CD965F" stroke="#AC7644" stroke-width="6"/>
+
+  <!-- muzzle -->
+  <ellipse cx="600" cy="375" rx="105" ry="78" fill="#F0D6B2" stroke="#AC7644" stroke-width="4"/>
+
+  <!-- eyes -->
+  <circle cx="522" cy="265" r="17" fill="#1A1410"/>
+  <circle cx="678" cy="265" r="17" fill="#1A1410"/>
+  <circle cx="528" cy="258" r="5.5" fill="#FFFFFF"/>
+  <circle cx="684" cy="258" r="5.5" fill="#FFFFFF"/>
+
+  <!-- cheeks -->
+  <ellipse cx="465" cy="335" rx="34" ry="22" fill="#EEA08C" opacity="0.55"/>
+  <ellipse cx="735" cy="335" rx="34" ry="22" fill="#EEA08C" opacity="0.55"/>
+
+  <!-- nose and mouth -->
+  <ellipse cx="600" cy="342" rx="26" ry="18" fill="#5C3E2C"/>
+  <path d="M600 360 L600 385" stroke="#5C3E2C" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M600 385 Q582 402 562 390" stroke="#5C3E2C" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M600 385 Q618 402 638 390" stroke="#5C3E2C" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+  <!-- head stitch -->
+  <path d="M600 110 L600 145" stroke="#96643C" stroke-width="4" stroke-linecap="round"/>
+  <path d="M588 127 L612 127" stroke="#96643C" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- belly stitch -->
+  <path d="M520 650 Q600 690 680 650" stroke="#96643C" stroke-width="3.5" stroke-dasharray="9 9" fill="none"/>
+</svg>

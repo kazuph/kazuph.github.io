@@ -1,0 +1,172 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{tikz}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
+
+% Background wall and floor
+\fill[orange!10] (0,0) rectangle (12,9);
+\fill[brown!18] (0,0) rectangle (12,2.3);
+\draw[brown!35,line width=1pt] (0,2.3) -- (12,2.3);
+
+% Warm light glow
+\fill[yellow!25,opacity=.45] (6,8.15) ellipse (2.2 and .9);
+\fill[yellow!18,opacity=.35] (6,7.5) ellipse (3.0 and 1.5);
+
+% Ceiling lamp
+\draw[gray!60,line width=1pt] (6,9) -- (6,8.35);
+\fill[yellow!45] (5.45,8.25) -- (6.55,8.25) -- (6.25,7.65) -- (5.75,7.65) -- cycle;
+\draw[brown!55,line width=1pt] (5.45,8.25) -- (6.55,8.25) -- (6.25,7.65) -- (5.75,7.65) -- cycle;
+
+% Window and curtains
+\fill[blue!10] (8.25,5.45) rectangle (11.25,7.75);
+\draw[white,line width=2pt] (9.75,5.45) -- (9.75,7.75);
+\draw[white,line width=2pt] (8.25,6.6) -- (11.25,6.6);
+\draw[brown!45,line width=1pt] (8.15,7.85) -- (11.35,7.85);
+\fill[red!35!brown!45] (7.8,5.2)
+  .. controls (8.25,5.8) and (8.1,6.9) .. (8.45,7.95)
+  -- (7.9,7.95)
+  .. controls (7.55,6.9) and (7.55,5.95) .. (7.8,5.2);
+\fill[red!35!brown!45] (11.7,5.2)
+  .. controls (11.25,5.8) and (11.4,6.9) .. (11.05,7.95)
+  -- (11.6,7.95)
+  .. controls (11.95,6.9) and (11.95,5.95) .. (11.7,5.2);
+
+% Rug
+\fill[red!20!orange!20] (3.0,1.05) ellipse (3.3 and .65);
+\draw[red!35!brown!35,line width=.7pt] (3.0,1.05) ellipse (3.3 and .65);
+
+% Television stand
+\fill[brown!45] (.75,2.35) rectangle (3.75,2.8);
+\draw[brown!65,line width=1pt] (.75,2.35) rectangle (3.75,2.8);
+\draw[brown!70,line width=1pt] (1.05,2.35) -- (1.05,2.0);
+\draw[brown!70,line width=1pt] (3.45,2.35) -- (3.45,2.0);
+
+% Television
+\fill[black!80] (.9,3.0) rectangle (3.6,4.75);
+\fill[blue!20!cyan!25] (1.1,3.2) rectangle (3.4,4.55);
+\draw[black,line width=1pt] (.9,3.0) rectangle (3.6,4.75);
+\fill[yellow!50,opacity=.65] (1.35,3.5) circle (.28);
+\draw[white,line width=.7pt] (1.8,4.2) -- (3.05,4.2);
+\draw[white,line width=.7pt] (1.8,3.9) -- (2.85,3.9);
+\draw[white,line width=.7pt] (1.8,3.6) -- (3.15,3.6);
+\draw[black,line width=1pt] (2.25,3.0) -- (2.25,2.8);
+\draw[black,line width=1pt] (1.75,2.8) -- (2.75,2.8);
+
+% Table
+\fill[brown!35] (4.0,1.9) ellipse (1.45 and .35);
+\draw[brown!60,line width=1pt] (4.0,1.9) ellipse (1.45 and .35);
+\draw[brown!65,line width=1pt] (3.25,1.75) -- (3.0,1.15);
+\draw[brown!65,line width=1pt] (4.75,1.75) -- (5.0,1.15);
+\draw[brown!65,line width=1pt] (3.65,1.65) -- (3.65,1.05);
+\draw[brown!65,line width=1pt] (4.35,1.65) -- (4.35,1.05);
+
+% Tea cup and small plate
+\fill[white] (4.35,2.05) ellipse (.28 and .12);
+\draw[brown!45,line width=.7pt] (4.1,2.05) -- (4.18,1.78) -- (4.52,1.78) -- (4.6,2.05);
+\draw[brown!45,line width=.7pt] (4.57,1.95) .. controls (4.9,1.95) and (4.9,1.78) .. (4.6,1.8);
+\draw[gray!55,line width=.7pt] (3.35,2.02) ellipse (.42 and .12);
+\fill[orange!55] (3.35,2.12) circle (.13);
+
+% Sofa
+\fill[red!35!orange!35] (5.9,2.15) rectangle (9.55,4.0);
+\fill[red!45!orange!40] (5.55,1.75) rectangle (9.9,2.9);
+\fill[red!30!orange!30] (5.35,2.0) rectangle (6.0,3.55);
+\fill[red!30!orange!30] (9.45,2.0) rectangle (10.1,3.55);
+\draw[brown!50,line width=1pt] (5.9,2.15) rectangle (9.55,4.0);
+\draw[brown!50,line width=1pt] (5.55,1.75) rectangle (9.9,2.9);
+\draw[brown!50,line width=1pt] (5.35,2.0) rectangle (6.0,3.55);
+\draw[brown!50,line width=1pt] (9.45,2.0) rectangle (10.1,3.55);
+\draw[brown!40,line width=.8pt] (7.75,1.85) -- (7.75,3.85);
+
+% Cushion and blanket
+\fill[yellow!45!orange!20] (8.55,2.75) rectangle (9.25,3.45);
+\draw[brown!40,line width=.7pt] (8.55,2.75) rectangle (9.25,3.45);
+\fill[green!25!blue!20] (6.2,1.85)
+  .. controls (6.75,2.15) and (7.25,2.0) .. (7.9,2.25)
+  -- (8.05,1.75) -- (6.2,1.75) -- cycle;
+\draw[green!35!black,line width=.6pt] (6.2,1.85)
+  .. controls (6.75,2.15) and (7.25,2.0) .. (7.9,2.25);
+
+% Elderly woman sitting alone
+% Body
+\fill[purple!35!red!25] (6.65,2.65)
+  .. controls (6.25,2.9) and (6.2,3.55) .. (6.5,4.05)
+  .. controls (6.85,4.35) and (7.55,4.25) .. (7.75,3.8)
+  .. controls (7.95,3.25) and (7.55,2.8) .. (6.65,2.65);
+\draw[purple!45!black,line width=.9pt] (6.65,2.65)
+  .. controls (6.25,2.9) and (6.2,3.55) .. (6.5,4.05)
+  .. controls (6.85,4.35) and (7.55,4.25) .. (7.75,3.8)
+  .. controls (7.95,3.25) and (7.55,2.8) .. (6.65,2.65);
+
+% Neck
+\fill[orange!30] (6.72,4.02) rectangle (7.05,4.35);
+
+% Head
+\fill[orange!25] (6.9,4.75) circle (.5);
+\draw[brown!55,line width=.8pt] (6.9,4.75) circle (.5);
+
+% Hair
+\fill[gray!55] (6.45,4.88)
+  .. controls (6.42,5.35) and (6.85,5.55) .. (7.2,5.2)
+  .. controls (7.45,4.95) and (7.38,4.55) .. (7.22,4.35)
+  .. controls (6.95,4.55) and (6.7,4.55) .. (6.45,4.88);
+\draw[gray!35!black,line width=.7pt] (6.45,4.88)
+  .. controls (6.42,5.35) and (6.85,5.55) .. (7.2,5.2)
+  .. controls (7.45,4.95) and (7.38,4.55) .. (7.22,4.35);
+
+% Face looking toward TV
+\fill[black] (6.55,4.82) circle (.035);
+\draw[brown!70,line width=.7pt] (6.45,4.65) .. controls (6.55,4.55) and (6.75,4.55) .. (6.85,4.65);
+\draw[black!60,line width=.7pt] (6.42,4.97) -- (6.55,4.98);
+\draw[black!65,line width=.7pt] (6.5,4.75) -- (6.35,4.72);
+
+% Glasses
+\draw[black!45,line width=.55pt] (6.47,4.83) circle (.09);
+\draw[black!45,line width=.55pt] (6.67,4.84) circle (.09);
+\draw[black!45,line width=.55pt] (6.56,4.84) -- (6.58,4.84);
+
+% Arms
+\draw[orange!35!brown,line width=3pt] (6.45,3.75) -- (6.05,3.25);
+\draw[orange!35!brown,line width=3pt] (7.55,3.7) -- (7.95,3.1);
+\fill[orange!30] (6.03,3.22) circle (.09);
+\fill[orange!30] (7.97,3.08) circle (.09);
+
+% Legs
+\draw[brown!55,line width=3pt] (6.75,2.72) -- (6.45,2.0);
+\draw[brown!55,line width=3pt] (7.35,2.72) -- (7.6,2.0);
+\fill[black!65] (6.28,1.95) ellipse (.22 and .08);
+\fill[black!65] (7.78,1.95) ellipse (.22 and .08);
+
+% Sight line to television
+\draw[blue!45!black,line width=.9pt,dashed,opacity=.75] (6.42,4.86) -- (3.35,4.05);
+\fill[blue!45!black,opacity=.75] (3.35,4.05) circle (.04);
+
+% Knitting basket / home detail
+\fill[brown!35] (10.35,1.65)
+  .. controls (10.25,2.1) and (10.55,2.4) .. (11.05,2.4)
+  .. controls (11.55,2.4) and (11.85,2.1) .. (11.75,1.65)
+  -- cycle;
+\draw[brown!65,line width=.8pt] (10.35,1.65)
+  .. controls (10.25,2.1) and (10.55,2.4) .. (11.05,2.4)
+  .. controls (11.55,2.4) and (11.85,2.1) .. (11.75,1.65)
+  -- cycle;
+\draw[brown!65,line width=.8pt] (10.55,2.35) .. controls (10.7,2.85) and (11.4,2.85) .. (11.55,2.35);
+\fill[red!45] (10.75,2.08) circle (.18);
+\fill[blue!45] (11.18,2.05) circle (.18);
+\draw[gray!60,line width=.7pt] (10.85,2.25) -- (10.65,2.75);
+\draw[gray!60,line width=.7pt] (11.18,2.2) -- (11.42,2.72);
+
+% Wall picture
+\fill[white!75] (4.35,5.85) rectangle (5.85,7.05);
+\draw[brown!55,line width=.9pt] (4.35,5.85) rectangle (5.85,7.05);
+\fill[green!35] (4.55,6.05) -- (5.05,6.65) -- (5.35,6.25) -- (5.7,6.85) -- (5.7,6.05) -- cycle;
+\fill[yellow!55] (4.75,6.72) circle (.15);
+
+% Warm floor shadows
+\fill[black!20,opacity=.15] (6.95,1.83) ellipse (1.25 and .22);
+\fill[black!20,opacity=.12] (2.25,1.95) ellipse (1.35 and .18);
+\fill[black!20,opacity=.12] (4.0,1.02) ellipse (1.35 and .18);
+
+\end{tikzpicture}
+\end{document}

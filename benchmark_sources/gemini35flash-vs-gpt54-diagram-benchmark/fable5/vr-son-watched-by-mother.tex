@@ -1,0 +1,102 @@
+\documentclass[tikz,border=12pt]{standalone}
+\begin{document}
+\begin{tikzpicture}[line cap=round,line join=round]
+  \definecolor{wall}{RGB}{222,236,242}
+  \definecolor{floor}{RGB}{216,186,142}
+  \definecolor{floorline}{RGB}{196,164,118}
+  \definecolor{doorcol}{RGB}{168,124,80}
+  \definecolor{doordark}{RGB}{140,100,62}
+  \definecolor{bed}{RGB}{120,160,200}
+  \definecolor{bedsheet}{RGB}{235,242,248}
+  \definecolor{desk}{RGB}{176,132,88}
+  \definecolor{shelf}{RGB}{176,132,88}
+  \definecolor{boyshirt}{RGB}{240,150,80}
+  \definecolor{boypants}{RGB}{90,120,170}
+  \definecolor{skin}{RGB}{248,216,186}
+  \definecolor{hairboy}{RGB}{90,62,40}
+  \definecolor{hairmom}{RGB}{120,80,50}
+  \definecolor{momdress}{RGB}{150,180,140}
+  \definecolor{vr}{RGB}{60,60,70}
+  \definecolor{ctrl}{RGB}{80,80,90}
+  \definecolor{toy}{RGB}{230,120,120}
+
+  % room
+  \fill[wall] (0,2.6) rectangle (12,9);
+  \fill[floor] (0,0) rectangle (12,2.6);
+  \foreach \x in {0,2,...,12} { \draw[floorline] (\x,0) -- (\x+1.0,2.6); }
+
+  % bed (left)
+  \fill[bed] (0.4,1.3) rectangle (3.6,2.2);
+  \fill[bedsheet] (0.4,2.2) rectangle (3.6,2.7);
+  \fill[bed!75!black] (0.3,1.1) rectangle (0.55,3.1);
+  \fill[bed!75!black] (3.55,1.1) rectangle (3.8,2.5);
+  \fill[white,draw=bed!70!black,semithick] (0.7,2.45) ellipse (0.55 and 0.28);
+
+  % desk with monitor (center-left back)
+  \fill[desk] (4.2,3.4) rectangle (6.6,3.65);
+  \draw[desk,very thick] (4.4,2.4) -- (4.4,3.4) (6.4,2.4) -- (6.4,3.4);
+  \fill[vr] (4.9,3.65) rectangle (6.0,4.45);
+  \fill[bed!50!white] (5.0,3.75) rectangle (5.9,4.35);
+  \fill[ctrl] (5.35,3.6) rectangle (5.55,3.68);
+
+  % wall shelf with books and toy
+  \fill[shelf] (4.4,6.2) rectangle (7.4,6.4);
+  \fill[toy] (4.7,6.4) rectangle (5.0,7.0);
+  \fill[bed] (5.1,6.4) rectangle (5.4,7.05);
+  \fill[boyshirt] (5.5,6.4) rectangle (5.8,6.95);
+  \fill[toy] (6.6,6.65) circle (0.25);
+  \fill[momdress] (6.45,6.4) rectangle (6.75,6.5);
+
+  % poster
+  \fill[white,draw=bed,thick] (1.4,5.6) rectangle (3.0,7.6);
+  \fill[toy] (2.2,6.9) circle (0.4);
+  \draw[bed,thick] (1.7,6.0) -- (2.7,6.4);
+
+  % son playing VR (center), body leaning, arms up with controllers
+  % legs in motion
+  \fill[boypants] (7.0,1.25) -- (7.45,2.3) -- (7.95,2.3) -- (7.7,1.2) -- cycle;
+  \fill[boypants] (8.6,1.5) -- (8.05,2.3) -- (8.55,2.45) -- (9.05,1.8) -- cycle;
+  \fill[vr] (6.75,1.05) rectangle (7.35,1.32);
+  \fill[vr] (8.95,1.55) rectangle (9.5,1.82);
+  % torso leaning forward
+  \fill[boyshirt] (7.35,2.25) -- (8.55,2.4) -- (8.4,3.85) -- (7.5,3.75) -- cycle;
+  % left arm raised with controller
+  \fill[boyshirt] (7.5,3.5) -- (6.7,4.4) -- (6.95,4.65) -- (7.8,3.8) -- cycle;
+  \fill[skin] (6.78,4.5) circle (0.17);
+  \fill[ctrl] (6.5,4.6) rectangle (6.85,4.85);
+  % right arm raised with controller
+  \fill[boyshirt] (8.3,3.6) -- (9.15,4.5) -- (8.9,4.75) -- (8.05,3.9) -- cycle;
+  \fill[skin] (9.05,4.6) circle (0.17);
+  \fill[ctrl] (8.95,4.7) rectangle (9.3,4.95);
+  % head with VR goggle
+  \fill[skin] (7.95,4.35) circle (0.5);
+  \fill[hairboy] (7.55,4.45) arc[start angle=160,end angle=20,radius=0.52] -- (8.35,4.55) arc[start angle=15,end angle=165,radius=0.42] -- cycle;
+  \fill[vr,rounded corners=3pt] (7.5,4.25) rectangle (8.3,4.62);
+  \draw[ctrl,very thick] (8.28,4.45) arc[start angle=60,end angle=-60,radius=0.22];
+  % open happy mouth
+  \fill[toy] (7.98,3.98) ellipse (0.12 and 0.09);
+  % motion marks
+  \draw[ctrl,semithick] (6.45,5.05) -- (6.7,4.95);
+  \draw[ctrl,semithick] (9.55,5.15) -- (9.3,5.0);
+  \draw[ctrl,semithick] (8.05,5.1) -- (8.0,4.95);
+
+  % door frame (right) with mother looking in
+  \fill[doordark] (10.0,2.45) rectangle (11.9,7.6);
+  \fill[wall!70!white] (10.15,2.55) rectangle (11.75,7.45);
+  \fill[doorcol] (10.15,2.55) -- (11.0,2.85) -- (11.0,7.15) -- (10.15,7.45) -- cycle;
+  \fill[ctrl] (10.8,4.9) circle (0.07);
+  % mother peeking from the door opening
+  \fill[momdress] (11.0,2.7) -- (11.75,2.7) -- (11.75,5.0) -- (11.15,5.0) -- cycle;
+  \fill[skin] (11.3,5.45) circle (0.42);
+  \fill[hairmom] (10.95,5.5) arc[start angle=180,end angle=20,radius=0.46] -- (11.7,5.3) -- (11.7,6.0) -- cycle;
+  \fill[hairmom] (11.62,4.85) rectangle (11.78,5.5);
+  % mother's eye looking left toward son
+  \fill[black] (11.12,5.45) circle (0.05);
+  \draw[black,semithick] (11.05,5.2) .. controls (11.15,5.12) .. (11.3,5.18);
+  % hand on door edge
+  \fill[skin] (11.02,3.9) circle (0.14);
+
+  % gaze line from mother to son
+  \draw[gray,dashed,->] (11.05,5.4) .. controls (9.8,5.3) .. (8.5,4.6);
+\end{tikzpicture}
+\end{document}

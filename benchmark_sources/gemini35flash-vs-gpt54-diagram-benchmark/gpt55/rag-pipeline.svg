@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">RAG Pipeline Architecture</title>
+  <desc id="desc">A modern RAG pipeline diagram showing offline document ingestion and online query processing flows.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7fafc"/>
+      <stop offset="55%" stop-color="#eef6f4"/>
+      <stop offset="100%" stop-color="#f8f3ee"/>
+    </linearGradient>
+
+    <linearGradient id="onlineGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e7f4ff"/>
+      <stop offset="100%" stop-color="#d9ecff"/>
+    </linearGradient>
+
+    <linearGradient id="offlineGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff4dc"/>
+      <stop offset="100%" stop-color="#ffe9bc"/>
+    </linearGradient>
+
+    <linearGradient id="dbGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e8fbef"/>
+      <stop offset="100%" stop-color="#c9f2d8"/>
+    </linearGradient>
+
+    <linearGradient id="llmGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f1e9ff"/>
+      <stop offset="100%" stop-color="#dfd0ff"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#18324a" flood-opacity="0.14"/>
+    </filter>
+
+    <marker id="arrowBlue" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 1 1 L 12 7 L 1 13 Z" fill="#2474a6"/>
+    </marker>
+
+    <marker id="arrowAmber" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 1 1 L 12 7 L 1 13 Z" fill="#b87918"/>
+    </marker>
+
+    <marker id="arrowGreen" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 1 1 L 12 7 L 1 13 Z" fill="#2d8a57"/>
+    </marker>
+
+    <style>
+      .title { font: 700 34px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #152737; letter-spacing: 0; }
+      .lane-title { font: 700 20px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #263747; letter-spacing: 0; }
+      .lane-note { font: 500 13px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #617080; letter-spacing: 0; }
+      .node-title { font: 700 18px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #142434; letter-spacing: 0; }
+      .node-sub { font: 500 12px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #536273; letter-spacing: 0; }
+      .small { font: 600 12px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #536273; letter-spacing: 0; }
+      .arrow-label { font: 650 12px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #36566f; letter-spacing: 0; }
+      .card { stroke: rgba(31, 54, 76, 0.14); stroke-width: 1.5; filter: url(#shadow); }
+      .soft-line { stroke: rgba(31, 54, 76, 0.16); stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#bg)"/>
+
+  <circle cx="1085" cy="120" r="90" fill="#ffffff" opacity="0.48"/>
+  <circle cx="145" cy="780" r="120" fill="#ffffff" opacity="0.42"/>
+
+  <text x="72" y="78" class="title">RAG Pipeline Architecture</text>
+  <text x="74" y="108" class="lane-note">Offline document ingestion builds searchable knowledge. Online retrieval augments generation with relevant context.</text>
+
+  <rect x="58" y="145" width="1084" height="270" rx="8" fill="#fffaf0" stroke="#ead4aa" stroke-width="1.5"/>
+  <text x="86" y="187" class="lane-title">Pre-indexing / Document Ingestion</text>
+  <text x="86" y="211" class="lane-note">Batch or streaming preparation before user requests</text>
+
+  <rect x="58" y="465" width="1084" height="350" rx="8" fill="#f2f8ff" stroke="#c8dcec" stroke-width="1.5"/>
+  <text x="86" y="507" class="lane-title">Online RAG Processing</text>
+  <text x="86" y="531" class="lane-note">Request-time retrieval, grounding, and answer generation</text>
+
+  <g transform="translate(102,250)">
+    <rect class="card" width="168" height="92" rx="8" fill="#ffffff"/>
+    <path d="M38 25h69l23 23v34H38z" fill="#fff7e6" stroke="#d39b35" stroke-width="2"/>
+    <path d="M107 25v24h23" fill="none" stroke="#d39b35" stroke-width="2"/>
+    <line x1="54" y1="56" x2="112" y2="56" stroke="#d39b35" stroke-width="2"/>
+    <line x1="54" y1="68" x2="100" y2="68" stroke="#d39b35" stroke-width="2"/>
+    <text x="84" y="122" text-anchor="middle" class="node-title">Documents</text>
+    <text x="84" y="143" text-anchor="middle" class="node-sub">PDFs, docs, web pages</text>
+  </g>
+
+  <g transform="translate(342,250)">
+    <rect class="card" width="168" height="92" rx="8" fill="url(#offlineGrad)"/>
+    <rect x="39" y="26" width="90" height="42" rx="6" fill="#ffffff" stroke="#c9871e" stroke-width="2"/>
+    <line x1="55" y1="42" x2="113" y2="42" stroke="#c9871e" stroke-width="2"/>
+    <line x1="55" y1="54" x2="96" y2="54" stroke="#c9871e" stroke-width="2"/>
+    <path d="M48 78h72" stroke="#c9871e" stroke-width="2" stroke-linecap="round"/>
+    <text x="84" y="122" text-anchor="middle" class="node-title">Chunk &amp; Clean</text>
+    <text x="84" y="143" text-anchor="middle" class="node-sub">split, normalize, enrich</text>
+  </g>
+
+  <g transform="translate(582,250)">
+    <rect class="card" width="168" height="92" rx="8" fill="url(#offlineGrad)"/>
+    <circle cx="57" cy="47" r="11" fill="#ffffff" stroke="#c9871e" stroke-width="2"/>
+    <circle cx="84" cy="33" r="11" fill="#ffffff" stroke="#c9871e" stroke-width="2"/>
+    <circle cx="111" cy="58" r="11" fill="#ffffff" stroke="#c9871e" stroke-width="2"/>
+    <path d="M67 43l7-4M92 41l11 10M68 52l33 6" stroke="#c9871e" stroke-width="2" stroke-linecap="round"/>
+    <text x="84" y="122" text-anchor="middle" class="node-title">Embed</text>
+    <text x="84" y="143" text-anchor="middle" class="node-sub">text to vectors</text>
+  </g>
+
+  <g transform="translate(858,235)">
+    <rect class="card" width="190" height="122" rx="8" fill="url(#dbGrad)"/>
+    <ellipse cx="95" cy="36" rx="55" ry="18" fill="#ffffff" stroke="#2f9360" stroke-width="2"/>
+    <path d="M40 36v48c0 10 25 18 55 18s55-8 55-18V36" fill="#ffffff" stroke="#2f9360" stroke-width="2"/>
+    <path d="M40 60c0 10 25 18 55 18s55-8 55-18" fill="none" stroke="#2f9360" stroke-width="2"/>
+    <text x="95" y="151" text-anchor="middle" class="node-title">Vector DB</text>
+    <text x="95" y="172" text-anchor="middle" class="node-sub">embeddings + metadata</text>
+  </g>
+
+  <path d="M270 296 H338" fill="none" stroke="#b87918" stroke-width="3" marker-end="url(#arrowAmber)"/>
+  <text x="304" y="282" text-anchor="middle" class="arrow-label">parse</text>
+
+  <path d="M510 296 H578" fill="none" stroke="#b87918" stroke-width="3" marker-end="url(#arrowAmber)"/>
+  <text x="544" y="282" text-anchor="middle" class="arrow-label">chunks</text>
+
+  <path d="M750 296 H852" fill="none" stroke="#b87918" stroke-width="3" marker-end="url(#arrowAmber)"/>
+  <text x="801" y="282" text-anchor="middle" class="arrow-label">upsert vectors</text>
+
+  <g transform="translate(98,592)">
+    <rect class="card" width="180" height="104" rx="8" fill="#ffffff"/>
+    <circle cx="56" cy="43" r="18" fill="#e7f4ff" stroke="#2474a6" stroke-width="2"/>
+    <path d="M44 72c5-13 19-20 31-14 8 4 13 10 17 20" fill="none" stroke="#2474a6" stroke-width="2.5" stroke-linecap="round"/>
+    <rect x="91" y="31" width="47" height="30" rx="15" fill="#e7f4ff" stroke="#2474a6" stroke-width="2"/>
+    <circle cx="109" cy="46" r="3" fill="#2474a6"/>
+    <circle cx="122" cy="46" r="3" fill="#2474a6"/>
+    <text x="90" y="134" text-anchor="middle" class="node-title">User Query</text>
+    <text x="90" y="155" text-anchor="middle" class="node-sub">natural-language request</text>
+  </g>
+
+  <g transform="translate(345,592)">
+    <rect class="card" width="190" height="104" rx="8" fill="url(#onlineGrad)"/>
+    <circle cx="63" cy="41" r="11" fill="#ffffff" stroke="#2474a6" stroke-width="2"/>
+    <circle cx="93" cy="31" r="11" fill="#ffffff" stroke="#2474a6" stroke-width="2"/>
+    <circle cx="120" cy="57" r="11" fill="#ffffff" stroke="#2474a6" stroke-width="2"/>
+    <path d="M73 38l10-4M101 39l11 11M74 48l35 7" stroke="#2474a6" stroke-width="2" stroke-linecap="round"/>
+    <path d="M53 75h84" stroke="#2474a6" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M128 67l10 8-10 8" fill="none" stroke="#2474a6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="95" y="134" text-anchor="middle" class="node-title">Embed/Retrieve</text>
+    <text x="95" y="155" text-anchor="middle" class="node-sub">query vector + top-k search</text>
+  </g>
+
+  <g transform="translate(610,592)">
+    <rect class="card" width="192" height="104" rx="8" fill="#ffffff"/>
+    <rect x="34" y="26" width="124" height="56" rx="6" fill="#f4fbf7" stroke="#2f9360" stroke-width="2"/>
+    <line x1="52" y1="43" x2="140" y2="43" stroke="#2f9360" stroke-width="2"/>
+    <line x1="52" y1="56" x2="124" y2="56" stroke="#2f9360" stroke-width="2"/>
+    <line x1="52" y1="69" x2="148" y2="69" stroke="#2f9360" stroke-width="2"/>
+    <text x="96" y="134" text-anchor="middle" class="node-title">Retrieved Context</text>
+    <text x="96" y="155" text-anchor="middle" class="node-sub">ranked passages + sources</text>
+  </g>
+
+  <g transform="translate(870,586)">
+    <rect class="card" width="168" height="116" rx="8" fill="url(#llmGrad)"/>
+    <rect x="42" y="31" width="84" height="56" rx="16" fill="#ffffff" stroke="#7254bd" stroke-width="2"/>
+    <circle cx="66" cy="58" r="5" fill="#7254bd"/>
+    <circle cx="102" cy="58" r="5" fill="#7254bd"/>
+    <path d="M75 74c7 5 14 5 21 0" fill="none" stroke="#7254bd" stroke-width="2" stroke-linecap="round"/>
+    <path d="M84 20v11M58 31l-9-9M110 31l9-9" stroke="#7254bd" stroke-width="2" stroke-linecap="round"/>
+    <text x="84" y="146" text-anchor="middle" class="node-title">LLM</text>
+    <text x="84" y="167" text-anchor="middle" class="node-sub">grounded generation</text>
+  </g>
+
+  <g transform="translate(928,742)">
+    <rect class="card" width="170" height="88" rx="8" fill="#ffffff"/>
+    <path d="M45 30h80v36H59L45 78V30z" fill="#f7f2ff" stroke="#7254bd" stroke-width="2" stroke-linejoin="round"/>
+    <line x1="61" y1="45" x2="109" y2="45" stroke="#7254bd" stroke-width="2"/>
+    <line x1="61" y1="57" x2="96" y2="57" stroke="#7254bd" stroke-width="2"/>
+    <text x="85" y="118" text-anchor="middle" class="node-title">Answer</text>
+    <text x="85" y="139" text-anchor="middle" class="node-sub">final response + citations</text>
+  </g>
+
+  <path d="M278 644 H339" fill="none" stroke="#2474a6" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="309" y="630" text-anchor="middle" class="arrow-label">embed</text>
+
+  <path d="M535 644 H604" fill="none" stroke="#2474a6" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="570" y="630" text-anchor="middle" class="arrow-label">top-k results</text>
+
+  <path d="M802 644 H864" fill="none" stroke="#2474a6" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="833" y="630" text-anchor="middle" class="arrow-label">augment prompt</text>
+
+  <path d="M954 702 V736" fill="none" stroke="#7254bd" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="982" y="724" class="arrow-label">generate</text>
+
+  <path d="M456 592 C456 496 730 489 918 361" fill="none" stroke="#2d8a57" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="640" y="494" class="arrow-label">similarity search</text>
+
+  <path d="M858 318 C680 422 628 497 628 592" fill="none" stroke="#2d8a57" stroke-width="3" stroke-dasharray="8 8" marker-end="url(#arrowGreen)"/>
+  <text x="718" y="426" class="arrow-label">retrieve passages</text>
+
+  <path d="M210 696 C270 785 730 790 928 790" fill="none" stroke="#2474a6" stroke-width="2.5" stroke-dasharray="7 9" marker-end="url(#arrowBlue)"/>
+  <text x="548" y="820" text-anchor="middle" class="arrow-label">answer returned to user</text>
+
+  <line x1="58" y1="440" x2="1142" y2="440" class="soft-line"/>
+  <rect x="88" y="424" width="142" height="32" rx="8" fill="#ffffff" stroke="#d5dee8"/>
+  <text x="159" y="445" text-anchor="middle" class="small">phase boundary</text>
+
+  <g transform="translate(86,842)">
+    <circle cx="8" cy="8" r="6" fill="#b87918"/>
+    <text x="24" y="13" class="small">offline ingestion flow</text>
+    <circle cx="184" cy="8" r="6" fill="#2474a6"/>
+    <text x="200" y="13" class="small">online request flow</text>
+    <circle cx="360" cy="8" r="6" fill="#2d8a57"/>
+    <text x="376" y="13" class="small">vector retrieval path</text>
+  </g>
+</svg>

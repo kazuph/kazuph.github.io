@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C1230"/>
+      <stop offset="0.6" stop-color="#1A224C"/>
+      <stop offset="1" stop-color="#2A3468"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FFB446" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#FFB446" stop-opacity="0"/>
+    </radialGradient>
+    <g id="ray1"><line x1="0" y1="-25" x2="0" y2="-170" stroke="#FF9650" stroke-width="4.5" stroke-linecap="round"/><circle cx="0" cy="-170" r="5.5" fill="#FF9650"/></g>
+    <g id="ray2"><line x1="0" y1="-20" x2="0" y2="-125" stroke="#78DCB4" stroke-width="4" stroke-linecap="round"/><circle cx="0" cy="-125" r="5" fill="#78DCB4"/></g>
+    <g id="ray3"><line x1="0" y1="-15" x2="0" y2="-85" stroke="#F082C8" stroke-width="3.5" stroke-linecap="round"/><circle cx="0" cy="-85" r="4" fill="#F082C8"/></g>
+    <g id="lant">
+      <circle cx="0" cy="0" r="30" fill="url(#glow)"/>
+      <ellipse cx="0" cy="0" rx="13" ry="17" fill="#FFB446"/>
+      <line x1="-9" y1="-15" x2="9" y2="-15" stroke="#7A4A14" stroke-width="3"/>
+    </g>
+  </defs>
+
+  <!-- night sky -->
+  <rect width="1200" height="720" fill="url(#sky)"/>
+
+  <!-- stars -->
+  <g fill="#FFFFFF">
+    <circle cx="70" cy="48" r="3"/><circle cx="180" cy="130" r="2.5"/>
+    <circle cx="310" cy="76" r="3"/><circle cx="440" cy="36" r="2.5"/>
+    <circle cx="620" cy="62" r="3"/><circle cx="750" cy="110" r="2.5"/>
+    <circle cx="910" cy="42" r="3"/><circle cx="1060" cy="90" r="2.5"/>
+    <circle cx="1140" cy="170" r="3"/><circle cx="240" cy="230" r="2.5"/>
+    <circle cx="1000" cy="215" r="2.5"/><circle cx="90" cy="290" r="2.5"/>
+  </g>
+
+  <!-- firework 1: large orange, center-left (360,240) -->
+  <g transform="translate(360 240)">
+    <use href="#ray1"/><use href="#ray1" transform="rotate(15)"/><use href="#ray1" transform="rotate(30)"/>
+    <use href="#ray1" transform="rotate(45)"/><use href="#ray1" transform="rotate(60)"/><use href="#ray1" transform="rotate(75)"/>
+    <use href="#ray1" transform="rotate(90)"/><use href="#ray1" transform="rotate(105)"/><use href="#ray1" transform="rotate(120)"/>
+    <use href="#ray1" transform="rotate(135)"/><use href="#ray1" transform="rotate(150)"/><use href="#ray1" transform="rotate(165)"/>
+    <use href="#ray1" transform="rotate(180)"/><use href="#ray1" transform="rotate(195)"/><use href="#ray1" transform="rotate(210)"/>
+    <use href="#ray1" transform="rotate(225)"/><use href="#ray1" transform="rotate(240)"/><use href="#ray1" transform="rotate(255)"/>
+    <use href="#ray1" transform="rotate(270)"/><use href="#ray1" transform="rotate(285)"/><use href="#ray1" transform="rotate(300)"/>
+    <use href="#ray1" transform="rotate(315)"/><use href="#ray1" transform="rotate(330)"/><use href="#ray1" transform="rotate(345)"/>
+    <circle r="12" fill="#FFFFFF"/>
+  </g>
+
+  <!-- firework 2: green, right (860,170) -->
+  <g transform="translate(860 170)">
+    <use href="#ray2"/><use href="#ray2" transform="rotate(20)"/><use href="#ray2" transform="rotate(40)"/>
+    <use href="#ray2" transform="rotate(60)"/><use href="#ray2" transform="rotate(80)"/><use href="#ray2" transform="rotate(100)"/>
+    <use href="#ray2" transform="rotate(120)"/><use href="#ray2" transform="rotate(140)"/><use href="#ray2" transform="rotate(160)"/>
+    <use href="#ray2" transform="rotate(180)"/><use href="#ray2" transform="rotate(200)"/><use href="#ray2" transform="rotate(220)"/>
+    <use href="#ray2" transform="rotate(240)"/><use href="#ray2" transform="rotate(260)"/><use href="#ray2" transform="rotate(280)"/>
+    <use href="#ray2" transform="rotate(300)"/><use href="#ray2" transform="rotate(320)"/><use href="#ray2" transform="rotate(340)"/>
+    <circle r="10" fill="#FFFFFF"/>
+  </g>
+
+  <!-- firework 3: pink, lower-middle (610,400) with rising trail -->
+  <path d="M635 720 Q625 560 610 415" fill="none" stroke="#F8B4DC" stroke-width="3" stroke-dasharray="4 8"/>
+  <g transform="translate(610 400)">
+    <use href="#ray3"/><use href="#ray3" transform="rotate(30)"/><use href="#ray3" transform="rotate(60)"/>
+    <use href="#ray3" transform="rotate(90)"/><use href="#ray3" transform="rotate(120)"/><use href="#ray3" transform="rotate(150)"/>
+    <use href="#ray3" transform="rotate(180)"/><use href="#ray3" transform="rotate(210)"/><use href="#ray3" transform="rotate(240)"/>
+    <use href="#ray3" transform="rotate(270)"/><use href="#ray3" transform="rotate(300)"/><use href="#ray3" transform="rotate(330)"/>
+    <circle r="8" fill="#FFFFFF"/>
+  </g>
+
+  <!-- ground -->
+  <rect x="0" y="720" width="1200" height="180" fill="#181422"/>
+  <!-- light pools on ground -->
+  <ellipse cx="185" cy="860" rx="130" ry="28" fill="#FFB446" opacity="0.08"/>
+  <ellipse cx="1015" cy="860" rx="130" ry="28" fill="#FFB446" opacity="0.08"/>
+  <ellipse cx="360" cy="845" rx="160" ry="35" fill="#FF9650" opacity="0.05"/>
+
+  <!-- stall A (left, red awning) -->
+  <polygon points="70,742 300,742 285,797 85,797" fill="#B44646"/>
+  <polygon points="95,747 119,747 115,775 99,775" fill="#FFFFFF" opacity="0.85"/>
+  <polygon points="145,747 169,747 165,775 149,775" fill="#FFFFFF" opacity="0.85"/>
+  <polygon points="195,747 219,747 215,775 199,775" fill="#FFFFFF" opacity="0.85"/>
+  <polygon points="245,747 269,747 265,775 249,775" fill="#FFFFFF" opacity="0.85"/>
+  <rect x="85" y="797" width="15" height="83" fill="#3C2020"/>
+  <rect x="270" y="797" width="15" height="83" fill="#3C2020"/>
+  <rect x="100" y="805" width="170" height="55" fill="#FFB446" opacity="0.28"/>
+  <use href="#lant" transform="translate(135 818)"/>
+  <use href="#lant" transform="translate(235 818)"/>
+
+  <!-- stall B (right, blue awning) -->
+  <polygon points="900,738 1140,738 1125,793 915,793" fill="#466EAA"/>
+  <polygon points="925,743 949,743 945,771 929,771" fill="#FFFFFF" opacity="0.85"/>
+  <polygon points="975,743 999,743 995,771 979,771" fill="#FFFFFF" opacity="0.85"/>
+  <polygon points="1025,743 1049,743 1045,771 1029,771" fill="#FFFFFF" opacity="0.85"/>
+  <polygon points="1075,743 1099,743 1095,771 1079,771" fill="#FFFFFF" opacity="0.85"/>
+  <rect x="915" y="793" width="15" height="87" fill="#20304A"/>
+  <rect x="1110" y="793" width="15" height="87" fill="#20304A"/>
+  <rect x="930" y="800" width="180" height="55" fill="#FFB446" opacity="0.28"/>
+  <use href="#lant" transform="translate(965 815)"/>
+  <use href="#lant" transform="translate(1065 815)"/>
+
+  <!-- lantern string between stalls -->
+  <path d="M300 748 Q600 690 900 745" fill="none" stroke="#50506A" stroke-width="3.5"/>
+  <g>
+    <line x1="390" y1="729" x2="390" y2="745" stroke="#50506A" stroke-width="3"/>
+    <use href="#lant" transform="translate(390 765) scale(0.85)"/>
+    <line x1="500" y1="714" x2="500" y2="730" stroke="#50506A" stroke-width="3"/>
+    <use href="#lant" transform="translate(500 750) scale(0.85)"/>
+    <line x1="610" y1="710" x2="610" y2="726" stroke="#50506A" stroke-width="3"/>
+    <use href="#lant" transform="translate(610 746) scale(0.85)"/>
+    <line x1="720" y1="714" x2="720" y2="730" stroke="#50506A" stroke-width="3"/>
+    <use href="#lant" transform="translate(720 750) scale(0.85)"/>
+    <line x1="810" y1="725" x2="810" y2="741" stroke="#50506A" stroke-width="3"/>
+    <use href="#lant" transform="translate(810 761) scale(0.85)"/>
+  </g>
+
+  <!-- crowd silhouettes -->
+  <g fill="#0C0A14">
+    <ellipse cx="350" cy="868" rx="20" ry="32"/><circle cx="350" cy="824" r="12"/>
+    <ellipse cx="410" cy="864" rx="22" ry="35"/><circle cx="410" cy="816" r="13"/>
+    <ellipse cx="475" cy="868" rx="19" ry="30"/><circle cx="475" cy="828" r="11"/>
+    <ellipse cx="545" cy="862" rx="23" ry="37"/><circle cx="545" cy="812" r="14"/>
+    <ellipse cx="668" cy="866" rx="20" ry="32"/><circle cx="668" cy="822" r="12"/>
+    <ellipse cx="740" cy="863" rx="22" ry="35"/><circle cx="740" cy="815" r="13"/>
+    <ellipse cx="805" cy="868" rx="19" ry="30"/><circle cx="805" cy="828" r="11"/>
+    <ellipse cx="862" cy="865" rx="21" ry="33"/><circle cx="862" cy="820" r="12"/>
+    <!-- child pointing at the sky -->
+    <ellipse cx="600" cy="872" rx="15" ry="24"/><circle cx="600" cy="838" r="10"/>
+    <path d="M607 845 L630 822" stroke="#0C0A14" stroke-width="7" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

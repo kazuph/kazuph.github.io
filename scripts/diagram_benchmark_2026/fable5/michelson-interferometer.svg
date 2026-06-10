@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aOut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#C82828"/>
+    </marker>
+    <marker id="aBack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#E08214"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+  <text x="560" y="80" text-anchor="middle" font-size="32" font-weight="bold" fill="#28323C">Michelson interferometer</text>
+
+  <!-- layout: BS at (560,440), Mirror A top (560,160), Mirror B right (1000,440), screen bottom (560,760), laser left (160,440) -->
+
+  <!-- laser -->
+  <rect x="60" y="405" width="190" height="70" rx="10" fill="#5A646E"/>
+  <rect x="250" y="425" width="26" height="30" fill="#3A4048"/>
+  <text x="155" y="510" text-anchor="middle" font-size="20" font-weight="bold" fill="#28323C">Laser</text>
+
+  <!-- beams: incident -->
+  <line x1="276" y1="440" x2="548" y2="440" stroke="#C82828" stroke-width="5" marker-end="url(#aOut)"/>
+  <text x="400" y="420" text-anchor="middle" font-size="17" fill="#C82828">incident beam</text>
+
+  <!-- arm 1: up to Mirror A and back -->
+  <line x1="560" y1="425" x2="560" y2="190" stroke="#C82828" stroke-width="5" marker-end="url(#aOut)"/>
+  <line x1="578" y1="190" x2="578" y2="430" stroke="#E08214" stroke-width="5" marker-end="url(#aBack)"/>
+  <text x="535" y="310" text-anchor="middle" font-size="17" fill="#C82828" transform="rotate(-90 535 310)">arm 1</text>
+  <text x="650" y="250" font-size="15" fill="#E08214">reflected</text>
+
+  <!-- arm 2: right to Mirror B and back -->
+  <line x1="575" y1="440" x2="985" y2="440" stroke="#C82828" stroke-width="5" marker-end="url(#aOut)"/>
+  <line x1="985" y1="458" x2="580" y2="458" stroke="#E08214" stroke-width="5" marker-end="url(#aBack)"/>
+  <text x="780" y="420" text-anchor="middle" font-size="17" fill="#C82828">arm 2</text>
+  <text x="800" y="492" font-size="15" fill="#E08214">reflected</text>
+
+  <!-- recombined down to screen -->
+  <line x1="560" y1="462" x2="560" y2="735" stroke="#E08214" stroke-width="5" marker-end="url(#aBack)"/>
+  <text x="585" y="610" font-size="17" fill="#E08214">recombined beams</text>
+
+  <!-- beam splitter (45 deg) drawn over beams -->
+  <polygon points="505,495 515,505 625,378 615,368" fill="#78AADC" fill-opacity="0.75" stroke="#3C6E9E" stroke-width="3"/>
+  <text x="630" y="520" font-size="20" font-weight="bold" fill="#28323C">Beam Splitter</text>
+
+  <!-- mirror A (top, horizontal) -->
+  <rect x="490" y="148" width="140" height="22" fill="#78AADC" stroke="#3C6E9E" stroke-width="3"/>
+  <g stroke="#3C6E9E" stroke-width="2.5">
+    <line x1="500" y1="148" x2="515" y2="128"/>
+    <line x1="530" y1="148" x2="545" y2="128"/>
+    <line x1="560" y1="148" x2="575" y2="128"/>
+    <line x1="590" y1="148" x2="605" y2="128"/>
+    <line x1="618" y1="148" x2="633" y2="128"/>
+  </g>
+  <text x="560" y="110" text-anchor="middle" font-size="20" font-weight="bold" fill="#28323C">Mirror A</text>
+
+  <!-- mirror B (right, vertical) -->
+  <rect x="1000" y="370" width="22" height="140" fill="#78AADC" stroke="#3C6E9E" stroke-width="3"/>
+  <g stroke="#3C6E9E" stroke-width="2.5">
+    <line x1="1022" y1="380" x2="1042" y2="395"/>
+    <line x1="1022" y1="410" x2="1042" y2="425"/>
+    <line x1="1022" y1="440" x2="1042" y2="455"/>
+    <line x1="1022" y1="470" x2="1042" y2="485"/>
+    <line x1="1022" y1="500" x2="1042" y2="515"/>
+  </g>
+  <text x="1010" y="345" text-anchor="middle" font-size="20" font-weight="bold" fill="#28323C">Mirror B</text>
+
+  <!-- screen -->
+  <rect x="485" y="740" width="150" height="24" rx="4" fill="#5A5A64"/>
+  <line x1="560" y1="764" x2="560" y2="800" stroke="#5A5A64" stroke-width="5"/>
+  <rect x="520" y="800" width="80" height="14" fill="#5A5A64"/>
+  <text x="560" y="850" text-anchor="middle" font-size="20" font-weight="bold" fill="#28323C">Screen (detector)</text>
+
+  <!-- fringes beside the screen -->
+  <g stroke="#C82828" stroke-width="4">
+    <line x1="665" y1="700" x2="775" y2="700"/>
+    <line x1="680" y1="678" x2="760" y2="678"/>
+    <line x1="695" y1="656" x2="745" y2="656"/>
+  </g>
+  <text x="720" y="630" text-anchor="middle" font-size="15" fill="#C82828">fringes</text>
+</svg>

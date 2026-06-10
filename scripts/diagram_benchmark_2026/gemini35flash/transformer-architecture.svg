@@ -1,0 +1,273 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+  <defs>
+    <!-- Modern drop shadow filter -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    
+    <!-- Marker definitions for arrows -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#0f172a"/>
+    </marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1200" height="900" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- ==================== TITLE & META CARD ==================== -->
+  <g transform="translate(0, 0)">
+    <text x="350" y="85" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="28" fill="#0f172a" font-weight="800">Transformer</text>
+    <text x="350" y="115" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#475569" font-weight="500">Encoder-Decoder Architecture</text>
+    
+    <!-- Paper Reference Card -->
+    <rect x="180" y="145" width="340" height="90" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+    <text x="200" y="170" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="bold">Paper Reference:</text>
+    <text x="200" y="188" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#0f172a" font-weight="600">Attention Is All You Need</text>
+    <text x="200" y="204" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#64748b">Vaswani et al. (2017)</text>
+    <text x="200" y="222" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#0284c7" font-weight="600">Key Features: Self-Attention &amp; Parallelization</text>
+  </g>
+
+  <!-- ==================== ENCODER STACK ==================== -->
+  <text x="350" y="275" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#0f172a" font-weight="bold">Encoder</text>
+  
+  <!-- Encoder Layer Container (N x) -->
+  <rect x="205" y="295" width="290" height="320" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <!-- N x Tag -->
+  <rect x="470" y="285" width="50" height="20" rx="10" fill="#475569" stroke="#1e293b" stroke-width="1"/>
+  <text x="495" y="295" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="bold">N ×</text>
+
+  <!-- Encoder Blocks -->
+  <!-- Add & Norm 2 (Top of Encoder stack) -->
+  <rect x="255" y="325" width="190" height="40" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="350" y="345" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#166534" font-weight="bold">Add &amp; Norm</text>
+
+  <!-- Feed Forward -->
+  <rect x="255" y="405" width="190" height="40" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="350" y="425" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#1e40af" font-weight="bold">Feed Forward</text>
+
+  <!-- Add & Norm 1 -->
+  <rect x="255" y="490" width="190" height="40" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="350" y="510" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#166534" font-weight="bold">Add &amp; Norm</text>
+
+  <!-- Multi-Head Attention -->
+  <rect x="255" y="575" width="190" height="50" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="350" y="594" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#9a3412" font-weight="bold">
+    <tspan x="350">Multi-Head</tspan>
+    <tspan x="350" dy="14">Attention</tspan>
+  </text>
+
+  <!-- ==================== DECODER STACK ==================== -->
+  <text x="850" y="125" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#0f172a" font-weight="bold">Decoder</text>
+
+  <!-- Decoder Layer Container (N x) -->
+  <rect x="705" y="145" width="290" height="470" rx="8" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <!-- N x Tag -->
+  <rect x="970" y="135" width="50" height="20" rx="10" fill="#475569" stroke="#1e293b" stroke-width="1"/>
+  <text x="995" y="145" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="bold">N ×</text>
+
+  <!-- Decoder Blocks -->
+  <!-- Add & Norm 3 (Top of Decoder stack) -->
+  <rect x="755" y="155" width="190" height="40" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="175" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#166534" font-weight="bold">Add &amp; Norm</text>
+
+  <!-- Feed Forward -->
+  <rect x="755" y="250" width="190" height="40" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="270" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#1e40af" font-weight="bold">Feed Forward</text>
+
+  <!-- Add & Norm 2 -->
+  <rect x="755" y="325" width="190" height="40" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="345" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#166534" font-weight="bold">Add &amp; Norm</text>
+
+  <!-- Multi-Head (Cross) Attention -->
+  <rect x="755" y="405" width="190" height="50" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="424" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#9a3412" font-weight="bold">
+    <tspan x="850">Multi-Head</tspan>
+    <tspan x="850" dy="14">Attention</tspan>
+  </text>
+  <!-- Cross-Attention Label -->
+  <rect x="635" y="418" width="110" height="24" rx="4" fill="#ffedd5" stroke="#f97316" stroke-width="1"/>
+  <text x="690" y="430" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">Cross-Attention</text>
+
+  <!-- Add & Norm 1 -->
+  <rect x="755" y="490" width="190" height="40" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="510" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#166534" font-weight="bold">Add &amp; Norm</text>
+
+  <!-- Masked Multi-Head Attention -->
+  <rect x="755" y="575" width="190" height="50" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="590" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#9a3412" font-weight="bold">
+    <tspan x="850">Masked</tspan>
+    <tspan x="850" dy="13">Multi-Head</tspan>
+    <tspan x="850" dy="13">Attention</tspan>
+  </text>
+
+  <!-- ==================== BASE LAYERS & EMBEDDINGS ==================== -->
+  <!-- Left Side (Encoder Base) -->
+  <!-- Input Embedding -->
+  <rect x="255" y="750" width="190" height="40" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="350" y="770" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#334155" font-weight="bold">Input Embedding</text>
+
+  <!-- Positional Encoding Left -->
+  <rect x="140" y="690" width="120" height="40" rx="6" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5" filter="url(#shadow)"/>
+  <path d="M 152 710 C 158 695, 162 695, 168 710 C 174 725, 178 725, 184 710" fill="none" stroke="#a855f7" stroke-width="2"/>
+  <text x="222" y="704" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#6b21a8" font-weight="bold">
+    <tspan x="222">Positional</tspan>
+    <tspan x="222" dy="13">Encoding</tspan>
+  </text>
+
+  <!-- Sum Circle Left -->
+  <circle cx="350" cy="710" r="15" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+  <path d="M 343 710 L 357 710 M 350 703 L 350 717" stroke="#0f172a" stroke-width="2"/>
+
+  <!-- Right Side (Decoder Base) -->
+  <!-- Output Embedding -->
+  <rect x="755" y="750" width="190" height="40" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="770" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#334155" font-weight="bold">Output Embedding</text>
+
+  <!-- Positional Encoding Right -->
+  <rect x="940" y="690" width="120" height="40" rx="6" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5" filter="url(#shadow)"/>
+  <path d="M 952 710 C 958 695, 962 695, 968 710 C 974 725, 978 725, 984 710" fill="none" stroke="#a855f7" stroke-width="2"/>
+  <text x="1022" y="704" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#6b21a8" font-weight="bold">
+    <tspan x="1022">Positional</tspan>
+    <tspan x="1022" dy="13">Encoding</tspan>
+  </text>
+
+  <!-- Sum Circle Right -->
+  <circle cx="850" cy="710" r="15" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+  <path d="M 843 710 L 857 710 M 850 703 L 850 717" stroke="#0f172a" stroke-width="2"/>
+
+
+  <!-- ==================== TOP OUTPUT LAYERS ==================== -->
+  <!-- Linear -->
+  <rect x="755" y="90" width="190" height="40" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="110" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#334155" font-weight="bold">Linear</text>
+
+  <!-- Softmax -->
+  <rect x="755" y="30" width="190" height="40" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="850" y="50" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#334155" font-weight="bold">Softmax</text>
+
+
+  <!-- ==================== CONNECTIONS & FLOWS ==================== -->
+  <!-- Encoder Main Flow -->
+  <path d="M 350 820 L 350 790" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 350 750 L 350 725" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 260 710 L 335 710" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 350 695 L 350 625" fill="none" stroke="#0f172a" stroke-width="2"/>
+  <!-- Split into Q, K, V for Self-Attention -->
+  <path d="M 350 635 L 320 635 L 320 625" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 350 635 L 350 625" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 350 635 L 380 635 L 380 625" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="312" y="643" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">V</text>
+  <text x="345" y="643" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">K</text>
+  <text x="385" y="643" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">Q</text>
+
+  <path d="M 350 575 L 350 530" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 350 490 L 350 445" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 350 405 L 350 365" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Decoder Main Flow -->
+  <path d="M 850 820 L 850 790" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 850 750 L 850 725" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 940 710 L 865 710" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 850 695 L 850 625" fill="none" stroke="#0f172a" stroke-width="2"/>
+  <!-- Split into Q, K, V for Masked Self-Attention -->
+  <path d="M 850 635 L 820 635 L 820 625" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 850 635 L 850 625" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 850 635 L 880 635 L 880 625" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="812" y="643" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">V</text>
+  <text x="845" y="643" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">K</text>
+  <text x="885" y="643" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">Q</text>
+
+  <path d="M 850 575 L 850 530" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Cross-Attention Inputs (Q from Decoder, K, V from Encoder) -->
+  <!-- Q-path from Add & Norm 1 output -->
+  <path d="M 850 490 L 850 475 L 880 475 L 880 455" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="885" y="470" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">Q</text>
+
+  <!-- Encoder to Decoder connection (K, V) -->
+  <path d="M 350 325 L 350 280 L 620 280 L 620 475" fill="none" stroke="#334155" stroke-width="2"/>
+  <path d="M 620 475 L 820 475 L 820 455" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 620 475 L 850 475 L 850 455" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+  <circle cx="620" cy="475" r="3" fill="#334155"/>
+  <text x="812" y="470" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">V</text>
+  <text x="843" y="470" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9a3412" font-weight="bold">K</text>
+
+  <path d="M 850 405 L 850 365" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 850 325 L 850 290" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 850 250 L 850 195" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Top layers flows -->
+  <path d="M 850 155 L 850 130" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 850 90 L 850 70" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 850 30 L 850 15" fill="none" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+
+
+  <!-- ==================== RESIDUAL CONNECTIONS ==================== -->
+  <!-- Encoder Residual 1 (around Multi-Head Attention) -->
+  <path d="M 350 650 L 225 650 L 225 510 L 255 510" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-gray)"/>
+  <circle cx="350" cy="650" r="3" fill="#64748b"/>
+
+  <!-- Encoder Residual 2 (around Feed Forward) -->
+  <path d="M 350 465 L 225 465 L 225 345 L 255 345" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-gray)"/>
+  <circle cx="350" cy="465" r="3" fill="#64748b"/>
+
+  <!-- Decoder Residual 1 (around Masked Attention) -->
+  <path d="M 850 650 L 975 650 L 975 510 L 945 510" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-gray)"/>
+  <circle cx="850" cy="650" r="3" fill="#64748b"/>
+
+  <!-- Decoder Residual 2 (around Cross-Attention) -->
+  <path d="M 850 480 L 975 480 L 975 345 L 945 345" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-gray)"/>
+  <circle cx="850" cy="480" r="3" fill="#64748b"/>
+
+  <!-- Decoder Residual 3 (around Feed Forward) -->
+  <path d="M 850 310 L 975 310 L 975 175 L 945 175" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-gray)"/>
+  <circle cx="850" cy="310" r="3" fill="#64748b"/>
+
+
+  <!-- ==================== LEGEND CARD ==================== -->
+  <g transform="translate(490, 610)">
+    <rect x="0" y="0" width="220" height="145" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+    <text x="110" y="20" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="bold">LEGEND</text>
+    
+    <!-- Item 1: Attention -->
+    <rect x="15" y="32" width="20" height="12" rx="3" fill="#fff7ed" stroke="#f97316" stroke-width="1"/>
+    <text x="45" y="38" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#334155" dominant-baseline="central">Attention Blocks</text>
+
+    <!-- Item 2: Feed Forward -->
+    <rect x="15" y="52" width="20" height="12" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+    <text x="45" y="58" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#334155" dominant-baseline="central">Feed Forward</text>
+
+    <!-- Item 3: Add & Norm -->
+    <rect x="15" y="72" width="20" height="12" rx="3" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+    <text x="45" y="78" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#334155" dominant-baseline="central">Add &amp; Norm</text>
+
+    <!-- Item 4: Embeddings / Linear -->
+    <rect x="15" y="92" width="20" height="12" rx="3" fill="#f8fafc" stroke="#64748b" stroke-width="1"/>
+    <text x="45" y="98" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#334155" dominant-baseline="central">Embeddings / Projections</text>
+
+    <!-- Item 5: Residual Connection -->
+    <line x1="15" y1="120" x2="35" y2="120" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="45" y="120" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#334155" dominant-baseline="central">Residual Connection</text>
+  </g>
+
+
+  <!-- ==================== LABELS (INPUTS & OUTPUTS) ==================== -->
+  <!-- Inputs Label -->
+  <text x="350" y="850" text-anchor="middle" font-family="Inter, system-ui, sans-serif">
+    <tspan font-size="14" font-weight="bold" fill="#0f172a">Inputs</tspan>
+    <tspan x="350" dy="18" font-size="11" fill="#64748b">(e.g., French Sentence)</tspan>
+  </text>
+
+  <!-- Outputs Label -->
+  <text x="850" y="850" text-anchor="middle" font-family="Inter, system-ui, sans-serif">
+    <tspan font-size="14" font-weight="bold" fill="#0f172a">Outputs</tspan>
+    <tspan x="850" dy="18" font-size="11" fill="#64748b">(shifted right; e.g., English Sentence)</tspan>
+  </text>
+
+  <!-- Output Probabilities Label -->
+  <text x="850" y="18" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Output Probabilities</text>
+
+</svg>

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#4A78A8"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#4E8C5C"/>
+    </marker>
+    <marker id="arrO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#B06E32"/>
+    </marker>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#8C5AA0"/>
+    </marker>
+    <marker id="arrD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#6E6E78"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+  <text x="600" y="62" text-anchor="middle" font-size="30" font-weight="bold" fill="#28323C">RAG pipeline</text>
+
+  <!-- offline lane -->
+  <rect x="40" y="100" width="1120" height="230" rx="16" fill="#F2F2F4"/>
+  <text x="64" y="134" font-size="18" font-weight="bold" fill="#6E6E78">Offline: document ingestion (run beforehand)</text>
+
+  <!-- online lane -->
+  <rect x="40" y="370" width="1120" height="470" rx="16" fill="#EBF2F8"/>
+  <text x="64" y="404" font-size="18" font-weight="bold" fill="#4A78A8">Online: query-time pipeline</text>
+
+  <!-- offline row -->
+  <rect x="80" y="180" width="220" height="105" rx="12" fill="#E8E8EC" stroke="#6E6E78" stroke-width="3"/>
+  <text x="190" y="222" text-anchor="middle" font-size="19" font-weight="bold">Documents</text>
+  <text x="190" y="252" text-anchor="middle" font-size="14" fill="#46464E">PDF / wiki / code</text>
+
+  <rect x="420" y="180" width="230" height="105" rx="12" fill="#DCEDE0" stroke="#4E8C5C" stroke-width="3"/>
+  <text x="535" y="222" text-anchor="middle" font-size="19" font-weight="bold">Chunk + Embed</text>
+  <text x="535" y="252" text-anchor="middle" font-size="14" fill="#46464E">split, vectorize</text>
+
+  <!-- vector DB cylinder -->
+  <g>
+    <path d="M790 175 L790 270 A 105 22 0 0 0 1000 270 L1000 175" fill="#F5E3D0" stroke="#B06E32" stroke-width="3"/>
+    <ellipse cx="895" cy="175" rx="105" ry="22" fill="#F5E3D0" stroke="#B06E32" stroke-width="3"/>
+    <text x="895" y="235" text-anchor="middle" font-size="19" font-weight="bold">Vector DB</text>
+    <text x="895" y="263" text-anchor="middle" font-size="14" fill="#46464E">embeddings + metadata</text>
+  </g>
+
+  <line x1="300" y1="232" x2="412" y2="232" stroke="#6E6E78" stroke-width="4" marker-end="url(#arrD)"/>
+  <text x="356" y="215" text-anchor="middle" font-size="14" fill="#5A5A64">raw text</text>
+  <line x1="650" y1="232" x2="782" y2="232" stroke="#4E8C5C" stroke-width="4" marker-end="url(#arrG)"/>
+  <text x="716" y="215" text-anchor="middle" font-size="14" fill="#5A5A64">vectors</text>
+
+  <!-- online row A -->
+  <rect x="80" y="450" width="220" height="105" rx="12" fill="#D9E5F1" stroke="#4A78A8" stroke-width="3"/>
+  <text x="190" y="492" text-anchor="middle" font-size="19" font-weight="bold">User Query</text>
+  <text x="190" y="522" text-anchor="middle" font-size="14" fill="#46464E">natural language</text>
+
+  <rect x="420" y="450" width="240" height="105" rx="12" fill="#DCEDE0" stroke="#4E8C5C" stroke-width="3"/>
+  <text x="540" y="492" text-anchor="middle" font-size="19" font-weight="bold">Embed + Retrieve</text>
+  <text x="540" y="522" text-anchor="middle" font-size="14" fill="#46464E">top-k similarity search</text>
+
+  <rect x="780" y="450" width="240" height="105" rx="12" fill="#F5E3D0" stroke="#B06E32" stroke-width="3"/>
+  <text x="900" y="492" text-anchor="middle" font-size="19" font-weight="bold">Retrieved Context</text>
+  <text x="900" y="522" text-anchor="middle" font-size="14" fill="#46464E">k passages</text>
+
+  <line x1="300" y1="502" x2="412" y2="502" stroke="#4A78A8" stroke-width="4" marker-end="url(#arrB)"/>
+  <text x="356" y="485" text-anchor="middle" font-size="14" fill="#5A5A64">query</text>
+  <line x1="660" y1="502" x2="772" y2="502" stroke="#4E8C5C" stroke-width="4" marker-end="url(#arrG)"/>
+  <text x="716" y="485" text-anchor="middle" font-size="14" fill="#5A5A64">passages</text>
+
+  <!-- similarity search cross-lane -->
+  <line x1="540" y1="450" x2="860" y2="298" stroke="#B06E32" stroke-width="3.5" stroke-dasharray="10 7" marker-end="url(#arrO)" marker-start="url(#arrO)"/>
+  <text x="660" y="360" font-size="14" fill="#5A5A64">similarity search</text>
+
+  <!-- online row B -->
+  <rect x="780" y="660" width="240" height="105" rx="12" fill="#EADDF0" stroke="#8C5AA0" stroke-width="3"/>
+  <text x="900" y="702" text-anchor="middle" font-size="19" font-weight="bold">LLM</text>
+  <text x="900" y="732" text-anchor="middle" font-size="14" fill="#46464E">generate with context</text>
+
+  <rect x="80" y="660" width="220" height="105" rx="12" fill="#D9E5F1" stroke="#4A78A8" stroke-width="3"/>
+  <text x="190" y="702" text-anchor="middle" font-size="19" font-weight="bold">Answer</text>
+  <text x="190" y="732" text-anchor="middle" font-size="14" fill="#46464E">grounded response</text>
+
+  <!-- context into LLM -->
+  <line x1="900" y1="555" x2="900" y2="652" stroke="#B06E32" stroke-width="4" marker-end="url(#arrO)"/>
+  <text x="915" y="610" font-size="14" fill="#5A5A64">context</text>
+
+  <!-- original question into LLM -->
+  <polyline points="190,555 190,612 660,612" fill="none" stroke="#4A78A8" stroke-width="4"/>
+  <polyline points="660,612 720,612 766,672" fill="none" stroke="#4A78A8" stroke-width="4" marker-end="url(#arrB)"/>
+  <text x="370" y="598" font-size="14" fill="#5A5A64">original question</text>
+
+  <!-- response to answer -->
+  <line x1="772" y1="712" x2="310" y2="712" stroke="#8C5AA0" stroke-width="4" marker-end="url(#arrP)"/>
+  <text x="540" y="695" text-anchor="middle" font-size="14" fill="#5A5A64">response</text>
+</svg>
