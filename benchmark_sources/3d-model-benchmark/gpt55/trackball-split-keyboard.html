@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Split Trackball Keyboard</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #05070a;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .hud {
+      position: fixed;
+      left: 18px;
+      top: 16px;
+      color: rgba(228, 247, 255, 0.92);
+      pointer-events: none;
+      text-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+      letter-spacing: 0;
+    }
+
+    .hud h1 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .hud p {
+      margin: 0;
+      color: rgba(160, 196, 210, 0.78);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .scanline {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 100% 3px;
+      mix-blend-mode: screen;
+      opacity: 0.25;
+    }
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <h1>NEBULA / TB-42 SPLIT ERGO CONSOLE</h1>
+    <p>drag: orbit · wheel: zoom · code-built geometry only</p>
+  </div>
+  <div class="scanline"></div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x05070a, 0.022);
+
+    const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, 0.1, 160);
+    camera.position.set(8.8, 6.4, 10.8);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.minDistance = 5;
+    controls.maxDistance = 24;
+    controls.target.set(0, 0.45, 0);
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    const matCase = new THREE.MeshStandardMaterial({
+      color: 0x141923,
+      roughness: 0.58,
+      metalness: 0.48
+    });
+    const matCaseEdge = new THREE.MeshStandardMaterial({
+      color: 0x263144,
+      roughness: 0.35,
+      metalness: 0.65
+    });
+    const matPlate = new THREE.MeshStandardMaterial({
+      color: 0x0c1119,
+      roughness: 0.24,
+      metalness: 0.72
+    });
+    const matKey = new THREE.MeshStandardMaterial({
+      color: 0x202735,
+      roughness: 0.62,
+      metalness: 0.18
+    });
+    const matKeyDark = new THREE.MeshStandardMaterial({
+      color: 0x121722,
+      roughness: 0.7,
+      metalness: 0.12
+    });
+    const matLegend = new THREE.MeshBasicMaterial({ color: 0x9eeeff });
+    const matGlow = new THREE.MeshStandardMaterial({
+      color: 0x00d9ff,
+      emissive: 0x00a8d6,
+      emissiveIntensity: 1.4,
+      roughness: 0.25,
+      metalness: 0.2
+    });
+    const matHot = new THREE.MeshStandardMaterial({
+      color: 0xff4d9d,
+      emissive: 0xff1f83,
+      emissiveIntensity: 1.7,
+      roughness: 0.35,
+      metalness: 0.1
+    });
+    const matBall = new THREE.MeshPhysicalMaterial({
+      color: 0x10131c,
+      roughness: 0.18,
+      metalness: 0.15,
+      clearcoat: 1,
+      clearcoatRoughness: 0.12,
+      transmission: 0,
+      sheen: 0.6,
+      emissive: 0x07151c,
+      emissiveIntensity: 0.35
+    });
+
+    function roundedBox(w, h, d, r, s) {
+      const shape = new THREE.Shape();
+      const x = -w / 2;
+      const y = -d / 2;
+      shape.moveTo(x + r, y);
+      shape.lineTo(x + w - r, y);
+      shape.quadraticCurveTo(x + w, y, x + w, y + r);
+      shape.lineTo(x + w, y + d - r);
+      shape.quadraticCurveTo(x + w, y + d, x + w - r, y + d);
+      shape.lineTo(x + r, y + d);
+      shape.quadraticCurveTo(x, y + d, x, y + d - r);
+      shape.lineTo(x, y + r);
+      shape.quadraticCurveTo(x, y, x + r, y);
+
+      const geo = new THREE.ExtrudeGeometry(shape, {
+        depth: h,
+        bevelEnabled: true,
+        bevelSegments: s,
+        bevelSize: r * 0.28,
+        bevelThickness: r * 0.22
+      });
+      geo.rotateX(Math.PI / 2);
+      geo.translate(0, h / 2, 0);
+      return geo;
+    }
+
+    function makeTextSprite(text, color = "#bdf7ff") {
+      const canvas = document.createElement("canvas");
+      canvas.width = 256;
+      canvas.height = 128;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "700 42px Menlo, Monaco, monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 14;
+      ctx.fillText(text, 128, 64);
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+      const spr = new THREE.Sprite(mat);
+      spr.scale.set(0.62, 0.31, 1);
+      return spr;
+    }
+
+    function keycap(label, x, z, rowTilt = 0, special = false) {
+      const group = new THREE.Group();
+      const base = new THREE.Mesh(
+        roundedBox(special ? 0.84 : 0.72, 0.22, 0.72, 0.09, 5),
+        special ? matKeyDark : matKey
+      );
+      base.castShadow = true;
+      base.receiveShadow = true;
+      base.rotation.x = rowTilt;
+      group.add(base);
+
+      const top = new THREE.Mesh(
+        roundedBox(special ? 0.68 : 0.56, 0.035, 0.52, 0.06, 4),
+        new THREE.MeshStandardMaterial({
+          color: special ? 0x18202d : 0x2b3445,
+          roughness: 0.52,
+          metalness: 0.1
+        })
+      );
+      top.position.y = 0.22;
+      top.castShadow = true;
+      group.add(top);
+
+      const legend = makeTextSprite(label, special ? "#ff7fbd" : "#bdf7ff");
+      legend.position.set(0, 0.285, 0.02);
+      legend.rotation.x = -Math.PI / 2;
+      group.add(legend);
+
+      group.position.set(x, 0.32, z);
+      return group;
+    }
+
+    function makeHalf(side = 1) {
+      const half = new THREE.Group();
+      half.position.x = side * 2.4;
+      half.rotation.z = side * -0.13;
+      half.rotation.y = side * -0.17;
+
+      const caseMesh = new THREE.Mesh(roundedBox(4.85, 0.34, 5.15, 0.42, 10), matCase);
+      caseMesh.receiveShadow = true;
+      caseMesh.castShadow = true;
+      caseMesh.position.y = 0;
+      half.add(caseMesh);
+
+      const plate = new THREE.Mesh(roundedBox(4.35, 0.08, 4.6, 0.28, 7), matPlate);
+      plate.position.y = 0.32;
+      plate.receiveShadow = true;
+      plate.castShadow = true;
+      half.add(plate);
+
+      const rim = new THREE.Mesh(roundedBox(4.95, 0.08, 5.25, 0.44, 10), matCaseEdge);
+      rim.position.y = -0.04;
+      rim.receiveShadow = true;
+      rim.castShadow = true;
+      half.add(rim);
+
+      const cols = 5;
+      const rows = 4;
+      const labels = side === -1
+        ? [["ESC","Q","W","E","R"],["TAB","A","S","D","F"],["CTL","Z","X","C","V"],["⌘","ALT","LOW","SPC","FN"]]
+        : [["Y","U","I","O","P"],["H","J","K","L",";"],["B","N","M",",","/"],["FN","ENT","RAI","ALT","⌘"]];
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const colCurve = Math.sin((c - 2) * 0.72) * 0.18;
+          const x = side * ((c - 2) * 0.76 + (r === 3 ? -0.12 : 0));
+          const z = -1.38 + r * 0.78 + colCurve;
+          const yLift = Math.cos((c - 2) * 0.72) * 0.08 + (r === 3 ? -0.04 : 0);
+          const key = keycap(labels[r][c], x, z, (r - 1.5) * 0.045, r === 3 || c === 0);
+          key.position.y += yLift;
+          key.rotation.z = side * (c - 2) * -0.018;
+          half.add(key);
+        }
+      }
+
+      const thumbBase = new THREE.Group();
+      thumbBase.position.set(side * 0.95, 0.45, 1.86);
+      thumbBase.rotation.y = side * -0.36;
+      thumbBase.rotation.z = side * -0.1;
+      const thumbs = [
+        ["HYP", -0.52, 0.06],
+        ["NAV", 0.18, -0.07],
+        ["△", 0.88, 0.05]
+      ];
+      for (const [label, x, z] of thumbs) {
+        const k = keycap(label, side * x, z, -0.08, true);
+        k.scale.set(1.08, 1, 0.9);
+        thumbBase.add(k);
+      }
+      half.add(thumbBase);
+
+      const oled = new THREE.Mesh(roundedBox(1.45, 0.055, 0.58, 0.08, 4), matGlow);
+      oled.position.set(side * -1.3, 0.49, -2.04);
+      oled.rotation.y = side * 0.12;
+      oled.castShadow = true;
+      half.add(oled);
+
+      const oledText = makeTextSprite(side === -1 ? "LAYER 03" : "WPM 118", "#061018");
+      oledText.position.set(side * -1.3, 0.56, -2.04);
+      oledText.scale.set(0.72, 0.22, 1);
+      oledText.rotation.x = -Math.PI / 2;
+      half.add(oledText);
+
+      const knob = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.31, 0.34, 0.25, 48),
+        new THREE.MeshStandardMaterial({
+          color: 0x1d2531,
+          roughness: 0.3,
+          metalness: 0.8
+        })
+      );
+      knob.position.set(side * 1.62, 0.62, -2.0);
+      knob.castShadow = true;
+      half.add(knob);
+
+      for (let i = 0; i < 20; i++) {
+        const tick = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.035, 0.12), matGlow);
+        const a = i / 20 * Math.PI * 2;
+        tick.position.set(side * 1.62 + Math.cos(a) * 0.27, 0.77, -2.0 + Math.sin(a) * 0.27);
+        tick.rotation.y = -a;
+        tick.castShadow = true;
+        half.add(tick);
+      }
+
+      const screwMat = new THREE.MeshStandardMaterial({
+        color: 0x59677d,
+        roughness: 0.34,
+        metalness: 0.9
+      });
+      for (const [sx, sz] of [[-1.9,-2.1],[1.9,-2.1],[-2,2.15],[1.7,2.15]]) {
+        const screw = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.035, 24), screwMat);
+        screw.position.set(side * sx, 0.5, sz);
+        screw.castShadow = true;
+        half.add(screw);
+        const slot = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.012, 0.025), matPlate);
+        slot.position.set(side * sx, 0.522, sz);
+        half.add(slot);
+      }
+
+      return half;
+    }
+
+    const left = makeHalf(-1);
+    const right = makeHalf(1);
+    root.add(left, right);
+
+    const bridgeCable = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-1.0, 0.22, -2.42),
+      new THREE.Vector3(-0.35, 0.65, -3.02),
+      new THREE.Vector3(0.35, 0.65, -3.02),
+      new THREE.Vector3(1.0, 0.22, -2.42)
+    ]);
+    const cable = new THREE.Mesh(
+      new THREE.TubeGeometry(bridgeCable, 80, 0.045, 12, false),
+      new THREE.MeshStandardMaterial({
+        color: 0x151a22,
+        roughness: 0.62,
+        metalness: 0.3
+      })
+    );
+    cable.castShadow = true;
+    root.add(cable);
+
+    const trackballGroup = new THREE.Group();
+    trackballGroup.position.set(0, 0.44, 1.15);
+    root.add(trackballGroup);
+
+    const cup = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.92, 1.08, 0.36, 72),
+      new THREE.MeshStandardMaterial({
+        color: 0x090d14,
+        roughness: 0.32,
+        metalness: 0.78
+      })
+    );
+    cup.position.y = 0.02;
+    cup.castShadow = true;
+    cup.receiveShadow = true;
+    trackballGroup.add(cup);
+
+    const ball = new THREE.Mesh(new THREE.SphereGeometry(0.78, 96, 48), matBall);
+    ball.position.y = 0.38;
+    ball.castShadow = true;
+    trackballGroup.add(ball);
+
+    const ballGridMat = new THREE.MeshBasicMaterial({
+      color: 0x00d9ff,
+      transparent: true,
+      opacity: 0.34,
+      wireframe: true
+    });
+    const ballGrid = new THREE.Mesh(new THREE.SphereGeometry(0.785, 32, 16), ballGridMat);
+    ballGrid.position.copy(ball.position);
+    trackballGroup.add(ballGrid);
+
+    for (let i = 0; i < 5; i++) {
+      const a = i / 5 * Math.PI * 2 + 0.35;
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.045, 18, 12), i % 2 ? matHot : matGlow);
+      led.position.set(Math.cos(a) * 1.12, 0.28, Math.sin(a) * 1.12);
+      trackballGroup.add(led);
+    }
+
+    const pcb = new THREE.Group();
+    pcb.position.set(0, -0.08, 0.1);
+    root.add(pcb);
+
+    const traceMat = new THREE.MeshBasicMaterial({
+      color: 0x18f0b8,
+      transparent: true,
+      opacity: 0.46
+    });
+    for (let i = 0; i < 34; i++) {
+      const side = i % 2 ? -1 : 1;
+      const z = -2.1 + (i % 17) * 0.26;
+      const len = 0.8 + (i % 5) * 0.22;
+      const trace = new THREE.Mesh(new THREE.BoxGeometry(len, 0.012, 0.018), traceMat);
+      trace.position.set(side * (0.6 + (i % 7) * 0.28), 0.02, z);
+      trace.rotation.y = side * (0.28 + (i % 4) * 0.1);
+      pcb.add(trace);
+    }
+
+    const grid = new THREE.GridHelper(34, 34, 0x16394a, 0x0b1c25);
+    grid.position.y = -0.26;
+    scene.add(grid);
+
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(80, 80),
+      new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.42 })
+    );
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = -0.27;
+    plane.receiveShadow = true;
+    scene.add(plane);
+
+    scene.add(new THREE.AmbientLight(0x7aa6b8, 0.42));
+
+    const keyLight = new THREE.DirectionalLight(0xf2fbff, 2.4);
+    keyLight.position.set(5, 9, 7);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.shadow.camera.near = 1;
+    keyLight.shadow.camera.far = 28;
+    keyLight.shadow.camera.left = -9;
+    keyLight.shadow.camera.right = 9;
+    keyLight.shadow.camera.top = 9;
+    keyLight.shadow.camera.bottom = -9;
+    scene.add(keyLight);
+
+    const cyan = new THREE.PointLight(0x00d9ff, 24, 16);
+    cyan.position.set(-4.8, 2.2, 2.7);
+    scene.add(cyan);
+
+    const magenta = new THREE.PointLight(0xff2e8d, 18, 14);
+    magenta.position.set(4.2, 1.8, -2.6);
+    scene.add(magenta);
+
+    const tinyStars = new THREE.Group();
+    const starMat = new THREE.MeshBasicMaterial({ color: 0x8bdfff, transparent: true, opacity: 0.55 });
+    for (let i = 0; i < 180; i++) {
+      const star = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.015, 0.015), starMat);
+      star.position.set(
+        (Math.random() - 0.5) * 44,
+        Math.random() * 18 + 2,
+        (Math.random() - 0.5) * 44
+      );
+      tinyStars.add(star);
+    }
+    scene.add(tinyStars);
+
+    function onResize() {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    }
+    addEventListener("resize", onResize);
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      const t = clock.getElapsedTime();
+
+      root.rotation.y = Math.sin(t * 0.18) * 0.045;
+      ball.rotation.x += 0.006;
+      ball.rotation.z += 0.004;
+      ballGrid.rotation.y -= 0.008;
+      ballGrid.rotation.x += 0.003;
+      cyan.intensity = 20 + Math.sin(t * 2.2) * 4;
+      magenta.intensity = 15 + Math.cos(t * 1.7) * 3;
+      tinyStars.rotation.y += 0.0007;
+
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

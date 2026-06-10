@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Espresso Machine Cutaway 3D</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #101114;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    #app {
+      position: fixed;
+      inset: 0;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .ui {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(18, 20, 24, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      backdrop-filter: blur(14px);
+    }
+
+    .ui button {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      color: #f4f7fb;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 9px 12px;
+      font-size: 13px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .ui button.active {
+      background: #21a7ff;
+      border-color: #70c9ff;
+      color: #071018;
+      font-weight: 700;
+    }
+
+    .hint {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 10;
+      color: rgba(244, 247, 251, 0.76);
+      background: rgba(18, 20, 24, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    .label-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 8;
+    }
+
+    .label {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      color: #f7fbff;
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: rgba(12, 15, 18, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+      text-shadow: 0 1px 2px #000;
+    }
+
+    .label::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.45);
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div class="ui">
+    <button id="cutaway" class="active" type="button">断面表示</button>
+    <button id="exploded" type="button">分解表示</button>
+  </div>
+  <div class="hint">Drag: 回転 / Wheel: ズーム</div>
+  <div id="labels" class="label-layer"></div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const app = document.getElementById("app");
+    const labelLayer = document.getElementById("labels");
+    const cutawayButton = document.getElementById("cutaway");
+    const explodedButton = document.getElementById("exploded");
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x101114);
+
+    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100);
+    camera.position.set(6.2, 4.2, 7.4);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    app.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 1.25, 0);
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x2c3038, 1.8));
+
+    const key = new THREE.DirectionalLight(0xffffff, 2.8);
+    key.position.set(4, 7, 6);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    scene.add(key);
+
+    const rim = new THREE.DirectionalLight(0x7cc8ff, 1.2);
+    rim.position.set(-5, 3, -4);
+    scene.add(rim);
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(18, 18),
+      new THREE.MeshStandardMaterial({ color: 0x17191d, roughness: 0.72 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    const partGroups = [];
+    const labels = [];
+    let mode = "cutaway";
+
+    const mat = {
+      steel: new THREE.MeshStandardMaterial({ color: 0xbcc6ce, metalness: 0.78, roughness: 0.28 }),
+      darkSteel: new THREE.MeshStandardMaterial({ color: 0x434951, metalness: 0.8, roughness: 0.34 }),
+      black: new THREE.MeshStandardMaterial({ color: 0x17191a, metalness: 0.35, roughness: 0.42 }),
+      body: new THREE.MeshStandardMaterial({ color: 0x26303a, metalness: 0.55, roughness: 0.34 }),
+      bodyGhost: new THREE.MeshStandardMaterial({ color: 0x26303a, metalness: 0.35, roughness: 0.22, transparent: true, opacity: 0.18 }),
+      brass: new THREE.MeshStandardMaterial({ color: 0xb88a38, metalness: 0.72, roughness: 0.26 }),
+      copper: new THREE.MeshStandardMaterial({ color: 0xb5633c, metalness: 0.76, roughness: 0.24 }),
+      water: new THREE.MeshStandardMaterial({ color: 0x29a7ff, roughness: 0.08, metalness: 0.05, transparent: true, opacity: 0.62 }),
+      glass: new THREE.MeshPhysicalMaterial({ color: 0x9bd6ff, transparent: true, opacity: 0.28, roughness: 0.04, transmission: 0.35, thickness: 0.08 }),
+      coffee: new THREE.MeshStandardMaterial({ color: 0x5a2d16, roughness: 0.52 }),
+      cup: new THREE.MeshStandardMaterial({ color: 0xf6f2e8, roughness: 0.34 }),
+      labelDot: new THREE.MeshBasicMaterial({ color: 0xffffff })
+    };
+
+    function roundedBox(w, h, d, material) {
+      const group = new THREE.Group();
+      const core = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+      group.add(core);
+      return group;
+    }
+
+    function addMesh(group, mesh) {
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      group.add(mesh);
+      return mesh;
+    }
+
+    function makePart(name, base, exploded, labelOffset) {
+      const group = new THREE.Group();
+      group.name = name;
+      group.position.copy(base);
+      group.userData.base = base.clone();
+      group.userData.exploded = exploded.clone();
+      group.userData.labelOffset = labelOffset.clone();
+      root.add(group);
+      partGroups.push(group);
+      addLabel(name, group, labelOffset);
+      return group;
+    }
+
+    function addLabel(text, object, offset) {
+      const el = document.createElement("div");
+      el.className = "label";
+      el.textContent = text;
+      labelLayer.appendChild(el);
+      labels.push({ el, object, offset: offset.clone(), world: new THREE.Vector3(), screen: new THREE.Vector3() });
+    }
+
+    function cylinder(radiusTop, radiusBottom, height, material, radial = 48) {
+      return new THREE.Mesh(new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radial), material);
+    }
+
+    function box(w, h, d, material) {
+      return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+    }
+
+    const exterior = makePart("外装パネル", new THREE.Vector3(0, 1.7, 0), new THREE.Vector3(-1.8, 0.2, -0.7), new THREE.Vector3(-1.55, 1.2, 0.2));
+    addMesh(exterior, box(3.6, 2.9, 0.18, mat.body)).position.set(0, 0, -1.08);
+    addMesh(exterior, box(0.18, 2.9, 2.2, mat.body)).position.set(-1.8, 0, 0);
+    addMesh(exterior, box(3.6, 0.18, 2.2, mat.body)).position.set(0, 1.45, 0);
+    addMesh(exterior, box(3.6, 0.2, 2.2, mat.body)).position.set(0, -1.45, 0);
+    addMesh(exterior, box(0.18, 2.9, 2.2, mat.bodyGhost)).position.set(1.8, 0, 0);
+    addMesh(exterior, box(3.55, 2.75, 0.08, mat.bodyGhost)).position.set(0, 0, 1.1);
+
+    const tank = makePart("給水タンク", new THREE.Vector3(-1.05, 2.1, -0.45), new THREE.Vector3(-2.5, 1.0, -1.6), new THREE.Vector3(-0.4, 0.92, 0));
+    addMesh(tank, box(0.8, 1.5, 0.95, mat.glass));
+    addMesh(tank, box(0.66, 1.16, 0.78, mat.water)).position.y = -0.1;
+    addMesh(tank, box(0.85, 0.08, 1.0, mat.darkSteel)).position.y = 0.79;
+
+    const boiler = makePart("ボイラー", new THREE.Vector3(0.25, 1.65, -0.2), new THREE.Vector3(0.1, 1.4, -1.8), new THREE.Vector3(0.1, 0.9, 0));
+    const boilerMesh = cylinder(0.58, 0.58, 1.42, mat.brass, 64);
+    boilerMesh.rotation.z = Math.PI / 2;
+    addMesh(boiler, boilerMesh);
+    const boilerWater = cylinder(0.43, 0.43, 1.2, mat.water, 48);
+    boilerWater.rotation.z = Math.PI / 2;
+    boilerWater.position.y = -0.05;
+    addMesh(boiler, boilerWater);
+    const gauge = cylinder(0.2, 0.2, 0.05, mat.steel, 32);
+    gauge.rotation.x = Math.PI / 2;
+    gauge.position.set(0.75, 0.42, 0.05);
+    addMesh(boiler, gauge);
+
+    const groupHead = makePart("グループヘッド", new THREE.Vector3(0.85, 1.15, 0.86), new THREE.Vector3(2.25, 0.55, 1.55), new THREE.Vector3(0.36, 0.62, 0.1));
+    const gh = cylinder(0.36, 0.36, 0.52, mat.steel, 48);
+    gh.rotation.x = Math.PI / 2;
+    addMesh(groupHead, gh);
+    addMesh(groupHead, cylinder(0.28, 0.34, 0.28, mat.brass, 48)).position.set(0, -0.34, 0);
+    groupHead.children[1].rotation.x = Math.PI;
+
+    const porta = makePart("ポルタフィルター", new THREE.Vector3(0.85, 0.74, 1.05), new THREE.Vector3(2.8, -0.15, 1.95), new THREE.Vector3(0.82, 0.08, 0));
+    const basket = cylinder(0.36, 0.28, 0.25, mat.darkSteel, 48);
+    basket.position.y = 0.05;
+    addMesh(porta, basket);
+    const handle = cylinder(0.09, 0.09, 1.18, mat.black, 24);
+    handle.rotation.z = Math.PI / 2;
+    handle.position.set(0.78, -0.04, 0);
+    addMesh(porta, handle);
+    const spout = cylinder(0.035, 0.055, 0.38, mat.steel, 20);
+    spout.position.set(0, -0.34, 0);
+    addMesh(porta, spout);
+
+    const pipes = makePart("配管", new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.55, 0.3), new THREE.Vector3(1.35, 2.75, -0.5));
+
+    function pipe(points, radius, material) {
+      const curve = new THREE.CatmullRomCurve3(points);
+      const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 48, radius, 14, false), material);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      pipes.add(mesh);
+      return { mesh, curve };
+    }
+
+    pipe([
+      new THREE.Vector3(-1.05, 1.45, -0.45),
+      new THREE.Vector3(-0.75, 1.35, -0.5),
+      new THREE.Vector3(-0.35, 1.55, -0.35),
+      new THREE.Vector3(-0.15, 1.65, -0.2)
+    ], 0.035, mat.copper);
+
+    pipe([
+      new THREE.Vector3(0.75, 1.65, -0.2),
+      new THREE.Vector3(1.08, 1.58, 0.16),
+      new THREE.Vector3(1.0, 1.28, 0.58),
+      new THREE.Vector3(0.85, 1.16, 0.86)
+    ], 0.038, mat.copper);
+
+    const cup = makePart("カップ", new THREE.Vector3(0.85, 0.18, 1.05), new THREE.Vector3(1.55, -0.42, 1.1), new THREE.Vector3(0.52, 0.38, 0));
+    const cupOuter = cylinder(0.34, 0.25, 0.48, mat.cup, 48);
+    cupOuter.position.y = 0.08;
+    addMesh(cup, cupOuter);
+    const coffee = cylinder(0.29, 0.29, 0.035, mat.coffee, 48);
+    coffee.position.y = 0.33;
+    addMesh(cup, coffee);
+    const saucer = cylinder(0.48, 0.48, 0.045, mat.cup, 48);
+    saucer.position.y = -0.2;
+    addMesh(cup, saucer);
+
+    const pathPoints = [
+      new THREE.Vector3(-1.05, 2.0, -0.45),
+      new THREE.Vector3(-0.85, 1.55, -0.5),
+      new THREE.Vector3(0.1, 1.65, -0.2),
+      new THREE.Vector3(0.76, 1.55, 0.05),
+      new THREE.Vector3(0.9, 1.16, 0.82),
+      new THREE.Vector3(0.85, 0.62, 1.05),
+      new THREE.Vector3(0.85, 0.44, 1.05)
+    ];
+
+    const extractionCurve = new THREE.CatmullRomCurve3(pathPoints);
+    const extractionTube = new THREE.Mesh(
+      new THREE.TubeGeometry(extractionCurve, 140, 0.022, 12, false),
+      new THREE.MeshBasicMaterial({ color: 0x24b8ff, transparent: true, opacity: 0.82 })
+    );
+    root.add(extractionTube);
+
+    const arrows = [];
+    for (let i = 0; i < 7; i++) {
+      const drop = new THREE.Mesh(
+        new THREE.SphereGeometry(0.065, 20, 20),
+        new THREE.MeshBasicMaterial({ color: i > 4 ? 0x8b4a1d : 0x42c6ff })
+      );
+      root.add(drop);
+      arrows.push({ mesh: drop, phase: i / 7 });
+    }
+
+    const steamKnob = makePart("操作ノブ", new THREE.Vector3(1.22, 2.45, 1.12), new THREE.Vector3(2.2, 2.1, 2.0), new THREE.Vector3(0.45, 0.25, 0));
+    const knob = cylinder(0.18, 0.18, 0.16, mat.black, 32);
+    knob.rotation.x = Math.PI / 2;
+    addMesh(steamKnob, knob);
+
+    const dripTray = makePart("ドリップトレイ", new THREE.Vector3(0.85, 0.18, 1.05), new THREE.Vector3(0.85, -0.45, 2.0), new THREE.Vector3(-0.78, -0.04, 0));
+    addMesh(dripTray, box(1.8, 0.08, 0.72, mat.darkSteel)).position.set(0, -0.42, 0);
+    for (let i = -4; i <= 4; i++) {
+      addMesh(dripTray, box(0.045, 0.025, 0.6, mat.steel)).position.set(i * 0.17, -0.36, 0);
+    }
+
+    const axesGrid = new THREE.GridHelper(8, 24, 0x33404c, 0x222931);
+    axesGrid.position.y = 0.004;
+    scene.add(axesGrid);
+
+    function setMode(next) {
+      mode = next;
+      cutawayButton.classList.toggle("active", mode === "cutaway");
+      explodedButton.classList.toggle("active", mode === "exploded");
+
+      exterior.children.forEach((child, index) => {
+        if (mode === "cutaway") {
+          child.material = index >= 4 ? mat.bodyGhost : mat.body;
+        } else {
+          child.material = mat.body;
+        }
+      });
+    }
+
+    cutawayButton.addEventListener("click", () => setMode("cutaway"));
+    explodedButton.addEventListener("click", () => setMode("exploded"));
+
+    addEventListener("resize", () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+    const tmp = new THREE.Vector3();
+
+    function updateParts(dt) {
+      for (const part of partGroups) {
+        const target = mode === "exploded"
+          ? tmp.copy(part.userData.base).add(part.userData.exploded)
+          : part.userData.base;
+
+        part.position.lerp(target, 1 - Math.pow(0.001, dt));
+      }
+
+      extractionTube.visible = true;
+      extractionTube.material.opacity = mode === "exploded" ? 0.38 : 0.82;
+    }
+
+    function updateDrops(time) {
+      for (const item of arrows) {
+        const t = (time * 0.14 + item.phase) % 1;
+        const p = extractionCurve.getPointAt(t);
+        item.mesh.position.copy(p);
+        item.mesh.scale.setScalar(0.75 + Math.sin((time * 5 + item.phase * 12)) * 0.16);
+        item.mesh.visible = mode === "cutaway" || t > 0.32;
+      }
+    }
+
+    function updateLabels() {
+      const width = innerWidth;
+      const height = innerHeight;
+
+      for (const label of labels) {
+        label.object.updateWorldMatrix(true, false);
+        label.world.copy(label.offset).applyMatrix4(label.object.matrixWorld);
+        label.screen.copy(label.world).project(camera);
+
+        const behind = label.screen.z < -1 || label.screen.z > 1;
+        const x = (label.screen.x * 0.5 + 0.5) * width;
+        const y = (-label.screen.y * 0.5 + 0.5) * height;
+
+        label.el.style.left = `${x}px`;
+        label.el.style.top = `${y}px`;
+        label.el.style.opacity = behind ? "0" : "1";
+      }
+    }
+
+    function animate() {
+      const dt = Math.min(clock.getDelta(), 0.05);
+      const time = clock.elapsedTime;
+
+      controls.update();
+      updateParts(dt);
+      updateDrops(time);
+      updateLabels();
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+
+    setMode("cutaway");
+    animate();
+  </script>
+</body>
+</html>

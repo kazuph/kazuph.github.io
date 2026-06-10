@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIKE — 3Dの猫</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #fdf3e3; }
+  #app { position: fixed; inset: 0; }
+  .hud { position: fixed; font-family: ui-rounded, "Hiragino Maru Gothic ProN", ui-monospace, sans-serif; color: #7a6a55; user-select: none; pointer-events: none; }
+  .hud-tl { top: 20px; left: 24px; }
+  .hud-tl h1 { margin: 0; font-size: 20px; letter-spacing: 0.12em; color: #5d4f3c; }
+  .hud-tl p { margin: 6px 0 0; font-size: 12px; color: #a18d72; }
+  .hud-bl { bottom: 20px; left: 24px; pointer-events: auto; }
+  .hud-bl button { font: 14px ui-rounded, "Hiragino Maru Gothic ProN", sans-serif; color: #5d4f3c; background: #fff; border: 2px solid #e8d4b8; border-radius: 999px; padding: 10px 22px; cursor: pointer; box-shadow: 0 3px 0 #e8d4b8; }
+  .hud-bl button:active { transform: translateY(2px); box-shadow: 0 1px 0 #e8d4b8; }
+  .hud-br { bottom: 20px; right: 24px; font-size: 11px; color: #b3a187; }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="app"></div>
+<div class="hud hud-tl">
+  <h1>みけ（MIKE）</h1>
+  <p>座りポーズの茶トラ / おすわり中</p>
+</div>
+<div class="hud hud-bl"><button id="b-pet">なでる</button></div>
+<div class="hud hud-br">ドラッグ: 回転 / ホイール: ズーム</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xfdf3e3);
+scene.fog = new THREE.Fog(0xfdf3e3, 150, 420);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.getElementById('app').appendChild(renderer.domElement);
+
+const camera = new THREE.PerspectiveCamera(38, innerWidth / innerHeight, 0.5, 1000);
+camera.position.set(34, 26, 58);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 12, 0);
+controls.maxPolarAngle = Math.PI * 0.55;
+
+scene.add(new THREE.HemisphereLight(0xfff8ec, 0xd8c2a0, 1.0));
+const sun = new THREE.DirectionalLight(0xfff2dd, 2.2);
+sun.position.set(40, 70, 40);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -60; sun.shadow.camera.right = 60;
+sun.shadow.camera.top = 60; sun.shadow.camera.bottom = -60;
+scene.add(sun);
+
+const ORANGE = new THREE.MeshStandardMaterial({ color: 0xf2a65e, roughness: 0.85 });
+const DARKO = new THREE.MeshStandardMaterial({ color: 0xd97f36, roughness: 0.85 });
+const CREAM = new THREE.MeshStandardMaterial({ color: 0xfff4e0, roughness: 0.9 });
+const PINK = new THREE.MeshStandardMaterial({ color: 0xffa8b8, roughness: 0.7 });
+const DARK = new THREE.MeshStandardMaterial({ color: 0x35302a, roughness: 0.4 });
+
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(800, 800), new THREE.MeshStandardMaterial({ color: 0xf3e2c8, roughness: 1 }));
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -3;
+floor.receiveShadow = true;
+scene.add(floor);
+const cushion = new THREE.Mesh(new THREE.CylinderGeometry(17, 19, 3, 48), new THREE.MeshStandardMaterial({ color: 0xc9e4d6, roughness: 0.95 }));
+cushion.position.y = -1.5;
+cushion.castShadow = cushion.receiveShadow = true;
+scene.add(cushion);
+
+const cat = new THREE.Group();
+scene.add(cat);
+function sphere(r, mat, sx = 1, sy = 1, sz = 1) {
+  const m = new THREE.Mesh(new THREE.SphereGeometry(r, 32, 24), mat);
+  m.scale.set(sx, sy, sz);
+  m.castShadow = true;
+  return m;
+}
+
+// body
+const body = sphere(7, ORANGE, 1, 1.3, 0.95);
+body.position.set(0, 10.5, -1);
+cat.add(body);
+const chest = sphere(4.2, CREAM, 0.95, 1.15, 0.75);
+chest.position.set(0, 10.5, 3);
+cat.add(chest);
+
+// haunches
+for (const sx of [-1, 1]) {
+  const h = sphere(4.6, ORANGE, 1, 1, 1.2);
+  h.position.set(sx * 4.4, 5, -1.5);
+  cat.add(h);
+  const paw = new THREE.Mesh(new THREE.CapsuleGeometry(1.5, 3.5, 8, 16), ORANGE);
+  paw.rotation.x = Math.PI / 2;
+  paw.position.set(sx * 3.8, 1.4, 3.5);
+  paw.castShadow = true;
+  cat.add(paw);
+}
+// front legs
+for (const sx of [-1, 1]) {
+  const leg = new THREE.Mesh(new THREE.CapsuleGeometry(1.25, 8, 8, 16), ORANGE);
+  leg.position.set(sx * 2.5, 6.5, 4.2);
+  leg.castShadow = true;
+  cat.add(leg);
+  const paw = sphere(1.7, CREAM, 1, 0.8, 1.1);
+  paw.position.set(sx * 2.5, 1.2, 4.8);
+  cat.add(paw);
+}
+
+// ---- head ----
+const head = new THREE.Group();
+head.position.set(0, 20.5, 2.5);
+cat.add(head);
+const skull = sphere(6, ORANGE, 1.05, 0.95, 0.95);
+head.add(skull);
+// tabby "M" stripes
+for (let i = -1; i <= 1; i++) {
+  const st = new THREE.Mesh(new THREE.BoxGeometry(0.9, 3.2, 0.8), DARKO);
+  st.position.set(i * 1.8, 4.6, 2.4);
+  st.rotation.x = -0.5;
+  st.rotation.z = i * 0.25;
+  head.add(st);
+}
+// ears
+for (const sx of [-1, 1]) {
+  const ear = new THREE.Mesh(new THREE.ConeGeometry(2.2, 3.6, 20), ORANGE);
+  ear.position.set(sx * 3.9, 5.2, 0);
+  ear.rotation.z = -sx * 0.32;
+  ear.castShadow = true;
+  head.add(ear);
+  const inner = new THREE.Mesh(new THREE.ConeGeometry(1.3, 2.2, 16), PINK);
+  inner.position.set(sx * 3.85, 5.0, 0.6);
+  inner.rotation.z = -sx * 0.32;
+  head.add(inner);
+}
+// muzzle + nose + mouth
+const muzzleL = sphere(1.9, CREAM, 1, 0.8, 0.8); muzzleL.position.set(-1.3, -1.6, 4.6); head.add(muzzleL);
+const muzzleR = sphere(1.9, CREAM, 1, 0.8, 0.8); muzzleR.position.set(1.3, -1.6, 4.6); head.add(muzzleR);
+const chin = sphere(1.3, CREAM, 1, 0.7, 0.8); chin.position.set(0, -2.8, 4.4); head.add(chin);
+const nose = new THREE.Mesh(new THREE.ConeGeometry(0.7, 0.8, 3), PINK);
+nose.rotation.x = Math.PI;
+nose.rotation.y = Math.PI;
+nose.position.set(0, -0.9, 5.6);
+head.add(nose);
+
+// eyes (with blink + happy arc)
+const eyes = [];
+for (const sx of [-1, 1]) {
+  const eg = new THREE.Group();
+  eg.position.set(sx * 2.5, 0.6, 4.7);
+  const ball = sphere(1.05, DARK, 0.85, 1, 0.5);
+  eg.add(ball);
+  const hi = sphere(0.32, new THREE.MeshBasicMaterial({ color: 0xffffff }));
+  hi.position.set(0.25, 0.35, 0.45);
+  eg.add(hi);
+  head.add(eg);
+  eyes.push(eg);
+}
+// whiskers
+const whiskerMat = new THREE.LineBasicMaterial({ color: 0xd9c6ab });
+for (const sx of [-1, 1]) {
+  for (let i = 0; i < 3; i++) {
+    const y = -1.2 - i * 0.5;
+    const pts = [new THREE.Vector3(sx * 2.2, y, 4.9), new THREE.Vector3(sx * 8.5, y + 0.6 - i * 0.5, 3.6)];
+    head.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), whiskerMat));
+  }
+}
+
+// ---- tail: ring-striped sphere chain, animated every frame ----
+const TAILN = 18;
+const tailBalls = [];
+for (let i = 0; i < TAILN; i++) {
+  const s = i / (TAILN - 1);
+  const b = sphere(1.7 - s * 0.8, i % 4 < 2 ? ORANGE : DARKO);
+  tailBalls.push(b);
+  cat.add(b);
+}
+const tailTip = sphere(1.1, CREAM);
+cat.add(tailTip);
+
+// ---- interaction ----
+let happy = 0;
+document.getElementById('b-pet').addEventListener('click', () => { happy = 2.2; });
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+  if (happy > 0) happy -= dt;
+
+  // breathing
+  const br = 1 + 0.02 * Math.sin(t * 2.2);
+  body.scale.set(1 * br, 1.3, 0.95 * br);
+
+  // head idle / happy nuzzle
+  const tilt = happy > 0 ? 0.3 * Math.sin(t * 6) : 0.07 * Math.sin(t * 0.8);
+  head.rotation.z = tilt;
+  head.rotation.y = happy > 0 ? 0 : 0.12 * Math.sin(t * 0.5);
+
+  // blink (or happy closed eyes)
+  const bphase = (t % 3.4);
+  const blink = happy > 0 ? 0.12 : (bphase < 0.13 ? 0.1 : 1);
+  for (const eg of eyes) eg.scale.y = blink;
+
+  // tail sway (faster when happy)
+  const speed = happy > 0 ? 5 : 1.6;
+  for (let i = 0; i < TAILN; i++) {
+    const s = i / (TAILN - 1);
+    const wave = Math.sin(t * speed + s * 3.2);
+    tailBalls[i].position.set(
+      4 + 7 * Math.sin(s * 1.9) + wave * 3.2 * s,
+      6 + 13 * s * s + Math.sin(t * speed * 0.7 + s * 4) * 1.2 * s,
+      -7 - 4 * Math.sin(s * 2.6)
+    );
+  }
+  const last = tailBalls[TAILN - 1].position;
+  tailTip.position.set(last.x, last.y + 0.9, last.z);
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>

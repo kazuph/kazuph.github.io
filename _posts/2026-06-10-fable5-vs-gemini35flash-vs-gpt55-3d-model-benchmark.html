@@ -1,0 +1,371 @@
+---
+layout: post
+title: "Claude Fable 5 vs Gemini 3.5 Flash vs GPT-5.5 インタラクティブ3Dモデル生成ベンチマーク"
+date: 2026-06-10
+description: "図解生成ベンチマークの3D版スピンオフ。5題材 × 3モデル = 15個の Three.js 製インタラクティブ3Dモデルを生成させ、この記事の中でそのままグリグリ動かして比較できるようにしました。"
+image: /images/posts/3d-model-benchmark/ogp-keyboard-3way.png
+social_image: /images/posts/3d-model-benchmark/ogp-keyboard-3way.png
+full_ai: true
+full_ai_model: claude-fable-5
+---
+
+<div class="zenn-message">
+  <p><strong>この記事について:</strong> これは <a href="/blog/2026/06/10/fable5-vs-gemini35flash-vs-gpt55-diagram-benchmark/">同日公開の「Claude Fable 5 vs Gemini 3.5 Flash vs GPT-5.5 図解生成ベンチマーク」</a>（2D図解・静止画）の<strong>3D版スピンオフ</strong>です。今回は静止画ではなく、各モデルに <strong>単一HTMLのインタラクティブ3Dシーン</strong>（Three.js 可・外部アセット禁止）を書かせて、できあがったページをこの記事に埋め込みました。あえて Markdown ではなく HTML 記事にしているのは、<strong>読者にその場で3Dをグリグリ回してほしいから</strong>です。各カードの「▶ 3Dを起動」を押すと、そのモデルが生成したページがそのまま動きます。</p>
+</div>
+
+<h2>はじめに</h2>
+
+<p>2D図解ベンチマークを続けてきて、「コードで絵を描く力」はだいぶ見えてきました。次に気になるのは空間です。座標も配色も照明も全部コードで指定する Three.js のシーンを一発で書かせたとき、3モデルでどれだけ差が出るのか。静止画のスクリーンショット比較では3Dの面白さが伝わらないので、生成された HTML をそのまま記事に埋め込んで、読者が自分の手で回せる形にしました。</p>
+
+<p>モデルと生成経路は2D版と同じ構成です。</p>
+
+<ul>
+  <li><strong>Claude Fable 5</strong>: この作業セッションの Claude Code（モデルID: <code>claude-fable-5</code>）自身が、プロンプトから直接書き起こし</li>
+  <li><strong>Gemini 3.5 Flash</strong>: <code>agy</code>（Gemini CLI 系ローカルエージェント）の print モード <code>agy -p</code> で生成</li>
+  <li><strong>GPT-5.5</strong>: <code>codex exec -m gpt-5.5</code> の非対話モードで生成</li>
+</ul>
+
+<p>この記事は題材設計、コード生成、検証、記事化までをAIで進める <strong>Full AI</strong> 方式で書いています。</p>
+
+<style>
+.v3d-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 1.2rem 0 1.6rem;
+}
+@media (max-width: 720px) {
+  .v3d-grid { grid-template-columns: 1fr; }
+}
+.v3d {
+  border: 1px solid #d9d2c4;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #11141b;
+  display: flex;
+  flex-direction: column;
+}
+.v3d.active { grid-column: 1 / -1; }
+.v3d-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  background: #1b2029;
+  color: #e8edf5;
+  font-size: 0.78rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.v3d-head .v3d-links { display: flex; gap: 10px; white-space: nowrap; }
+.v3d-head a { color: #62d6e8; text-decoration: none; }
+.v3d-stage { position: relative; aspect-ratio: 4 / 3; background: #11141b; }
+.v3d-stage img { width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; }
+.v3d-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.v3d-play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(8, 10, 14, 0.35);
+  border: 0;
+  color: #fff;
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.v3d-play:hover { background: rgba(8, 10, 14, 0.12); }
+.v3d-play span {
+  background: rgba(12, 16, 24, 0.85);
+  border: 1px solid #62d6e8;
+  border-radius: 999px;
+  padding: 8px 18px;
+}
+.v3d.active .v3d-play { display: none; }
+.v3d-close {
+  background: transparent;
+  border: 1px solid #62d6e8;
+  border-radius: 6px;
+  color: #62d6e8;
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.bench-note {
+  background: #fff8d7;
+  border: 1px solid #e7d27a;
+  border-radius: 8px;
+  padding: 12px 16px;
+  line-height: 1.75;
+  margin: 1.2rem 0;
+}
+.bench-table { width: 100%; }
+.bench-table th, .bench-table td { vertical-align: top; }
+.diagram-hero { margin: 2rem 0; }
+.diagram-hero img { width: 100%; height: auto; display: block; }
+.diagram-hero figcaption { margin-top: 0.75rem; color: #666; font-size: 0.95rem; }
+</style>
+
+<figure class="diagram-hero">
+  <img src="/images/posts/3d-model-benchmark/ogp-keyboard-3way.png" alt="トラックボール付き分割キーボードの3Dモデルを、Claude Fable 5・Gemini 3.5 Flash・GPT-5.5 の3モデルで横並び比較した画像" loading="eager">
+  <figcaption>題材1「トラックボール付き分割キーボード」の初期表示を3モデル並べたもの。左から Claude Fable 5 / Gemini 3.5 Flash / GPT-5.5。この記事内で3つとも実際に動かせます。</figcaption>
+</figure>
+
+<div class="bench-note">
+  <strong>操作メモ:</strong> 各カードの「▶ 3Dを起動」を押すとそのまま埋め込みで動きます（ドラッグ: 回転 / ホイール: ズーム）。起動したカードは横幅いっぱいに広がります。WebGL コンテキストの上限対策で<strong>同時に動くのは3つまで</strong>（古いものから自動で閉じます）。ページスクロールとホイール操作が干渉するときは「別タブ」リンクからフルスクリーンでどうぞ。スマホはタッチドラッグ・ピンチで操作できます。
+</div>
+
+<h2>比較条件</h2>
+
+<ul>
+  <li><strong>モデル</strong>: Claude Fable 5 / Gemini 3.5 Flash / GPT-5.5</li>
+  <li><strong>出力形式</strong>: 単一HTMLのインタラクティブ3Dシーン（Three.js の CDN 読み込みのみ可、画像・glTF等の外部アセット禁止、形状はすべてコードで構築、ドラッグ回転＋ホイールズーム必須）</li>
+  <li><strong>題材</strong>: 5題材</li>
+  <li><strong>総数</strong>: 5題材 × 3モデル = <strong>15個</strong>（すべて今回新規生成）</li>
+  <li><strong>確認日</strong>: 2026-06-10 JST</li>
+</ul>
+
+<h2>題材一覧</h2>
+
+<p>題材1はユーザー指定で、しかも「ギークに刺さるやつ」とだけ指定して<strong>あえて具体的な要件を書かない</strong>出題です。題材2〜5はAIが候補を設計し、ユーザーが「全部いいじゃん」と全採用したものです（AI設計・ユーザー承認）。</p>
+
+<table class="bench-table">
+  <thead><tr><th>題材</th><th>出題元</th><th>見たい点</th></tr></thead>
+  <tbody>
+    <tr><td>トラックボール付き分割キーボード</td><td>ユーザー指定（要件は意図的に未指定）</td><td>「ギークに刺さる」の解釈力、ディテールの自発的な盛り込み</td></tr>
+    <tr><td>機械式時計のムーブメント</td><td>AI設計・ユーザー承認</td><td>歯車の噛み合わせ、脱進機の動き、動く機構の正確さ</td></tr>
+    <tr><td>猫</td><td>AI設計・ユーザー承認</td><td>プリミティブの組み合わせで有機形状をどこまで可愛く作れるか</td></tr>
+    <tr><td>7軸ロボットアーム</td><td>AI設計・ユーザー承認（2Dシリーズ既存題材の3D化）</td><td>階層構造の関節、スライダーでの各軸ジョグ、リンクの追従</td></tr>
+    <tr><td>エスプレッソマシン断面図</td><td>AI設計・ユーザー承認</td><td>断面・分解表示のUI、内部部品のラベル、抽出経路の説明力</td></tr>
+  </tbody>
+</table>
+
+<p>プロンプトは3モデル共通で、<a href="https://github.com/kazuph/kazuph.github.io/tree/master/scripts/3d_benchmark_2026/prompts" target="_blank" rel="noopener">scripts/3d_benchmark_2026/prompts/</a> に置いています。生成・検証スクリプトも同じディレクトリにあります。</p>
+
+<h2>実行方法と検証パイプライン</h2>
+
+<ul>
+  <li><strong>Claude Fable 5</strong>: セッション内でプロンプトから一発書き起こし。書いた直後のセルフレビューで誤記5箇所（壊れたCSS宣言2つ、<code>add()</code> の戻り値に対して位置を設定していたバグ2つなど、3ファイル分）を修正してからレンダリングしました。<strong>レンダリング結果を見てからの手直しはゼロ</strong>です。</li>
+  <li><strong>Gemini 3.5 Flash</strong>: <code>run_gemini_batch.py</code>（<code>agy -p</code>）で5題材を生成。<strong>全題材1回目で成功</strong>。</li>
+  <li><strong>GPT-5.5</strong>: <code>run_codex_batch.py</code>（<code>codex exec</code>）で5題材を生成。後述のとおりリトライが多発しました。</li>
+  <li><strong>検証</strong>: 2D版の「xelatex / py_compile でコンパイル確認」に相当するものとして、Playwright のヘッドレス Chromium で実際にページを開き、<strong>ページエラーなし＋WebGL キャンバス生存</strong>を確認するレンダリング検証（<code>render_check.mjs</code>）を全15ページに通しました。さらに自動ドッグフーディング（<code>dogfood_check.mjs</code>）でドラッグ回転・ホイールズーム・アニメーション・UI要素の有無を機械的に確認しています。</li>
+</ul>
+
+<h3>生成時のトラブル（正直な記録）</h3>
+
+<div class="bench-note">
+  <p><strong>GPT-5.5 は5題材中4題材で同じバグを繰り返しました。</strong> <code>OrbitControls.js</code> を CDN のフルURLで直接 import すると、その内部にある <code>import ... from 'three'</code>（bare specifier）が解決できず実行時エラーになる、という Three.js の古典的な罠です。importmap を書けば回避できるのですが、初回バッチでは エスプレッソマシン以外の4本すべてがこのパターンで動きませんでした。</p>
+  <p>レンダリング検証を追加して再生成したところ、壊れていた初回バッチ分も数えると、動くコードに到達するまで猫=3世代・ロボットアーム=3世代・時計=4世代、トラックボールキーボードに至っては<strong>5世代目でようやく動くコード</strong>になりました。GPT-5.5 の生成は合計16世代（うち動いたのは5本）で、<strong>捨てた11世代はすべて同じ bare import が原因</strong>です。なお Gemini 3.5 Flash は5本とも一発で動き、Fable 5 もレンダリング検証は5本とも一発通過です。</p>
+</div>
+
+<h2>題材1: トラックボール付き分割キーボード（要件は意図的に未指定）</h2>
+
+<p>プロンプトは「トラックボール付き分割キーボードのインタラクティブな 3D モデル。ギークに刺さるやつにしてください」だけ。何を盛るかはモデル任せです。</p>
+
+<div class="v3d-grid">
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/trackball-split-keyboard.html">
+    <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/trackball-split-keyboard.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/trackball-split-keyboard.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/trackball-split-keyboard.webp" alt="Claude Fable 5 が生成した分割キーボード。CAD図面風の暗い画面にカラムスタッガードの2ユニットと赤いトラックボール、寸法線とスペック表" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gemini35flash/trackball-split-keyboard.html">
+    <div class="v3d-head"><span>Gemini 3.5 Flash</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gemini35flash/trackball-split-keyboard.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gemini35flash/trackball-split-keyboard.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gemini35flash/trackball-split-keyboard.webp" alt="Gemini 3.5 Flash が生成した分割キーボード GLOW-80。ネオングリーンのHUDとRGB発光するキーの暗いサイバーパンク調シーン" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gpt55/trackball-split-keyboard.html">
+    <div class="v3d-head"><span>GPT-5.5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gpt55/trackball-split-keyboard.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gpt55/trackball-split-keyboard.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gpt55/trackball-split-keyboard.webp" alt="GPT-5.5 が生成した分割キーボード NEBULA TB-42。暗い空間にハの字の2ユニットとワイヤーフレームのトラックボールドーム" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Fable 5</strong>: CAD ビューワー路線。寸法線（ユニット間 48mm・ボール ø34）、スペック表、等角/上面/正面/側面の視点プリセット、分解図、ワイヤーフレーム、RGB アンダーグローのトグルまで盛りました。カラムスタッガード＋親指キー＋右手親指位置のトラックボールという自作キーボード文脈の構成です。</li>
+  <li><strong>Gemini 3.5 Flash</strong>: 「GLOW-80 // ERGO-SPLIT」というネオン HUD のサイバーパンク路線。RGB WAVE / PULSE / AUTO ROTATE の切替、WPM・キーストロークのカウンタ、クリックでキー入力＆ボール回転というギミック入り。世界観は一番尖っていますが、シーン全体がかなり暗いです。</li>
+  <li><strong>GPT-5.5</strong>: 「NEBULA / TB-42」。ハの字につながった2ユニットで、トラックボールを半透明ドーム＋ワイヤーフレームで表現。ボタン類の追加UIはなし。前述のとおり、動くコードになるまで4回かかりました。</li>
+</ul>
+
+<h2>題材2: 機械式時計のムーブメント</h2>
+
+<p>香箱からテンプまでの輪列を作り、歯車が実際に噛み合って回ること、テンプの往復とアンクルの脱進を要求しています。</p>
+
+<div class="v3d-grid">
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/watch-movement.html">
+    <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/watch-movement.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/watch-movement.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/watch-movement.webp" alt="Claude Fable 5 が生成した機械式時計ムーブメント。地板の上に香箱・二番車〜四番車・ガンギ車・アンクル・テンプが日本語ラベル付きで並ぶ" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gemini35flash/watch-movement.html">
+    <div class="v3d-head"><span>Gemini 3.5 Flash</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gemini35flash/watch-movement.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gemini35flash/watch-movement.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gemini35flash/watch-movement.webp" alt="Gemini 3.5 Flash が生成した機械式時計ムーブメント。金色の歯車とルビー軸受が大きく画面に迫る寄りのカメラ" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gpt55/watch-movement.html">
+    <div class="v3d-head"><span>GPT-5.5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gpt55/watch-movement.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gpt55/watch-movement.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gpt55/watch-movement.webp" alt="GPT-5.5 が生成した機械式時計ムーブメント。初期カメラが真横で歯車が薄い円盤の列に見える" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Fable 5</strong>: 輪列を俯瞰できるレイアウトで、ガンギ車は2振動/秒のステップ動作（チクタク）、テンプは往復振動、ひげぜんまいのスパイラルや受け板・ネジまで作っています。部品ラベルと再生/停止付き。一方で真鍮とスチールの色差が照明に負けて、全体が茶色寄りに見えるのが弱点です。</li>
+  <li><strong>Gemini 3.5 Flash</strong>: 金色の歯車の質感とルビー軸受の発色は3モデルで一番リッチ。ただ初期カメラが寄りすぎていて、引かないと全体像が見えません。Pause / Reset ボタン付き。</li>
+  <li><strong>GPT-5.5</strong>: 初期視点が真横なので、最初は歯車が薄い円盤の列にしか見えません。回すと輪列とテンプは確認できます。停止ボタンあり。3回目の試行で成功した1本です。</li>
+</ul>
+
+<h2>題材3: 猫</h2>
+
+<p>座りポーズ、部品の作り分け、生きている感じのアニメーション1つ以上、かわいさ重視という出題です。</p>
+
+<div class="v3d-grid">
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/cat.html">
+    <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/cat.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/cat.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/cat.webp" alt="Claude Fable 5 が生成した茶トラ猫「みけ」。クッションの上に座り、額にトラ縞、リング模様のしっぽを立てている" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gemini35flash/cat.html">
+    <div class="v3d-head"><span>Gemini 3.5 Flash</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gemini35flash/cat.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gemini35flash/cat.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gemini35flash/cat.webp" alt="Gemini 3.5 Flash が生成したクリーム色の猫 Mochi。大きな黒目で白いラグの上に座る" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gpt55/cat.html">
+    <div class="v3d-head"><span>GPT-5.5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gpt55/cat.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gpt55/cat.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gpt55/cat.webp" alt="GPT-5.5 が生成したオレンジ色のぽっちゃり猫。ひげが顔を横切る黒い線で交差している" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Fable 5</strong>: 茶トラの「みけ」。まばたき・呼吸・しっぽゆらゆらの3アニメ持ちで、額のトラ縞（M字）、リング模様のしっぽ、肉球側の白足袋まで作り分け。「なでる」ボタンを押すと目を細めてしっぽが速くなります。</li>
+  <li><strong>Gemini 3.5 Flash</strong>: クリーム色の「Mochi the Cat」。大きな黒目と首輪の鈴が可愛い路線ですが、ひげが顔の表面に短い線で張り付いていて、角度によっては顔の傷に見えます。クリックでなでられます。</li>
+  <li><strong>GPT-5.5</strong>: ぽっちゃりオレンジ猫。困り眉付きで愛嬌はあるものの、ひげが顔を横切る長い黒線として交差していて、ここが一番目につきます。2回目の試行で成功。</li>
+</ul>
+
+<h2>題材4: 7軸ロボットアーム</h2>
+
+<p>J1〜J7の階層構造、スライダーでの各軸ジョグ、軸番号ラベル、グリッパを要求。2Dシリーズで毎回出している「7軸ロボットアーム」の3D化です。</p>
+
+<div class="v3d-grid">
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/robot-arm-7axis.html">
+    <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/robot-arm-7axis.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/robot-arm-7axis.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/robot-arm-7axis.webp" alt="Claude Fable 5 が生成した7軸ロボットアーム RX-7A。白い多関節アームにオレンジの関節リングとJ1〜J7ラベル、右下にジョイント制御パネル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gemini35flash/robot-arm-7axis.html">
+    <div class="v3d-head"><span>Gemini 3.5 Flash</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gemini35flash/robot-arm-7axis.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gemini35flash/robot-arm-7axis.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gemini35flash/robot-arm-7axis.webp" alt="Gemini 3.5 Flash が生成した7軸ロボットアーム。オレンジ色の節が直立した初期ポーズで、左にスライダーパネル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gpt55/robot-arm-7axis.html">
+    <div class="v3d-head"><span>GPT-5.5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gpt55/robot-arm-7axis.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gpt55/robot-arm-7axis.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gpt55/robot-arm-7axis.webp" alt="GPT-5.5 が生成した7軸ロボットアーム。肘を曲げた作業ポーズで各関節にJ1〜J7のラベル、先端に黄色いグリッパ" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Fable 5</strong>: J1〜J7 スライダー、デモ再生、グリッパ開閉、TCP（手先）座標のリアルタイム表示付き。関節リングの向きで回転軸（ヨー/ピッチ）を示しています。初期ポーズも肘を曲げた自然な姿勢です。</li>
+  <li><strong>Gemini 3.5 Flash</strong>: スライダー7本＋Auto Demo / Random / Reset とUIは完備。ただ初期ポーズが完全な直立で、オレンジの煙突のように見えるのが惜しいところ。スライダーを動かせばちゃんと関節は曲がります。</li>
+  <li><strong>GPT-5.5</strong>: 初期画が一番「作業中のロボットアーム」らしい1本。各関節の球にラベルが付き、黄色いグリッパも目を引きます。スライダー7本。こちらも2回目の試行で成功。</li>
+</ul>
+
+<h2>題材5: エスプレッソマシン断面図</h2>
+
+<p>外装・ボイラー・グループヘッド・ポルタフィルター・給水タンク・配管を作り、断面か分解の切替UI、部品ラベル、抽出経路の可視化を要求しています。</p>
+
+<div class="v3d-grid">
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/espresso-machine.html">
+    <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/espresso-machine.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/espresso-machine.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/espresso-machine.webp" alt="Claude Fable 5 が生成したエスプレッソマシン EM-90。黒い筐体にポルタフィルターとカップ、部品ラベルと抽出経路の凡例" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gemini35flash/espresso-machine.html">
+    <div class="v3d-head"><span>Gemini 3.5 Flash</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gemini35flash/espresso-machine.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gemini35flash/espresso-machine.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gemini35flash/espresso-machine.webp" alt="Gemini 3.5 Flash が生成したエスプレッソマシン。右側に表示モード・抽出シミュレーション・構成部品リストのリッチなパネル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+  <div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/gpt55/espresso-machine.html">
+    <div class="v3d-head"><span>GPT-5.5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/gpt55/espresso-machine.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/gpt55/espresso-machine.html" target="_blank" rel="noopener">source</a></span></div>
+    <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gpt55/espresso-machine.webp" alt="GPT-5.5 が生成したエスプレッソマシン。枠だけの筐体の中に銅色のボイラーが見える断面表示、各部品に白いラベル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Fable 5</strong>: 通常 / 断面 / 分解の3モード切替。断面はクリッピングプレーンで筐体とボイラーを輪切りにし、給水（青）→熱水（橙）→エスプレッソ（茶）の抽出経路を粒子アニメで流しています。外装が黒めなので、中身は断面・分解モードで見る前提の作りです。</li>
+  <li><strong>Gemini 3.5 Flash</strong>: UIが圧倒的にリッチ。表示モード切替に加えて、構成部品リストから部品を選ぶと詳細が出る、抽出シミュレーションの開始/リセットがあるなど、製品の説明ページのような完成度です。</li>
+  <li><strong>GPT-5.5</strong>: 断面表示 / 分解表示の切替とラベルは要件どおり。ただ外装が枠だけの箱でボイラーが最初から丸見えなので、「断面で中が見える」嬉しさは薄めです。唯一、初回バッチから一発で動いた1本でもあります。</li>
+</ul>
+
+<h2>自動ドッグフーディング結果</h2>
+
+<p>全15ページに対して、ヘッドレスブラウザでドラッグ回転・ホイールズーム・自動アニメーション・追加UIを機械的に確認した結果です（<code>dogfood_check.mjs</code>、確認日 2026-06-10）。<strong>回転とズームは15/15すべて動作</strong>しました。</p>
+
+<table class="bench-table">
+  <thead><tr><th>題材</th><th>Claude Fable 5</th><th>Gemini 3.5 Flash</th><th>GPT-5.5</th></tr></thead>
+  <tbody>
+    <tr><td>キーボード</td><td>ボタン8（視点4・寸法・分解・ワイヤー・RGB）</td><td>ボタン3（RGB WAVE・PULSE・AUTO ROTATE）＋タイプ演出</td><td>追加UIなし</td></tr>
+    <tr><td>時計</td><td>ボタン2（停止・ラベル）／脱進ステップ動作</td><td>ボタン2（Pause・Reset）</td><td>ボタン1（停止）</td></tr>
+    <tr><td>猫</td><td>ボタン1（なでる）＋まばたき・しっぽ</td><td>クリックでなでる</td><td>追加UIなし（しっぽ等は自動で動く）</td></tr>
+    <tr><td>ロボットアーム</td><td>スライダー7＋ボタン3（デモ・リセット・グリップ）＋TCP表示</td><td>スライダー7＋ボタン3（Auto Demo・Random・Reset）</td><td>スライダー7</td></tr>
+    <tr><td>エスプレッソ</td><td>ボタン4（通常・断面・分解・ラベル）＋抽出粒子</td><td>ボタン5＋部品リスト＋抽出シミュレーション</td><td>ボタン2（断面・分解）</td></tr>
+    <tr><td><strong>動くまでの生成世代数</strong></td><td><strong>5/5 一発</strong>（レンダリング前の誤記修正5箇所あり）</td><td><strong>5/5 一発</strong></td><td>キーボード5・時計4・猫3・アーム3・エスプレッソ1（計16世代）</td></tr>
+  </tbody>
+</table>
+
+<h2>所感まとめ</h2>
+
+<ul>
+  <li><strong>Claude Fable 5</strong> は「指示されていない文脈の補完」が持ち味でした。要件ゼロのキーボードに寸法線とスペック表を入れ、ロボットアームに TCP 座標を出すなど、ギーク向けディテールの引き出しが多い一方、時計の配色のように質感表現で Gemini に譲る場面もあります。</li>
+  <li><strong>Gemini 3.5 Flash</strong> は質感とUIのリッチさが武器。エスプレッソマシンの操作パネルは3モデルで頭ひとつ抜けています。ただし初期カメラやポーズの詰めが甘く、「最初の1画面」で損をしがちです。生成の安定性は完璧でした。</li>
+  <li><strong>GPT-5.5</strong> は当たり外れの振れ幅が大きい結果に。ロボットアームの初期ポーズは3モデルで一番絵になっていますが、OrbitControls の bare import という同一バグを11世代連続で書いた生成安定性が最大の課題です。要件にないUIを足さない、ミニマル志向も一貫しています。</li>
+</ul>
+
+<h2>再現方法</h2>
+
+<p>生成と検証は以下で再現できます（リポジトリの <a href="https://github.com/kazuph/kazuph.github.io/tree/master/scripts/3d_benchmark_2026" target="_blank" rel="noopener">scripts/3d_benchmark_2026/</a>）。</p>
+
+<pre><code class="language-bash"># ローカルサーバ（レンダリング検証が参照）
+python3 -m http.server 8941 --bind 127.0.0.1
+
+# 生成（render_check.mjs によるヘッドレス描画検証＋3リトライ付き）
+python3 scripts/3d_benchmark_2026/run_gemini_batch.py   # Gemini 3.5 Flash (agy -p)
+python3 scripts/3d_benchmark_2026/run_codex_batch.py    # GPT-5.5 (codex exec)
+
+# スクリーンショット一括取得と自動ドッグフーディング
+node scripts/3d_benchmark_2026/capture_screens.mjs http://127.0.0.1:8941
+node scripts/3d_benchmark_2026/dogfood_check.mjs http://127.0.0.1:8941
+</code></pre>
+
+<h2>おわりに</h2>
+
+<p>2Dの図解では「破綻なく描けるか」が主戦場でしたが、3Dでは「何を作り込むと嬉しいかを自分で決める力」と「動くコードを一発で出す力」の両方が試されます。15個の3Dシーンはすべてこのページに埋め込んであるので、ぜひ手元でグリグリ回して、スクリーンショットでは伝わらない差を確かめてみてください。</p>
+
+<p>Enjoy, spin the models!</p>
+
+<script>
+(function () {
+  var actives = [];
+  function deactivate(card) {
+    var iframe = card.querySelector('iframe');
+    if (iframe) iframe.remove();
+    var closeBtn = card.querySelector('.v3d-close');
+    if (closeBtn) closeBtn.remove();
+    card.classList.remove('active');
+    var i = actives.indexOf(card);
+    if (i !== -1) actives.splice(i, 1);
+  }
+  document.querySelectorAll('.v3d-play').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var card = btn.closest('.v3d');
+      while (actives.length >= 3) deactivate(actives[0]);
+      var iframe = document.createElement('iframe');
+      iframe.src = card.dataset.src;
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('title', card.querySelector('.v3d-head span').textContent + ' の3Dモデル');
+      card.querySelector('.v3d-stage').appendChild(iframe);
+      var closeBtn = document.createElement('button');
+      closeBtn.type = 'button';
+      closeBtn.className = 'v3d-close';
+      closeBtn.textContent = '✕ 閉じる';
+      closeBtn.addEventListener('click', function () { deactivate(card); });
+      card.querySelector('.v3d-head').appendChild(closeBtn);
+      card.classList.add('active');
+      actives.push(card);
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+})();
+</script>

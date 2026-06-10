@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Mechanical Watch Movement</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0d0f12;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            color: #fff;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        #ui-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 10;
+        }
+        .btn {
+            background: rgba(20, 24, 30, 0.75);
+            border: 1px solid rgba(229, 193, 88, 0.3);
+            color: #e5c158;
+            padding: 14px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .btn:hover {
+            background: rgba(229, 193, 88, 0.15);
+            border-color: #e5c158;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(229, 193, 88, 0.2);
+            color: #fff;
+        }
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        #title-container {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 10;
+            pointer-events: none;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+        h1 {
+            margin: 0 0 6px 0;
+            font-size: 24px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 300;
+            color: #e5c158;
+        }
+        p {
+            margin: 0;
+            font-size: 12px;
+            color: #8c96a5;
+            letter-spacing: 1px;
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            letter-spacing: 2px;
+            color: #e5c158;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        #instructions {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 10;
+            text-align: right;
+            pointer-events: none;
+            color: #8c96a5;
+            font-size: 11px;
+            line-height: 1.6;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+    </style>
+    <!-- Three.js and OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div id="title-container">
+        <h1>Manual Caliber 3D</h1>
+        <p>Precision Escapement &amp; Gear Train Simulation</p>
+    </div>
+    <div id="instructions">
+        ROTATE: Drag Mouse<br>
+        ZOOM: Scroll Wheel<br>
+        PAN: Right-Click + Drag
+    </div>
+    <div id="loading">Assembling Movement...</div>
+    <div id="canvas-container"></div>
+    <div id="ui-container">
+        <button class="btn" id="play-pause-btn">
+            <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            <svg id="pause-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+            <span id="btn-text">Pause Movement</span>
+        </button>
+        <button class="btn" id="reset-cam-btn">Reset View</button>
+    </div>
+
+    <script>
+        // Setup configuration for gears and coordinates
+        const config = {
+            barrel: { x: -2.7, y: 0.0, teeth: 72, radiusOuter: 2.1, radiusInner: 1.9, thickness: 0.25, hole: 0.5, spokes: 6 },
+            center: { x: 0.0, y: 0.0, pinionTeeth: 12, wheelTeeth: 64, wheelRadiusOuter: 1.9, wheelRadiusInner: 1.75, pinionRadiusOuter: 0.35, pinionRadiusInner: 0.25, thickness: 0.12, hole: 0.15 },
+            third: { x: 1.2, y: 1.6, pinionTeeth: 8, wheelTeeth: 60, wheelRadiusOuter: 1.6, wheelRadiusInner: 1.45, pinionRadiusOuter: 0.25, pinionRadiusInner: 0.15, thickness: 0.12, hole: 0.12 },
+            fourth: { x: 2.5, y: 0.5, pinionTeeth: 10, wheelTeeth: 60, wheelRadiusOuter: 1.4, wheelRadiusInner: 1.25, pinionRadiusOuter: 0.25, pinionRadiusInner: 0.15, thickness: 0.12, hole: 0.12 },
+            escape: { x: 3.4, y: -0.7, pinionTeeth: 10, wheelTeeth: 15, wheelRadiusOuter: 0.8, wheelRadiusInner: 0.65, pinionRadiusOuter: 0.25, pinionRadiusInner: 0.15, thickness: 0.1, hole: 0.1 },
+            pallet: { x: 2.8, y: -1.5, offsetAngle: -0.72 },
+            balance: { x: 1.7, y: -2.8, offsetAngle: 0.87 }
+        };
+
+        // Initialize materials
+        let brassMat, steelMat, rubyMat, blueSteelMat, plateMat, darkMetalMat;
+
+        function initMaterials() {
+            brassMat = new THREE.MeshStandardMaterial({
+                color: 0xdfb743,
+                metalness: 0.85,
+                roughness: 0.18,
+                bumpScale: 0.05
+            });
+
+            steelMat = new THREE.MeshStandardMaterial({
+                color: 0xcccccc,
+                metalness: 0.95,
+                roughness: 0.12
+            });
+
+            blueSteelMat = new THREE.MeshStandardMaterial({
+                color: 0x1e365c,
+                metalness: 0.9,
+                roughness: 0.15
+            });
+
+            rubyMat = new THREE.MeshPhysicalMaterial({
+                color: 0xff0044,
+                metalness: 0.05,
+                roughness: 0.05,
+                transmission: 0.75,
+                transparent: true,
+                opacity: 0.95,
+                ior: 1.77, // Sapphire/Ruby index of refraction
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.05
+            });
+
+            plateMat = new THREE.MeshStandardMaterial({
+                color: 0xd4af37,
+                metalness: 0.65,
+                roughness: 0.35
+            });
+
+            darkMetalMat = new THREE.MeshStandardMaterial({
+                color: 0x242830,
+                metalness: 0.8,
+                roughness: 0.3
+            });
+        }
+
+        // Standard Gear Shape Generator
+        function createGearGeometry(innerRadius, outerRadius, teethCount, thickness, holeRadius, spokes = 4) {
+            const shape = new THREE.Shape();
+            const step = (Math.PI * 2) / teethCount;
+
+            for (let i = 0; i < teethCount; i++) {
+                const angle = i * step;
+                const a0 = angle;
+                const a1 = angle + step * 0.25;
+                const a2 = angle + step * 0.45;
+                const a3 = angle + step * 0.70;
+                const a4 = angle + step * 0.90;
+
+                const rL = innerRadius;
+                const rH = outerRadius;
+
+                if (i === 0) {
+                    shape.moveTo(Math.cos(a0) * rL, Math.sin(a0) * rL);
+                } else {
+                    shape.lineTo(Math.cos(a0) * rL, Math.sin(a0) * rL);
+                }
+                shape.lineTo(Math.cos(a1) * rL, Math.sin(a1) * rL);
+                shape.lineTo(Math.cos(a2) * rH, Math.sin(a2) * rH);
+                shape.lineTo(Math.cos(a3) * rH, Math.sin(a3) * rH);
+                shape.lineTo(Math.cos(a4) * rL, Math.sin(a4) * rL);
+            }
+            shape.closePath();
+
+            // Center shaft hole
+            const centerHole = new THREE.Path();
+            centerHole.absarc(0, 0, holeRadius, 0, Math.PI * 2, true);
+            shape.holes.push(centerHole);
+
+            // Spoke cutouts
+            const spokeInner = holeRadius * 1.5;
+            const spokeOuter = innerRadius * 0.85;
+            if (spokes > 0 && spokeOuter > spokeInner * 1.1) {
+                const spokeAngle = (Math.PI * 2) / spokes;
+                const gap = 0.16;
+                for (let s = 0; s < spokes; s++) {
+                    const startAngle = s * spokeAngle + gap;
+                    const endAngle = (s + 1) * spokeAngle - gap;
+
+                    const spokeHole = new THREE.Path();
+                    spokeHole.moveTo(Math.cos(startAngle) * spokeInner, Math.sin(startAngle) * spokeInner);
+                    spokeHole.lineTo(Math.cos(startAngle) * spokeOuter, Math.sin(startAngle) * spokeOuter);
+                    spokeHole.absarc(0, 0, spokeOuter, startAngle, endAngle, false);
+                    spokeHole.lineTo(Math.cos(endAngle) * spokeInner, Math.sin(endAngle) * spokeInner);
+                    spokeHole.absarc(0, 0, spokeInner, endAngle, startAngle, true);
+                    shape.holes.push(spokeHole);
+                }
+            }
+
+            const extrudeSettings = {
+                depth: thickness,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.008,
+                bevelThickness: 0.008
+            };
+
+            return new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        }
+
+        // Escape Wheel Geometry (Hooked Teeth)
+        function createEscapeWheelGeometry(innerRadius, outerRadius, teethCount, thickness, holeRadius) {
+            const shape = new THREE.Shape();
+            const step = (Math.PI * 2) / teethCount;
+
+            for (let i = 0; i < teethCount; i++) {
+                const angle = i * step;
+                const a0 = angle;
+                const a1 = angle + step * 0.12;
+                const a2 = angle + step * 0.32;
+                const a3 = angle + step * 0.52;
+                const a4 = angle + step * 0.80;
+
+                const rL = innerRadius;
+                const rH = outerRadius;
+
+                if (i === 0) {
+                    shape.moveTo(Math.cos(a0) * rH, Math.sin(a0) * rH);
+                } else {
+                    shape.lineTo(Math.cos(a0) * rH, Math.sin(a0) * rH);
+                }
+                shape.lineTo(Math.cos(a1) * (rH - 0.05), Math.sin(a1) * (rH - 0.05));
+                shape.lineTo(Math.cos(a2) * rL, Math.sin(a2) * rL);
+                shape.lineTo(Math.cos(a3) * (rL - 0.06), Math.sin(a3) * (rL - 0.06));
+                shape.lineTo(Math.cos(a4) * rL, Math.sin(a4) * rL);
+            }
+            shape.closePath();
+
+            const centerHole = new THREE.Path();
+            centerHole.absarc(0, 0, holeRadius, 0, Math.PI * 2, true);
+            shape.holes.push(centerHole);
+
+            // 3 Curved Spokes
+            const spokeInner = holeRadius * 1.5;
+            const spokeOuter = innerRadius * 0.8;
+            const spokes = 3;
+            const spokeAngle = (Math.PI * 2) / spokes;
+            const gap = 0.22;
+            for (let s = 0; s < spokes; s++) {
+                const startAngle = s * spokeAngle + gap;
+                const endAngle = (s + 1) * spokeAngle - gap;
+
+                const spokeHole = new THREE.Path();
+                spokeHole.moveTo(Math.cos(startAngle) * spokeInner, Math.sin(startAngle) * spokeInner);
+                spokeHole.lineTo(Math.cos(startAngle) * spokeOuter, Math.sin(startAngle) * spokeOuter);
+                spokeHole.absarc(0, 0, spokeOuter, startAngle, endAngle, false);
+                spokeHole.lineTo(Math.cos(endAngle) * spokeInner, Math.sin(endAngle) * spokeInner);
+                spokeHole.absarc(0, 0, spokeInner, endAngle, startAngle, true);
+                shape.holes.push(spokeHole);
+            }
+
+            const extrudeSettings = {
+                depth: thickness,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.006,
+                bevelThickness: 0.006
+            };
+
+            return new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        }
+
+        // Pallet Fork Geometry
+        function createPalletForkGeometry(thickness) {
+            const shape = new THREE.Shape();
+            
+            // Layout centered around its pivot
+            shape.moveTo(-0.15, 0);
+            
+            // Left Pallet Arm
+            shape.lineTo(-0.65, 0.42);
+            shape.lineTo(-0.55, 0.55);
+            shape.lineTo(-0.1, 0.15);
+            
+            // Fork Shaft Center Base
+            shape.lineTo(0, 0.22);
+            
+            // Right Pallet Arm
+            shape.lineTo(0.55, 0.55);
+            shape.lineTo(0.65, 0.42);
+            shape.lineTo(0.15, 0);
+            
+            // Fork Body extending downwards
+            shape.lineTo(0.08, -0.6);
+            // Right Fork Horn
+            shape.lineTo(0.18, -0.6);
+            shape.lineTo(0.16, -0.76);
+            shape.lineTo(0.04, -0.76);
+            // Guard pin slot
+            shape.lineTo(0, -0.66);
+            // Left Fork Horn
+            shape.lineTo(-0.04, -0.76);
+            shape.lineTo(-0.16, -0.76);
+            shape.lineTo(-0.18, -0.6);
+            shape.lineTo(-0.08, -0.6);
+            
+            shape.closePath();
+            
+            const centerHole = new THREE.Path();
+            centerHole.absarc(0, 0, 0.08, 0, Math.PI * 2, true);
+            shape.holes.push(centerHole);
+            
+            const extrudeSettings = {
+                depth: thickness,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.006,
+                bevelThickness: 0.006
+            };
+            
+            return new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        }
+
+        // Shaft Generator
+        function createShaft(length, radius) {
+            const geo = new THREE.CylinderGeometry(radius, radius, length, 16);
+            const mesh = new THREE.Mesh(geo, steelMat);
+            mesh.rotation.x = Math.PI / 2;
+            return mesh;
+        }
+
+        // Pivot Jewel Generator
+        function createPivotJewel() {
+            const jewelGroup = new THREE.Group();
+            
+            // Gold Setting ring
+            const settingGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.06, 24);
+            const setting = new THREE.Mesh(settingGeo, brassMat);
+            
+            // Ruby Core
+            const rubyGeo = new THREE.CylinderGeometry(0.14, 0.14, 0.07, 16);
+            const ruby = new THREE.Mesh(rubyGeo, rubyMat);
+            ruby.position.y = 0.005;
+            
+            jewelGroup.add(setting);
+            jewelGroup.add(ruby);
+            jewelGroup.rotation.x = Math.PI / 2;
+            return jewelGroup;
+        }
+
+        // Blue Steel Screw Generator
+        function createScrew() {
+            const screwGroup = new THREE.Group();
+            
+            // Screw Head
+            const headGeo = new THREE.CylinderGeometry(0.16, 0.16, 0.06, 24);
+            const head = new THREE.Mesh(headGeo, blueSteelMat);
+            head.rotation.x = Math.PI / 2;
+            screwGroup.add(head);
+            
+            // Slot
+            const slotGeo = new THREE.BoxGeometry(0.32, 0.035, 0.03);
+            const slot = new THREE.Mesh(slotGeo, darkMetalMat);
+            slot.position.z = 0.031;
+            screwGroup.add(slot);
+            
+            return screwGroup;
+        }
+
+        // Mainspring Spiral Generator
+        function createMainspringGeometry() {
+            const shape = new THREE.Shape();
+            const turns = 4.5;
+            const segments = 180;
+            const rStart = 0.25;
+            const rEnd = 1.35;
+            const width = 0.035; // Ribbon thickness
+            
+            const outerPoints = [];
+            for (let i = 0; i <= segments; i++) {
+                const t = i / segments;
+                const theta = t * Math.PI * 2 * turns;
+                const r = rStart + (rEnd - rStart) * t;
+                outerPoints.push(new THREE.Vector2(Math.cos(theta) * r, Math.sin(theta) * r));
+            }
+            
+            const innerPoints = [];
+            for (let i = segments; i >= 0; i--) {
+                const t = i / segments;
+                const theta = t * Math.PI * 2 * turns;
+                const r = rStart + (rEnd - rStart) * t - width;
+                innerPoints.push(new THREE.Vector2(Math.cos(theta) * r, Math.sin(theta) * r));
+            }
+            
+            shape.moveTo(outerPoints[0].x, outerPoints[0].y);
+            for (let i = 1; i < outerPoints.length; i++) {
+                shape.lineTo(outerPoints[i].x, outerPoints[i].y);
+            }
+            for (let i = 0; i < innerPoints.length; i++) {
+                shape.lineTo(innerPoints[i].x, innerPoints[i].y);
+            }
+            shape.closePath();
+            
+            return new THREE.ExtrudeGeometry(shape, {
+                depth: 0.18,
+                bevelEnabled: false
+            });
+        }
+
+        // Main Scene setup
+        let scene, camera, renderer, controls;
+        const meshMap = {};
+        let isPlaying = true;
+        let animTime = 0;
+        let lastTime = 0;
+
+        function init() {
+            const container = document.getElementById('canvas-container');
+            
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x0d0f12, 0.02);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, -6.5, 7.5);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.1;
+            container.appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxPolarAngle = Math.PI / 2 + 0.15;
+            controls.minDistance = 3.5;
+            controls.maxDistance = 15;
+            controls.target.set(0.5, -0.6, 0.6);
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
+            scene.add(ambientLight);
+
+            const dirLight1 = new THREE.DirectionalLight(0xfff8ee, 1.4);
+            dirLight1.position.set(6, 4, 8);
+            scene.add(dirLight1);
+
+            const dirLight2 = new THREE.DirectionalLight(0xccdbee, 0.75);
+            dirLight2.position.set(-6, -4, 4);
+            scene.add(dirLight2);
+
+            const pointLight1 = new THREE.PointLight(0xffdf88, 1.2, 8);
+            pointLight1.position.set(1.5, -1.5, 2.0);
+            scene.add(pointLight1);
+
+            initMaterials();
+            buildMovement();
+
+            // Hide Loading text
+            document.getElementById('loading').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 800);
+
+            // Window resize handler
+            window.addEventListener('resize', onWindowResize);
+
+            // UI Actions
+            setupUI();
+
+            // Run Loop
+            requestAnimationFrame(animate);
+        }
+
+        function buildMovement() {
+            // ==========================================
+            // 1. MAINPLATE (Base Plate)
+            // ==========================================
+            const plateShape = new THREE.Shape();
+            const rPlate = 5.2;
+            const steps = 64;
+            for (let i = 0; i <= steps; i++) {
+                const theta = (i / steps) * Math.PI * 2;
+                let r = rPlate;
+                // Add stylized cutouts to mainplate edge
+                if (theta > Math.PI * 0.7 && theta < Math.PI * 1.1) {
+                    r = rPlate - 1.2;
+                } else if (theta > Math.PI * 1.6 && theta < Math.PI * 1.95) {
+                    r = rPlate - 0.7;
+                }
+                const x = Math.cos(theta) * r;
+                const y = Math.sin(theta) * r;
+                if (i === 0) plateShape.moveTo(x, y);
+                else plateShape.lineTo(x, y);
+            }
+            plateShape.closePath();
+
+            // Escapement / Balance view window in base plate
+            const viewHole = new THREE.Path();
+            viewHole.absarc(config.balance.x, config.balance.y, 2.1, 0, Math.PI * 2, true);
+            plateShape.holes.push(viewHole);
+
+            const plateGeo = new THREE.ExtrudeGeometry(plateShape, {
+                depth: 0.22,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.015,
+                bevelThickness: 0.015
+            });
+            const basePlate = new THREE.Mesh(plateGeo, darkMetalMat);
+            basePlate.position.z = -0.3;
+            scene.add(basePlate);
+
+            // ==========================================
+            // 2. BARREL ASSEMBLY (Spring case)
+            // ==========================================
+            const barrelGroup = new THREE.Group();
+            barrelGroup.position.set(config.barrel.x, config.barrel.y, 0.0);
+
+            // Main barrel housing
+            const housingOuter = new THREE.Shape();
+            housingOuter.absarc(0, 0, config.barrel.radiusOuter, 0, Math.PI * 2);
+            // Center axle hole
+            const housingHole = new THREE.Path();
+            housingHole.absarc(0, 0, config.barrel.hole, 0, Math.PI * 2, true);
+            housingOuter.holes.push(housingHole);
+            
+            // Add skeletonized viewports in the barrel cover to see the spring
+            for (let s = 0; s < config.barrel.spokes; s++) {
+                const angle = (s / config.barrel.spokes) * Math.PI * 2;
+                const viewHole = new THREE.Path();
+                viewHole.absarc(Math.cos(angle) * 1.15, Math.sin(angle) * 1.15, 0.38, 0, Math.PI * 2, true);
+                housingOuter.holes.push(viewHole);
+            }
+
+            const barrelMainGeo = new THREE.ExtrudeGeometry(housingOuter, {
+                depth: config.barrel.thickness,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.01,
+                bevelThickness: 0.01
+            });
+            const barrelMain = new THREE.Mesh(barrelMainGeo, brassMat);
+            barrelGroup.add(barrelMain);
+
+            // Teeth ring at the bottom of the barrel
+            const barrelTeethGeo = createGearGeometry(config.barrel.radiusInner, config.barrel.radiusOuter + 0.12, config.barrel.teeth, 0.08, config.barrel.hole, 0);
+            const barrelTeeth = new THREE.Mesh(barrelTeethGeo, brassMat);
+            barrelTeeth.position.z = -0.04;
+            barrelGroup.add(barrelTeeth);
+
+            // Spring inside
+            const springGeo = createMainspringGeometry();
+            const spring = new THREE.Mesh(springGeo, blueSteelMat);
+            spring.position.set(0, 0, 0.04);
+            barrelGroup.add(spring);
+
+            // Shaft
+            const barrelShaft = createShaft(0.55, 0.14);
+            barrelShaft.position.z = 0.1;
+            barrelGroup.add(barrelShaft);
+
+            scene.add(barrelGroup);
+            meshMap.barrel = barrelGroup;
+
+            // ==========================================
+            // 3. CENTER WHEEL
+            // ==========================================
+            const centerGroup = new THREE.Group();
+            centerGroup.position.set(config.center.x, config.center.y, 0.0);
+
+            // Lower Pinion (Driven by Barrel)
+            const centerPinionGeo = createGearGeometry(config.center.pinionRadiusInner, config.center.pinionRadiusOuter, config.center.pinionTeeth, 0.15, config.center.hole, 0);
+            const centerPinion = new THREE.Mesh(centerPinionGeo, steelMat);
+            centerPinion.position.z = 0.0;
+            centerGroup.add(centerPinion);
+
+            // Upper Main Wheel (Drives Third Wheel Pinion)
+            const centerWheelGeo = createGearGeometry(config.center.wheelRadiusInner, config.center.wheelRadiusOuter, config.center.wheelTeeth, config.center.thickness, config.center.hole, 5);
+            const centerWheel = new THREE.Mesh(centerWheelGeo, brassMat);
+            centerWheel.position.z = 0.35;
+            centerGroup.add(centerWheel);
+
+            // Shaft
+            const centerShaft = createShaft(0.72, 0.075);
+            centerShaft.position.z = 0.22;
+            centerGroup.add(centerShaft);
+
+            scene.add(centerGroup);
+            meshMap.center = centerGroup;
+
+            // ==========================================
+            // 4. THIRD WHEEL
+            // ==========================================
+            const thirdGroup = new THREE.Group();
+            thirdGroup.position.set(config.third.x, config.third.y, 0.0);
+
+            // Lower Pinion (Driven by Center Wheel)
+            const thirdPinionGeo = createGearGeometry(config.third.pinionRadiusInner, config.third.pinionRadiusOuter, config.third.pinionTeeth, 0.15, config.third.hole, 0);
+            const thirdPinion = new THREE.Mesh(thirdPinionGeo, steelMat);
+            thirdPinion.position.z = 0.35;
+            thirdGroup.add(thirdPinion);
+
+            // Upper Main Wheel (Drives Fourth Wheel Pinion)
+            const thirdWheelGeo = createGearGeometry(config.third.wheelRadiusInner, config.third.wheelRadiusOuter, config.third.wheelTeeth, config.third.thickness, config.third.hole, 4);
+            const thirdWheel = new THREE.Mesh(thirdWheelGeo, brassMat);
+            thirdWheel.position.z = 0.65;
+            thirdGroup.add(thirdWheel);
+
+            // Shaft
+            const thirdShaft = createShaft(0.72, 0.06);
+            thirdShaft.position.z = 0.45;
+            thirdGroup.add(thirdShaft);
+
+            scene.add(thirdGroup);
+            meshMap.third = thirdGroup;
+
+            // ==========================================
+            // 5. FOURTH WHEEL (seconds wheel)
+            // ==========================================
+            const fourthGroup = new THREE.Group();
+            fourthGroup.position.set(config.fourth.x, config.fourth.y, 0.0);
+
+            // Lower Pinion (Driven by Third Wheel)
+            const fourthPinionGeo = createGearGeometry(config.fourth.pinionRadiusInner, config.fourth.pinionRadiusOuter, config.fourth.pinionTeeth, 0.15, config.fourth.hole, 0);
+            const fourthPinion = new THREE.Mesh(fourthPinionGeo, steelMat);
+            fourthPinion.position.z = 0.65;
+            fourthGroup.add(fourthPinion);
+
+            // Upper Main Wheel (Drives Escape Pinion)
+            const fourthWheelGeo = createGearGeometry(config.fourth.wheelRadiusInner, config.fourth.wheelRadiusOuter, config.fourth.wheelTeeth, config.fourth.thickness, config.fourth.hole, 4);
+            const fourthWheel = new THREE.Mesh(fourthWheelGeo, brassMat);
+            fourthWheel.position.z = 0.95;
+            fourthGroup.add(fourthWheel);
+
+            // Shaft
+            const fourthShaft = createShaft(0.72, 0.05);
+            fourthShaft.position.z = 0.75;
+            fourthGroup.add(fourthShaft);
+
+            scene.add(fourthGroup);
+            meshMap.fourth = fourthGroup;
+
+            // ==========================================
+            // 6. ESCAPE WHEEL
+            // ==========================================
+            const escapeGroup = new THREE.Group();
+            escapeGroup.position.set(config.escape.x, config.escape.y, 0.0);
+
+            // Lower Pinion (Driven by Fourth Wheel)
+            const escapePinionGeo = createGearGeometry(config.escape.pinionRadiusInner, config.escape.pinionRadiusOuter, config.escape.pinionTeeth, 0.15, config.escape.hole, 0);
+            const escapePinion = new THREE.Mesh(escapePinionGeo, steelMat);
+            escapePinion.position.z = 0.95;
+            escapeGroup.add(escapePinion);
+
+            // Upper Escape Wheel (Interacts with Pallet Jewels)
+            const escapeWheelGeo = createEscapeWheelGeometry(config.escape.wheelRadiusInner, config.escape.wheelRadiusOuter, config.escape.wheelTeeth, config.escape.thickness, config.escape.hole);
+            const escapeWheel = new THREE.Mesh(escapeWheelGeo, steelMat);
+            escapeWheel.position.z = 1.25;
+            escapeGroup.add(escapeWheel);
+
+            // Shaft
+            const escapeShaft = createShaft(0.72, 0.04);
+            escapeShaft.position.z = 1.05;
+            escapeGroup.add(escapeShaft);
+
+            scene.add(escapeGroup);
+            meshMap.escape = escapeGroup;
+
+            // ==========================================
+            // 7. PALLET FORK (Escapement)
+            // ==========================================
+            const palletGroup = new THREE.Group();
+            palletGroup.position.set(config.pallet.x, config.pallet.y, 1.25);
+
+            // Lever Arm & Fork
+            const palletForkGeo = createPalletForkGeometry(0.06);
+            const palletFork = new THREE.Mesh(palletForkGeo, steelMat);
+            palletGroup.add(palletFork);
+
+            // Left Pallet Jewel (Ruby)
+            const rubyLeftGeo = new THREE.BoxGeometry(0.08, 0.16, 0.10);
+            const rubyLeft = new THREE.Mesh(rubyLeftGeo, rubyMat);
+            rubyLeft.position.set(-0.62, 0.44, 0.04);
+            rubyLeft.rotation.z = 0.35;
+            palletGroup.add(rubyLeft);
+
+            // Right Pallet Jewel (Ruby)
+            const rubyRightGeo = new THREE.BoxGeometry(0.08, 0.16, 0.10);
+            const rubyRight = new THREE.Mesh(rubyRightGeo, rubyMat);
+            rubyRight.position.set(0.62, 0.44, 0.04);
+            rubyRight.rotation.z = -0.35;
+            palletGroup.add(rubyRight);
+
+            // Fork shaft pin (Interacts with balance roller)
+            const guardPinGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.15, 8);
+            const guardPin = new THREE.Mesh(guardPinGeo, steelMat);
+            guardPin.rotation.x = Math.PI / 2;
+            guardPin.position.set(0, -0.72, 0.10);
+            palletGroup.add(guardPin);
+
+            // Shaft
+            const palletShaft = createShaft(0.55, 0.04);
+            palletShaft.position.z = 0.03;
+            palletGroup.add(palletShaft);
+
+            scene.add(palletGroup);
+            meshMap.pallet = palletGroup;
+
+            // ==========================================
+            // 8. BALANCE WHEEL & HAIRSPRING
+            // ==========================================
+            const balanceGroup = new THREE.Group();
+            balanceGroup.position.set(config.balance.x, config.balance.y, 0.0);
+
+            // Outer Glucydur Rim (Gold alloy)
+            const rimGeo = new THREE.TorusGeometry(1.9, 0.075, 12, 48);
+            const rim = new THREE.Mesh(rimGeo, brassMat);
+            rim.position.z = 1.55;
+            balanceGroup.add(rim);
+
+            // Spoke (3-arm)
+            for (let i = 0; i < 3; i++) {
+                const angle = (i / 3) * Math.PI * 2;
+                const spokeGeo = new THREE.CylinderGeometry(0.035, 0.035, 1.9, 8);
+                const spoke = new THREE.Mesh(spokeGeo, brassMat);
+                spoke.position.set(Math.cos(angle) * 0.95, Math.sin(angle) * 0.95, 1.55);
+                spoke.rotation.z = angle + Math.PI / 2;
+                balanceGroup.add(spoke);
+            }
+
+            // Compensation Screws around the balance rim (12 screws)
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const screw = createScrew();
+                screw.position.set(Math.cos(angle) * 1.96, Math.sin(angle) * 1.96, 1.55);
+                // Align slots along the radial direction
+                screw.rotation.z = angle + Math.PI/2;
+                screw.rotation.x = Math.PI/2;
+                balanceGroup.add(screw);
+            }
+
+            // Roller & Impulse Pin (Interacts with Pallet Fork)
+            const rollerGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.08, 24);
+            const roller = new THREE.Mesh(rollerGeo, steelMat);
+            roller.rotation.x = Math.PI / 2;
+            roller.position.z = 1.35; // Lower relative to main balance rim
+            balanceGroup.add(roller);
+
+            // Ruby Impulse Pin (Drives pallet fork fork horns)
+            const impulsePinGeo = new THREE.CylinderGeometry(0.032, 0.032, 0.14, 8);
+            const impulsePin = new THREE.Mesh(impulsePinGeo, rubyMat);
+            impulsePin.rotation.x = Math.PI / 2;
+            
+            // Placed at the proper interaction radius and angle
+            const impAngle = config.balance.offsetAngle; 
+            impulsePin.position.set(Math.cos(impAngle) * 0.28, Math.sin(impAngle) * 0.28, 1.37);
+            balanceGroup.add(impulsePin);
+
+            // Hairspring (Flat Archimedean Spiral)
+            const hsPoints = [];
+            const hsTurns = 6.5;
+            const hsSegments = 320;
+            const hsRStart = 0.15;
+            const hsREnd = 0.78;
+            for (let i = 0; i <= hsSegments; i++) {
+                const t = i / hsSegments;
+                const theta = t * Math.PI * 2 * hsTurns;
+                const r = hsRStart + (hsREnd - hsRStart) * t;
+                hsPoints.push(new THREE.Vector3(Math.cos(theta) * r, Math.sin(theta) * r, 0));
+            }
+            const hsCurve = new THREE.CatmullRomCurve3(hsPoints);
+            const hsGeo = new THREE.TubeGeometry(hsCurve, 250, 0.009, 6, false);
+            const hairspring = new THREE.Mesh(hsGeo, blueSteelMat);
+            hairspring.position.z = 1.75;
+            balanceGroup.add(hairspring);
+            meshMap.hairspring = hairspring;
+
+            // Balance Staff (Axis)
+            const balanceStaff = createShaft(0.9, 0.04);
+            balanceStaff.position.z = 1.55;
+            balanceGroup.add(balanceStaff);
+
+            scene.add(balanceGroup);
+            meshMap.balance = balanceGroup;
+
+            // ==========================================
+            // 9. BRIDGES & COCK (Chassis support structure)
+            // ==========================================
+            const bridgesGroup = new THREE.Group();
+
+            // A. Barrel Bridge (Covers Barrel, supports Center Wheel)
+            const bBridgeShape = new THREE.Shape();
+            bBridgeShape.moveTo(-4.3, -1.8);
+            bBridgeShape.quadraticCurveTo(-4.8, 0.2, -4.0, 1.6);
+            bBridgeShape.quadraticCurveTo(-2.4, 2.5, -0.6, 1.3);
+            bBridgeShape.lineTo(-0.8, -0.6);
+            bBridgeShape.quadraticCurveTo(-2.2, -1.8, -4.3, -1.8);
+            bBridgeShape.closePath();
+
+            // Pivot jewel holes in bridge
+            const bJewelHole = new THREE.Path();
+            bJewelHole.absarc(config.barrel.x, config.barrel.y, 0.2, 0, Math.PI * 2, true);
+            bBridgeShape.holes.push(bJewelHole);
+
+            const bBridgeGeo = new THREE.ExtrudeGeometry(bBridgeShape, {
+                depth: 0.15,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.015,
+                bevelThickness: 0.015
+            });
+            const barrelBridge = new THREE.Mesh(bBridgeGeo, plateMat);
+            barrelBridge.position.z = 0.45;
+            bridgesGroup.add(barrelBridge);
+
+            // B. Train Bridge (Supports Center, Third, Fourth, Escape wheels)
+            const tBridgeShape = new THREE.Shape();
+            tBridgeShape.moveTo(-0.5, -0.5);
+            tBridgeShape.quadraticCurveTo(-0.1, 1.4, 0.6, 2.1); // Path near third wheel
+            tBridgeShape.quadraticCurveTo(1.7, 2.6, 2.7, 1.4); // Path near fourth wheel
+            tBridgeShape.quadraticCurveTo(3.9, 0.4, 4.1, -1.4); // Path near escape wheel
+            tBridgeShape.lineTo(2.9, -1.7);
+            tBridgeShape.quadraticCurveTo(2.1, -0.6, 1.0, -0.7);
+            tBridgeShape.closePath();
+
+            // Jewel holes for axles
+            const jHoleCenter = new THREE.Path(); jHoleCenter.absarc(config.center.x, config.center.y, 0.2, 0, Math.PI * 2, true); tBridgeShape.holes.push(jHoleCenter);
+            const jHoleThird = new THREE.Path(); jHoleThird.absarc(config.third.x, config.third.y, 0.2, 0, Math.PI * 2, true); tBridgeShape.holes.push(jHoleThird);
+            const jHoleFourth = new THREE.Path(); jHoleFourth.absarc(config.fourth.x, config.fourth.y, 0.2, 0, Math.PI * 2, true); tBridgeShape.holes.push(jHoleFourth);
+            const jHoleEscape = new THREE.Path(); jHoleEscape.absarc(config.escape.x, config.escape.y, 0.2, 0, Math.PI * 2, true); tBridgeShape.holes.push(jHoleEscape);
+
+            const tBridgeGeo = new THREE.ExtrudeGeometry(tBridgeShape, {
+                depth: 0.15,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.015,
+                bevelThickness: 0.015
+            });
+            const trainBridge = new THREE.Mesh(tBridgeGeo, plateMat);
+            trainBridge.position.z = 1.05;
+            bridgesGroup.add(trainBridge);
+
+            // C. Pallet Cock (Small separate bridge for Pallet Staff)
+            const pBridgeShape = new THREE.Shape();
+            pBridgeShape.absarc(config.pallet.x, config.pallet.y, 0.35, 0, Math.PI * 2);
+            
+            const pBridgeGeo = new THREE.ExtrudeGeometry(pBridgeShape, {
+                depth: 0.12,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.01,
+                bevelThickness: 0.01
+            });
+            const palletCock = new THREE.Mesh(pBridgeGeo, plateMat);
+            palletCock.position.z = 1.35;
+            bridgesGroup.add(palletCock);
+
+            // D. Balance Cock (Distinct cantilever shape holding the balance pivot)
+            const balBridgeShape = new THREE.Shape();
+            // Origin centered at the balance pivot to simplify placement
+            balBridgeShape.moveTo(-0.3, -0.3);
+            balBridgeShape.quadraticCurveTo(-0.6, 0.8, -1.2, 1.4); // Extends outwards to base attachment
+            balBridgeShape.lineTo(-1.8, 1.0);
+            balBridgeShape.quadraticCurveTo(-1.0, 0.0, -0.5, -0.6);
+            balBridgeShape.quadraticCurveTo(0, -0.9, 0.5, -0.6);
+            balBridgeShape.quadraticCurveTo(0.6, -0.2, 0.4, 0.2);
+            balBridgeShape.quadraticCurveTo(-0.1, 0.6, -0.3, -0.3);
+            balBridgeShape.closePath();
+
+            // Center jewel hole
+            const balJewelHole = new THREE.Path();
+            balJewelHole.absarc(0, 0, 0.2, 0, Math.PI * 2, true);
+            balBridgeShape.holes.push(balJewelHole);
+
+            const balBridgeGeo = new THREE.ExtrudeGeometry(balBridgeShape, {
+                depth: 0.16,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.015,
+                bevelThickness: 0.015
+            });
+            const balanceCock = new THREE.Mesh(balBridgeGeo, plateMat);
+            balanceCock.position.set(config.balance.x, config.balance.y, 2.0);
+            bridgesGroup.add(balanceCock);
+
+            scene.add(bridgesGroup);
+
+            // ==========================================
+            // 10. DETAIL PARTS (Jewels, Screws, Pillars)
+            // ==========================================
+            
+            // Add Pivot Jewels to bridges
+            const jewels = [
+                { x: config.barrel.x, y: config.barrel.y, z: 0.60 },
+                { x: config.center.x, y: config.center.y, z: 1.20 },
+                { x: config.third.x, y: config.third.y, z: 1.20 },
+                { x: config.fourth.x, y: config.fourth.y, z: 1.20 },
+                { x: config.escape.x, y: config.escape.y, z: 1.20 },
+                { x: config.pallet.x, y: config.pallet.y, z: 1.47 },
+                { x: config.balance.x, y: config.balance.y, z: 2.16 }
+            ];
+            jewels.forEach(j => {
+                const jw = createPivotJewel();
+                jw.position.set(j.x, j.y, j.z);
+                scene.add(jw);
+            });
+
+            // Add Assembly Pillars & Screws for aesthetics
+            const structuralElements = [
+                // Pillars connecting mainplate to bridges
+                { x: -3.8, y: 1.4, z: -0.08, height: 0.53, type: 'pillar' },
+                { x: -1.2, y: 1.5, z: -0.08, height: 0.53, type: 'pillar' },
+                { x: -3.8, y: -1.4, z: -0.08, height: 0.53, type: 'pillar' },
+                
+                { x: 0.2, y: 2.1, z: -0.08, height: 1.13, type: 'pillar' },
+                { x: 2.4, y: 1.8, z: -0.08, height: 1.13, type: 'pillar' },
+                { x: 3.5, y: -1.6, z: -0.08, height: 1.13, type: 'pillar' },
+
+                // Screws on top of the bridges/cocks
+                { x: -3.8, y: 1.4, z: 0.62, type: 'screw' },
+                { x: -1.2, y: 1.5, z: 0.62, type: 'screw' },
+                { x: -3.8, y: -1.4, z: 0.62, type: 'screw' },
+                
+                { x: 0.2, y: 2.1, z: 1.22, type: 'screw' },
+                { x: 2.4, y: 1.8, z: 1.22, type: 'screw' },
+                { x: 3.5, y: -1.6, z: 1.22, type: 'screw' },
+                
+                // Balance bridge fixing screw
+                { x: config.balance.x - 1.4, y: config.balance.y + 1.2, z: 2.18, type: 'screw' }
+            ];
+
+            structuralElements.forEach(elem => {
+                if (elem.type === 'pillar') {
+                    const pillGeo = new THREE.CylinderGeometry(0.12, 0.12, elem.height, 16);
+                    const pill = new THREE.Mesh(pillGeo, brassMat);
+                    pill.rotation.x = Math.PI / 2;
+                    pill.position.set(elem.x, elem.y, elem.z + elem.height/2);
+                    scene.add(pill);
+                } else if (elem.type === 'screw') {
+                    const scr = createScrew();
+                    scr.position.set(elem.x, elem.y, elem.z);
+                    scene.add(scr);
+                }
+            });
+        }
+
+        // Mechanical Kinematics Simulation Logic
+        const OMEGA_BALANCE = Math.PI * 6.5; // Frequency of balance oscillation (~3.25 Hz)
+        const AMPLITUDE_BALANCE = 3.6;     // Max oscillation amplitude (rad, approx 206 degrees)
+
+        function updateMovement(t) {
+            // 1. Balance wheel oscillation
+            const balanceAngle = AMPLITUDE_BALANCE * Math.sin(OMEGA_BALANCE * t);
+            if (meshMap.balance) {
+                meshMap.balance.rotation.z = balanceAngle;
+            }
+            // Animate hairspring breathing (expansion / contraction + twisting)
+            if (meshMap.hairspring) {
+                meshMap.hairspring.rotation.z = balanceAngle;
+                const scaleFactor = 1.0 + Math.sin(OMEGA_BALANCE * t) * 0.12;
+                meshMap.hairspring.scale.set(scaleFactor, scaleFactor, 1.0);
+            }
+
+            // 2. Escapement synchronization (Pallet & Escape Wheel step function)
+            const cycle = Math.PI; // Phase duration for half-cycle oscillation
+            const phase = (OMEGA_BALANCE * t) % cycle;
+            const stepIndex = Math.floor((OMEGA_BALANCE * t) / cycle);
+
+            const transWidth = 0.22; // Width of the transition window (impulse action)
+            let transitionVal = 0.0;
+            let palletNormalizeVal = 0.0;
+
+            if (phase < transWidth) {
+                // Transition phase (pallets unlocking and impulse transmission)
+                const u = phase / transWidth;
+                transitionVal = 3 * u * u - 2 * u * u * u; // Smooth step interpolation (0 to 1)
+
+                const startState = (stepIndex % 2 === 0) ? -1.0 : 1.0;
+                const endState = (stepIndex % 2 === 0) ? 1.0 : -1.0;
+                palletNormalizeVal = startState + (endState - startState) * transitionVal;
+            } else {
+                // Rest/Lock phase
+                transitionVal = 1.0;
+                palletNormalizeVal = (stepIndex % 2 === 0) ? 1.0 : -1.0;
+            }
+
+            // Pallet fork swing
+            const maxPalletSwing = 0.12; // Swing range (~7 degrees)
+            const palletAngle = palletNormalizeVal * maxPalletSwing + config.pallet.offsetAngle;
+            if (meshMap.pallet) {
+                meshMap.pallet.rotation.z = palletAngle;
+            }
+
+            // Escape wheel rotation (incremental steps)
+            const escapeStep = stepIndex + transitionVal;
+            // 15 teeth = 30 steps per full rotation. 1 step = 2*PI / 30 rad.
+            const escapeAngle = escapeStep * (Math.PI * 2 / 30);
+            if (meshMap.escape) {
+                meshMap.escape.rotation.z = -escapeAngle; // Escape wheel rotates clockwise
+            }
+
+            // 3. Gear train ratio rotations (calculated backwards from escape wheel)
+            // Escape pinion (10 teeth) to Fourth Wheel (60 teeth): Ratio = 6
+            const fourthAngle = escapeAngle / 6;
+            if (meshMap.fourth) {
+                meshMap.fourth.rotation.z = fourthAngle + 0.05; // Added small gear backlash offset
+            }
+
+            // Fourth pinion (10 teeth) to Third Wheel (60 teeth): Ratio = 6
+            const thirdAngle = -fourthAngle / 6;
+            if (meshMap.third) {
+                meshMap.third.rotation.z = thirdAngle + 0.08;
+            }
+
+            // Third pinion (8 teeth) to Center Wheel (64 teeth): Ratio = 8
+            const centerAngle = -thirdAngle / 8;
+            if (meshMap.center) {
+                meshMap.center.rotation.z = centerAngle + 0.02;
+            }
+
+            // Center pinion (12 teeth) to Barrel (72 teeth): Ratio = 6
+            const barrelAngle = -centerAngle / 6;
+            if (meshMap.barrel) {
+                meshMap.barrel.rotation.z = barrelAngle + 0.015;
+            }
+        }
+
+        function animate(currentTime) {
+            requestAnimationFrame(animate);
+
+            if (lastTime === 0) lastTime = currentTime;
+            const delta = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+
+            if (isPlaying) {
+                animTime += delta;
+                updateMovement(animTime);
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function setupUI() {
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const btnText = document.getElementById('btn-text');
+
+            playPauseBtn.addEventListener('click', () => {
+                isPlaying = !isPlaying;
+                if (isPlaying) {
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'inline-block';
+                    btnText.textContent = 'Pause Movement';
+                } else {
+                    playIcon.style.display = 'inline-block';
+                    pauseIcon.style.display = 'none';
+                    btnText.textContent = 'Run Movement';
+                }
+            });
+
+            document.getElementById('reset-cam-btn').addEventListener('click', () => {
+                // Smoothly reset camera parameters
+                controls.reset();
+                camera.position.set(0, -6.5, 7.5);
+                controls.target.set(0.5, -0.6, 0.6);
+            });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

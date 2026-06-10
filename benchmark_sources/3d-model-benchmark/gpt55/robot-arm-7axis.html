@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>7 Axis Robot Arm</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0e1117;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    #app {
+      position: fixed;
+      inset: 0;
+    }
+
+    #controls {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      width: min(340px, calc(100vw - 32px));
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      padding: 14px;
+      color: #eef3ff;
+      background: rgba(17, 24, 39, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      backdrop-filter: blur(12px);
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 42px 1fr 52px;
+      gap: 10px;
+      align-items: center;
+      margin: 9px 0;
+      font-size: 13px;
+    }
+
+    .row label {
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .value {
+      text-align: right;
+      color: #bfdbfe;
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #38bdf8;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="controls"></div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const app = document.getElementById("app");
+    const panel = document.getElementById("controls");
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0e1117);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+    camera.position.set(8.5, 6.2, 10.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    app.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 2.8, 0);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.minDistance = 4;
+    controls.maxDistance = 24;
+
+    scene.add(new THREE.HemisphereLight(0xdbeafe, 0x111827, 1.7));
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    keyLight.position.set(5, 9, 6);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.shadow.camera.left = -8;
+    keyLight.shadow.camera.right = 8;
+    keyLight.shadow.camera.top = 8;
+    keyLight.shadow.camera.bottom = -8;
+    scene.add(keyLight);
+
+    const rimLight = new THREE.DirectionalLight(0x7dd3fc, 1.2);
+    rimLight.position.set(-6, 4, -5);
+    scene.add(rimLight);
+
+    const floor = new THREE.Mesh(
+      new THREE.CircleGeometry(8, 96),
+      new THREE.MeshStandardMaterial({ color: 0x151b26, roughness: 0.85, metalness: 0.1 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const grid = new THREE.GridHelper(16, 32, 0x334155, 0x1f2937);
+    grid.position.y = 0.01;
+    scene.add(grid);
+
+    const mats = {
+      base: new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.55, metalness: 0.45 }),
+      joint: new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.35, metalness: 0.55 }),
+      jointAlt: new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.38, metalness: 0.45 }),
+      link: new THREE.MeshStandardMaterial({ color: 0xe5e7eb, roughness: 0.46, metalness: 0.35 }),
+      linkDark: new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.5, metalness: 0.35 }),
+      gripper: new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.42, metalness: 0.35 })
+    };
+
+    function mesh(geometry, material, parent = scene) {
+      const m = new THREE.Mesh(geometry, material);
+      m.castShadow = true;
+      m.receiveShadow = true;
+      parent.add(m);
+      return m;
+    }
+
+    function makeCylinderBetween(length, radius, material, parent) {
+      const c = mesh(new THREE.CylinderGeometry(radius, radius, length, 32), material, parent);
+      c.position.y = length / 2;
+      return c;
+    }
+
+    function makeCapsuleLikeLink(length, radius, material, parent) {
+      const group = new THREE.Group();
+      parent.add(group);
+
+      makeCylinderBetween(length, radius, material, group);
+
+      const s1 = mesh(new THREE.SphereGeometry(radius, 32, 16), material, group);
+      s1.position.y = 0;
+
+      const s2 = mesh(new THREE.SphereGeometry(radius, 32, 16), material, group);
+      s2.position.y = length;
+
+      return group;
+    }
+
+    function makeJointVisual(parent, label, colorAlt = false) {
+      const group = new THREE.Group();
+      parent.add(group);
+
+      const sphere = mesh(
+        new THREE.SphereGeometry(0.24, 40, 24),
+        colorAlt ? mats.jointAlt : mats.joint,
+        group
+      );
+
+      const ringA = mesh(
+        new THREE.TorusGeometry(0.34, 0.022, 12, 64),
+        mats.linkDark,
+        group
+      );
+      ringA.rotation.x = Math.PI / 2;
+
+      const ringB = mesh(
+        new THREE.TorusGeometry(0.39, 0.018, 12, 64),
+        mats.linkDark,
+        group
+      );
+      ringB.rotation.y = Math.PI / 2;
+
+      const labelSprite = makeLabel(label);
+      labelSprite.position.set(0.42, 0.36, 0.1);
+      group.add(labelSprite);
+
+      return group;
+    }
+
+    function makeLabel(text) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 192;
+      canvas.height = 96;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
+      roundRect(ctx, 24, 18, 144, 60, 16);
+      ctx.fill();
+      ctx.strokeStyle = "rgba(125, 211, 252, 0.95)";
+      ctx.lineWidth = 4;
+      roundRect(ctx, 24, 18, 144, 60, 16);
+      ctx.stroke();
+      ctx.font = "bold 34px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#f8fafc";
+      ctx.fillText(text, 96, 49);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+
+      const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        depthTest: false,
+        depthWrite: false
+      });
+
+      const sprite = new THREE.Sprite(material);
+      sprite.scale.set(0.74, 0.37, 1);
+      sprite.renderOrder = 50;
+      return sprite;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    const base = new THREE.Group();
+    scene.add(base);
+
+    const basePlate = mesh(new THREE.CylinderGeometry(1.15, 1.35, 0.34, 64), mats.base, base);
+    basePlate.position.y = 0.17;
+
+    const pedestal = mesh(new THREE.CylinderGeometry(0.58, 0.72, 0.75, 48), mats.base, base);
+    pedestal.position.y = 0.72;
+
+    const joints = [];
+    const jointAxes = [
+      new THREE.Vector3(0, 1, 0),
+      new THREE.Vector3(0, 0, 1),
+      new THREE.Vector3(1, 0, 0),
+      new THREE.Vector3(0, 1, 0),
+      new THREE.Vector3(0, 0, 1),
+      new THREE.Vector3(1, 0, 0),
+      new THREE.Vector3(0, 1, 0)
+    ];
+
+    const jointLimits = [
+      [-180, 180],
+      [-120, 120],
+      [-160, 160],
+      [-180, 180],
+      [-125, 125],
+      [-170, 170],
+      [-180, 180]
+    ];
+
+    const linkLengths = [1.35, 1.65, 1.35, 1.15, 0.9, 0.72, 0.5];
+
+    const j1 = new THREE.Group();
+    j1.position.y = 1.1;
+    base.add(j1);
+    joints.push(j1);
+    makeJointVisual(j1, "J1", false);
+    makeCapsuleLikeLink(linkLengths[0], 0.18, mats.link, j1);
+
+    const j2 = new THREE.Group();
+    j2.position.y = linkLengths[0];
+    j1.add(j2);
+    joints.push(j2);
+    makeJointVisual(j2, "J2", true);
+    makeCapsuleLikeLink(linkLengths[1], 0.16, mats.link, j2);
+
+    const j3 = new THREE.Group();
+    j3.position.y = linkLengths[1];
+    j2.add(j3);
+    joints.push(j3);
+    makeJointVisual(j3, "J3", false);
+    makeCapsuleLikeLink(linkLengths[2], 0.145, mats.link, j3);
+
+    const j4 = new THREE.Group();
+    j4.position.y = linkLengths[2];
+    j3.add(j4);
+    joints.push(j4);
+    makeJointVisual(j4, "J4", true);
+    makeCapsuleLikeLink(linkLengths[3], 0.13, mats.link, j4);
+
+    const j5 = new THREE.Group();
+    j5.position.y = linkLengths[3];
+    j4.add(j5);
+    joints.push(j5);
+    makeJointVisual(j5, "J5", false);
+    makeCapsuleLikeLink(linkLengths[4], 0.115, mats.link, j5);
+
+    const j6 = new THREE.Group();
+    j6.position.y = linkLengths[4];
+    j5.add(j6);
+    joints.push(j6);
+    makeJointVisual(j6, "J6", true);
+    makeCapsuleLikeLink(linkLengths[5], 0.1, mats.link, j6);
+
+    const j7 = new THREE.Group();
+    j7.position.y = linkLengths[5];
+    j6.add(j7);
+    joints.push(j7);
+    makeJointVisual(j7, "J7", false);
+    makeCapsuleLikeLink(linkLengths[6], 0.085, mats.linkDark, j7);
+
+    const wrist = new THREE.Group();
+    wrist.position.y = linkLengths[6];
+    j7.add(wrist);
+
+    const palm = mesh(new THREE.BoxGeometry(0.48, 0.22, 0.34), mats.gripper, wrist);
+    palm.position.y = 0.18;
+
+    const fingerLeft = mesh(new THREE.BoxGeometry(0.12, 0.62, 0.12), mats.gripper, wrist);
+    fingerLeft.position.set(-0.22, 0.58, 0.12);
+    fingerLeft.rotation.z = -0.16;
+
+    const fingerRight = mesh(new THREE.BoxGeometry(0.12, 0.62, 0.12), mats.gripper, wrist);
+    fingerRight.position.set(0.22, 0.58, 0.12);
+    fingerRight.rotation.z = 0.16;
+
+    const fingerBackLeft = mesh(new THREE.BoxGeometry(0.1, 0.5, 0.1), mats.gripper, wrist);
+    fingerBackLeft.position.set(-0.18, 0.52, -0.13);
+    fingerBackLeft.rotation.z = -0.12;
+
+    const fingerBackRight = mesh(new THREE.BoxGeometry(0.1, 0.5, 0.1), mats.gripper, wrist);
+    fingerBackRight.position.set(0.18, 0.52, -0.13);
+    fingerBackRight.rotation.z = 0.12;
+
+    function addAxisIndicator(parent, axis, color) {
+      const dir = axis.clone().normalize();
+      const len = 0.82;
+      const shaft = mesh(new THREE.CylinderGeometry(0.025, 0.025, len, 12), new THREE.MeshBasicMaterial({ color }), parent);
+      shaft.position.copy(dir.clone().multiplyScalar(len / 2));
+
+      const cone = mesh(new THREE.ConeGeometry(0.07, 0.18, 16), new THREE.MeshBasicMaterial({ color }), parent);
+      cone.position.copy(dir.clone().multiplyScalar(len + 0.08));
+
+      const q = new THREE.Quaternion();
+      q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+      shaft.quaternion.copy(q);
+      cone.quaternion.copy(q);
+    }
+
+    joints.forEach((joint, index) => {
+      addAxisIndicator(joint, jointAxes[index], index % 2 ? 0xf97316 : 0x38bdf8);
+    });
+
+    const initialAngles = [20, -38, 52, 28, -34, 42, 18];
+
+    function setJoint(index, degrees) {
+      const joint = joints[index];
+      const axis = jointAxes[index];
+      joint.quaternion.setFromAxisAngle(axis, THREE.MathUtils.degToRad(degrees));
+    }
+
+    function buildControls() {
+      jointLimits.forEach(([min, max], index) => {
+        const row = document.createElement("div");
+        row.className = "row";
+
+        const label = document.createElement("label");
+        label.textContent = `J${index + 1}`;
+
+        const input = document.createElement("input");
+        input.type = "range";
+        input.min = min;
+        input.max = max;
+        input.step = "1";
+        input.value = initialAngles[index];
+
+        const value = document.createElement("div");
+        value.className = "value";
+        value.textContent = `${input.value}°`;
+
+        input.addEventListener("input", () => {
+          const degrees = Number(input.value);
+          value.textContent = `${degrees}°`;
+          setJoint(index, degrees);
+        });
+
+        row.append(label, input, value);
+        panel.appendChild(row);
+        setJoint(index, initialAngles[index]);
+      });
+
+      panel.addEventListener("pointerdown", event => event.stopPropagation());
+      panel.addEventListener("wheel", event => event.stopPropagation(), { passive: true });
+    }
+
+    buildControls();
+
+    function onResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.addEventListener("resize", onResize);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+
+      const time = performance.now() * 0.001;
+      palm.scale.x = 1 + Math.sin(time * 2.2) * 0.025;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

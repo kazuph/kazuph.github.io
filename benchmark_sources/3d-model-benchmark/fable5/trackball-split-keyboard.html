@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TB-SPLIT MK-II — トラックボール付き分割キーボード</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #12141a; }
+  #app { position: fixed; inset: 0; }
+  .hud { position: fixed; font-family: ui-monospace, "SF Mono", Menlo, monospace; color: #c8d2e0; user-select: none; pointer-events: none; }
+  .hud-tl { top: 18px; left: 20px; }
+  .hud-tl h1 { margin: 0; font-size: 18px; letter-spacing: 0.18em; color: #eef3fa; }
+  .hud-tl p { margin: 6px 0 0; font-size: 11px; letter-spacing: 0.08em; color: #7b8799; }
+  .hud-tr { top: 18px; right: 20px; text-align: right; font-size: 10px; letter-spacing: 0.12em; line-height: 1.8; color: #5d6878; }
+  .hud-br { bottom: 18px; right: 20px; background: rgba(16, 20, 28, 0.82); border: 1px solid #2a3346; border-radius: 8px; padding: 14px 16px; font-size: 11px; line-height: 1.9; min-width: 250px; }
+  .hud-br h2 { margin: 0 0 6px; font-size: 11px; letter-spacing: 0.22em; color: #62d6e8; }
+  .hud-br .row { display: flex; justify-content: space-between; gap: 18px; }
+  .hud-br .row span:first-child { color: #7b8799; }
+  .hud-bl { bottom: 18px; left: 20px; pointer-events: auto; }
+  .hud-bl .grp { display: flex; gap: 6px; margin-top: 8px; }
+  .hud-bl button { font: 11px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; color: #c8d2e0; background: rgba(20, 26, 36, 0.85); border: 1px solid #2a3346; border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+  .hud-bl button:hover { border-color: #62d6e8; }
+  .hud-bl button.on { color: #0c1118; background: #62d6e8; border-color: #62d6e8; }
+  .hint { position: fixed; bottom: 120px; left: 20px; font-size: 10px; color: #59637a; letter-spacing: 0.1em; font-family: ui-monospace, Menlo, monospace; }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="app"></div>
+<div class="hud hud-tl">
+  <h1>TB-SPLIT MK-II</h1>
+  <p>分割型トラックボール内蔵キーボード / ASSY-002 / REV C</p>
+</div>
+<div class="hud hud-tr">UNITS: mm<br>PROJECTION: PERSPECTIVE<br>SENSOR: PMW3360</div>
+<div class="hud hud-br" id="specs">
+  <h2>SPECIFICATIONS</h2>
+  <div class="row"><span>配列</span><span>カラムスタッガード 4行</span></div>
+  <div class="row"><span>キー数</span><span>24 + 24 + 親指 3×2</span></div>
+  <div class="row"><span>キーピッチ</span><span>19.05 mm</span></div>
+  <div class="row"><span>ボール径</span><span>ø34 mm（右手親指）</span></div>
+  <div class="row"><span>ユニット間</span><span>48 mm / スプレイ 7.5°×2</span></div>
+  <div class="row"><span>接続</span><span>TRRS or BLE</span></div>
+  <div class="row"><span>点灯</span><span>RGB アンダーグロー</span></div>
+</div>
+<div class="hud hud-bl">
+  <div class="grp">
+    <button id="v-iso" class="on">等角</button>
+    <button id="v-top">上面</button>
+    <button id="v-front">正面</button>
+    <button id="v-side">側面</button>
+  </div>
+  <div class="grp">
+    <button id="t-dim" class="on">寸法 ON</button>
+    <button id="t-exp">分解図</button>
+    <button id="t-wire">ワイヤー</button>
+    <button id="t-rgb" class="on">RGB ON</button>
+  </div>
+</div>
+<div class="hint">ドラッグ: 回転 / ホイール: ズーム / 右ドラッグ: パン</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const P = 19.05;                      // key pitch
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x12141a);
+scene.fog = new THREE.Fog(0x12141a, 700, 1400);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.getElementById('app').appendChild(renderer.domElement);
+
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 1, 4000);
+camera.position.set(170, 200, 260);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 0, 10);
+
+scene.add(new THREE.HemisphereLight(0xbcd0ff, 0x10131c, 0.85));
+const key = new THREE.DirectionalLight(0xffffff, 2.0);
+key.position.set(160, 260, 120);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.left = -250; key.shadow.camera.right = 250;
+key.shadow.camera.top = 250; key.shadow.camera.bottom = -250;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0x62d6e8, 0.5);
+rim.position.set(-200, 120, -160);
+scene.add(rim);
+
+const grid = new THREE.GridHelper(900, 45, 0x233044, 0x1a2230);
+grid.position.y = -0.01;
+scene.add(grid);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(1200, 1200), new THREE.ShadowMaterial({ opacity: 0.35 }));
+ground.rotation.x = -Math.PI / 2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+const matCase = new THREE.MeshStandardMaterial({ color: 0x171a21, roughness: 0.55, metalness: 0.35 });
+const matPlate = new THREE.MeshStandardMaterial({ color: 0x2a313f, roughness: 0.4, metalness: 0.6 });
+const matCream = new THREE.MeshStandardMaterial({ color: 0xefe9da, roughness: 0.65 });
+const matGray = new THREE.MeshStandardMaterial({ color: 0x868f9f, roughness: 0.65 });
+const matOrange = new THREE.MeshStandardMaterial({ color: 0xe8742c, roughness: 0.55 });
+const matBall = new THREE.MeshPhysicalMaterial({ color: 0xc01f30, roughness: 0.12, metalness: 0.15, clearcoat: 1, clearcoatRoughness: 0.08 });
+const matBezel = new THREE.MeshStandardMaterial({ color: 0x0d0f13, roughness: 0.3, metalness: 0.7 });
+
+function roundedRect(w, d, r) {
+  const s = new THREE.Shape();
+  const x = -w / 2, y = -d / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y); s.absarc(x + w - r, y + r, r, -Math.PI / 2, 0, false);
+  s.lineTo(x + w, y + d - r); s.absarc(x + w - r, y + d - r, r, 0, Math.PI / 2, false);
+  s.lineTo(x + r, y + d); s.absarc(x + r, y + d - r, r, Math.PI / 2, Math.PI, false);
+  s.lineTo(x, y + r); s.absarc(x + r, y + r, r, Math.PI, Math.PI * 1.5, false);
+  return s;
+}
+function caseMesh(w, d, h) {
+  const geo = new THREE.ExtrudeGeometry(roundedRect(w, d, 7), { depth: h, bevelEnabled: true, bevelThickness: 1.2, bevelSize: 1.2, bevelSegments: 3 });
+  geo.rotateX(-Math.PI / 2);
+  const m = new THREE.Mesh(geo, matCase);
+  m.castShadow = m.receiveShadow = true;
+  return m;
+}
+function keycap(wu, mat) {
+  const w = P * wu - 1.5;
+  const cap = new THREE.Mesh(
+    new THREE.CylinderGeometry((w - 4.5) * 0.7071, w * 0.7071, 8.5, 4, 1),
+    mat
+  );
+  cap.rotation.y = Math.PI / 4;
+  cap.scale.z = (P - 1.5) / w;       // square footprint regardless of width unit
+  cap.castShadow = true;
+  return cap;
+}
+
+// ---- build one half -------------------------------------------------------
+const stagger = [4, 2, 0, -3, -1, 3];           // column stagger (mm, -z is "up")
+const exploders = [];                            // {obj, base:Vector3, out:Vector3}
+const dims = new THREE.Group();
+
+function buildHalf(side) {                       // side: -1 left, +1 right
+  const g = new THREE.Group();
+  const hasBall = side > 0;
+  const cols = 6, rows = 4;
+  const w = cols * P + 14 + (hasBall ? 46 : 0);
+  const d = rows * P + 12 + 26;
+  const base = caseMesh(w, d, 8);
+  const innerX = side > 0 ? -(w / 2) + 7 + P / 2 + (0) : -(w / 2) + 7 + P / 2;
+  base.position.set(0, 0, 0);
+  g.add(base);
+
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(w - 6, 2, d - 6), matPlate);
+  plate.position.y = 9.4;
+  plate.castShadow = plate.receiveShadow = true;
+  g.add(plate);
+  exploders.push({ obj: plate, base: plate.position.clone(), out: plate.position.clone().add(new THREE.Vector3(0, 16, 0)) });
+
+  for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < rows; r++) {
+      let mat = matCream;
+      if (r === 3) mat = matGray;
+      if (c === 5 && r === 2) mat = matOrange;   // accent
+      const cap = keycap(1, mat);
+      const x = innerX + c * P;
+      const z = -d / 2 + 16 + r * P + stagger[c];
+      cap.position.set(x, 14.5, z);
+      g.add(cap);
+      exploders.push({ obj: cap, base: cap.position.clone(), out: cap.position.clone().add(new THREE.Vector3(0, 26 + r * 2, 0)) });
+    }
+  }
+  // thumb cluster: 3 keys, inner-bottom, fanned
+  for (let i = 0; i < 3; i++) {
+    const cap = keycap(i === 2 ? 1.5 : 1, i === 2 ? matOrange : matGray);
+    const x = innerX + (3.1 + i * 1.05) * P * (1) + (side > 0 ? -P * 1.2 : P * 0.0);
+    const z = -d / 2 + 16 + 4 * P + 6;
+    cap.position.set(x, 14.5, z);
+    cap.rotation.y += (i - 1) * 0.12 * side;
+    g.add(cap);
+    exploders.push({ obj: cap, base: cap.position.clone(), out: cap.position.clone().add(new THREE.Vector3(0, 30, 0)) });
+  }
+
+  if (hasBall) {
+    const cx = w / 2 - 26, cz = d / 2 - 30;
+    const housing = new THREE.Mesh(new THREE.CylinderGeometry(21, 23, 10, 48), matBezel);
+    housing.position.set(cx, 12, cz);
+    housing.castShadow = true;
+    g.add(housing);
+    const bezel = new THREE.Mesh(new THREE.TorusGeometry(18.5, 2.6, 16, 64), matBezel);
+    bezel.rotation.x = Math.PI / 2;
+    bezel.position.set(cx, 17, cz);
+    bezel.castShadow = true;
+    g.add(bezel);
+    const ball = new THREE.Mesh(new THREE.SphereGeometry(17, 48, 32), matBall);
+    ball.position.set(cx, 19, cz);
+    ball.castShadow = true;
+    g.add(ball);
+    g.userData.ball = ball;
+    exploders.push({ obj: ball, base: ball.position.clone(), out: ball.position.clone().add(new THREE.Vector3(0, 42, 0)) });
+    exploders.push({ obj: bezel, base: bezel.position.clone(), out: bezel.position.clone().add(new THREE.Vector3(0, 30, 0)) });
+  }
+
+  // RGB underglow
+  const glow = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(roundedRect(w + 10, d + 10, 9), { depth: 0.5, bevelEnabled: false }),
+    new THREE.MeshBasicMaterial({ color: 0x8833ff, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending })
+  );
+  glow.geometry.rotateX(-Math.PI / 2);
+  glow.position.y = 0.3;
+  g.add(glow);
+  g.userData.glow = glow;
+  g.userData.size = { w, d };
+  return g;
+}
+
+const right = buildHalf(1);
+const left = buildHalf(-1);
+const GAP = 48;
+left.position.x = -(left.userData.size.w / 2 + GAP / 2);
+right.position.x = right.userData.size.w / 2 + GAP / 2;
+left.rotation.y = -0.131;   // splay 7.5°
+right.rotation.y = 0.131;
+scene.add(left, right);
+
+// TRRS cable between halves
+const cableCurve = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(-GAP / 2 - 6, 8, -56),
+  new THREE.Vector3(-GAP / 4, 14, -78),
+  new THREE.Vector3(GAP / 4, 14, -78),
+  new THREE.Vector3(GAP / 2 + 6, 8, -56),
+]);
+const cable = new THREE.Mesh(new THREE.TubeGeometry(cableCurve, 40, 1.6, 10), new THREE.MeshStandardMaterial({ color: 0x22262e, roughness: 0.5 }));
+cable.castShadow = true;
+scene.add(cable);
+
+// ---- dimensions -----------------------------------------------------------
+function textSprite(text, color = '#62d6e8') {
+  const c = document.createElement('canvas');
+  c.width = 256; c.height = 96;
+  const ctx = c.getContext('2d');
+  ctx.font = 'bold 44px ui-monospace, Menlo, monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = color;
+  ctx.fillText(text, 128, 48);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthTest: false }));
+  sp.scale.set(40, 15, 1);
+  return sp;
+}
+function dimension(p1, p2, label, lift = 0) {
+  const g = new THREE.Group();
+  const mat = new THREE.LineBasicMaterial({ color: 0x62d6e8, transparent: true, opacity: 0.85 });
+  const a = p1.clone().add(new THREE.Vector3(0, lift, 0));
+  const b = p2.clone().add(new THREE.Vector3(0, lift, 0));
+  g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a, b]), mat));
+  for (const [tip, other] of [[a, b], [b, a]]) {
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(1.6, 6, 8), new THREE.MeshBasicMaterial({ color: 0x62d6e8 }));
+    cone.position.copy(tip);
+    cone.lookAt(other);
+    cone.rotateX(Math.PI / 2);
+    g.add(cone);
+  }
+  const mid = a.clone().lerp(b, 0.5).add(new THREE.Vector3(0, 9, 0));
+  const sp = textSprite(label);
+  sp.position.copy(mid);
+  g.add(sp);
+  return g;
+}
+dims.add(dimension(new THREE.Vector3(-GAP / 2, 4, 62), new THREE.Vector3(GAP / 2, 4, 62), '48', 0));
+const ballWorld = new THREE.Vector3();
+right.userData.ball.getWorldPosition(ballWorld);
+dims.add(dimension(ballWorld.clone().add(new THREE.Vector3(-17, 8, 0)), ballWorld.clone().add(new THREE.Vector3(17, 8, 0)), 'ø34'));
+const lw = left.userData.size.w;
+dims.add(dimension(new THREE.Vector3(-GAP / 2 - lw, 4, 78), new THREE.Vector3(-GAP / 2, 4, 78), String(lw.toFixed(1))));
+scene.add(dims);
+
+// ---- UI state -------------------------------------------------------------
+let explode = 0, explodeTarget = 0, rgbOn = true, camTween = null;
+const views = {
+  'v-iso': { pos: new THREE.Vector3(170, 200, 260), tgt: new THREE.Vector3(0, 0, 10) },
+  'v-top': { pos: new THREE.Vector3(0, 420, 0.01), tgt: new THREE.Vector3(0, 0, 0) },
+  'v-front': { pos: new THREE.Vector3(0, 60, 360), tgt: new THREE.Vector3(0, 10, 0) },
+  'v-side': { pos: new THREE.Vector3(380, 70, 0), tgt: new THREE.Vector3(0, 10, 0) },
+};
+for (const id of Object.keys(views)) {
+  document.getElementById(id).addEventListener('click', () => {
+    document.querySelectorAll('[id^="v-"]').forEach(b => b.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
+    camTween = { t: 0, fromP: camera.position.clone(), fromT: controls.target.clone(), toP: views[id].pos, toT: views[id].tgt };
+  });
+}
+const bDim = document.getElementById('t-dim');
+bDim.addEventListener('click', () => { dims.visible = !dims.visible; bDim.classList.toggle('on'); bDim.textContent = dims.visible ? '寸法 ON' : '寸法 OFF'; });
+const bExp = document.getElementById('t-exp');
+bExp.addEventListener('click', () => { explodeTarget = explodeTarget > 0 ? 0 : 1; bExp.classList.toggle('on'); });
+const bWire = document.getElementById('t-wire');
+bWire.addEventListener('click', () => {
+  bWire.classList.toggle('on');
+  const on = bWire.classList.contains('on');
+  for (const m of [matCase, matPlate, matCream, matGray, matOrange, matBall, matBezel]) m.wireframe = on;
+});
+const bRgb = document.getElementById('t-rgb');
+bRgb.addEventListener('click', () => { rgbOn = !rgbOn; bRgb.classList.toggle('on'); bRgb.textContent = rgbOn ? 'RGB ON' : 'RGB OFF'; });
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+
+  explode += (explodeTarget - explode) * Math.min(1, dt * 5);
+  for (const e of exploders) e.obj.position.lerpVectors(e.base, e.out, explode);
+
+  right.userData.ball.rotation.y += dt * 0.6;
+  right.userData.ball.rotation.x = Math.sin(t * 0.5) * 0.3;
+
+  for (const half of [left, right]) {
+    const glow = half.userData.glow;
+    glow.visible = rgbOn;
+    if (rgbOn) glow.material.color.setHSL((t * 0.08 + (half === right ? 0.5 : 0)) % 1, 0.9, 0.55);
+  }
+
+  if (camTween) {
+    camTween.t += dt * 1.8;
+    const k = camTween.t >= 1 ? 1 : 1 - Math.pow(1 - camTween.t, 3);
+    camera.position.lerpVectors(camTween.fromP, camTween.toP, k);
+    controls.target.lerpVectors(camTween.fromT, camTween.toT, k);
+    if (camTween.t >= 1) camTween = null;
+  }
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>

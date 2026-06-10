@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7-Axis Robot Arm Simulator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .ui-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      color: #f8fafc;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 10;
+    }
+    .ui-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+      background: linear-gradient(to right, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 8px;
+    }
+    .control-group {
+      margin-bottom: 12px;
+    }
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      color: #cbd5e1;
+    }
+    .control-label span.val {
+      font-family: 'Space Mono', monospace;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 5px;
+      background: #334155;
+      border-radius: 3px;
+      outline: none;
+      margin: 6px 0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #38bdf8;
+      cursor: pointer;
+      transition: transform 0.1s, background-color 0.1s;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      background: #0ea5e9;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, #38bdf8 0%, #1d4ed8 100%);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+    }
+    .btn:hover {
+      opacity: 0.95;
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    .btn.active {
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f8fafc;
+      margin-top: 8px;
+      box-shadow: none;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+    }
+    #label-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .joint-label {
+      position: absolute;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid #38bdf8;
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: #38bdf8;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      pointer-events: none;
+      transform: translate(-50%, -100%);
+      white-space: nowrap;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+      transition: opacity 0.15s ease;
+      opacity: 0;
+    }
+    .joint-label::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid #38bdf8;
+    }
+    .help-overlay {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.8rem;
+      pointer-events: none;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <div class="ui-container">
+    <div class="ui-title">7-AXIS ROBOTIC ARM</div>
+    
+    <div class="control-group">
+      <div class="control-label"><span>J1 - Base Yaw</span><span class="val" id="val-j1">0°</span></div>
+      <input type="range" id="slider-j1" min="-180" max="180" value="0">
+    </div>
+    <div class="control-group">
+      <div class="control-label"><span>J2 - Shoulder Pitch</span><span class="val" id="val-j2">0°</span></div>
+      <input type="range" id="slider-j2" min="-120" max="120" value="0">
+    </div>
+    <div class="control-group">
+      <div class="control-label"><span>J3 - Shoulder Roll</span><span class="val" id="val-j3">0°</span></div>
+      <input type="range" id="slider-j3" min="-180" max="180" value="0">
+    </div>
+    <div class="control-group">
+      <div class="control-label"><span>J4 - Elbow Pitch</span><span class="val" id="val-j4">0°</span></div>
+      <input type="range" id="slider-j4" min="-120" max="120" value="0">
+    </div>
+    <div class="control-group">
+      <div class="control-label"><span>J5 - Wrist Yaw</span><span class="val" id="val-j5">0°</span></div>
+      <input type="range" id="slider-j5" min="-180" max="180" value="0">
+    </div>
+    <div class="control-group">
+      <div class="control-label"><span>J6 - Wrist Pitch</span><span class="val" id="val-j6">0°</span></div>
+      <input type="range" id="slider-j6" min="-120" max="120" value="0">
+    </div>
+    <div class="control-group">
+      <div class="control-label"><span>J7 - Wrist Roll</span><span class="val" id="val-j7">0°</span></div>
+      <input type="range" id="slider-j7" min="-180" max="180" value="0">
+    </div>
+
+    <button class="btn" id="btn-demo">Auto Demo</button>
+    <div style="display: flex; gap: 8px; margin-top: 8px;">
+      <button class="btn btn-secondary" id="btn-random" style="flex: 1; margin-top: 0;">Random</button>
+      <button class="btn btn-secondary" id="btn-reset" style="flex: 1; margin-top: 0;">Reset</button>
+    </div>
+  </div>
+
+  <div id="label-container"></div>
+  <div class="help-overlay">Drag: Rotate | Right Click: Pan | Scroll: Zoom</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script>
+    // --- Three.js Setup ---
+    const scene = new THREE.Scene();
+    
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(7, 8, 10);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.maxPolarAngle = Math.PI / 2 + 0.1; // 地面より下に行かないように制限
+    controls.minDistance = 3;
+    controls.maxDistance = 25;
+    controls.target.set(0, 3.5, 0);
+
+    // --- Lighting ---
+    const ambientLight = new THREE.AmbientLight(0x1e293b, 0.6);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight.position.set(8, 12, 8);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.camera.near = 0.5;
+    dirLight.shadow.camera.far = 25;
+    dirLight.shadow.camera.left = -6;
+    dirLight.shadow.camera.right = 6;
+    dirLight.shadow.camera.top = 8;
+    dirLight.shadow.camera.bottom = -4;
+    dirLight.shadow.bias = -0.0005;
+    scene.add(dirLight);
+
+    const pointLight = new THREE.PointLight(0x38bdf8, 1.5, 12);
+    pointLight.position.set(-4, 5, -2);
+    scene.add(pointLight);
+
+    // --- Ground Grid & Shadow Plane ---
+    const gridHelper = new THREE.GridHelper(20, 20, 0x475569, 0x1e293b);
+    gridHelper.position.y = 0;
+    scene.add(gridHelper);
+
+    const shadowPlaneGeo = new THREE.PlaneGeometry(40, 40);
+    const shadowPlaneMat = new THREE.ShadowMaterial({ opacity: 0.4 });
+    const shadowPlane = new THREE.Mesh(shadowPlaneGeo, shadowPlaneMat);
+    shadowPlane.rotation.x = -Math.PI / 2;
+    shadowPlane.receiveShadow = true;
+    scene.add(shadowPlane);
+
+    // --- Materials ---
+    const matBase = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8, roughness: 0.2 });
+    const matLink = new THREE.MeshStandardMaterial({ color: 0xf97316, metalness: 0.3, roughness: 0.4 }); // Industrial Orange
+    const matJoint = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.9, roughness: 0.15 });
+    const matGripper = new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.7, roughness: 0.3 });
+
+    // --- Build Robot Arm (Hierarchical Structure) ---
+    const robot = new THREE.Group();
+    scene.add(robot);
+
+    // Base (Fixed)
+    const baseGeom = new THREE.CylinderGeometry(1.0, 1.2, 0.4, 32);
+    const baseMesh = new THREE.Mesh(baseGeom, matBase);
+    baseMesh.position.y = 0.2;
+    baseMesh.castShadow = true;
+    baseMesh.receiveShadow = true;
+    robot.add(baseMesh);
+
+    // Joint 1 (Yaw - Y axis)
+    const j1Group = new THREE.Group();
+    j1Group.position.y = 0.4;
+    robot.add(j1Group);
+
+    const j1Visual = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.3, 32), matJoint);
+    j1Visual.position.y = 0.15;
+    j1Visual.castShadow = true;
+    j1Visual.receiveShadow = true;
+    j1Group.add(j1Visual);
+
+    // Link 1
+    const link1Group = new THREE.Group();
+    j1Group.add(link1Group);
+
+    const link1Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 1.6, 16), matLink);
+    link1Mesh.position.y = 1.1;
+    link1Mesh.castShadow = true;
+    link1Mesh.receiveShadow = true;
+    link1Group.add(link1Mesh);
+
+    const decRing1 = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.15, 16), matBase);
+    decRing1.position.y = 0.4;
+    link1Group.add(decRing1);
+
+    // Joint 2 (Pitch - X axis)
+    const j2Group = new THREE.Group();
+    j2Group.position.y = 1.9; // Link 1 Top
+    link1Group.add(j2Group);
+
+    const j2Visual = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.6, 32), matJoint);
+    j2Visual.rotation.z = Math.PI / 2;
+    j2Visual.castShadow = true;
+    j2Visual.receiveShadow = true;
+    j2Group.add(j2Visual);
+
+    const j2CapL = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.52, 0.1, 32), matBase);
+    j2CapL.rotation.z = Math.PI / 2;
+    j2CapL.position.x = -0.3;
+    j2Group.add(j2CapL);
+    const j2CapR = j2CapL.clone();
+    j2CapR.position.x = 0.3;
+    j2Group.add(j2CapR);
+
+    // Link 2
+    const link2Group = new THREE.Group();
+    j2Group.add(link2Group);
+
+    const link2Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 1.6, 16), matLink);
+    link2Mesh.position.y = 0.8;
+    link2Mesh.castShadow = true;
+    link2Mesh.receiveShadow = true;
+    link2Group.add(link2Mesh);
+
+    // Joint 3 (Yaw - Y axis)
+    const j3Group = new THREE.Group();
+    j3Group.position.y = 1.6;
+    link2Group.add(j3Group);
+
+    const j3Visual = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.3, 32), matJoint);
+    j3Visual.position.y = 0.15;
+    j3Visual.castShadow = true;
+    j3Group.add(j3Visual);
+
+    // Link 3
+    const link3Group = new THREE.Group();
+    j3Group.add(link3Group);
+
+    const link3Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 1.4, 16), matLink);
+    link3Mesh.position.y = 1.0;
+    link3Mesh.castShadow = true;
+    link3Mesh.receiveShadow = true;
+    link3Group.add(link3Mesh);
+
+    const decRing3 = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.1, 16), matBase);
+    decRing3.position.y = 0.4;
+    link3Group.add(decRing3);
+
+    // Joint 4 (Pitch - X axis)
+    const j4Group = new THREE.Group();
+    j4Group.position.y = 1.7;
+    link3Group.add(j4Group);
+
+    const j4Visual = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.5, 32), matJoint);
+    j4Visual.rotation.z = Math.PI / 2;
+    j4Visual.castShadow = true;
+    j4Group.add(j4Visual);
+
+    const j4CapL = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.08, 32), matBase);
+    j4CapL.rotation.z = Math.PI / 2;
+    j4CapL.position.x = -0.25;
+    j4Group.add(j4CapL);
+    const j4CapR = j4CapL.clone();
+    j4CapR.position.x = 0.25;
+    j4Group.add(j4CapR);
+
+    // Link 4
+    const link4Group = new THREE.Group();
+    j4Group.add(link4Group);
+
+    const link4Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 1.2, 16), matLink);
+    link4Mesh.position.y = 0.6;
+    link4Mesh.castShadow = true;
+    link4Mesh.receiveShadow = true;
+    link4Group.add(link4Mesh);
+
+    // Joint 5 (Yaw - Y axis)
+    const j5Group = new THREE.Group();
+    j5Group.position.y = 1.2;
+    link4Group.add(j5Group);
+
+    const j5Visual = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.25, 32), matJoint);
+    j5Visual.position.y = 0.125;
+    j5Visual.castShadow = true;
+    j5Group.add(j5Visual);
+
+    // Link 5
+    const link5Group = new THREE.Group();
+    j5Group.add(link5Group);
+
+    const link5Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 1.0, 16), matLink);
+    link5Mesh.position.y = 0.75;
+    link5Mesh.castShadow = true;
+    link5Mesh.receiveShadow = true;
+    link5Group.add(link5Mesh);
+
+    // Joint 6 (Pitch - X axis)
+    const j6Group = new THREE.Group();
+    j6Group.position.y = 1.25;
+    link5Group.add(j6Group);
+
+    const j6Visual = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.4, 32), matJoint);
+    j6Visual.rotation.z = Math.PI / 2;
+    j6Visual.castShadow = true;
+    j6Group.add(j6Visual);
+
+    const j6CapL = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.06, 32), matBase);
+    j6CapL.rotation.z = Math.PI / 2;
+    j6CapL.position.x = -0.2;
+    j6Group.add(j6CapL);
+    const j6CapR = j6CapL.clone();
+    j6CapR.position.x = 0.2;
+    j6Group.add(j6CapR);
+
+    // Link 6
+    const link6Group = new THREE.Group();
+    j6Group.add(link6Group);
+
+    const link6Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.8, 16), matLink);
+    link6Mesh.position.y = 0.4;
+    link6Mesh.castShadow = true;
+    link6Mesh.receiveShadow = true;
+    link6Group.add(link6Mesh);
+
+    // Joint 7 (Yaw - Y axis)
+    const j7Group = new THREE.Group();
+    j7Group.position.y = 0.8;
+    link6Group.add(j7Group);
+
+    const j7Visual = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.2, 32), matJoint);
+    j7Visual.position.y = 0.1;
+    j7Visual.castShadow = true;
+    j7Group.add(j7Visual);
+
+    // Link 7 / Hand Base
+    const link7Group = new THREE.Group();
+    j7Group.add(link7Group);
+
+    const handBaseMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.2, 0.2, 16), matBase);
+    handBaseMesh.position.y = 0.3;
+    handBaseMesh.castShadow = true;
+    link7Group.add(handBaseMesh);
+
+    const gripperPlate = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.08, 0.2), matBase);
+    gripperPlate.position.y = 0.44;
+    gripperPlate.castShadow = true;
+    link7Group.add(gripperPlate);
+
+    // Gripper Fingers
+    const fingerGeom = new THREE.BoxGeometry(0.06, 0.3, 0.12);
+    
+    const leftFinger = new THREE.Mesh(fingerGeom, matGripper);
+    leftFinger.position.set(-0.2, 0.63, 0);
+    leftFinger.castShadow = true;
+    link7Group.add(leftFinger);
+
+    const rightFinger = new THREE.Mesh(fingerGeom, matGripper);
+    rightFinger.position.set(0.2, 0.63, 0);
+    rightFinger.castShadow = true;
+    link7Group.add(rightFinger);
+
+    // Inner Claws
+    const clawGeom = new THREE.BoxGeometry(0.06, 0.06, 0.12);
+    const leftClaw = new THREE.Mesh(clawGeom, matGripper);
+    leftClaw.position.set(0.04, 0.12, 0);
+    leftFinger.add(leftClaw);
+
+    const rightClaw = new THREE.Mesh(clawGeom, matGripper);
+    rightClaw.position.set(-0.04, 0.12, 0);
+    rightFinger.add(rightClaw);
+
+    // --- Joint Label Anchors & DOM Generation ---
+    const joints = [j1Group, j2Group, j3Group, j4Group, j5Group, j6Group, j7Group];
+    const jointAxes = ['y', 'x', 'y', 'x', 'y', 'x', 'y'];
+    
+    const labelAnchors = [];
+    const labelContainer = document.getElementById('label-container');
+    const labels = [];
+
+    function createLabelAnchor(parent, yOffset, index) {
+      const anchor = new THREE.Object3D();
+      anchor.position.set(0, yOffset, 0);
+      parent.add(anchor);
+      labelAnchors.push(anchor);
+
+      const div = document.createElement('div');
+      div.className = 'joint-label';
+      div.innerText = `J${index + 1}`;
+      labelContainer.appendChild(div);
+      labels.push(div);
+    }
+
+    createLabelAnchor(j1Group, 0.15, 0);
+    createLabelAnchor(j2Group, 0.3, 1);
+    createLabelAnchor(j3Group, 0.15, 2);
+    createLabelAnchor(j4Group, 0.25, 3);
+    createLabelAnchor(j5Group, 0.125, 4);
+    createLabelAnchor(j6Group, 0.2, 5);
+    createLabelAnchor(j7Group, 0.1, 6);
+
+    // --- UI Controls Logic ---
+    const sliders = [];
+    const valDisplays = [];
+    for (let i = 0; i < 7; i++) {
+      sliders.push(document.getElementById(`slider-j${i+1}`));
+      valDisplays.push(document.getElementById(`val-j${i+1}`));
+    }
+
+    function updateJointAngle(index, degrees) {
+      const rad = THREE.MathUtils.degToRad(degrees);
+      const joint = joints[index];
+      const axis = jointAxes[index];
+      joint.rotation[axis] = rad;
+      valDisplays[index].innerText = `${degrees}°`;
+    }
+
+    sliders.forEach((slider, index) => {
+      slider.addEventListener('input', (e) => {
+        if (demoActive) toggleDemo(false);
+        if (isTransitioning) isTransitioning = false;
+        updateJointAngle(index, parseInt(e.target.value));
+      });
+    });
+
+    // --- Demo & Animation States ---
+    let demoActive = false;
+    let isTransitioning = false;
+    let transitionProgress = 0;
+    let startAngles = [0, 0, 0, 0, 0, 0, 0];
+    let targetAngles = [0, 0, 0, 0, 0, 0, 0];
+
+    const btnDemo = document.getElementById('btn-demo');
+    const btnReset = document.getElementById('btn-reset');
+    const btnRandom = document.getElementById('btn-random');
+
+    function toggleDemo(forceState) {
+      demoActive = forceState !== undefined ? forceState : !demoActive;
+      if (demoActive) {
+        btnDemo.innerText = 'Stop Demo';
+        btnDemo.classList.add('active');
+        isTransitioning = false;
+      } else {
+        btnDemo.innerText = 'Auto Demo';
+        btnDemo.classList.remove('active');
+      }
+    }
+
+    btnDemo.addEventListener('click', () => toggleDemo());
+
+    btnReset.addEventListener('click', () => {
+      toggleDemo(false);
+      isTransitioning = true;
+      transitionProgress = 0;
+      for (let i = 0; i < 7; i++) {
+        startAngles[i] = parseInt(sliders[i].value);
+        targetAngles[i] = 0;
+      }
+    });
+
+    btnRandom.addEventListener('click', () => {
+      toggleDemo(false);
+      isTransitioning = true;
+      transitionProgress = 0;
+      for (let i = 0; i < 7; i++) {
+        startAngles[i] = parseInt(sliders[i].value);
+        const limit = (i % 2 === 0) ? 150 : 90;
+        targetAngles[i] = Math.floor(Math.random() * (limit * 2 + 1) - limit);
+      }
+    });
+
+    // --- Window Resize ---
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // --- Label Projection ---
+    const tempV = new THREE.Vector3();
+    function updateLabels() {
+      labelAnchors.forEach((anchor, index) => {
+        anchor.getWorldPosition(tempV);
+        tempV.project(camera);
+
+        const x = (tempV.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (tempV.y * -0.5 + 0.5) * window.innerHeight;
+
+        const isBehind = tempV.z > 1;
+        const isOutOfScreen = x < 0 || x > window.innerWidth || y < 0 || y > window.innerHeight;
+
+        if (isBehind || isOutOfScreen) {
+          labels[index].style.opacity = '0';
+        } else {
+          labels[index].style.opacity = '1';
+          labels[index].style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 15}px)`;
+        }
+      });
+    }
+
+    // --- Main Loop ---
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const time = clock.getElapsedTime();
+
+      // Handle Automatic Demo Mode
+      if (demoActive) {
+        const motions = [
+          Math.sin(time * 0.4) * 120,          // J1 (Yaw)
+          Math.sin(time * 0.6 + 1.0) * 60,     // J2 (Pitch)
+          Math.cos(time * 0.5 + 2.0) * 90,     // J3 (Yaw)
+          Math.sin(time * 0.7 + 3.0) * 70,     // J4 (Pitch)
+          Math.cos(time * 0.4 + 4.0) * 100,    // J5 (Yaw)
+          Math.sin(time * 0.8 + 5.0) * 50,     // J6 (Pitch)
+          Math.sin(time * 1.0) * 120           // J7 (Yaw)
+        ];
+
+        for (let i = 0; i < 7; i++) {
+          const angle = Math.round(motions[i]);
+          sliders[i].value = angle;
+          updateJointAngle(i, angle);
+        }
+
+        // Automatic Gripper animation during demo
+        const gripperVal = (Math.sin(time * 2.5) + 1) * 0.5; // 0 to 1
+        leftFinger.position.x = -0.08 - (1 - gripperVal) * 0.14;
+        rightFinger.position.x = 0.08 + (1 - gripperVal) * 0.14;
+      }
+      
+      // Handle Smooth Transition to Random/Reset Pose
+      else if (isTransitioning) {
+        transitionProgress += 0.03;
+        if (transitionProgress >= 1) {
+          transitionProgress = 1;
+          isTransitioning = false;
+        }
+
+        for (let i = 0; i < 7; i++) {
+          const angle = Math.round(THREE.MathUtils.lerp(startAngles[i], targetAngles[i], transitionProgress));
+          sliders[i].value = angle;
+          updateJointAngle(i, angle);
+        }
+        
+        // Return fingers to default slightly open state
+        leftFinger.position.x = THREE.MathUtils.lerp(leftFinger.position.x, -0.2, 0.1);
+        rightFinger.position.x = THREE.MathUtils.lerp(rightFinger.position.x, 0.2, 0.1);
+      } else {
+        // Static state gripper finger placement
+        leftFinger.position.x = -0.2;
+        rightFinger.position.x = 0.2;
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+      updateLabels();
+    }
+
+    animate();
+  </script>
+</body>
+</html>

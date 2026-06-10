@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEO-GLOW 3D Split Keyboard Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #020204;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ffcc;
+            user-select: none;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+        }
+        #ui-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            box-sizing: border-box;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .hud-panel {
+            background: rgba(4, 4, 8, 0.85);
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 252, 0.2);
+            padding: 15px 25px;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hud-panel:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 252, 0.4);
+            border-color: #ff007f;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 8px #00ffcc;
+            color: #00ffcc;
+        }
+        .status-tag {
+            font-size: 0.8rem;
+            color: #ff007f;
+            text-shadow: 0 0 5px #ff007f;
+            animation: blink 1.5s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .controls-info {
+            align-self: flex-end;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            text-align: right;
+            border-right: 3px solid #ff007f;
+            padding-right: 15px;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.3);
+        }
+        .stats-panel {
+            align-self: flex-start;
+            font-size: 0.8rem;
+            min-width: 220px;
+        }
+        .stat-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .stat-val {
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            pointer-events: auto;
+        }
+        .cyber-btn {
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            padding: 6px 14px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .cyber-btn:hover {
+            background: #00ffcc;
+            color: #020204;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+        .cyber-btn.active {
+            background: #ff007f;
+            color: #ffffff;
+            border-color: #ff007f;
+            box-shadow: 0 0 10px #ff007f;
+        }
+    </style>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div id="ui-overlay">
+        <div class="hud-panel header" style="width: calc(100% - 50px);">
+            <div>
+                <h1>GLOW-80 // ERGO-SPLIT</h1>
+                <div style="font-size: 0.7rem; opacity: 0.6; margin-top: 2px;">DESKTOP CUSTOM KEYBOARD / TRACKBALL INTEGRATION</div>
+            </div>
+            <div class="status-tag">SYSTEM ONLINE // RX-98</div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div class="hud-panel stats-panel">
+                <div class="stat-line"><span>ACTIVE LAYER:</span><span class="stat-val" id="hud-layer">BASE</span></div>
+                <div class="stat-line"><span>WPM SPEED:</span><span class="stat-val" id="hud-wpm">0</span></div>
+                <div class="stat-line"><span>KEYSTROKES:</span><span class="stat-val" id="hud-keys">0</span></div>
+                <div class="btn-group">
+                    <button class="cyber-btn active" id="btn-led-wave">RGB WAVE</button>
+                    <button class="cyber-btn" id="btn-led-pulse">PULSE</button>
+                    <button class="cyber-btn active" id="btn-auto-rotate">AUTO ROTATE</button>
+                </div>
+            </div>
+
+            <div class="controls-info">
+                <div>MOUSE DRAG : ROTATE CAMERA</div>
+                <div>SCROLL WHEEL : ZOOM VIEW</div>
+                <div>LEFT CLICK : TYPE KEY / SPIN BALL</div>
+                <div>RIGHT CLICK : PAN CAMERA</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. SETUP THREE.JS SCENE ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x020204);
+        scene.fog = new THREE.FogExp2(0x020204, 0.05);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 16, 22);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 - 0.03; // Prevent camera going below floor
+        controls.minDistance = 6;
+        controls.maxDistance = 35;
+        controls.target.set(0, 0, 0);
+
+        // --- 2. LIGHTING SYSTEM ---
+        const ambientLight = new THREE.AmbientLight(0x0a0a16, 0.6);
+        scene.add(ambientLight);
+
+        // Cyberpunk dual-color studio lighting
+        const cyanLight = new THREE.DirectionalLight(0x00f0ff, 2.5);
+        cyanLight.position.set(-18, 15, 8);
+        cyanLight.castShadow = true;
+        cyanLight.shadow.mapSize.width = 2048;
+        cyanLight.shadow.mapSize.height = 2048;
+        cyanLight.shadow.bias = -0.0005;
+        cyanLight.shadow.camera.near = 0.5;
+        cyanLight.shadow.camera.far = 40;
+        const d = 15;
+        cyanLight.shadow.camera.left = -d;
+        cyanLight.shadow.camera.right = d;
+        cyanLight.shadow.camera.top = d;
+        cyanLight.shadow.camera.bottom = -d;
+        scene.add(cyanLight);
+
+        const magentaLight = new THREE.DirectionalLight(0xff00aa, 2.0);
+        magentaLight.position.set(18, 15, 8);
+        magentaLight.castShadow = true;
+        magentaLight.shadow.mapSize.width = 1024;
+        magentaLight.shadow.mapSize.height = 1024;
+        magentaLight.shadow.bias = -0.0005;
+        scene.add(magentaLight);
+
+        // Soft backlight for rim light effect
+        const rimLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        rimLight.position.set(0, 10, -20);
+        scene.add(rimLight);
+
+        // --- 3. MATERIALS ---
+        // Anodized Aluminum Case
+        const caseMaterial = new THREE.MeshStandardMaterial({
+            color: 0x14151f,
+            roughness: 0.35,
+            metalness: 0.85,
+            clearcoat: 0.1,
+            clearcoatRoughness: 0.2
+        });
+
+        // Matte internal plate
+        const plateMaterial = new THREE.MeshStandardMaterial({
+            color: 0x08090f,
+            roughness: 0.5,
+            metalness: 0.9
+        });
+
+        // Frosted Polycarbonate Acrylic Bottom Plate (Underglow)
+        const acrylicMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x00ffc4,
+            transparent: true,
+            opacity: 0.35,
+            roughness: 0.2,
+            transmission: 0.5,
+            thickness: 0.4,
+            clearcoat: 0.2
+        });
+
+        // Keycaps (Semi-transparent polycarbonate)
+        const keycapDarkMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x1a1b26,
+            roughness: 0.25,
+            transmission: 0.4,
+            thickness: 0.15,
+            clearcoat: 0.1,
+            clearcoatRoughness: 0.1
+        });
+
+        const keycapAccentMagenta = new THREE.MeshPhysicalMaterial({
+            color: 0xff0066,
+            roughness: 0.2,
+            transmission: 0.4,
+            thickness: 0.15,
+            clearcoat: 0.1,
+            emissive: 0x2b0011
+        });
+
+        const keycapAccentCyan = new THREE.MeshPhysicalMaterial({
+            color: 0x00f0ff,
+            roughness: 0.2,
+            transmission: 0.4,
+            thickness: 0.15,
+            clearcoat: 0.1,
+            emissive: 0x00242b
+        });
+
+        // Switch stem (Red / Blue / Brown switches inside translucent keycaps)
+        const switchStemMaterial = new THREE.MeshStandardMaterial({
+            color: 0xff3333, // Red linear switch stem
+            roughness: 0.4,
+            metalness: 0.0
+        });
+        const switchHousingMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.6,
+            roughness: 0.1,
+            transmission: 0.9
+        });
+
+        // Shiny deep red trackball (Phenolic resin look)
+        const trackballMaterial = new THREE.MeshStandardMaterial({
+            color: 0xd90429,
+            roughness: 0.05,
+            metalness: 0.1,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.02
+        });
+
+        // High gloss metal knobs
+        const metalMaterial = new THREE.MeshStandardMaterial({
+            color: 0xcbcbd6,
+            roughness: 0.15,
+            metalness: 0.95
+        });
+
+        // Gold plated connectors
+        const goldMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffb703,
+            roughness: 0.2,
+            metalness: 0.9
+        });
+
+        // --- 4. DESKMAT & FLOOR SETUP ---
+        function createDeskmatTexture() {
+            const size = 2048;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size / 2; // 2:1 ratio
+            const ctx = canvas.getContext('2d');
+
+            // Dark textured fabric background
+            ctx.fillStyle = '#08090f';
+            ctx.fillRect(0, 0, size, canvas.height);
+
+            // Draw micro-texture (noise)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.015)';
+            for (let i = 0; i < 50000; i++) {
+                const rx = Math.random() * size;
+                const ry = Math.random() * canvas.height;
+                ctx.fillRect(rx, ry, 1, 1);
+            }
+
+            // Draw sci-fi blueprints / grid
+            ctx.strokeStyle = '#16192b';
+            ctx.lineWidth = 1;
+            const step = 32;
+            for (let i = 0; i <= size; i += step) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+            }
+            for (let i = 0; i <= canvas.height; i += step) {
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(size, i); ctx.stroke();
+            }
+
+            // Circuit tracks on deskmat
+            ctx.strokeStyle = 'rgba(0, 255, 196, 0.08)';
+            ctx.lineWidth = 2;
+            for (let j = 0; j < 15; j++) {
+                let cx = Math.random() * size;
+                let cy = Math.random() * canvas.height;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                for (let k = 0; k < 4; k++) {
+                    if (Math.random() > 0.5) {
+                        cx += (Math.random() > 0.5 ? 120 : -120);
+                    } else {
+                        cy += (Math.random() > 0.5 ? 120 : -120);
+                    }
+                    ctx.lineTo(cx, cy);
+                }
+                ctx.stroke();
+                
+                ctx.fillStyle = 'rgba(0, 255, 196, 0.15)';
+                ctx.beginPath();
+                ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Tech borders
+            ctx.strokeStyle = 'rgba(0, 255, 196, 0.2)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(30, 30, size - 60, canvas.height - 60);
+
+            // Cyberpunk graphics
+            ctx.fillStyle = '#00ffc4';
+            ctx.strokeStyle = '#00ffc4';
+            ctx.font = 'bold 20px "Courier New"';
+            ctx.fillText('GLOW-80 SPLIT LAYOUT PROTOVAL // INTEGRATED TRK-BALL', 80, 80);
+            ctx.fillText('DESIGNED BY DEEPMIND // ANTIGRAVITY ENGINE', size - 600, 80);
+
+            // Central circle graphic
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(255, 0, 170, 0.3)';
+            ctx.beginPath();
+            ctx.arc(size / 2, canvas.height / 2, 220, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.strokeStyle = 'rgba(0, 255, 196, 0.4)';
+            ctx.beginPath();
+            ctx.arc(size / 2, canvas.height / 2, 200, 0, Math.PI * 2);
+            ctx.setLineDash([15, 15]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Hexagon graphics
+            function drawHex(x, y, r) {
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = (Math.PI / 3) * i;
+                    ctx.lineTo(x + Math.cos(angle) * r, y + Math.sin(angle) * r);
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+            ctx.strokeStyle = 'rgba(0, 255, 196, 0.15)';
+            drawHex(300, 300, 80);
+            drawHex(size - 300, 300, 80);
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        // Create Deskmat mesh (slightly elevated off floor to cast shadow)
+        const deskmatGeo = new THREE.BoxGeometry(32, 0.1, 16);
+        const deskmatMat = new THREE.MeshStandardMaterial({
+            map: createDeskmatTexture(),
+            roughness: 0.9,
+            metalness: 0.1
+        });
+        const deskmat = new THREE.Mesh(deskmatGeo, deskmatMat);
+        deskmat.position.y = 0.05;
+        deskmat.receiveShadow = true;
+        scene.add(deskmat);
+
+        // Outer floor (Large grid)
+        const floorGeo = new THREE.PlaneGeometry(100, 100);
+        const floorMat = new THREE.MeshStandardMaterial({
+            color: 0x030305,
+            roughness: 0.8,
+            metalness: 0.2
+        });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = 0;
+        floor.receiveShadow = true;
+        scene.add(floor);
+
+        // --- 5. OLED DISPLAY CANVAS SETUP ---
+        const oledCanvas = document.createElement('canvas');
+        oledCanvas.width = 256;
+        oledCanvas.height = 128;
+        const oledCtx = oledCanvas.getContext('2d');
+        const oledTexture = new THREE.CanvasTexture(oledCanvas);
+        const oledMaterial = new THREE.MeshBasicMaterial({ map: oledTexture });
+
+        let oledGraphPoints = Array(30).fill(0);
+        let bootProgress = 0;
+        let bootComplete = false;
+        let oledTerminalLogs = [
+            'SYS INITIALIZING...',
+            'CORE V1.02 LOADED',
+            'OLED.DRV... OK',
+            'TRK_BALL.DRV... OK',
+            'READY TO TYPE'
+        ];
+
+        function drawOledScreen() {
+            oledCtx.fillStyle = '#020204';
+            oledCtx.fillRect(0, 0, 256, 128);
+
+            // Cyberpunk frame
+            oledCtx.strokeStyle = '#00ffcc';
+            oledCtx.lineWidth = 2;
+            oledCtx.strokeRect(4, 4, 248, 120);
+
+            if (!bootComplete) {
+                // Boot animation
+                oledCtx.fillStyle = '#00ffcc';
+                oledCtx.font = 'bold 12px "Courier New"';
+                oledCtx.fillText('>>> SYSTEM BOOT <<<', 20, 25);
+                
+                oledCtx.strokeRect(30, 50, 196, 15);
+                oledCtx.fillStyle = '#ff007f';
+                oledCtx.fillRect(34, 54, (188 * bootProgress) / 100, 7);
+                
+                oledCtx.fillStyle = '#00ffcc';
+                oledCtx.font = '10px "Courier New"';
+                oledCtx.fillText(`LOAD: ${Math.floor(bootProgress)}%`, 30, 85);
+
+                let msg = 'INIT HARDWARE...';
+                if (bootProgress > 25) msg = 'LOAD MATRIX DRIVER...';
+                if (bootProgress > 50) msg = 'CONNECTING I2C LINK...';
+                if (bootProgress > 75) msg = 'INIT TRK_BALL OPTICAL...';
+                oledCtx.fillText(msg, 30, 105);
+
+                bootProgress += 0.8; // Slowed down for cinematic effect
+                if (bootProgress >= 100) {
+                    bootComplete = true;
+                }
+            } else {
+                // Main stats screen
+                oledCtx.fillStyle = '#00ffcc';
+                oledCtx.font = 'bold 13px "Courier New"';
+                oledCtx.fillText('GLOW-80 SPLIT', 14, 25);
+                
+                oledCtx.font = '10px "Courier New"';
+                oledCtx.fillStyle = '#ffffff';
+                oledCtx.fillText(`LAYER: BASE`, 14, 45);
+                oledCtx.fillText(`WPM:   ${targetWpm}`, 14, 60);
+                oledCtx.fillText(`KEYS:  ${keystrokeCount}`, 14, 75);
+
+                // Small oscilloscope / wave graph
+                oledCtx.strokeStyle = '#ff007f';
+                oledCtx.lineWidth = 1.5;
+                oledCtx.beginPath();
+                oledGraphPoints.shift();
+                
+                // Keep points matching WPM wave
+                const waveVal = targetWpm > 0 ? (Math.random() * targetWpm * 0.4) : (Math.sin(Date.now()*0.005) * 5 + 5);
+                oledGraphPoints.push(waveVal);
+                
+                const graphX = 125;
+                const graphY = 60;
+                oledCtx.moveTo(graphX, graphY - oledGraphPoints[0]);
+                for(let i=1; i<oledGraphPoints.length; i++) {
+                    oledCtx.lineTo(graphX + i*4, graphY - oledGraphPoints[i]);
+                }
+                oledCtx.stroke();
+
+                // Decorative grid in graph box
+                oledCtx.strokeStyle = 'rgba(0, 255, 204, 0.15)';
+                oledCtx.strokeRect(graphX, 25, 115, 60);
+                
+                // Scrolling logs at the bottom
+                oledCtx.fillStyle = 'rgba(0, 255, 204, 0.7)';
+                oledCtx.font = '8px "Courier New"';
+                oledCtx.fillText(`> ${oledTerminalLogs[oledTerminalLogs.length - 1]}`, 14, 112);
+                oledCtx.fillText(`> ${oledTerminalLogs[oledTerminalLogs.length - 2]}`, 14, 102);
+            }
+            oledTexture.needsUpdate = true;
+        }
+
+        function pushOledLog(log) {
+            oledTerminalLogs.push(log);
+            if (oledTerminalLogs.length > 50) oledTerminalLogs.shift();
+        }
+
+        // --- 6. MODEL CONSTRUCTION ---
+        const keyboardGroup = new THREE.Group();
+        scene.add(keyboardGroup);
+
+        const keysArray = []; // Store references for anims
+        let trackballMesh = null;
+        let encoderMesh = null;
+
+        // Custom keycaps generator (tapered box) with individual cloned materials
+        function createKeycapMesh(width, depth, height, mat) {
+            const keyGroup = new THREE.Group();
+            
+            // Switch housing (visible through transparent keycaps)
+            const housingGeo = new THREE.BoxGeometry(0.7, 0.25, 0.7);
+            const housing = new THREE.Mesh(housingGeo, switchHousingMaterial);
+            housing.position.y = height / 2 - 0.15;
+            keyGroup.add(housing);
+
+            // Switch stem moving part
+            const movingGroup = new THREE.Group();
+
+            // Switch stem (cherry stem look)
+            const stemCrossVGeo = new THREE.BoxGeometry(0.12, 0.25, 0.35);
+            const stemCrossHGeo = new THREE.BoxGeometry(0.35, 0.25, 0.12);
+            const stemV = new THREE.Mesh(stemCrossVGeo, switchStemMaterial);
+            const stemH = new THREE.Mesh(stemCrossHGeo, switchStemMaterial);
+            stemV.position.y = height / 2;
+            stemH.position.y = height / 2;
+            movingGroup.add(stemV, stemH);
+
+            // Main keycap shell (tapered cylinder/box)
+            const rTop = width * 0.72 / Math.sqrt(2);
+            const rBot = width / Math.sqrt(2);
+            const capGeo = new THREE.CylinderGeometry(rTop, rBot, height, 4, 1);
+            capGeo.rotateY(Math.PI / 4); // Turn cylinder into squared keycap
+            capGeo.scale(1, 1, depth / width); // Adjust depth ratio
+            
+            // Clone material to allow individual emissive lighting
+            const cap = new THREE.Mesh(capGeo, mat.clone());
+            cap.position.y = height / 2 + 0.1; // Float slightly above switch
+            cap.castShadow = true;
+            cap.receiveShadow = true;
+            movingGroup.add(cap);
+
+            keyGroup.add(movingGroup);
+            keyGroup.userData = { 
+                capMesh: cap,
+                movingGroup: movingGroup
+            }; // Reference for click anims
+            return keyGroup;
+        }
+
+        // Generate Half Case
+        function buildKeyboardHalf(isLeft) {
+            const halfGroup = new THREE.Group();
+
+            // 1. Shapes for Case Extrusion (CCW points for proper normals)
+            const caseShape = new THREE.Shape();
+            if (isLeft) {
+                // Left Half Contour
+                caseShape.moveTo(2.5, -3.2);
+                caseShape.lineTo(3.6, -0.6);
+                caseShape.lineTo(3.6, 2.2);
+                caseShape.lineTo(1.8, 3.4);
+                caseShape.lineTo(-4.0, 3.4);
+                caseShape.lineTo(-4.5, 0.0);
+                caseShape.lineTo(-4.0, -3.2);
+            } else {
+                // Right Half Contour (Reflected CCW)
+                caseShape.moveTo(4.0, -3.2);
+                caseShape.lineTo(4.5, 0.0);
+                caseShape.lineTo(4.0, 3.4);
+                caseShape.lineTo(-1.8, 3.4);
+                caseShape.lineTo(-3.6, 2.2);
+                caseShape.lineTo(-3.6, -0.6);
+                caseShape.lineTo(-2.5, -3.2);
+            }
+
+            const extrudeSettings = {
+                depth: 0.6,
+                bevelEnabled: true,
+                bevelSegments: 4,
+                steps: 1,
+                bevelSize: 0.06,
+                bevelThickness: 0.06
+            };
+
+            const caseGeo = new THREE.ExtrudeGeometry(caseShape, extrudeSettings);
+            caseGeo.center();
+            const mainCase = new THREE.Mesh(caseGeo, caseMaterial);
+            mainCase.rotation.x = -Math.PI / 2;
+            mainCase.position.y = 0.35;
+            mainCase.castShadow = true;
+            mainCase.receiveShadow = true;
+            halfGroup.add(mainCase);
+
+            // Frosted Acrylic bottom plate for underglow
+            const acrylicSettings = {
+                depth: 0.25,
+                bevelEnabled: true,
+                bevelSegments: 3,
+                steps: 1,
+                bevelSize: 0.03,
+                bevelThickness: 0.03
+            };
+            const acrylicGeo = new THREE.ExtrudeGeometry(caseShape, acrylicSettings);
+            acrylicGeo.center();
+            const acrylicPlate = new THREE.Mesh(acrylicGeo, acrylicMaterial);
+            acrylicPlate.rotation.x = -Math.PI / 2;
+            acrylicPlate.position.y = 0.1;
+            halfGroup.add(acrylicPlate);
+
+            // Underglow light source simulation
+            const neonColor = isLeft ? 0x00ffcc : 0xff00aa;
+            const underglow1 = new THREE.PointLight(neonColor, 2.0, 4.0);
+            underglow1.position.set(isLeft ? -2 : 2, -0.2, 1);
+            halfGroup.add(underglow1);
+            const underglow2 = new THREE.PointLight(neonColor, 2.0, 4.0);
+            underglow2.position.set(isLeft ? 2 : -2, -0.2, -1);
+            halfGroup.add(underglow2);
+
+            // 2. Keyboard matrix (Column-Staggered ortholinear)
+            const cols = 5;
+            const rows = 4;
+            const colOffsets = [0.15, 0.35, 0.55, 0.25, 0.0]; // Ergonomic height stagger
+            const keyPitch = 1.25;
+
+            // X-shift for keyboard layout (Left shifted left, Right shifted right)
+            const xShift = isLeft ? -0.7 : 0.7;
+
+            // Key label arrays for diagnostic logging
+            const leftLabels = [
+                ["5", "4", "3", "2", "1"],
+                ["T", "R", "E", "W", "Q"],
+                ["G", "F", "D", "S", "A"],
+                ["B", "V", "C", "X", "Z"]
+            ];
+            const rightLabels = [
+                ["6", "7", "8", "9", "0"],
+                ["Y", "U", "I", "O", "P"],
+                ["H", "J", "K", "L", ";"],
+                ["N", "M", ",", ".", "/"]
+            ];
+
+            for (let c = 0; c < cols; c++) {
+                const x = (c - 2) * keyPitch + xShift;
+                const stagger = colOffsets[c];
+                
+                for (let r = 0; r < rows; r++) {
+                    const z = (r - 1.5) * keyPitch + stagger - 0.2;
+
+                    // Colored accents
+                    let capMat = keycapDarkMaterial;
+                    if (c === 0 && r === 3) capMat = keycapAccentMagenta; // Esc key color
+                    if (c === 4 && r === 0) capMat = keycapAccentCyan;    // Backspace key color
+
+                    const key = createKeycapMesh(0.82, 0.82, 0.45, capMat);
+                    key.position.set(x, 0.65, z);
+                    halfGroup.add(key);
+
+                    // Add dynamic LED light under the switch
+                    const ledGeo = new THREE.BoxGeometry(0.15, 0.05, 0.15);
+                    const ledMat = new THREE.MeshBasicMaterial({ color: neonColor });
+                    const led = new THREE.Mesh(ledGeo, ledMat);
+                    led.position.set(x, 0.5, z);
+                    halfGroup.add(led);
+
+                    const keyLabel = isLeft ? leftLabels[r][c] : rightLabels[r][cols - 1 - c];
+
+                    keysArray.push({
+                        group: key,
+                        movingGroup: key.userData.movingGroup,
+                        mesh: key.userData.capMesh,
+                        led: led,
+                        origY: 0, // Relates to movingGroup position
+                        targetY: 0,
+                        timer: 0,
+                        defaultColor: neonColor,
+                        label: keyLabel
+                    });
+                }
+            }
+
+            // 3. Thumb clusters (3 keys angled) - Corrected layout arcs
+            const thumbKeys = 3;
+            const thumbLabelsL = ["LOWER", "SPACE", "L-ALT"];
+            const thumbLabelsR = ["R-GUI", "ENTER", "RAISE"];
+
+            for (let i = 0; i < thumbKeys; i++) {
+                const radius = 2.4;
+                const angle = (32 + i * 14) * Math.PI / 180;
+                
+                let tx, tz, rotY;
+                if (isLeft) {
+                    tx = -1.0 + Math.cos(angle) * radius;
+                    tz = 0.8 + Math.sin(angle) * radius;
+                    rotY = -angle;
+                } else {
+                    tx = 1.0 - Math.cos(angle) * radius;
+                    tz = 0.8 + Math.sin(angle) * radius;
+                    rotY = angle;
+                }
+
+                let capMat = keycapDarkMaterial;
+                if (i === 1) capMat = isLeft ? keycapAccentCyan : keycapAccentMagenta;
+
+                const key = createKeycapMesh(0.82, 0.95, 0.45, capMat);
+                key.position.set(tx, 0.65, tz);
+                key.rotation.y = rotY;
+                halfGroup.add(key);
+
+                const ledGeo = new THREE.BoxGeometry(0.15, 0.05, 0.15);
+                const ledMat = new THREE.MeshBasicMaterial({ color: neonColor });
+                const led = new THREE.Mesh(ledGeo, ledMat);
+                led.position.set(tx, 0.5, tz);
+                led.rotation.y = rotY;
+                halfGroup.add(led);
+
+                const thumbLabel = isLeft ? thumbLabelsL[i] : thumbLabelsR[i];
+
+                keysArray.push({
+                    group: key,
+                    movingGroup: key.userData.movingGroup,
+                    mesh: key.userData.capMesh,
+                    led: led,
+                    origY: 0,
+                    targetY: 0,
+                    timer: 0,
+                    defaultColor: neonColor,
+                    label: thumbLabel
+                });
+            }
+
+            // 4. Tech gadgets per side
+            if (isLeft) {
+                // Left Side Gadgets: OLED Screen & Encoder Knob
+                // OLED housing
+                const oledBase = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.4, 2.5), caseMaterial);
+                oledBase.position.set(2.4, 0.6, -1.0);
+                oledBase.rotation.y = -0.15;
+                halfGroup.add(oledBase);
+
+                const screenGeo = new THREE.PlaneGeometry(1.0, 2.2);
+                const oledScreen = new THREE.Mesh(screenGeo, oledMaterial);
+                oledScreen.position.set(2.4, 0.81, -1.0);
+                oledScreen.rotation.x = -Math.PI / 2;
+                oledScreen.rotation.z = Math.PI - 0.15; // Face user
+                halfGroup.add(oledScreen);
+
+                // Encoder Knob
+                const encBase = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.2, 16), plateMaterial);
+                encBase.position.set(2.4, 0.6, 1.0);
+                halfGroup.add(encBase);
+
+                // Rotary encoder metal dial (knurled)
+                const knobGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.55, 32);
+                encoderMesh = new THREE.Mesh(knobGeo, metalMaterial);
+                encoderMesh.position.set(2.4, 0.9, 1.0);
+                halfGroup.add(encoderMesh);
+
+                // Little indicator dot on encoder
+                const dotGeo = new THREE.SphereGeometry(0.04, 8, 8);
+                const dot = new THREE.Mesh(dotGeo, keycapAccentCyan);
+                encoderMesh.add(dot);
+                dot.position.set(0, 0.3, 0.25); // local offset
+            } else {
+                // Right Side Gadgets: Trackball & Click buttons
+                // Ball Socket
+                const socketGeo = new THREE.CylinderGeometry(1.2, 1.35, 0.7, 32);
+                const socket = new THREE.Mesh(socketGeo, caseMaterial);
+                socket.position.set(-2.4, 0.55, 0.4);
+                halfGroup.add(socket);
+
+                const innerSocketGeo = new THREE.CylinderGeometry(0.95, 0.95, 0.6, 24);
+                const innerSocket = new THREE.Mesh(innerSocketGeo, plateMaterial);
+                innerSocket.position.set(-2.4, 0.6, 0.4);
+                halfGroup.add(innerSocket);
+
+                // Phenolic trackball
+                const ballGeo = new THREE.SphereGeometry(0.88, 32, 32);
+                trackballMesh = new THREE.Mesh(ballGeo, trackballMaterial);
+                trackballMesh.position.set(-2.4, 1.25, 0.4);
+                trackballMesh.castShadow = true;
+                halfGroup.add(trackballMesh);
+
+                // Red optical sensor light leaking from bottom of trackball
+                const sensorLight = new THREE.PointLight(0xff0000, 1.5, 1.5);
+                sensorLight.position.set(-2.4, 0.7, 0.4);
+                halfGroup.add(sensorLight);
+
+                // Ergonomic mouse-like click keys
+                const clickGeo = new THREE.BoxGeometry(0.55, 0.2, 0.9);
+                const clickLeft = new THREE.Mesh(clickGeo, metalMaterial);
+                clickLeft.position.set(-3.0, 0.6, 1.5);
+                clickLeft.rotation.y = 0.1;
+                const clickRight = new THREE.Mesh(clickGeo, metalMaterial);
+                clickRight.position.set(-2.2, 0.6, 1.6);
+                clickRight.rotation.y = -0.15;
+                halfGroup.add(clickLeft, clickRight);
+            }
+
+            return halfGroup;
+        }
+
+        // Spawn left half
+        const leftHalf = buildKeyboardHalf(true);
+        leftHalf.position.set(-6.5, 0, 0);
+        leftHalf.rotation.z = 0.07; // Ergonomic tenting angle (roll)
+        leftHalf.rotation.y = 0.15; // Toe-in angle (yaw)
+        leftHalf.rotation.x = 0.05; // Pitch
+        keyboardGroup.add(leftHalf);
+
+        // Spawn right half
+        const rightHalf = buildKeyboardHalf(false);
+        rightHalf.position.set(6.5, 0, 0);
+        rightHalf.rotation.z = -0.07; // Ergonomic tenting angle (roll)
+        rightHalf.rotation.y = -0.15; // Toe-in angle (yaw)
+        rightHalf.rotation.x = 0.05; // Pitch
+        keyboardGroup.add(rightHalf);
+
+        // --- 7. HI-END INDUSTRIAL COILED CABLE ---
+        function createCoiledCable() {
+            const points = [];
+            
+            // Connectors start at back of halves
+            const leftAnchor = new THREE.Vector3(-4.5, 0.6, -1.8);
+            const rightAnchor = new THREE.Vector3(4.5, 0.6, -1.8);
+            
+            // Generate path points
+            points.push(leftAnchor);
+            points.push(new THREE.Vector3(-3.5, 0.6, -2.5)); // curve out of case
+
+            // Aviator connector GX16 (Middle-left)
+            const aviatorPos = new THREE.Vector3(-2.8, 0.6, -3.2);
+            points.push(aviatorPos);
+
+            // Coiled section (Helix center)
+            const coilTurns = 18;
+            const coilRadius = 0.28;
+            const startX = -2.0;
+            const endX = 2.5;
+            const coilPoints = 200;
+            
+            for (let i = 0; i <= coilPoints; i++) {
+                const t = i / coilPoints;
+                const x = startX + t * (endX - startX);
+                const angle = t * coilTurns * Math.PI * 2;
+                // Helix equation
+                const y = 0.45 + Math.sin(angle) * coilRadius;
+                const z = -3.8 + Math.cos(angle) * coilRadius;
+                points.push(new THREE.Vector3(x, y, z));
+            }
+
+            points.push(new THREE.Vector3(3.5, 0.6, -2.5));
+            points.push(rightAnchor);
+
+            const curve = new THREE.CatmullRomCurve3(points);
+            // Spline path rendering using TubeGeometry
+            const cableGeo = new THREE.TubeGeometry(curve, 300, 0.07, 10, false);
+            const cableMat = new THREE.MeshStandardMaterial({
+                color: 0xff007f, // Neon hot pink paracord sleeve
+                roughness: 0.65,
+                metalness: 0.1
+            });
+            const cableMesh = new THREE.Mesh(cableGeo, cableMat);
+            cableMesh.castShadow = true;
+            scene.add(cableMesh);
+
+            // Detailed GX16 Aviator Connector models
+            const aviatorGroup = new THREE.Group();
+            aviatorGroup.position.copy(aviatorPos);
+            aviatorGroup.rotation.z = Math.PI / 2;
+
+            const metalPartGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.6, 12);
+            const metalBody = new THREE.Mesh(metalPartGeo, metalMaterial);
+            aviatorGroup.add(metalBody);
+
+            const goldRingGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 12);
+            const goldRing = new THREE.Mesh(goldRingGeo, goldMaterial);
+            goldRing.position.y = 0.15;
+            aviatorGroup.add(goldRing);
+            scene.add(aviatorGroup);
+
+            // Left/Right case input connectors (Gold jacks)
+            const jackGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.25, 12);
+            jackGeo.rotateX(Math.PI / 2);
+            
+            const jackL = new THREE.Mesh(jackGeo, metalMaterial);
+            jackL.position.copy(leftAnchor);
+            scene.add(jackL);
+
+            const jackR = new THREE.Mesh(jackGeo, metalMaterial);
+            jackR.position.copy(rightAnchor);
+            scene.add(jackR);
+        }
+
+        createCoiledCable();
+
+        // --- 8. SIMULATING USER TYPING & WPM STATS ---
+        let keystrokeCount = 0;
+        let wpm = 0;
+        let targetWpm = 0;
+        let keystrokesThisSecond = 0;
+        
+        // Timer for WPM decay
+        setInterval(() => {
+            wpm = Math.round((keystrokesThisSecond * 60) / 5);
+            targetWpm = Math.floor(targetWpm * 0.82 + wpm * 0.18); // LPF
+            keystrokesThisSecond = 0;
+            document.getElementById('hud-wpm').innerText = targetWpm;
+        }, 1000);
+
+        function registerKeyPress(keyLabel) {
+            keystrokeCount++;
+            keystrokesThisSecond++;
+            document.getElementById('hud-keys').innerText = keystrokeCount;
+            
+            // Randomly flash active layer for sci-fi HUD interest
+            if (Math.random() < 0.04) {
+                const layers = ['BASE', 'LOWER', 'RAISE', 'NAV'];
+                const randomLayer = layers[Math.floor(Math.random() * layers.length)];
+                document.getElementById('hud-layer').innerText = randomLayer;
+            }
+        }
+
+        // --- 9. INTERACTION SYSTEM (RAYCASTING + RIPPLE LEDS) ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        // Trackball velocity variables
+        let trackballSpinVelX = 0;
+        let trackballSpinVelY = 0;
+
+        // Dynamic LED Ripple effects array
+        const activeRipples = [];
+
+        window.addEventListener('mousedown', (event) => {
+            // Check if user clicked on UI overlay
+            if (event.target.tagName === 'BUTTON' || event.target.closest('#ui-overlay') && window.getComputedStyle(event.target).pointerEvents !== 'none') {
+                return;
+            }
+
+            // Calculate screen coordinates
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(keyboardGroup.children, true);
+
+            if (intersects.length > 0) {
+                let clickedObject = intersects[0].object;
+                
+                // Trackball clicked?
+                if (clickedObject === trackballMesh) {
+                    trackballSpinVelX = (Math.random() - 0.5) * 0.5;
+                    trackballSpinVelY = (Math.random() - 0.5) * 0.5;
+                    
+                    const dx = Math.floor((Math.random() - 0.5) * 200);
+                    const dy = Math.floor((Math.random() - 0.5) * 200);
+                    pushOledLog(`TRK: X=${dx} Y=${dy}`);
+                    registerKeyPress('TRK');
+                    return;
+                }
+
+                // Rotary encoder clicked?
+                if (clickedObject === encoderMesh || clickedObject.parent === encoderMesh) {
+                    encoderMesh.rotation.y += Math.PI / 6; // Click-turn
+                    pushOledLog('VOL: ' + Math.floor(Math.random() * 20 + 40) + '%');
+                    registerKeyPress('ENC');
+                    return;
+                }
+
+                // Check keycaps
+                let node = clickedObject;
+                while (node.parent && node !== scene) {
+                    const keyData = keysArray.find(k => k.mesh === node);
+                    if (keyData) {
+                        // Key Press Animation triggers
+                        keyData.targetY = -0.18; // Depress key inside local movingGroup
+                        keyData.timer = 0.12; // Active duration
+                        keyData.led.material.color.setHex(0xffffff); // Illuminate switch white
+                        
+                        pushOledLog(`KEY: ${keyData.label}`);
+                        registerKeyPress(keyData.label);
+
+                        // Trigger visual ripple on LEDs starting at world position
+                        const worldPos = new THREE.Vector3();
+                        keyData.group.getWorldPosition(worldPos);
+                        activeRipples.push({
+                            pos: worldPos,
+                            time: 0,
+                            maxTime: 0.8,
+                            speed: 14.0, // Expand radius
+                            width: 2.0
+                        });
+                        break;
+                    }
+                    node = node.parent;
+                }
+            }
+        });
+
+        // --- 10. SYSTEM ANIMATION SETTINGS ---
+        let ledMode = 'wave'; // 'wave' or 'pulse'
+        let autoRotate = true;
+
+        document.getElementById('btn-led-wave').addEventListener('click', (e) => {
+            ledMode = 'wave';
+            document.getElementById('btn-led-wave').classList.add('active');
+            document.getElementById('btn-led-pulse').classList.remove('active');
+        });
+        document.getElementById('btn-led-pulse').addEventListener('click', (e) => {
+            ledMode = 'pulse';
+            document.getElementById('btn-led-pulse').classList.add('active');
+            document.getElementById('btn-led-wave').classList.remove('active');
+        });
+        document.getElementById('btn-auto-rotate').addEventListener('click', (e) => {
+            autoRotate = !autoRotate;
+            document.getElementById('btn-auto-rotate').classList.toggle('active', autoRotate);
+        });
+
+        // Initial Controls auto-rotation settings
+        controls.autoRotate = autoRotate;
+        controls.autoRotateSpeed = 1.2;
+
+        // Window resize compliance
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- 11. MAIN ENGINE LOOP ---
+        const clock = new THREE.Clock();
+        let lastOledDraw = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+            
+            // Orbit Controls update
+            controls.autoRotate = autoRotate;
+            controls.update();
+
+            // OLED screen refresh
+            if (time - lastOledDraw > 0.05) { // 20fps OLED render cap
+                drawOledScreen();
+                lastOledDraw = time;
+            }
+
+            // Slowly decay / apply spin velocity to trackball
+            if (trackballMesh) {
+                trackballMesh.rotation.y += trackballSpinVelX;
+                trackballMesh.rotation.x += trackballSpinVelY;
+                trackballSpinVelX *= 0.96;
+                trackballSpinVelY *= 0.96;
+            }
+
+            // Update LED ripples timers
+            for (let i = activeRipples.length - 1; i >= 0; i--) {
+                activeRipples[i].time += 0.016;
+                if (activeRipples[i].time > activeRipples[i].maxTime) {
+                    activeRipples.splice(i, 1);
+                }
+            }
+
+            // Keycap animation resolver
+            keysArray.forEach(k => {
+                if (k.timer > 0) {
+                    k.timer -= 0.016; // Tick down
+                    if (k.timer <= 0) {
+                        k.targetY = k.origY; // Reset height (0)
+                    }
+                }
+                // Elastic return lerp
+                k.movingGroup.position.y += (k.targetY - k.movingGroup.position.y) * 0.35;
+            });
+
+            // LED lighting patterns (Wave / Pulse / Ripple overlay)
+            keysArray.forEach(k => {
+                let baseColor = new THREE.Color();
+                
+                if (ledMode === 'wave') {
+                    // Running wave along X & Z coordinates
+                    const wave = Math.sin(time * 3.0 + k.group.position.x * 0.4 + k.group.position.z * 0.4);
+                    const hue = (wave * 0.15 + 0.6) % 1.0; // Restrict color window to blue-cyan-purple
+                    baseColor.setHSL(hue, 1.0, 0.5);
+                } else if (ledMode === 'pulse') {
+                    // Global pulse
+                    const pulse = (Math.sin(time * 4.0) + 1.0) * 0.5;
+                    const defaultColor = new THREE.Color(k.defaultColor);
+                    baseColor.copy(defaultColor).multiplyScalar(pulse * 0.8 + 0.2);
+                }
+
+                // Process active LED ripple overlay
+                const kWorldPos = new THREE.Vector3();
+                k.group.getWorldPosition(kWorldPos);
+                
+                let rippleContribution = new THREE.Color(0,0,0);
+                activeRipples.forEach(r => {
+                    const dist = kWorldPos.distanceTo(r.pos);
+                    const currentRadius = r.time * r.speed;
+                    const distDiff = Math.abs(dist - currentRadius);
+                    
+                    if (distDiff < r.width) {
+                        const intensity = (1.0 - distDiff / r.width) * (1.0 - r.time / r.maxTime);
+                        const waveColor = new THREE.Color(0x00ffff).lerp(new THREE.Color(0xff00ff), Math.sin(time * 2) * 0.5 + 0.5);
+                        rippleContribution.add(waveColor.multiplyScalar(intensity * 2.0));
+                    }
+                });
+                
+                baseColor.add(rippleContribution);
+
+                // Flash white when physically depressed
+                if (k.timer > 0) {
+                    baseColor.setRGB(1.5, 1.5, 1.5);
+                }
+
+                // Apply calculated color to under-switch LED
+                k.led.material.color.copy(baseColor);
+
+                // Sync keycap translucent material emissive color
+                k.mesh.material.emissive.copy(baseColor).multiplyScalar(0.4);
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        // Boot and start
+        drawOledScreen();
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute 3D Cat</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: linear-gradient(#ffeef6 0%, #fff7fb 52%, #f7efe6 100%);
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 2.2, 6.2);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.target.set(0, 1.15, 0);
+controls.minDistance = 3.2;
+controls.maxDistance = 9;
+controls.maxPolarAngle = Math.PI * 0.86;
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0xe6b8a8, 2.3));
+
+const keyLight = new THREE.DirectionalLight(0xffffff, 2.1);
+keyLight.position.set(4, 6, 5);
+keyLight.castShadow = true;
+keyLight.shadow.mapSize.set(2048, 2048);
+scene.add(keyLight);
+
+const fillLight = new THREE.DirectionalLight(0xffd6e7, 1.1);
+fillLight.position.set(-4, 3, 3);
+scene.add(fillLight);
+
+const floor = new THREE.Mesh(
+  new THREE.CircleGeometry(3.6, 96),
+  new THREE.MeshStandardMaterial({ color: 0xffeadf, roughness: 0.82 })
+);
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+const fur = new THREE.MeshStandardMaterial({ color: 0xf5b16d, roughness: 0.72 });
+const cream = new THREE.MeshStandardMaterial({ color: 0xfff1de, roughness: 0.75 });
+const blush = new THREE.MeshStandardMaterial({ color: 0xff9fbd, roughness: 0.72 });
+const dark = new THREE.MeshStandardMaterial({ color: 0x241616, roughness: 0.5 });
+const pink = new THREE.MeshStandardMaterial({ color: 0xffb7c9, roughness: 0.68 });
+const stripe = new THREE.MeshStandardMaterial({ color: 0xd88343, roughness: 0.78 });
+const white = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
+
+const cat = new THREE.Group();
+cat.position.y = 0.12;
+scene.add(cat);
+
+function mesh(geometry, material, position, scale, rotation) {
+  const m = new THREE.Mesh(geometry, material);
+  if (position) m.position.set(position.x, position.y, position.z);
+  if (scale) m.scale.set(scale.x, scale.y, scale.z);
+  if (rotation) m.rotation.set(rotation.x, rotation.y, rotation.z);
+  m.castShadow = true;
+  m.receiveShadow = true;
+  return m;
+}
+
+const body = mesh(
+  new THREE.SphereGeometry(1, 48, 32),
+  fur,
+  { x: 0, y: 0.95, z: 0 },
+  { x: 0.95, y: 1.18, z: 0.72 }
+);
+cat.add(body);
+
+const belly = mesh(
+  new THREE.SphereGeometry(1, 48, 24),
+  cream,
+  { x: 0, y: 0.78, z: 0.5 },
+  { x: 0.48, y: 0.62, z: 0.14 }
+);
+cat.add(belly);
+
+const head = mesh(
+  new THREE.SphereGeometry(1, 56, 36),
+  fur,
+  { x: 0, y: 2.18, z: 0.08 },
+  { x: 0.86, y: 0.76, z: 0.78 }
+);
+cat.add(head);
+
+function makeEar(x) {
+  const outer = mesh(
+    new THREE.ConeGeometry(0.36, 0.75, 4),
+    fur,
+    { x, y: 2.86, z: 0.02 },
+    { x: 1, y: 1, z: 0.78 },
+    { x: 0.05, y: 0, z: x > 0 ? -0.22 : 0.22 }
+  );
+  outer.rotation.y = Math.PI / 4;
+  const inner = mesh(
+    new THREE.ConeGeometry(0.22, 0.46, 4),
+    pink,
+    { x: x * 1.02, y: 2.82, z: 0.12 },
+    { x: 1, y: 1, z: 0.42 },
+    { x: 0.08, y: 0, z: x > 0 ? -0.22 : 0.22 }
+  );
+  inner.rotation.y = Math.PI / 4;
+  cat.add(outer, inner);
+}
+makeEar(-0.48);
+makeEar(0.48);
+
+const muzzleL = mesh(
+  new THREE.SphereGeometry(0.26, 32, 20),
+  cream,
+  { x: -0.18, y: 2.03, z: 0.72 },
+  { x: 1.05, y: 0.75, z: 0.62 }
+);
+const muzzleR = mesh(
+  new THREE.SphereGeometry(0.26, 32, 20),
+  cream,
+  { x: 0.18, y: 2.03, z: 0.72 },
+  { x: 1.05, y: 0.75, z: 0.62 }
+);
+const chin = mesh(
+  new THREE.SphereGeometry(0.22, 32, 16),
+  cream,
+  { x: 0, y: 1.82, z: 0.63 },
+  { x: 1.18, y: 0.58, z: 0.52 }
+);
+cat.add(muzzleL, muzzleR, chin);
+
+const nose = mesh(
+  new THREE.SphereGeometry(0.075, 24, 16),
+  blush,
+  { x: 0, y: 2.08, z: 0.92 },
+  { x: 1.15, y: 0.78, z: 0.72 }
+);
+cat.add(nose);
+
+function makeEye(x) {
+  const eye = mesh(
+    new THREE.SphereGeometry(0.105, 28, 18),
+    dark,
+    { x, y: 2.27, z: 0.77 },
+    { x: 1, y: 1.18, z: 0.38 }
+  );
+  const shine = mesh(
+    new THREE.SphereGeometry(0.026, 16, 10),
+    white,
+    { x: x - 0.025, y: 2.31, z: 0.805 },
+    { x: 1, y: 1, z: 0.45 }
+  );
+  cat.add(eye, shine);
+}
+makeEye(-0.29);
+makeEye(0.29);
+
+function makeWhisker(side, y, angle) {
+  const whisker = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.009, 0.009, 0.72, 8),
+    new THREE.MeshStandardMaterial({ color: 0x4a3329, roughness: 0.7 })
+  );
+  whisker.position.set(side * 0.41, y, 0.86);
+  whisker.rotation.z = side * (Math.PI / 2 + angle);
+  whisker.rotation.y = side * 0.18;
+  whisker.castShadow = true;
+  cat.add(whisker);
+}
+[-0.16, 0, 0.16].forEach((a, i) => {
+  makeWhisker(-1, 2.04 - i * 0.08, a);
+  makeWhisker(1, 2.04 - i * 0.08, a);
+});
+
+function makeLeg(x) {
+  const leg = mesh(
+    new THREE.CapsuleGeometry(0.18, 0.58, 12, 28),
+    fur,
+    { x, y: 0.56, z: 0.53 },
+    { x: 0.86, y: 1, z: 0.86 },
+    { x: 0.18, y: 0, z: x > 0 ? -0.05 : 0.05 }
+  );
+  const paw = mesh(
+    new THREE.SphereGeometry(0.2, 28, 16),
+    cream,
+    { x, y: 0.18, z: 0.7 },
+    { x: 1.15, y: 0.48, z: 0.9 }
+  );
+  cat.add(leg, paw);
+}
+makeLeg(-0.34);
+makeLeg(0.34);
+
+const tailRoot = new THREE.Group();
+tailRoot.position.set(-0.75, 0.82, -0.18);
+tailRoot.rotation.set(0.08, 0.1, 0.55);
+cat.add(tailRoot);
+
+const tailSegments = [];
+for (let i = 0; i < 6; i++) {
+  const seg = mesh(
+    new THREE.CapsuleGeometry(0.16 - i * 0.012, 0.32, 12, 24),
+    i % 2 === 0 ? fur : stripe,
+    { x: -0.19 * i, y: 0.13 * i, z: -0.02 * i },
+    { x: 1, y: 1, z: 1 },
+    { x: 0, y: 0, z: 1.08 }
+  );
+  tailRoot.add(seg);
+  tailSegments.push(seg);
+}
+
+for (const x of [-0.33, 0, 0.33]) {
+  const mark = mesh(
+    new THREE.SphereGeometry(0.09, 20, 12),
+    stripe,
+    { x, y: 2.62 - Math.abs(x) * 0.16, z: 0.69 },
+    { x: 1.35, y: 0.42, z: 0.26 },
+    { x: 0, y: 0, z: x * -1.5 }
+  );
+  cat.add(mark);
+}
+
+const cheekL = mesh(
+  new THREE.SphereGeometry(0.08, 20, 12),
+  blush,
+  { x: -0.46, y: 2.05, z: 0.76 },
+  { x: 1.35, y: 0.72, z: 0.26 }
+);
+const cheekR = cheekL.clone();
+cheekR.position.x = 0.46;
+cat.add(cheekL, cheekR);
+
+const clock = new THREE.Clock();
+
+function animate() {
+  const t = clock.getElapsedTime();
+
+  tailRoot.rotation.z = 0.5 + Math.sin(t * 2.1) * 0.18;
+  tailRoot.rotation.y = 0.08 + Math.cos(t * 1.7) * 0.1;
+
+  tailSegments.forEach((seg, i) => {
+    seg.rotation.z = 1.08 + Math.sin(t * 2.4 + i * 0.48) * 0.09;
+    seg.position.y += Math.sin(t * 2.2 + i) * 0.0008;
+  });
+
+  head.position.y = 2.18 + Math.sin(t * 1.45) * 0.025;
+  body.scale.y = 1.18 + Math.sin(t * 1.45 + 0.5) * 0.018;
+  cat.rotation.y = Math.sin(t * 0.65) * 0.025;
+
+  controls.update();
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>
