@@ -28,6 +28,7 @@
 <div class="hud hud-bl">
   <button id="b-rain">雨を降らせる</button>
   <button id="b-calm">凪に戻す</button>
+  <button id="b-trails">軌跡を見る</button>
 </div>
 <div class="hud hud-br">なでる: 波紋 / クリック: 餌やり<br>ドラッグ: 回転 / ホイール: ズーム</div>
 <script type="module">
@@ -50,7 +51,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x15201a);
 scene.fog = new THREE.Fog(0x15201a, 120, 320);
 const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 500);
-camera.position.set(0, 13, 32);
+camera.position.set(0.5, 26, 4);   // near top-down, like looking into the pond
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
@@ -58,10 +59,15 @@ controls.target.set(0, -0.5, 0);
 controls.maxPolarAngle = Math.PI * 0.49;
 controls.minDistance = 7;
 controls.maxDistance = 80;
+// deterministic camera for screenshots / debugging: ?view=close
+if (new URLSearchParams(location.search).get('view') === 'close') {
+  camera.position.set(2, 6.5, 13);
+  controls.target.set(0, -1, 0);
+}
 
 const SUN_DIR = new THREE.Vector3(0.5, 0.7, -0.4).normalize();
-scene.add(new THREE.HemisphereLight(0xcfe6d4, 0x1c2a20, 0.95));
-const sun = new THREE.DirectionalLight(0xfff4dc, 2.0);
+scene.add(new THREE.HemisphereLight(0xd8ecdd, 0x2a3a2e, 1.1));
+const sun = new THREE.DirectionalLight(0xfff4dc, 2.3);
 sun.position.copy(SUN_DIR).multiplyScalar(60);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
@@ -83,6 +89,7 @@ const simMat = new THREE.ShaderMaterial({
     uDropStrength: { value: 0 },
     uDropRadius: { value: 900.0 },
     uClear: { value: 0 },
+    uDamp: { value: 0.989 },
   },
   vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
   fragmentShader: `
@@ -94,6 +101,7 @@ const simMat = new THREE.ShaderMaterial({
     uniform float uDropStrength;
     uniform float uDropRadius;
     uniform float uClear;
+    uniform float uDamp;
     void main(){
       vec2 c = texture2D(uPrev, vUv).rg;
       float h = c.r, v = c.g;
@@ -103,9 +111,9 @@ const simMat = new THREE.ShaderMaterial({
                 + texture2D(uPrev, vUv - vec2(0.0, uTexel.y)).r;
       float lap = sum * 0.25 - h;
       v += lap * 1.9;
-      v *= 0.986;
+      v *= uDamp;
       h += v;
-      h *= 0.9993;
+      h *= 0.9995;
       if (uDropStrength != 0.0) {
         vec2 d = vUv - uDrop;
         h += uDropStrength * exp(-dot(d, d) * uDropRadius);
@@ -118,7 +126,17 @@ const simMat = new THREE.ShaderMaterial({
     }`,
 });
 simScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), simMat));
+const dropQueue = [];
+function queueDrop(u, v, strength, radius) {
+  if (dropQueue.length < 24) dropQueue.push([u, v, strength, radius]);
+}
 function stepSim() {
+  if (dropQueue.length) {
+    const d = dropQueue.shift();
+    simMat.uniforms.uDrop.value.set(d[0], d[1]);
+    simMat.uniforms.uDropStrength.value = d[2];
+    simMat.uniforms.uDropRadius.value = d[3];
+  }
   simMat.uniforms.uPrev.value = rtA.texture;
   renderer.setRenderTarget(rtB);
   renderer.render(simScene, simCam);
@@ -161,11 +179,11 @@ const floorMat = new THREE.ShaderMaterial({
         if (d < dmin) { dmin = d; cell = g; }
       }
       float tone = 0.35 + 0.5 * hash(cell + 3.1);
-      vec3 stone = mix(vec3(0.20, 0.20, 0.18), vec3(0.45, 0.42, 0.36), tone);
+      vec3 stone = mix(vec3(0.13, 0.14, 0.12), vec3(0.27, 0.26, 0.21), tone);
       stone *= smoothstep(1.05, 0.55, dmin) * 0.6 + 0.4;     // pebble rounding
       // greenish algae toward center
       float r = length(vW.xz);
-      stone = mix(stone, vec3(0.10, 0.22, 0.14), smoothstep(14.0, 4.0, r) * 0.45);
+      stone = mix(stone, vec3(0.08, 0.16, 0.10), smoothstep(15.0, 4.0, r) * 0.6);
 
       // caustics from the ripple field
       vec2 uv = vW.xz / uSize + 0.5;
@@ -183,94 +201,360 @@ floor.rotation.x = -Math.PI / 2;
 floor.position.y = -DEPTH;
 scene.add(floor);
 
-// ---------- koi ----------
+// ---------- koi (parametric body + shaped fins + traveling-wave swim) ----------
+function sstep(a, b, x) { const t = Math.min(Math.max((x - a) / (b - a), 0), 1); return t * t * (3 - 2 * t); }
+
 function koiTexture(variety) {
+  const W = 1024, H = 512;
   const c = document.createElement('canvas');
-  c.width = 256; c.height = 128;
+  c.width = W; c.height = H;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = variety === 'hi' ? '#e85d10' : '#f4f1ea';
-  ctx.fillRect(0, 0, 256, 128);
-  function blob(color, n, rMin, rMax) {
-    ctx.fillStyle = color;
-    for (let i = 0; i < n; i++) {
-      const x = 30 + Math.random() * 196, y = 20 + Math.random() * 88;
-      const r = rMin + Math.random() * (rMax - rMin);
+  // u: 0 = belly, 0.5 = back (seam hidden under the belly). v: 0 = nose (canvas bottom).
+  const px = (u) => u * W;
+  const py = (v) => (1 - v) * H;
+
+  // base: warm white with a darker dorsal sheen
+  ctx.fillStyle = '#f7f3e9';
+  ctx.fillRect(0, 0, W, H);
+  const dorsal = ctx.createLinearGradient(0, 0, W, 0);
+  dorsal.addColorStop(0.0, 'rgba(255,255,255,0.5)');
+  dorsal.addColorStop(0.32, 'rgba(190,180,160,0.06)');
+  dorsal.addColorStop(0.5, 'rgba(150,140,120,0.12)');
+  dorsal.addColorStop(0.68, 'rgba(190,180,160,0.06)');
+  dorsal.addColorStop(1.0, 'rgba(255,255,255,0.5)');
+  ctx.fillStyle = dorsal;
+  ctx.fillRect(0, 0, W, H);
+
+  // irregular patch with crisp darker edge; stretched sideways so the
+  // pattern wraps down the flanks like a real koi
+  function patch(cx, cy, R, fill, edge, xScale = 1.4) {
+    const N = 12;
+    const radii = [];
+    for (let i = 0; i < N; i++) radii.push(R * (0.66 + Math.random() * 0.7));
+    for (const ox of [-W, 0, W]) {      // wrap across the seam
+      ctx.save();
+      ctx.translate(cx + ox, cy);
+      ctx.scale(xScale, 1);
       ctx.beginPath();
-      ctx.ellipse(x, y, r * (0.8 + Math.random() * 0.6), r, Math.random() * 3.1, 0, Math.PI * 2);
+      for (let i = 0; i <= N; i++) {
+        const a = (i / N) * Math.PI * 2;
+        const r0 = radii[i % N], r1 = radii[(i + 1) % N];
+        const x0 = Math.cos(a) * r0, y0 = Math.sin(a) * r0;
+        const a1 = ((i + 1) / N) * Math.PI * 2;
+        const x1 = Math.cos(a1) * r1, y1 = Math.sin(a1) * r1;
+        if (i === 0) ctx.moveTo((x0 + x1) / 2, (y0 + y1) / 2);
+        else ctx.quadraticCurveTo(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
+      }
+      ctx.closePath();
+      ctx.fillStyle = fill;
       ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = edge;
+      ctx.stroke();
+      ctx.restore();
     }
   }
-  if (variety === 'kohaku') blob('#d8350f', 4, 18, 34);
-  if (variety === 'showa') { blob('#d8350f', 3, 16, 30); blob('#1c1c1e', 3, 12, 24); }
-  if (variety === 'hi') blob('#f7b13c', 2, 10, 20);
-  // belly lightening
-  const grad = ctx.createLinearGradient(0, 0, 0, 128);
-  grad.addColorStop(0, 'rgba(255,255,255,0)');
-  grad.addColorStop(1, 'rgba(255,255,255,0.35)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, 256, 128);
+  const HI = '#e63d08';          // vivid beni vermilion
+  const HI_EDGE = 'rgba(150,26,2,0.55)';
+  const SUMI = '#17171c';        // sumi black
+  const SUMI_EDGE = 'rgba(0,0,0,0.5)';
+  const BACK = px(0.5);
+
+  if (variety === 'kohaku') {
+    patch(BACK, py(0.10), 82, HI, HI_EDGE);                                  // head crest
+    patch(BACK + (Math.random() - 0.5) * 140, py(0.36), 122, HI, HI_EDGE);
+    patch(BACK + (Math.random() - 0.5) * 140, py(0.68), 110, HI, HI_EDGE);
+    if (Math.random() < 0.7) patch(BACK + (Math.random() - 0.5) * 160, py(0.9), 70, HI, HI_EDGE);
+  } else if (variety === 'showa') {
+    patch(BACK + 50, py(0.14), 95, HI, HI_EDGE);
+    patch(BACK - 60, py(0.5), 115, HI, HI_EDGE);
+    patch(BACK + 40, py(0.8), 90, HI, HI_EDGE);
+    patch(BACK - 30, py(0.3), 95, SUMI, SUMI_EDGE);                          // wrapping sumi bands
+    patch(BACK + 80, py(0.64), 88, SUMI, SUMI_EDGE);
+    patch(BACK - 90, py(0.07), 50, SUMI, SUMI_EDGE);                         // head sumi
+  } else if (variety === 'hi') {
+    ctx.fillStyle = '#f25c0e';
+    ctx.fillRect(0, 0, W, H);
+    const sheen = ctx.createLinearGradient(0, 0, W, 0);
+    sheen.addColorStop(0.0, 'rgba(255,215,160,0.55)');                       // pale belly
+    sheen.addColorStop(0.3, 'rgba(230,80,15,0.0)');
+    sheen.addColorStop(0.5, 'rgba(165,35,5,0.4)');                           // deep back
+    sheen.addColorStop(0.7, 'rgba(230,80,15,0.0)');
+    sheen.addColorStop(1.0, 'rgba(255,215,160,0.55)');
+    ctx.fillStyle = sheen;
+    ctx.fillRect(0, 0, W, H);
+  } else if (variety === 'tancho') {
+    patch(BACK, py(0.09), 78, HI, HI_EDGE);                                  // single head dot
+  }
+
+  // scale netting: overlapping arc rows (gives the "resolution" feel)
+  ctx.strokeStyle = 'rgba(95,85,70,0.16)';
+  ctx.lineWidth = 1.6;
+  const SR = 17;
+  for (let row = 0; row < H / (SR * 0.62); row++) {
+    const y = H - row * SR * 0.62;
+    const off = (row % 2) * SR;
+    for (let x = -SR; x < W + SR; x += SR * 2) {
+      ctx.beginPath();
+      ctx.arc(x + off, y, SR, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.stroke();
+    }
+  }
+  // belly whitening (u near 0 and 1)
+  const belly = ctx.createLinearGradient(0, 0, W, 0);
+  belly.addColorStop(0.0, 'rgba(255,252,244,0.85)');
+  belly.addColorStop(0.16, 'rgba(255,252,244,0)');
+  belly.addColorStop(0.84, 'rgba(255,252,244,0)');
+  belly.addColorStop(1.0, 'rgba(255,252,244,0.85)');
+  ctx.fillStyle = belly;
+  ctx.fillRect(0, 0, W, H);
+
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
   return tex;
+}
+
+// torpedo body: rounded nose, deep mid-body, narrow caudal peduncle
+function koiBodyGeometry() {
+  const RINGS = 40, SEGS = 22, L = 3.8;
+  const pos = [], uvs = [], idx = [];
+  for (let i = 0; i <= RINGS; i++) {
+    const t = i / RINGS;                          // 0 nose .. 1 tail
+    const x = L / 2 - t * L;
+    let r = Math.pow(Math.sin(Math.PI * Math.pow(t, 0.62)), 0.95);
+    r *= 0.60 * (1 - 0.62 * sstep(0.6, 1.0, t)); // taper into the peduncle
+    r = Math.max(r, 0.035);
+    const ry = r * 0.92;                          // koi are taller than wide
+    const rz = r * 0.62;
+    for (let j = 0; j <= SEGS; j++) {
+      const th = (j / SEGS) * Math.PI * 2;        // 0 = belly
+      let y = -Math.cos(th) * ry;
+      if (y < 0) y *= 0.88;                       // slightly flattened belly
+      pos.push(x, y, Math.sin(th) * rz);
+      uvs.push(j / SEGS, t);
+    }
+  }
+  for (let i = 0; i < RINGS; i++) {
+    for (let j = 0; j < SEGS; j++) {
+      const a = i * (SEGS + 1) + j, b = a + SEGS + 1;
+      idx.push(a, a + 1, b, b, a + 1, b + 1);     // CCW from outside
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  return geo;
+}
+
+function finShape(points) {
+  const s = new THREE.Shape();
+  s.moveTo(points[0][0], points[0][1]);
+  for (let i = 1; i < points.length - 1; i += 2) {
+    s.quadraticCurveTo(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1]);
+  }
+  s.closePath();
+  return new THREE.ShapeGeometry(s, 10);
+}
+function koiFinsGeometry() {
+  const fins = [];
+  // caudal (large flowing fan, like a brush stroke from above)
+  fins.push(finShape([[-1.78, 0.12], [-2.7, 0.85], [-3.35, 0.8], [-2.75, 0.2], [-2.6, 0.0], [-2.75, -0.2], [-3.35, -0.8], [-2.7, -0.85], [-1.78, -0.12], [-1.7, 0], [-1.78, 0.12]]));
+  // dorsal (long and low along the back)
+  fins.push(finShape([[0.45, 0.5], [-0.2, 0.86], [-0.9, 0.78], [-1.25, 0.52], [-1.35, 0.34], [-0.4, 0.42], [0.45, 0.5]]));
+  // anal
+  fins.push(finShape([[-1.15, -0.3], [-1.45, -0.62], [-1.62, -0.55], [-1.55, -0.3], [-1.5, -0.22], [-1.3, -0.24], [-1.15, -0.3]]));
+  // pelvic pair (angled out)
+  for (const s of [-1, 1]) {
+    const g = finShape([[-0.25, 0], [-0.7, -0.5], [-1.0, -0.46], [-0.75, -0.12], [-0.6, 0.02], [-0.4, 0.04], [-0.25, 0]]);
+    g.rotateX(s * 0.85);
+    g.translate(0, -0.32, s * 0.16);
+    fins.push(g);
+  }
+  return mergeBuffer(fins);
+}
+function mergeBuffer(geos) {
+  // minimal non-indexed merge (position/uv), normals recomputed
+  let total = 0;
+  const parts = geos.map((g) => g.toNonIndexed());
+  for (const g of parts) total += g.attributes.position.count;
+  const pos = new Float32Array(total * 3);
+  const uv = new Float32Array(total * 2);
+  let o = 0;
+  for (const g of parts) {
+    pos.set(g.attributes.position.array, o * 3);
+    if (g.attributes.uv) uv.set(g.attributes.uv.array, o * 2);
+    o += g.attributes.position.count;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  geo.computeVertexNormals();
+  return geo;
+}
+
+const KOI_BODY_GEO = koiBodyGeometry();
+const KOI_FINS_GEO = koiFinsGeometry();
+
+// whole-body traveling wave, amplified toward the tail
+function undulate(mat, uni) {
+  mat.onBeforeCompile = (sh) => {
+    sh.uniforms.uPhase = uni.phase;
+    sh.uniforms.uAmp = uni.amp;
+    sh.uniforms.uBend = uni.bend;
+    sh.vertexShader = 'uniform float uPhase;\nuniform float uAmp;\nuniform float uBend;\n' + sh.vertexShader.replace(
+      '#include <begin_vertex>',
+      `#include <begin_vertex>
+       float along = clamp((1.9 - transformed.x) / 3.8, 0.0, 1.45);
+       float aw = 0.07 + along * along * 0.93;
+       transformed.z += sin(uPhase - along * 5.0) * uAmp * aw + uBend * along * along;`
+    );
+  };
+  mat.customProgramCacheKey = () => 'koi-undulate';
+  return mat;
 }
 
 function makeKoi(variety, scale) {
   const g = new THREE.Group();
-  const mat = new THREE.MeshStandardMaterial({ map: koiTexture(variety), roughness: 0.55 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(1, 28, 20), mat);
-  body.scale.set(1.9, 0.62, 0.72);
+  g.rotation.order = 'YZX';
+  const uni = { phase: { value: Math.random() * 10 }, amp: { value: 0.14 }, bend: { value: 0 } };
+  const bodyMat = undulate(new THREE.MeshStandardMaterial({ map: koiTexture(variety), roughness: 0.42 }), uni);
+  const body = new THREE.Mesh(KOI_BODY_GEO, bodyMat);
   body.castShadow = true;
   g.add(body);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.58, 20, 14), mat);
-  head.position.set(1.55, -0.02, 0);
-  head.scale.set(1.1, 0.92, 0.95);
-  g.add(head);
-  // tail assembly (wags)
-  const tail = new THREE.Group();
-  tail.position.set(-1.7, 0, 0);
-  const tailFin = new THREE.Mesh(new THREE.ConeGeometry(0.55, 1.4, 2), mat);
-  tailFin.rotation.z = Math.PI / 2;
-  tailFin.rotation.x = Math.PI / 2;
-  tailFin.position.x = -0.6;
-  tailFin.scale.set(1, 1, 0.1);
-  tail.add(tailFin);
-  g.add(tail);
-  // pectoral fins
+  const finMat = undulate(new THREE.MeshStandardMaterial({
+    color: variety === 'hi' ? 0xe88a4a : 0xf4e0c8,
+    transparent: true, opacity: 0.78, side: THREE.DoubleSide, roughness: 0.7,
+  }), uni);
+  g.add(new THREE.Mesh(KOI_FINS_GEO, finMat));
+  // eyes
+  const eyeMat = new THREE.MeshStandardMaterial({ color: 0x0c0c10, roughness: 0.25 });
+  const pects = [];
   for (const s of [-1, 1]) {
-    const fin = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.9, 2), mat);
-    fin.rotation.z = -0.9;
-    fin.rotation.y = s * 1.2;
-    fin.position.set(0.9, -0.25, s * 0.6);
-    fin.scale.set(1, 1, 0.08);
-    g.add(fin);
+    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.055, 12, 8), eyeMat);
+    eye.position.set(1.42, 0.06, s * 0.27);
+    g.add(eye);
+    // pectoral fins (separate so they can row)
+    const pect = new THREE.Mesh(
+      finShape([[0, 0], [-0.32, -0.3], [-0.62, -0.34], [-0.4, -0.08], [-0.3, 0.04], [-0.12, 0.05], [0, 0]]),
+      finMat
+    );
+    pect.position.set(1.0, -0.22, s * 0.3);
+    pect.rotation.x = s * 1.15;
+    pect.rotation.y = s * 0.35;
+    g.add(pect);
+    pects.push(pect);
   }
-  // dorsal
-  const dorsal = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.8, 2), mat);
-  dorsal.position.set(-0.4, 0.55, 0);
-  dorsal.rotation.z = -0.5;
-  dorsal.scale.set(1, 1, 0.08);
-  g.add(dorsal);
   g.scale.setScalar(scale);
-  g.userData.tail = tail;
+  g.userData.uni = uni;
+  g.userData.pects = pects;
   scene.add(g);
+  // soft drop shadow on the pond floor (like the fish in a sumi-e print)
+  const shadow = new THREE.Mesh(
+    new THREE.CircleGeometry(1, 24),
+    new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.24, depthWrite: false })
+  );
+  shadow.rotation.x = -Math.PI / 2;
+  shadow.scale.set(2.0 * scale, 0.7 * scale, 1);
+  shadow.position.y = -DEPTH + 0.06;
+  scene.add(shadow);
+  g.userData.shadow = shadow;
   return g;
 }
 
+// drifting bokeh spots on the surface (stray light / petals)
+const bokeh = [];
+{
+  const bc = document.createElement('canvas');
+  bc.width = bc.height = 64;
+  const bctx = bc.getContext('2d');
+  const grad = bctx.createRadialGradient(32, 32, 2, 32, 32, 30);
+  grad.addColorStop(0, 'rgba(244,250,236,0.9)');
+  grad.addColorStop(0.65, 'rgba(244,250,236,0.35)');
+  grad.addColorStop(1, 'rgba(244,250,236,0)');
+  bctx.fillStyle = grad;
+  bctx.fillRect(0, 0, 64, 64);
+  const bTex = new THREE.CanvasTexture(bc);
+  for (let i = 0; i < 16; i++) {
+    const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: bTex, transparent: true, opacity: 0.16, depthWrite: false }));
+    const s = 1.4 + Math.random() * 2.6;
+    m.scale.set(s, s, 1);
+    const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * (POND_R - 2);
+    m.position.set(Math.cos(a) * r, 0.15, Math.sin(a) * r);
+    m.userData.seed = Math.random() * 10;
+    scene.add(m);
+    bokeh.push(m);
+  }
+}
+
 const KOI = [];
-const varieties = ['kohaku', 'hi', 'showa', 'kohaku', 'hi', 'showa', 'kohaku'];
+const varieties = ['kohaku', 'hi', 'showa', 'kohaku', 'tancho', 'hi', 'shiro'];
 for (let i = 0; i < varieties.length; i++) {
-  const k = makeKoi(varieties[i], 0.85 + Math.random() * 0.55);
+  const s = 1.0 + Math.random() * 0.5;
+  const k = makeKoi(varieties[i], s);
   const a = (i / varieties.length) * Math.PI * 2;
   KOI.push({
     g: k,
+    s,
     pos: new THREE.Vector2(Math.cos(a) * 8, Math.sin(a) * 8),
-    heading: Math.random() * Math.PI * 2,
-    speed: 1.6 + Math.random() * 1.2,
+    heading: a + Math.PI / 2,
+    turn: 0,
+    speed: 1.3 + Math.random() * 0.8,
     phase: Math.random() * 10,
-    depth: -1.0 - Math.random() * 1.1,
+    depth: -0.9 - Math.random() * 0.9,
+    targetDepth: -0.9 - Math.random() * 0.9,
+    nextDepthChange: Math.random() * 5,
+    target: new THREE.Vector2(Math.cos(a + 2) * 8, Math.sin(a + 2) * 8),
+    retarget: 2 + Math.random() * 6,
+    orbitDir: Math.random() < 0.5 ? -1 : 1,
+    rep: new THREE.Vector2(),
   });
 }
 let feedPoint = null, feedTimer = 0;
+
+// trajectory visualisation: off by default, toggled by the 軌跡 button (or ?trails=1)
+let trailsOn = new URLSearchParams(location.search).get('trails') === '1';
+const trailLines = [];
+function ensureTrails() {
+  if (trailLines.length) return;
+  const trailColors = [0xff6633, 0xffd24d, 0x66ccff, 0xff4d6f, 0x9dff66, 0xcc88ff, 0xffffff];
+  for (let i = 0; i < KOI.length; i++) {
+    const N = 1500;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
+    geo.setDrawRange(0, 0);
+    const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: trailColors[i % 7], transparent: true, opacity: 0.95, depthTest: false }));
+    line.renderOrder = 10;
+    scene.add(line);
+    trailLines.push({ line, n: 0, N, skip: 0 });
+  }
+}
+if (trailsOn) ensureTrails();
+function updateTrails() {
+  for (let i = 0; i < KOI.length; i++) {
+    const tr = trailLines[i];
+    if (tr.skip++ % 3 !== 0) continue;
+    const attr = tr.line.geometry.attributes.position;
+    if (tr.n < tr.N) {
+      attr.setXYZ(tr.n, KOI[i].pos.x, 0.5, KOI[i].pos.y);
+      tr.n++;
+      tr.line.geometry.setDrawRange(0, tr.n);
+    } else {
+      attr.array.copyWithin(0, 3);
+      attr.setXYZ(tr.N - 1, KOI[i].pos.x, 0.5, KOI[i].pos.y);
+    }
+    attr.needsUpdate = true;
+  }
+}
+
+// deterministic koi placement for screenshots / debugging: ?freeze=1
+const FREEZE = new URLSearchParams(location.search).get('freeze') === '1';
+if (FREEZE) {
+  const spots = [[0, 2.5, 0.4], [3, -1.5, 2.4], [-3.2, 0.5, 5.2], [1.5, 5.5, 3.6], [-1.5, -4, 1.2], [4.5, 3.5, 5.8], [-4.5, -2.5, 4.4]];
+  KOI.forEach((k, i) => { const s = spots[i % spots.length]; k.pos.set(s[0], s[1]); k.heading = s[2]; k.depth = -0.9; });
+}
 
 // ---------- rocks + surroundings ----------
 const rockMat = new THREE.MeshStandardMaterial({ color: 0x6e675c, roughness: 0.95, flatShading: true });
@@ -379,12 +663,15 @@ const waterMat = new THREE.ShaderMaterial({
     float h(vec2 uv){ return texture2D(uHeight, uv).r; }
     void main(){
       vec2 suv = (vClip.xy / vClip.w) * 0.5 + 0.5;
-      float hC = h(vUv);
-      float hX = h(vUv + vec2(uTexel.x, 0.0)) - h(vUv - vec2(uTexel.x, 0.0));
-      float hY = h(vUv + vec2(0.0, uTexel.y)) - h(vUv - vec2(0.0, uTexel.y));
-      float mw = sin((vUv.x * 52.0) + uTime * 1.2) * sin((vUv.y * 44.0) - uTime * 0.9) * 0.0025
-               + sin((vUv.x * 21.0) - uTime * 0.7) * sin((vUv.y * 27.0) + uTime * 0.55) * 0.0035;
-      vec3 n = normalize(vec3(-(hX * 55.0 + mw * 26.0), 1.0, -(hY * 55.0 - mw * 22.0)));
+      // one world-based mapping shared by the surface, the floor caustics and
+      // every ripple source — so a drop, its rings and its light always agree
+      vec2 sUv = vWorld.xz / uSize + 0.5;
+      float hC = h(sUv);
+      float hX = h(sUv + vec2(uTexel.x, 0.0)) - h(sUv - vec2(uTexel.x, 0.0));
+      float hY = h(sUv + vec2(0.0, uTexel.y)) - h(sUv - vec2(0.0, uTexel.y));
+      float mw = sin((sUv.x * 21.0) + uTime * 1.0) * sin((sUv.y * 18.0) - uTime * 0.8) * 0.0014
+               + sin((sUv.x * 9.0) - uTime * 0.55) * sin((sUv.y * 12.0) + uTime * 0.45) * 0.0022;
+      vec3 n = normalize(vec3(-(hX * 55.0 + mw * 16.0), 1.0, -(hY * 55.0 - mw * 13.0)));
       vec3 V = normalize(uCam - vWorld);
 
       // real refraction: distort the rendered underwater scene
@@ -393,19 +680,23 @@ const waterMat = new THREE.ShaderMaterial({
       vec3 Vv = mat3(viewMatrix) * (-V);
       vec2 off = (Tv.xy - Vv.xy) * 0.35;
       vec3 refr = texture2D(uScene, clamp(suv + off, 0.001, 0.999)).rgb;
-      // pond water tint (deeper toward the middle)
+      // matcha-green pond water, deeper toward the middle
       float depthT = smoothstep(15.0, 4.0, length(vWorld.xz));
-      refr = mix(refr, vec3(0.04, 0.15, 0.12), 0.40 + depthT * 0.18);
+      refr = mix(refr, vec3(0.10, 0.17, 0.12), 0.30 + depthT * 0.12);
 
       vec3 R = reflect(-V, n);
       R.y = abs(R.y);
-      vec3 refl = skyColor(R, uSun);
-      float fres = mix(0.10, 1.0, pow(1.0 - max(dot(n, V), 0.0), 3.5));
-      vec3 col = mix(refr, refl, fres * 0.9);
+      vec3 refl = mix(skyColor(R, uSun), vec3(0.16, 0.23, 0.17), 0.75);
+      float fres = mix(0.05, 1.0, pow(1.0 - max(dot(n, V), 0.0), 3.5));
+      vec3 col = mix(refr * 1.1, refl, fres * 0.2);
 
       float spec = pow(max(dot(R, uSun), 0.0), 360.0);
-      col += vec3(1.0, 0.95, 0.8) * spec * 2.5;
-      col += vec3(0.08, 0.13, 0.11) * clamp(hC * 12.0, 0.0, 1.0);
+      col += vec3(1.0, 0.95, 0.8) * spec * 1.2;
+
+      // bold sumi-e ripple bands: bright crests, shaded troughs
+      float crest = hC * 18.0;
+      col += vec3(0.38, 0.44, 0.36) * smoothstep(0.12, 0.5, crest);
+      col *= 1.0 - 0.22 * smoothstep(0.12, 0.55, -crest);
 
       gl_FragColor = vec4(col, 1.0);
     }`,
@@ -423,9 +714,8 @@ function pondHit(clientX, clientY) {
   return ray.intersectObject(water)[0] || null;
 }
 function dropAt(hit, strength, radius) {
-  simMat.uniforms.uDrop.value.copy(hit.uv);
-  simMat.uniforms.uDropStrength.value = strength;
-  simMat.uniforms.uDropRadius.value = radius;
+  // world-based mapping, same as the surface/floor shaders
+  queueDrop(hit.point.x / SIZE + 0.5, hit.point.z / SIZE + 0.5, strength, radius);
 }
 let dragging = false;
 addEventListener('pointerdown', (e) => {
@@ -452,6 +742,21 @@ bRain.addEventListener('click', () => {
   bRain.textContent = rain ? '雨 やめる' : '雨を降らせる';
 });
 document.getElementById('b-calm').addEventListener('click', () => { simMat.uniforms.uClear.value = 1; });
+const bTrails = document.getElementById('b-trails');
+function syncTrailsButton() {
+  bTrails.classList.toggle('on', trailsOn);
+  bTrails.textContent = trailsOn ? '軌跡を消す' : '軌跡を見る';
+}
+bTrails.addEventListener('click', () => {
+  trailsOn = !trailsOn;
+  ensureTrails();
+  for (const tr of trailLines) {
+    tr.line.visible = trailsOn;
+    if (!trailsOn) { tr.n = 0; tr.line.geometry.setDrawRange(0, 0); }   // start fresh next time
+  }
+  syncTrailsButton();
+});
+syncTrailsButton();
 
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
@@ -462,48 +767,150 @@ addEventListener('resize', () => {
 
 // ---------- koi behaviour ----------
 const tmpV2 = new THREE.Vector2();
-function updateKoi(dt, t) {
-  if (feedTimer > 0) feedTimer -= dt;
-  for (const k of KOI) {
-    let targetHeading = k.heading + (Math.sin(t * 0.4 + k.phase * 3.1) + Math.sin(t * 0.17 + k.phase)) * 0.45 * dt * 6.0;
-    // feeding: steer toward the feed point
-    if (feedTimer > 0 && feedPoint) {
-      tmpV2.copy(feedPoint).sub(k.pos);
-      if (tmpV2.length() > 1.2) {
-        const want = Math.atan2(tmpV2.y, tmpV2.x);
-        let dh = want - k.heading;
-        while (dh > Math.PI) dh -= Math.PI * 2;
-        while (dh < -Math.PI) dh += Math.PI * 2;
-        targetHeading = k.heading + THREE.MathUtils.clamp(dh, -2.2 * dt, 2.2 * dt) / Math.max(dt, 1e-4) * dt;
+function shortestArc(a) {
+  while (a > Math.PI) a -= Math.PI * 2;
+  while (a < -Math.PI) a += Math.PI * 2;
+  return a;
+}
+// separation: koi never overlap — gentle positional push + a repulsion vector
+// that feeds into the steering (the turn-rate limit keeps it from spinning)
+const sepDir = new THREE.Vector2();
+function separateKoi(dt) {
+  let minDist = Infinity;
+  for (const k of KOI) k.rep.set(0, 0);
+  for (let i = 0; i < KOI.length; i++) {
+    for (let j = i + 1; j < KOI.length; j++) {
+      const a = KOI[i], b = KOI[j];
+      sepDir.copy(b.pos).sub(a.pos);
+      let d = sepDir.length();
+      const minD = 1.5 * (a.s + b.s);          // personal space scales with body size
+      minDist = Math.min(minDist, d / minD);
+      if (d < 1e-4) { sepDir.set(Math.random() - 0.5, Math.random() - 0.5); d = sepDir.length(); }
+      if (d < minD) {
+        sepDir.divideScalar(d);
+        const w = 1 - d / minD;
+        const push = (minD - d) * Math.min(1, dt * 12) * 0.5;
+        a.pos.addScaledVector(sepDir, -push);
+        b.pos.addScaledVector(sepDir, push);
+        a.rep.addScaledVector(sepDir, -w);
+        b.rep.addScaledVector(sepDir, w);
+        if (Math.abs(a.depth - b.depth) < 0.3) {
+          a.targetDepth = Math.max(-1.9, Math.min(-0.5, a.targetDepth - 0.2));
+          b.targetDepth = Math.max(-1.9, Math.min(-0.5, b.targetDepth + 0.2));
+        }
       }
     }
-    // stay inside the pond
-    const r = k.pos.length();
-    if (r > POND_R - 3.0) {
-      const inward = Math.atan2(-k.pos.y, -k.pos.x);
-      let dh = inward - targetHeading;
-      while (dh > Math.PI) dh -= Math.PI * 2;
-      while (dh < -Math.PI) dh += Math.PI * 2;
-      targetHeading += dh * Math.min(1, dt * 2.4) * ((r - (POND_R - 3.0)) / 3.0 + 0.3);
+  }
+  window.__koiMinSep = minDist;                  // 1.0+ means no overlap (debug/verification)
+}
+
+function updateKoi(dt, t) {
+  if (FREEZE) {
+    for (const k of KOI) {
+      const uni = k.g.userData.uni;
+      uni.phase.value += dt * 5.0;
+      uni.amp.value = 0.16;
+      k.g.position.set(k.pos.x, k.depth, k.pos.y);
+      k.g.rotation.y = -k.heading;
+      k.g.userData.shadow.position.set(k.pos.x + 0.5, -DEPTH + 0.06, k.pos.y + 0.4);
+      k.g.userData.shadow.rotation.z = -k.heading;
     }
-    k.heading = targetHeading;
-    const speed = k.speed * (feedTimer > 0 ? 1.7 : 1.0);
+    return;
+  }
+  if (feedTimer > 0) feedTimer -= dt;
+  separateKoi(dt);
+  for (const k of KOI) {
+    // 1) waypoint cruising: pick a far-away spot, swim there in a long arc
+    k.retarget -= dt;
+    const distTarget = tmpV2.copy(k.target).sub(k.pos).length();
+    if (k.retarget <= 0 || distTarget < 2.2) {
+      for (let tries = 0; tries < 8; tries++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 3 + Math.random() * (POND_R - 7);
+        k.target.set(Math.cos(a) * r, Math.sin(a) * r);
+        if (k.target.distanceTo(k.pos) > 9) break;   // prefer long straights
+      }
+      k.retarget = 8 + Math.random() * 8;
+    }
+
+    // 2) desired direction (waypoint, or food behaviour)
+    tmpV2.copy(k.target).sub(k.pos).normalize();
+    let dvx = tmpV2.x, dvy = tmpV2.y;
+    let speedMult = 1.0;
+    if (feedTimer > 0 && feedPoint) {
+      const fx = feedPoint.x - k.pos.x, fy = feedPoint.y - k.pos.y;
+      const df = Math.hypot(fx, fy);
+      if (df > 2.8) {
+        dvx = fx / df; dvy = fy / df;
+        speedMult = 1.7;
+      } else {
+        // hold a slow orbit on the feeding ring
+        dvx = (-fy / df) * k.orbitDir + (fx / df) * 0.18;
+        dvy = (fx / df) * k.orbitDir + (fy / df) * 0.18;
+        speedMult = 0.5;
+      }
+      k.targetDepth = -0.5;
+    }
+
+    // 3) blend in separation repulsion, then steer with a fish-like turn limit
+    dvx += k.rep.x * 1.6;
+    dvy += k.rep.y * 1.6;
+    const desired = Math.atan2(dvy, dvx);
+    const maxTurn = feedTimer > 0 ? 1.1 : 0.7;      // rad/s — long bodies turn slowly
+    const dh = THREE.MathUtils.clamp(shortestArc(desired - k.heading), -maxTurn * dt, maxTurn * dt);
+    k.heading += dh;
+    k.turn += (dh / Math.max(dt, 1e-4) - k.turn) * Math.min(1, dt * 5);
+
+    // 4) burst & glide propulsion
+    const cruise = 0.78 + 0.32 * Math.sin(t * 0.35 + k.phase * 2.0);
+    const speed = k.speed * cruise * speedMult;
     k.pos.x += Math.cos(k.heading) * speed * dt;
     k.pos.y += Math.sin(k.heading) * speed * dt;
 
-    const wag = Math.sin(t * (5.0 + k.speed) + k.phase * 7.0);
-    k.g.position.set(k.pos.x, k.depth + Math.sin(t * 0.8 + k.phase) * 0.25, k.pos.y);
-    k.g.rotation.y = -k.heading + wag * 0.07;
-    k.g.userData.tail.rotation.y = wag * 0.55;
-    k.g.rotation.z = Math.sin(t * 0.9 + k.phase) * 0.05;
+    // 5) hard containment: never leave the pond, and aim back inside
+    const r = k.pos.length();
+    if (r > POND_R - 2.2) {
+      k.pos.multiplyScalar((POND_R - 2.2) / r);
+      const a = Math.atan2(k.pos.y, k.pos.x) + (Math.random() - 0.5) * 1.6 + Math.PI;
+      const tr = 2 + Math.random() * 5;
+      k.target.set(Math.cos(a) * tr, Math.sin(a) * tr);
+      k.retarget = 8 + Math.random() * 6;
+    }
+
+    // slow depth wandering
+    k.nextDepthChange -= dt;
+    if (k.nextDepthChange < 0) {
+      k.nextDepthChange = 3 + Math.random() * 5;
+      k.targetDepth = -0.6 - Math.random() * 1.3;
+    }
+    k.depth += (k.targetDepth - k.depth) * Math.min(1, dt * 0.7);
+
+    // whole-body traveling wave: faster + tighter when swimming hard
+    const uni = k.g.userData.uni;
+    uni.phase.value += dt * (3.2 + speed * 2.4);
+    uni.amp.value = 0.10 + 0.045 * speed;
+    uni.bend.value = THREE.MathUtils.clamp(-k.turn * 0.55, -0.5, 0.5);
+
+    // pose: yaw, pitch toward depth target, bank into turns
+    k.g.position.set(k.pos.x, k.depth + Math.sin(t * 0.7 + k.phase) * 0.12, k.pos.y);
+    k.g.userData.shadow.position.set(k.pos.x + 0.5, -DEPTH + 0.06, k.pos.y + 0.4);
+    k.g.userData.shadow.rotation.z = -k.heading;
+    k.g.rotation.y = -k.heading;
+    k.g.rotation.z = THREE.MathUtils.clamp((k.targetDepth - k.depth) * 0.9, -0.35, 0.35);
+    k.g.rotation.x = THREE.MathUtils.clamp(-k.turn * 0.45, -0.5, 0.5);
+
+    // pectoral fin rowing
+    const [pL, pR] = k.g.userData.pects;
+    const row = Math.sin(t * (2.6 + speed) + k.phase * 5.0) * 0.4;
+    pL.rotation.z = 0.25 + row;
+    pR.rotation.z = -0.25 - row;
 
     // surface kiss while feeding: small ripples where a koi mouth breaks water
-    if (feedTimer > 0 && feedPoint && k.pos.distanceTo(feedPoint) < 2.0 && Math.random() < 0.06) {
-      simMat.uniforms.uDrop.value.set(k.pos.x / SIZE + 0.5, 0.5 - k.pos.y / SIZE);
-      simMat.uniforms.uDropStrength.value = -0.18;
-      simMat.uniforms.uDropRadius.value = 3200;
+    if (feedTimer > 0 && feedPoint && k.pos.distanceTo(feedPoint) < 3.4 && Math.random() < 0.06) {
+      queueDrop(k.pos.x / SIZE + 0.5, k.pos.y / SIZE + 0.5, -0.18, 3200);
     }
   }
+  window.__koiState = KOI.map((k) => [k.pos.x, k.pos.y, k.heading]);
 }
 
 const clock = new THREE.Clock();
@@ -511,16 +918,33 @@ function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.elapsedTime;
-  if (rain && Math.random() < 0.22) {
-    const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * (POND_R - 1) / SIZE;
-    simMat.uniforms.uDrop.value.set(0.5 + Math.cos(a) * r, 0.5 + Math.sin(a) * r);
-    simMat.uniforms.uDropStrength.value = -0.45;
-    simMat.uniforms.uDropRadius.value = 2800;
+  simMat.uniforms.uDamp.value = rain ? 0.972 : 0.989;   // rain rings die young
+  if (rain) {
+    // rain = sparse sharp droplets, each ring blooming and fading on its own,
+    // plus the occasional fat drop
+    if (Math.random() < 0.25) {
+      const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * (POND_R - 1) / SIZE;
+      if (Math.random() < 0.07) {
+        queueDrop(0.5 + Math.cos(a) * r, 0.5 + Math.sin(a) * r, -0.38, 3800);          // fat drop
+      } else {
+        queueDrop(0.5 + Math.cos(a) * r, 0.5 + Math.sin(a) * r, -(0.05 + Math.random() * 0.11), 9000 + Math.random() * 5000);
+      }
+    }
+  } else if (Math.random() < 0.022) {
+    // ambient sprinkles so interference rings are always alive
+    const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * (POND_R - 1.5) / SIZE;
+    queueDrop(0.5 + Math.cos(a) * r, 0.5 + Math.sin(a) * r, -0.2, 5200);
   }
   stepSim();
   stepSim();
   updateKoi(dt, t);
+  if (trailsOn) updateTrails();
   for (const pad of pads) pad.position.y = 0.06 + Math.sin(t * 1.1 + pad.position.x) * 0.02;
+  for (const b of bokeh) {
+    b.position.x += Math.sin(t * 0.12 + b.userData.seed) * dt * 0.4;
+    b.position.z += Math.cos(t * 0.1 + b.userData.seed * 1.7) * dt * 0.4;
+    b.material.opacity = 0.10 + 0.06 * Math.sin(t * 0.5 + b.userData.seed * 3.0);
+  }
 
   floorMat.uniforms.uHeight.value = rtA.texture;
   waterMat.uniforms.uHeight.value = rtA.texture;
