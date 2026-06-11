@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EXPLOSION — 爆発シーケンス</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #100d0c; }
+  #app { position: fixed; inset: 0; }
+  #flash { position: fixed; inset: 0; background: #fff8e8; opacity: 0; pointer-events: none; }
+  .hud { position: fixed; font-family: ui-monospace, "SF Mono", Menlo, monospace; color: #ead9c8; user-select: none; }
+  .hud-tl { top: 18px; left: 20px; pointer-events: none; }
+  .hud-tl h1 { margin: 0; font-size: 17px; letter-spacing: 0.2em; color: #f7ece0; }
+  .hud-tl p { margin: 6px 0 0; font-size: 11px; color: #9d8a76; }
+  .hud-bl { bottom: 18px; left: 20px; display: flex; gap: 6px; }
+  .hud-bl button { font: 12px ui-monospace, Menlo, monospace; color: #ead9c8; background: rgba(22, 16, 12, 0.85); border: 1px solid #553f2c; border-radius: 6px; padding: 8px 14px; cursor: pointer; letter-spacing: 0.1em; }
+  .hud-bl button:hover { border-color: #ff9a4d; }
+  .hud-bl button.on { color: #1a120a; background: #ff9a4d; border-color: #ff9a4d; }
+  .hud-br { bottom: 18px; right: 20px; font-size: 10px; color: #75634f; text-align: right; line-height: 1.8; pointer-events: none; }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="app"></div>
+<div id="flash"></div>
+<div class="hud hud-tl">
+  <h1>EXPLOSION / FULL SEQUENCE</h1>
+  <p>閃光 → 火球 → 衝撃波 → 破片 → 煙 — ノイズ変位シェーダー火球</p>
+</div>
+<div class="hud hud-bl">
+  <button id="b-boom">💥 起爆</button>
+  <button id="b-slow">スローモー</button>
+  <button id="b-auto" class="on">自動リプレイ ON</button>
+</div>
+<div class="hud hud-br">ドラッグ: 回転 / ホイール: ズーム</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+document.getElementById('app').appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x1a1410, 90, 260);
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 600);
+camera.position.set(26, 12, 34);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 6, 0);
+controls.maxPolarAngle = Math.PI * 0.52;
+controls.maxDistance = 140;
+
+// dusk sky dome
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(380, 24, 12),
+  new THREE.ShaderMaterial({
+    side: THREE.BackSide, depthWrite: false,
+    vertexShader: `varying vec3 vD; void main(){ vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader: `precision highp float; varying vec3 vD;
+      void main(){
+        vec3 d = normalize(vD);
+        float t = clamp(d.y * 0.5 + 0.5, 0.0, 1.0);
+        vec3 col = mix(vec3(0.34, 0.20, 0.13), vec3(0.05, 0.05, 0.09), pow(t, 0.7));
+        gl_FragColor = vec4(col, 1.0);
+      }`,
+  })
+));
+
+// ground
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x4a3c2c, roughness: 1 });
+const ground = new THREE.Mesh(new THREE.CircleGeometry(280, 48), groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// a few crates/ruins for scale
+const crateMat = new THREE.MeshStandardMaterial({ color: 0x6b5436, roughness: 0.9 });
+for (const [x, z, s] of [[-14, 6, 2.2], [16, -4, 3], [10, 14, 1.8], [-20, -12, 2.6], [24, 10, 2]]) {
+  const c = new THREE.Mesh(new THREE.BoxGeometry(s, s, s), crateMat);
+  c.position.set(x, s / 2, z);
+  c.rotation.y = x * 0.7;
+  c.castShadow = c.receiveShadow = true;
+  scene.add(c);
+}
+
+scene.add(new THREE.HemisphereLight(0x6d563e, 0x18120c, 0.55));
+const dusk = new THREE.DirectionalLight(0xff9a5e, 0.8);
+dusk.position.set(-40, 24, -20);
+dusk.castShadow = true;
+scene.add(dusk);
+const boomLight = new THREE.PointLight(0xffaa55, 0, 220, 1.6);
+boomLight.position.set(0, 7, 0);
+scene.add(boomLight);
+
+const noiseGLSL = `
+  float hash3(vec3 p){ return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }
+  float vnoise3(vec3 p){
+    vec3 i = floor(p), f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    float n000 = hash3(i), n100 = hash3(i + vec3(1,0,0));
+    float n010 = hash3(i + vec3(0,1,0)), n110 = hash3(i + vec3(1,1,0));
+    float n001 = hash3(i + vec3(0,0,1)), n101 = hash3(i + vec3(1,0,1));
+    float n011 = hash3(i + vec3(0,1,1)), n111 = hash3(i + vec3(1,1,1));
+    return mix(mix(mix(n000, n100, f.x), mix(n010, n110, f.x), f.y),
+               mix(mix(n001, n101, f.x), mix(n011, n111, f.x), f.y), f.z);
+  }
+  float fbm3(vec3 p){
+    float s = 0.0, a = 0.5;
+    for (int i = 0; i < 4; i++) { s += a * vnoise3(p); p = p * 2.13 + 31.0; a *= 0.5; }
+    return s;
+  }`;
+
+// ---------- fireball (main + secondary bursts) ----------
+const fireUniforms = { uT: { value: 99 }, uSeed: { value: 0 } };
+const fireball = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(1, 5),
+  new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    uniforms: fireUniforms,
+    vertexShader: `
+      precision highp float;
+      uniform float uT; uniform float uSeed;
+      varying float vN;
+      varying vec3 vNm;
+      ${noiseGLSL}
+      void main(){
+        float life = clamp(uT / 1.6, 0.0, 1.0);
+        float r = 1.0 + 8.2 * (1.0 - exp(-2.6 * uT));
+        vec3 dir = normalize(position);
+        float n = fbm3(dir * 2.4 + vec3(uSeed) + uT * vec3(0.5, 0.9, 0.4));
+        vN = n;
+        vNm = dir;
+        vec3 p = dir * r * (1.0 + (n - 0.5) * (0.55 + life * 0.5));
+        p.y += uT * uT * 2.2;            // hot air rises
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+      }`,
+    fragmentShader: `
+      precision highp float;
+      uniform float uT;
+      varying float vN;
+      varying vec3 vNm;
+      vec3 ramp(float x){
+        x = clamp(x, 0.0, 1.0);
+        vec3 c = mix(vec3(1.0, 0.98, 0.92), vec3(1.0, 0.85, 0.3), smoothstep(0.0, 0.25, x));
+        c = mix(c, vec3(1.0, 0.45, 0.08), smoothstep(0.25, 0.55, x));
+        c = mix(c, vec3(0.55, 0.12, 0.03), smoothstep(0.55, 0.8, x));
+        c = mix(c, vec3(0.12, 0.10, 0.10), smoothstep(0.8, 1.0, x));
+        return c;
+      }
+      void main(){
+        float life = clamp(uT / 1.6, 0.0, 1.0);
+        float x = vN * 0.85 + life * 1.15 - 0.25;
+        vec3 col = ramp(x) * (2.2 - life * 1.4);
+        float alpha = (1.0 - smoothstep(0.35, 0.8, life)) * smoothstep(0.0, 0.04, uT);
+        gl_FragColor = vec4(col, alpha);
+      }`,
+  })
+);
+scene.add(fireball);
+
+// secondary bursts: smaller fireballs popping with a delay
+const SECONDARIES = [];
+for (const [dx, dz, delay, scale] of [[4.5, 2.0, 0.18, 0.5], [-3.8, -2.6, 0.32, 0.42], [1.5, -4.6, 0.5, 0.36]]) {
+  const mat = fireball.material.clone();
+  mat.uniforms = { uT: { value: 99 }, uSeed: { value: Math.random() * 60 } };
+  const m = new THREE.Mesh(fireball.geometry, mat);
+  m.position.set(dx, 1.5, dz);
+  m.scale.setScalar(scale);
+  scene.add(m);
+  SECONDARIES.push({ mesh: m, delay });
+}
+
+// ---------- shockwave ring ----------
+const shockMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, side: THREE.DoubleSide,
+  blending: THREE.AdditiveBlending,
+  uniforms: { uT: { value: 99 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `
+    precision highp float;
+    varying vec2 vUv; uniform float uT;
+    void main(){
+      float r = length(vUv - 0.5) * 2.0;
+      float wave = clamp(uT / 1.4, 0.0, 1.0);
+      float ring = smoothstep(wave - 0.10, wave - 0.015, r) * smoothstep(wave + 0.04, wave - 0.015, r);
+      float fade = 1.0 - wave;
+      gl_FragColor = vec4(vec3(1.0, 0.82, 0.55), ring * fade * 1.4);
+    }`,
+});
+const shock = new THREE.Mesh(new THREE.PlaneGeometry(110, 110), shockMat);
+shock.rotation.x = -Math.PI / 2;
+shock.position.y = 0.25;
+scene.add(shock);
+
+// ---------- scorch mark ----------
+const scorch = new THREE.Mesh(
+  new THREE.CircleGeometry(11, 48),
+  new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false,
+    uniforms: { uT: { value: 99 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `
+      precision highp float; varying vec2 vUv; uniform float uT;
+      void main(){
+        float r = length(vUv - 0.5) * 2.0;
+        float a = (1.0 - smoothstep(0.45, 1.0, r)) * clamp(uT * 2.0, 0.0, 0.85);
+        gl_FragColor = vec4(vec3(0.03, 0.02, 0.02), a);
+      }`,
+  })
+);
+scorch.rotation.x = -Math.PI / 2;
+scorch.position.y = 0.12;
+scene.add(scorch);
+
+// ---------- smoke (point billboards, mushroom-cloud dynamics) ----------
+const SMOKE = 150;
+const smokeGeo = new THREE.BufferGeometry();
+{
+  const pos = new Float32Array(SMOKE * 3);
+  const seed = new Float32Array(SMOKE);
+  const vel = new Float32Array(SMOKE * 3);
+  for (let i = 0; i < SMOKE; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const r = Math.random() * 2.5;
+    pos.set([Math.cos(a) * r, 1 + Math.random() * 3, Math.sin(a) * r], i * 3);
+    vel.set([Math.cos(a) * (0.8 + Math.random() * 2.0), 1.8 + Math.random() * 2.6, Math.sin(a) * (0.8 + Math.random() * 2.0)], i * 3);
+    seed[i] = Math.random() * 100;
+  }
+  smokeGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  smokeGeo.setAttribute('aVel', new THREE.BufferAttribute(vel, 3));
+  smokeGeo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+}
+const smokeMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false,
+  uniforms: { uT: { value: 99 } },
+  vertexShader: `
+    precision highp float;
+    attribute vec3 aVel; attribute float aSeed;
+    uniform float uT;
+    varying float vSeed; varying float vLife;
+    void main(){
+      float delay = fract(aSeed * 0.37) * 1.3;
+      float age = max(uT - delay, 0.0);
+      vLife = clamp(age / 10.0, 0.0, 1.0);
+      vSeed = aSeed;
+      vec3 p = position + aVel * age * (1.0 - 0.55 * vLife);
+      p.y += age * age * 0.16;
+      // mushroom dynamics: narrow stem, then spread into a cap with a slow toroidal roll
+      float capT = smoothstep(7.0, 15.0, p.y);
+      float swirl = age * (0.25 + fract(aSeed * 0.61) * 0.3);
+      float ca = cos(swirl), sa = sin(swirl);
+      p.xz = mat2(ca, -sa, sa, ca) * p.xz;
+      p.xz *= mix(0.55, 1.7, capT);
+      p.y += capT * sin(age * 1.4 + aSeed) * 0.8;
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      float size = (4.0 + age * 2.6) * (300.0 / -mv.z);
+      gl_PointSize = min(size, 185.0);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    precision highp float;
+    varying float vSeed; varying float vLife;
+    uniform float uT;
+    ${noiseGLSL}
+    void main(){
+      vec2 q = gl_PointCoord - 0.5;
+      float d = length(q);
+      float puff = fbm3(vec3(q * 5.0, vSeed + uT * 0.12));
+      float a = smoothstep(0.5, 0.18, d + (puff - 0.5) * 0.25);
+      a *= smoothstep(0.0, 0.10, vLife) * (1.0 - smoothstep(0.65, 1.0, vLife));
+      // lit warm from below early, cooling to gray
+      vec3 warm = vec3(0.95, 0.55, 0.25);
+      vec3 gray = vec3(0.28, 0.26, 0.25);
+      vec3 col = mix(warm, gray, clamp(vLife * 4.2, 0.0, 1.0));
+      col *= 0.7 + puff * 0.6;
+      gl_FragColor = vec4(col, a * 0.8);
+    }`,
+});
+const smoke = new THREE.Points(smokeGeo, smokeMat);
+scene.add(smoke);
+
+// ---------- dust ring racing along the shockwave ----------
+const DUST = 48;
+const dustGeo = new THREE.BufferGeometry();
+{
+  const pos = new Float32Array(DUST * 3);
+  const ang = new Float32Array(DUST);
+  for (let i = 0; i < DUST; i++) {
+    ang[i] = (i / DUST) * Math.PI * 2 + Math.random() * 0.1;
+    pos[i * 3 + 1] = 0.8;
+  }
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  dustGeo.setAttribute('aAng', new THREE.BufferAttribute(ang, 1));
+}
+const dustMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false,
+  uniforms: { uT: { value: 99 } },
+  vertexShader: `
+    precision highp float;
+    attribute float aAng;
+    uniform float uT;
+    varying float vA; varying float vSeed;
+    void main(){
+      float wave = clamp(uT / 1.4, 0.0, 1.2);
+      float r = 4.0 + wave * 42.0;
+      vec3 p = vec3(cos(aAng) * r, 0.8 + wave * 2.2 + sin(aAng * 7.0) * 0.4, sin(aAng) * r);
+      vSeed = aAng * 13.7;
+      vA = (1.0 - smoothstep(0.55, 1.0, wave)) * smoothstep(0.02, 0.12, wave);
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      gl_PointSize = min((5.0 + wave * 9.0) * (300.0 / -mv.z), 160.0);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    precision highp float;
+    varying float vA; varying float vSeed;
+    uniform float uT;
+    ${noiseGLSL}
+    void main(){
+      vec2 q = gl_PointCoord - 0.5;
+      float puff = fbm3(vec3(q * 4.0, vSeed));
+      float a = smoothstep(0.5, 0.15, length(q) + (puff - 0.5) * 0.3) * vA * 0.55;
+      gl_FragColor = vec4(vec3(0.45, 0.36, 0.27) * (0.8 + puff * 0.5), a);
+    }`,
+});
+scene.add(new THREE.Points(dustGeo, dustMat));
+
+// ---------- fire tracers (burning fragments with glowing arcs) ----------
+const TRACERS = 60;
+const tracerGeo = new THREE.BufferGeometry();
+{
+  const pos = new Float32Array(TRACERS * 3);
+  const vel = new Float32Array(TRACERS * 3);
+  const seed = new Float32Array(TRACERS);
+  for (let i = 0; i < TRACERS; i++) {
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.random() * Math.PI * 0.45;
+    const sp = 10 + Math.random() * 18;
+    vel.set([Math.cos(th) * Math.sin(ph) * sp, Math.cos(ph) * sp, Math.sin(th) * Math.sin(ph) * sp], i * 3);
+    seed[i] = Math.random();
+    pos[i * 3 + 1] = 2;
+  }
+  tracerGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  tracerGeo.setAttribute('aVel', new THREE.BufferAttribute(vel, 3));
+  tracerGeo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+}
+const tracerMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uT: { value: 99 } },
+  vertexShader: `
+    precision highp float;
+    attribute vec3 aVel; attribute float aSeed;
+    uniform float uT;
+    varying float vA;
+    void main(){
+      float life = 1.6 + aSeed * 1.8;
+      float age = min(uT, life);
+      vec3 p = position + aVel * age + vec3(0.0, -9.8, 0.0) * age * age * 0.42;
+      p.y = max(p.y, 0.2);
+      float flicker = 0.65 + 0.35 * sin(uT * (30.0 + aSeed * 40.0) + aSeed * 50.0);
+      vA = (1.0 - clamp(uT / life, 0.0, 1.0)) * flicker;
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      gl_PointSize = min((4.5 + aSeed * 3.0) * (160.0 / -mv.z), 22.0);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    precision highp float; varying float vA;
+    void main(){
+      float d = length(gl_PointCoord - 0.5);
+      float core = smoothstep(0.22, 0.05, d);
+      float halo = smoothstep(0.5, 0.12, d);
+      vec3 col = vec3(1.0, 0.55, 0.15) * halo * 1.6 + vec3(1.0, 0.95, 0.8) * core * 2.4;
+      gl_FragColor = vec4(col, (halo * 0.8 + core) * vA);
+    }`,
+});
+scene.add(new THREE.Points(tracerGeo, tracerMat));
+
+// ---------- sparks ----------
+const SPARKS = 420;
+const sparkGeo = new THREE.BufferGeometry();
+{
+  const pos = new Float32Array(SPARKS * 3).fill(0);
+  const vel = new Float32Array(SPARKS * 3);
+  const seed = new Float32Array(SPARKS);
+  for (let i = 0; i < SPARKS; i++) {
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.random() * Math.PI * 0.55;
+    const sp = 14 + Math.random() * 26;
+    vel.set([Math.cos(th) * Math.sin(ph) * sp, Math.cos(ph) * sp, Math.sin(th) * Math.sin(ph) * sp], i * 3);
+    seed[i] = Math.random();
+    pos[i * 3 + 1] = 2;
+  }
+  sparkGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  sparkGeo.setAttribute('aVel', new THREE.BufferAttribute(vel, 3));
+  sparkGeo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+}
+const sparkMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uT: { value: 99 } },
+  vertexShader: `
+    precision highp float;
+    attribute vec3 aVel; attribute float aSeed;
+    uniform float uT;
+    varying float vA;
+    void main(){
+      float life = 0.7 + aSeed * 1.1;
+      float age = min(uT, life);
+      vec3 p = position + aVel * age + vec3(0.0, -9.8, 0.0) * age * age * 0.5;
+      p.y = max(p.y, 0.15);
+      vA = (1.0 - clamp(uT / life, 0.0, 1.0));
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      gl_PointSize = min((2.2 + aSeed * 2.2) * (160.0 / -mv.z), 10.0);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    precision highp float; varying float vA;
+    void main(){
+      float d = length(gl_PointCoord - 0.5);
+      float a = smoothstep(0.5, 0.1, d) * vA;
+      gl_FragColor = vec4(vec3(1.0, 0.75, 0.35) * 2.0, a);
+    }`,
+});
+scene.add(new THREE.Points(sparkGeo, sparkMat));
+const sparkPoints = scene.children[scene.children.length - 1];
+
+// ---------- debris (instanced, JS-simulated) ----------
+const DEBRIS = 150;
+const debris = new THREE.InstancedMesh(
+  new THREE.TetrahedronGeometry(0.42),
+  new THREE.MeshStandardMaterial({ color: 0x3a3028, roughness: 0.9, emissive: 0xff5a1a, emissiveIntensity: 0 }),
+  DEBRIS
+);
+debris.castShadow = true;
+scene.add(debris);
+const dState = [];
+for (let i = 0; i < DEBRIS; i++) dState.push({ p: new THREE.Vector3(), v: new THREE.Vector3(), w: new THREE.Vector3(), rot: new THREE.Euler(), s: 0.5 + Math.random() });
+function resetDebris() {
+  for (const d of dState) {
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.random() * Math.PI * 0.5;
+    const sp = 9 + Math.random() * 22;
+    d.p.set(0, 1.5, 0);
+    d.v.set(Math.cos(th) * Math.sin(ph) * sp, Math.cos(ph) * sp * 1.1, Math.sin(th) * Math.sin(ph) * sp);
+    d.w.set(Math.random() * 9, Math.random() * 9, Math.random() * 9);
+    d.rot.set(0, 0, 0);
+  }
+}
+resetDebris();
+
+// ---------- heat-distortion post pass ----------
+const postRT = new THREE.WebGLRenderTarget(innerWidth, innerHeight);
+const postScene = new THREE.Scene();
+const postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const postMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uScene: { value: postRT.texture },
+    uT: { value: 99 },
+    uCenter: { value: new THREE.Vector2(0.5, 0.5) },
+    uAspect: { value: innerWidth / innerHeight },
+  },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+  fragmentShader: `
+    precision highp float;
+    varying vec2 vUv;
+    uniform sampler2D uScene;
+    uniform float uT;
+    uniform vec2 uCenter;
+    uniform float uAspect;
+    void main(){
+      vec2 d = vUv - uCenter;
+      d.x *= uAspect;
+      float dist = length(d);
+      // expanding hot air shell + lingering shimmer above the blast
+      float shell = exp(-pow((dist - uT * 0.55) * 9.0, 2.0)) * (1.0 - smoothstep(0.0, 1.6, uT));
+      float shimmer = exp(-dist * 3.2) * (1.0 - smoothstep(0.0, 3.5, uT)) * 0.5;
+      float amp = (shell * 0.006 + shimmer * 0.0035);
+      vec2 wob = vec2(
+        sin(vUv.y * 26.0 + uT * 24.0) + sin(vUv.y * 13.0 - uT * 17.0),
+        sin(vUv.x * 22.0 - uT * 20.0)
+      ) * 0.5;
+      gl_FragColor = texture2D(uScene, vUv + wob * amp);
+    }`,
+});
+postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
+const blastCenter = new THREE.Vector3(0, 6, 0);
+const projTmp = new THREE.Vector3();
+
+// ---------- sequencing ----------
+const flashDiv = document.getElementById('flash');
+let simT = 99, timeScale = 1, autoReplay = true, sinceBoom = 0;
+function detonate() {
+  simT = 0;
+  fireUniforms.uSeed.value = Math.random() * 60;
+  for (const s of SECONDARIES) {
+    s.mesh.material.uniforms.uSeed.value = Math.random() * 60;
+    const a = Math.random() * Math.PI * 2, r = 3 + Math.random() * 3.5;
+    s.mesh.position.set(Math.cos(a) * r, 1.2, Math.sin(a) * r);
+  }
+  resetDebris();
+}
+const bBoom = document.getElementById('b-boom');
+bBoom.addEventListener('click', detonate);
+const bSlow = document.getElementById('b-slow');
+bSlow.addEventListener('click', () => {
+  bSlow.classList.toggle('on');
+  timeScale = bSlow.classList.contains('on') ? 0.22 : 1;
+});
+const bAuto = document.getElementById('b-auto');
+bAuto.addEventListener('click', () => {
+  autoReplay = !autoReplay;
+  bAuto.classList.toggle('on');
+  bAuto.textContent = autoReplay ? '自動リプレイ ON' : '自動リプレイ OFF';
+});
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  postRT.setSize(innerWidth, innerHeight);
+  postMat.uniforms.uAspect.value = innerWidth / innerHeight;
+});
+
+const dummy = new THREE.Object3D();
+const shakeOffset = new THREE.Vector3();
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05) * timeScale;
+  simT += dt;
+  sinceBoom += dt;
+  if (autoReplay && simT > 8.5) detonate();
+
+  fireUniforms.uT.value = simT;
+  shockMat.uniforms.uT.value = simT;
+  scorch.material.uniforms.uT.value = simT;
+  smokeMat.uniforms.uT.value = simT;
+  sparkMat.uniforms.uT.value = simT;
+  dustMat.uniforms.uT.value = simT;
+  tracerMat.uniforms.uT.value = simT;
+  for (const s of SECONDARIES) s.mesh.material.uniforms.uT.value = Math.max(simT - s.delay, -0.01);
+
+  // double-pulse flash + light
+  const pulse1 = Math.max(0, 0.95 - simT * 8);
+  const pulse2 = simT > 0.12 ? Math.max(0, 0.5 - (simT - 0.12) * 5) : 0;
+  flashDiv.style.opacity = String(Math.max(pulse1, pulse2));
+  boomLight.intensity = Math.max(0, 3600 * Math.exp(-simT * 3.0));
+
+  // debris sim
+  if (simT < 12) {
+    for (let i = 0; i < DEBRIS; i++) {
+      const d = dState[i];
+      if (simT < 12 && d.p.y > 0.21 || simT < 0.05) {
+        d.v.y -= 9.8 * dt * 1.4;
+        d.p.addScaledVector(d.v, dt);
+        if (d.p.y < 0.21) { d.p.y = 0.21; d.v.set(0, 0, 0); d.w.set(0, 0, 0); }
+        d.rot.x += d.w.x * dt; d.rot.y += d.w.y * dt; d.rot.z += d.w.z * dt;
+      }
+      dummy.position.copy(d.p);
+      dummy.rotation.copy(d.rot);
+      dummy.scale.setScalar(d.s);
+      dummy.updateMatrix();
+      debris.setMatrixAt(i, dummy.matrix);
+    }
+    debris.instanceMatrix.needsUpdate = true;
+    debris.material.emissiveIntensity = Math.max(0, 1.6 * Math.exp(-simT * 1.8));
+  }
+
+  // camera shake (sharper, longer)
+  const amp = Math.max(0, Math.exp(-simT * 2.2)) * 1.5;
+  const tt = performance.now() * 0.001;
+  shakeOffset.set(
+    Math.sin(tt * 39.0) + Math.sin(tt * 17.3),
+    Math.sin(tt * 43.7) + Math.sin(tt * 23.1),
+    Math.sin(tt * 31.3)
+  ).multiplyScalar(amp * 0.22);
+
+  controls.update();
+  camera.position.add(shakeOffset);
+  // pass 1: scene into RT, pass 2: heat-distortion composite
+  projTmp.copy(blastCenter).project(camera);
+  postMat.uniforms.uCenter.value.set(projTmp.x * 0.5 + 0.5, projTmp.y * 0.5 + 0.5);
+  postMat.uniforms.uT.value = simT;
+  renderer.setRenderTarget(postRT);
+  renderer.render(scene, camera);
+  renderer.setRenderTarget(null);
+  renderer.render(postScene, postCam);
+  camera.position.sub(shakeOffset);
+}
+detonate();
+// deterministic frame for screenshots / debugging: ?t=0.5 freezes the timeline
+const frozenT = new URLSearchParams(location.search).get('t');
+if (frozenT !== null) {
+  simT = Number(frozenT);
+  timeScale = 0;
+  autoReplay = false;
+}
+animate();
+</script>
+</body>
+</html>

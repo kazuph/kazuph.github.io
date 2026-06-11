@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FOREST — 光と霧の森</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1a2317; }
+  #app { position: fixed; inset: 0; }
+  .hud { position: fixed; font-family: ui-monospace, "SF Mono", Menlo, monospace; color: #dde8d8; user-select: none; }
+  .hud-tl { top: 18px; left: 20px; pointer-events: none; }
+  .hud-tl h1 { margin: 0; font-size: 17px; letter-spacing: 0.2em; color: #f2f7ee; }
+  .hud-tl p { margin: 6px 0 0; font-size: 11px; color: #93a48b; }
+  .hud-bl { bottom: 18px; left: 20px; display: flex; gap: 6px; }
+  .hud-bl button { font: 12px ui-monospace, Menlo, monospace; color: #dde8d8; background: rgba(16, 22, 14, 0.85); border: 1px solid #3c4a34; border-radius: 6px; padding: 8px 14px; cursor: pointer; letter-spacing: 0.1em; }
+  .hud-bl button:hover { border-color: #ffd27d; }
+  .hud-bl button.on { color: #141a10; background: #ffd27d; border-color: #ffd27d; }
+  .hud-br { bottom: 18px; right: 20px; font-size: 10px; color: #6b7a62; text-align: right; line-height: 1.8; pointer-events: none; }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="app"></div>
+<div class="hud hud-tl">
+  <h1>FOREST / LIGHT &amp; MIST</h1>
+  <p>枝分かれ生成の樹木約500本 + 光芒 + 塵 — 時間帯で森が変わります</p>
+</div>
+<div class="hud hud-bl">
+  <button id="t-day" class="on">昼</button>
+  <button id="t-dusk">夕暮れ</button>
+  <button id="t-night">夜</button>
+</div>
+<div class="hud hud-br">ドラッグ: 回転 / ホイール: ズーム<br>夜は蛍が出ます</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.getElementById('app').appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0xcfd8c0, 0.016);
+const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 800);
+camera.position.set(0, 6, 34);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 5, 0);
+controls.maxPolarAngle = Math.PI * 0.52;
+controls.maxDistance = 80;
+
+const hemi = new THREE.HemisphereLight(0xcfe8ff, 0x2e3a22, 0.7);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff2d8, 2.2);
+sun.position.set(-34, 30, -20);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -70; sun.shadow.camera.right = 70;
+sun.shadow.camera.top = 70; sun.shadow.camera.bottom = -70;
+sun.shadow.bias = -0.0005;
+scene.add(sun);
+
+// ---------- terrain ----------
+function noise2(x, z) {
+  return Math.sin(x * 0.045) * Math.cos(z * 0.05) * 2.0
+       + Math.sin(x * 0.13 + 3.0) * Math.cos(z * 0.11 + 1.0) * 0.8
+       + Math.sin(x * 0.31 + 9.0) * Math.cos(z * 0.27 + 4.0) * 0.3;
+}
+const groundGeo = new THREE.PlaneGeometry(420, 420, 120, 120);
+groundGeo.rotateX(-Math.PI / 2);
+{
+  const pos = groundGeo.attributes.position;
+  const colors = [];
+  const moss = new THREE.Color(0x3f5a2e), dirt = new THREE.Color(0x57462f), dark = new THREE.Color(0x2c4023);
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    const h = noise2(x, z);
+    pos.setY(i, h);
+    const m = (Math.sin(x * 0.21 + z * 0.17) + 1) / 2;
+    const c = moss.clone().lerp(dirt, m * 0.55).lerp(dark, Math.max(0, -h) * 0.18);
+    colors.push(c.r, c.g, c.b);
+  }
+  groundGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  groundGeo.computeVertexNormals();
+}
+const ground = new THREE.Mesh(groundGeo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1 }));
+ground.receiveShadow = true;
+scene.add(ground);
+
+// ---------- real-ish trees: branching trunks + noise-displaced foliage ----------
+const swayShaders = [];
+function swayify(mat, amount) {
+  mat.onBeforeCompile = (shader) => {
+    shader.uniforms.uTime = { value: 0 };
+    shader.vertexShader = 'uniform float uTime;\n' + shader.vertexShader.replace(
+      '#include <begin_vertex>',
+      `#include <begin_vertex>
+       float swayPhase = float(gl_InstanceID) * 1.71;
+       float sway = sin(uTime * 1.05 + swayPhase) * ${amount} * smoothstep(0.0, 10.0, transformed.y);
+       transformed.x += sway;
+       transformed.z += sway * 0.6;`
+    );
+    swayShaders.push(shader);
+  };
+  return mat;
+}
+const trunkMat = swayify(new THREE.MeshStandardMaterial({ color: 0x6b4f38, roughness: 0.95 }), '0.06');
+const leafMat = swayify(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95 }), '0.12');
+
+function displaceAlongNormal(geo, amt) {
+  const pos = geo.attributes.position;
+  const nor = geo.attributes.normal;
+  for (let i = 0; i < pos.count; i++) {
+    const r = (Math.random() * 0.85 + 0.15) * amt;
+    pos.setXYZ(i, pos.getX(i) + nor.getX(i) * r, pos.getY(i) + nor.getY(i) * r, pos.getZ(i) + nor.getZ(i) * r);
+  }
+  geo.computeVertexNormals();
+  return geo;
+}
+function paintFoliage(geo, dark, light) {
+  geo.computeBoundingBox();
+  const bb = geo.boundingBox;
+  const pos = geo.attributes.position;
+  const colors = new Float32Array(pos.count * 3);
+  const cTmp = new THREE.Color();
+  for (let i = 0; i < pos.count; i++) {
+    const t = (pos.getY(i) - bb.min.y) / Math.max(bb.max.y - bb.min.y, 0.001);
+    cTmp.copy(dark).lerp(light, Math.min(1, t * 0.85 + Math.random() * 0.3));
+    colors.set([cTmp.r, cTmp.g, cTmp.b], i * 3);
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  return geo;
+}
+
+// recursive branch skeleton -> merged trunk geometry + foliage tip matrices
+function buildTreeVariant(kind) {
+  const branchGeos = [];
+  const tips = [];
+  const up = new THREE.Vector3(0, 1, 0);
+  function branch(m, len, rad, depth) {
+    const geo = new THREE.CylinderGeometry(rad * 0.62, rad, len, 5);
+    geo.translate(0, len / 2, 0);
+    geo.applyMatrix4(m);
+    branchGeos.push(geo);
+    const tip = m.clone().multiply(new THREE.Matrix4().makeTranslation(0, len, 0));
+    if (depth === 0) { tips.push({ m: tip, r: len * 0.55 + 0.8 }); return; }
+    const kids = depth === 1 ? 2 : 2 + (Math.random() < 0.8 ? 1 : 0);
+    for (let i = 0; i < kids; i++) {
+      const child = tip.clone()
+        .multiply(new THREE.Matrix4().makeRotationY((i / kids) * Math.PI * 2 + Math.random()))
+        .multiply(new THREE.Matrix4().makeRotationZ(0.45 + Math.random() * 0.5));
+      branch(child, len * (0.6 + Math.random() * 0.15), rad * 0.6, depth - 1);
+    }
+    if (depth === 1 && Math.random() < 0.5) tips.push({ m: tip, r: len * 0.5 + 0.7 });
+  }
+  const baseLen = kind === 'hero' ? 4.6 + Math.random() * 1.4 : 3.4 + Math.random();
+  branch(new THREE.Matrix4(), baseLen, kind === 'hero' ? 0.42 : 0.3, kind === 'hero' ? 3 : 2);
+
+  const trunkGeo = mergeGeometries(branchGeos);
+
+  // foliage: one displaced icosphere blob per branch tip + a crown blob
+  const blobs = [];
+  const tmpP = new THREE.Vector3();
+  for (const t of tips) {
+    tmpP.setFromMatrixPosition(t.m);
+    const blob = new THREE.IcosahedronGeometry(t.r * (kind === 'hero' ? 1.25 : 1.05), 1);
+    displaceAlongNormal(blob, t.r * 0.38);
+    blob.translate(tmpP.x, tmpP.y + t.r * 0.25, tmpP.z);
+    blobs.push(blob);
+  }
+  const dark = new THREE.Color(0x24431f);
+  const light = new THREE.Color(kind === 'hero' ? 0x7aa33b : 0x4f7a30);
+  const foliageGeo = paintFoliage(mergeGeometries(blobs), dark, light);
+  return { trunkGeo, foliageGeo };
+}
+
+const dummy = new THREE.Object3D();
+const instColor = new THREE.Color();
+function plantVariant(variant, count, area, minR, maxR, shadows) {
+  const trunks = new THREE.InstancedMesh(variant.trunkGeo, trunkMat, count);
+  const leaves = new THREE.InstancedMesh(variant.foliageGeo, leafMat, count);
+  trunks.castShadow = leaves.castShadow = shadows;
+  trunks.receiveShadow = true;
+  for (let i = 0; i < count; i++) {
+    let x = 0, z = 0, r = 0;
+    do {
+      x = (Math.random() - 0.5) * area;
+      z = (Math.random() - 0.5) * area;
+      r = Math.hypot(x, z);
+    } while (r < minR || r > maxR || (Math.abs(x) < 5 && z > -60));   // clearing + path
+    const s = 0.8 + Math.random() * 0.7;
+    dummy.position.set(x, noise2(x, z) - 0.2, z);
+    dummy.rotation.y = Math.random() * Math.PI * 2;
+    dummy.scale.set(s, s * (0.9 + Math.random() * 0.3), s);
+    dummy.updateMatrix();
+    trunks.setMatrixAt(i, dummy.matrix);
+    leaves.setMatrixAt(i, dummy.matrix);
+    instColor.setHSL(0.28 + Math.random() * 0.05, 0.45 + Math.random() * 0.2, 0.5 + Math.random() * 0.12);
+    leaves.setColorAt(i, instColor);
+  }
+  scene.add(trunks, leaves);
+}
+// 8 hero variants near the clearing (with shadows), 6 lighter background variants beyond
+for (let v = 0; v < 8; v++) plantVariant(buildTreeVariant('hero'), 9, 130, 15, 64, true);
+for (let v = 0; v < 6; v++) plantVariant(buildTreeVariant('bg'), 70, 380, 60, 190, false);
+
+// ---------- god rays (additive shafts) ----------
+const shaftMat = new THREE.ShaderMaterial({
+  transparent: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
+  side: THREE.DoubleSide,
+  uniforms: { uOpacity: { value: 0.55 }, uTime: { value: 0 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `
+    precision highp float;
+    varying vec2 vUv; uniform float uOpacity; uniform float uTime;
+    void main(){
+      float across = sin(vUv.x * 3.14159);
+      float along = smoothstep(0.0, 0.25, vUv.y) * (1.0 - smoothstep(0.55, 1.0, vUv.y));
+      float flicker = 0.85 + 0.15 * sin(uTime * 0.7 + vUv.x * 9.0);
+      gl_FragColor = vec4(vec3(1.0, 0.93, 0.75), across * along * uOpacity * flicker);
+    }`,
+});
+const shafts = new THREE.Group();
+for (let i = 0; i < 10; i++) {
+  const w = 0.6 + Math.random() * 1.8;
+  const quad = new THREE.Mesh(new THREE.PlaneGeometry(w, 24), shaftMat);
+  const x = (Math.random() - 0.5) * 44;
+  const z = (Math.random() - 0.5) * 44;
+  quad.position.set(x, 9, z);
+  quad.lookAt(x, 0, z);                       // face up first
+  quad.rotation.set(0, Math.random() * Math.PI, 0);
+  quad.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), 0.42);   // lean like the sun
+  shafts.add(quad);
+}
+scene.add(shafts);
+
+// ---------- dust motes ----------
+function makePoints(count, size, color, spread, yMin, yMax) {
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(count * 3);
+  const seed = new Float32Array(count);
+  for (let i = 0; i < count; i++) {
+    pos[i * 3] = (Math.random() - 0.5) * spread;
+    pos[i * 3 + 1] = yMin + Math.random() * (yMax - yMin);
+    pos[i * 3 + 2] = (Math.random() - 0.5) * spread;
+    seed[i] = Math.random() * 100;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+  const mat = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    uniforms: { uTime: { value: 0 }, uSize: { value: size }, uColor: { value: new THREE.Color(color) }, uOpacity: { value: 1 } },
+    vertexShader: `
+      attribute float aSeed;
+      uniform float uTime; uniform float uSize;
+      varying float vTw;
+      void main(){
+        vec3 p = position;
+        p.x += sin(uTime * 0.3 + aSeed) * 1.2;
+        p.y += sin(uTime * 0.22 + aSeed * 1.7) * 0.8;
+        p.z += cos(uTime * 0.26 + aSeed * 0.9) * 1.2;
+        vTw = 0.6 + 0.4 * sin(uTime * (1.5 + fract(aSeed) * 2.0) + aSeed * 7.0);
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        gl_PointSize = min(uSize * (120.0 / -mv.z), 13.0);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      precision highp float;
+      uniform vec3 uColor; uniform float uOpacity;
+      varying float vTw;
+      void main(){
+        float d = length(gl_PointCoord - 0.5);
+        float a = smoothstep(0.5, 0.05, d);
+        gl_FragColor = vec4(uColor, a * vTw * uOpacity);
+      }`,
+  });
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+  return pts;
+}
+const dust = makePoints(500, 1.6, 0xffeebb, 70, 0.5, 16);
+const fireflies = makePoints(220, 3.2, 0xb8ff5e, 90, 0.8, 7);
+fireflies.material.uniforms.uOpacity.value = 0;
+
+// ---------- time-of-day presets ----------
+const PRESETS = {
+  day:  { fog: 0xcfd8c0, fogD: 0.016, sky: 0xbfd5e8, sunC: 0xfff2d8, sunI: 2.2, hemiI: 0.75, shaft: 0.3, dust: 1.0, fire: 0.0, sunPos: [-34, 30, -20] },
+  dusk: { fog: 0xd8b08a, fogD: 0.020, sky: 0xe8a86a, sunC: 0xff9a4d, sunI: 1.6, hemiI: 0.45, shaft: 0.5, dust: 0.7, fire: 0.15, sunPos: [-44, 12, -10] },
+  night:{ fog: 0x101a22, fogD: 0.024, sky: 0x0a1118, sunC: 0x9ab8e8, sunI: 0.35, hemiI: 0.18, shaft: 0.0, dust: 0.12, fire: 1.0, sunPos: [-20, 26, -30] },
+};
+let cur = { ...PRESETS.day };
+let target = PRESETS.day;
+const fogColor = new THREE.Color(PRESETS.day.fog);
+const skyColor = new THREE.Color(PRESETS.day.sky);
+const sunColor = new THREE.Color(PRESETS.day.sunC);
+scene.background = skyColor;
+
+for (const key of ['day', 'dusk', 'night']) {
+  document.getElementById('t-' + key).addEventListener('click', () => {
+    target = PRESETS[key];
+    document.querySelectorAll('.hud-bl button').forEach((x) => x.classList.remove('on'));
+    document.getElementById('t-' + key).classList.add('on');
+  });
+}
+// deterministic state for screenshots / debugging: ?time=night|dusk|day
+const timeParam = new URLSearchParams(location.search).get('time');
+if (timeParam && PRESETS[timeParam]) {
+  target = PRESETS[timeParam];
+  cur = { ...PRESETS[timeParam] };
+  fogColor.set(PRESETS[timeParam].fog);
+  skyColor.set(PRESETS[timeParam].sky);
+  sunColor.set(PRESETS[timeParam].sunC);
+  sun.position.set(...PRESETS[timeParam].sunPos);
+  document.querySelectorAll('.hud-bl button').forEach((x) => x.classList.remove('on'));
+  document.getElementById('t-' + timeParam).classList.add('on');
+}
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+const tmpC = new THREE.Color();
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+  const k = Math.min(1, dt * 1.6);
+
+  cur.fogD += (target.fogD - cur.fogD) * k;
+  cur.sunI += (target.sunI - cur.sunI) * k;
+  cur.hemiI += (target.hemiI - cur.hemiI) * k;
+  cur.shaft += (target.shaft - cur.shaft) * k;
+  cur.dust += (target.dust - cur.dust) * k;
+  cur.fire += (target.fire - cur.fire) * k;
+  fogColor.lerp(tmpC.set(target.fog), k);
+  skyColor.lerp(tmpC.set(target.sky), k);
+  sunColor.lerp(tmpC.set(target.sunC), k);
+
+  scene.fog.color.copy(fogColor);
+  scene.fog.density = cur.fogD;
+  sun.color.copy(sunColor);
+  sun.intensity = cur.sunI;
+  hemi.intensity = cur.hemiI;
+  sun.position.x += (target.sunPos[0] - sun.position.x) * k;
+  sun.position.y += (target.sunPos[1] - sun.position.y) * k;
+  sun.position.z += (target.sunPos[2] - sun.position.z) * k;
+  shaftMat.uniforms.uOpacity.value = cur.shaft;
+  shaftMat.uniforms.uTime.value = t;
+  dust.material.uniforms.uOpacity.value = cur.dust;
+  dust.material.uniforms.uTime.value = t;
+  fireflies.material.uniforms.uOpacity.value = cur.fire;
+  fireflies.material.uniforms.uTime.value = t;
+  for (const s of swayShaders) s.uniforms.uTime.value = t;
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WAVES — Gerstner海洋</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0a1018; }
+  #app { position: fixed; inset: 0; }
+  .hud { position: fixed; font-family: ui-monospace, "SF Mono", Menlo, monospace; color: #cfe3f5; user-select: none; }
+  .hud-tl { top: 18px; left: 20px; pointer-events: none; }
+  .hud-tl h1 { margin: 0; font-size: 17px; letter-spacing: 0.2em; color: #ecf5fd; }
+  .hud-tl p { margin: 6px 0 0; font-size: 11px; color: #7d93a8; }
+  #panel { bottom: 18px; left: 20px; background: rgba(10, 16, 24, 0.85); border: 1px solid #2e4257; border-radius: 10px; padding: 12px 16px; width: 240px; }
+  #panel h2 { margin: 0 0 8px; font-size: 10px; letter-spacing: 0.22em; color: #6ec6ff; }
+  .row { display: flex; align-items: center; gap: 8px; font-size: 11px; margin: 6px 0; }
+  .row label { width: 34px; color: #8fa5ba; }
+  .row input[type=range] { flex: 1; accent-color: #6ec6ff; }
+  .row output { width: 36px; text-align: right; }
+  #panel button { width: 100%; margin-top: 8px; font: 12px ui-monospace, Menlo, monospace; color: #cfe3f5; background: rgba(20, 30, 44, 0.9); border: 1px solid #2e4257; border-radius: 6px; padding: 8px 0; cursor: pointer; letter-spacing: 0.12em; }
+  #panel button.on { color: #08121c; background: #ffb24d; border-color: #ffb24d; }
+  .hud-br { bottom: 18px; right: 20px; font-size: 10px; color: #5d7186; text-align: right; line-height: 1.8; pointer-events: none; }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="app"></div>
+<div class="hud hud-tl">
+  <h1>WAVES / GERSTNER OCEAN</h1>
+  <p>8成分Gerstner波 + 泡 + 疑似サブサーフェス — 風と嵐で海が変わります</p>
+</div>
+<div class="hud" id="panel">
+  <h2>SEA STATE</h2>
+  <div class="row"><label>風</label><input id="s-wind" type="range" min="5" max="100" value="42"><output id="o-wind">42</output></div>
+  <button id="b-storm">⛈ 嵐モード</button>
+</div>
+<div class="hud hud-br">ドラッグ: 回転 / ホイール: ズーム</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+document.getElementById('app').appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 2000);
+camera.position.set(0, 10, 34);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 1, -20);
+controls.maxPolarAngle = Math.PI * 0.495;
+controls.maxDistance = 220;
+
+const uniforms = {
+  uTime: { value: 0 },
+  uWind: { value: 0.42 },
+  uStorm: { value: 0 },
+  uSunCalm: { value: new THREE.Vector3(0.62, 0.30, -0.72).normalize() },
+  uCam: { value: camera.position },
+};
+
+const skyGLSL = `
+  vec3 sunDir(float storm, vec3 calmSun){
+    return normalize(mix(calmSun, vec3(0.3, 0.18, -0.9), storm));
+  }
+  vec3 skyColor(vec3 d, float storm, vec3 calmSun){
+    float t = clamp(d.y * 0.5 + 0.5, 0.0, 1.0);
+    vec3 horizonC = mix(vec3(1.0, 0.74, 0.46), vec3(0.32, 0.36, 0.40), storm);
+    vec3 zenithC  = mix(vec3(0.16, 0.36, 0.62), vec3(0.10, 0.12, 0.16), storm);
+    vec3 sky = mix(horizonC, zenithC, pow(t, 0.8));
+    vec3 s = sunDir(storm, calmSun);
+    float sun = pow(max(dot(d, s), 0.0), 700.0) * mix(6.0, 0.4, storm);
+    float glow = pow(max(dot(d, s), 0.0), 6.0) * mix(0.5, 0.12, storm);
+    sky += vec3(1.0, 0.8, 0.55) * sun + vec3(1.0, 0.62, 0.35) * glow;
+    // rolling storm clouds
+    float cl = sin(d.x * 7.0 + d.z * 5.0) * sin(d.z * 9.0 - d.x * 3.0);
+    sky = mix(sky, vec3(0.16, 0.17, 0.20), storm * smoothstep(0.0, 0.8, cl) * clamp(1.0 - t * 1.4, 0.0, 1.0) * 0.0
+      + storm * 0.18 * smoothstep(-0.2, 0.9, cl));
+    return sky;
+  }
+  float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float vnoise(vec2 p){
+    vec2 i = floor(p), f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), f.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), f.x), f.y);
+  }
+  float fbm(vec2 p){
+    float s = 0.0, a = 0.5;
+    for (int i = 0; i < 4; i++) { s += a * vnoise(p); p = p * 2.1 + 17.0; a *= 0.5; }
+    return s;
+  }`;
+
+// sky dome
+const sky = new THREE.Mesh(
+  new THREE.SphereGeometry(900, 32, 16),
+  new THREE.ShaderMaterial({
+    side: THREE.BackSide,
+    depthWrite: false,
+    uniforms,
+    vertexShader: `varying vec3 vDir; void main(){ vDir = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `precision highp float; varying vec3 vDir;
+      uniform float uStorm; uniform vec3 uSunCalm;
+      ${skyGLSL}
+      void main(){ gl_FragColor = vec4(skyColor(normalize(vDir), uStorm, uSunCalm), 1.0); }`,
+  })
+);
+scene.add(sky);
+
+// ---------- ocean ----------
+const GRID = 320;
+const EXTENT = 480;
+const oceanMat = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader: `
+    precision highp float;
+    uniform float uTime;
+    uniform float uWind;
+    uniform float uStorm;
+    varying vec3 vWorld;
+    varying vec3 vNormal;
+    varying float vCrest;
+
+    vec3 gerstner(vec2 xz, vec4 wave, float t, float phase, inout vec3 tangent, inout vec3 binormal){
+      float k = 6.2831853 / wave.w;
+      float c = sqrt(9.8 / k);
+      vec2 d = normalize(wave.xy);
+      float f = k * (dot(d, xz) - c * t) + phase;
+      float steep = wave.z;
+      float a = steep / k;
+      float S = sin(f), C = cos(f);
+      tangent  += vec3(-d.x * d.x * steep * S, d.x * steep * C, -d.x * d.y * steep * S);
+      binormal += vec3(-d.x * d.y * steep * S, d.y * steep * C, -d.y * d.y * steep * S);
+      return vec3(d.x * a * C, a * S, d.y * a * C);
+    }
+
+    void main(){
+      vec2 xz = (modelMatrix * vec4(position, 1.0)).xz;
+      // storm seas: waves get LONGER and TALLER, not spikier.
+      // total steepness is clamped below 1 so Gerstner crests never cusp.
+      float lenS = 1.0 + uStorm * 1.8;
+      float amp = min(uWind * (1.0 + uStorm * 0.5), 0.66);
+      float t = uTime * (1.0 + uStorm * 0.2);
+      vec3 tangent = vec3(1.0, 0.0, 0.0);
+      vec3 binormal = vec3(0.0, 0.0, 1.0);
+      vec3 p = vec3(xz.x, 0.0, xz.y);
+      // swells
+      p += gerstner(xz, vec4( 1.0,  0.25, 0.28 * amp, 60.0 * lenS), t, 0.0, tangent, binormal);
+      p += gerstner(xz, vec4( 0.8, -0.40, 0.24 * amp, 38.0 * lenS), t, 1.7, tangent, binormal);
+      p += gerstner(xz, vec4(-0.3,  1.00, 0.20 * amp, 27.0 * lenS), t, 3.1, tangent, binormal);
+      // mid chop (slightly longer in storm too)
+      p += gerstner(xz, vec4( 1.0,  0.80, 0.18 * amp, 14.0 * (1.0 + uStorm * 0.8)), t, 0.6, tangent, binormal);
+      p += gerstner(xz, vec4(-0.7,  0.60, 0.16 * amp, 9.5 * (1.0 + uStorm * 0.6)),  t, 2.2, tangent, binormal);
+      p += gerstner(xz, vec4( 0.4, -1.00, 0.14 * amp, 6.5),  t, 4.0, tangent, binormal);
+      // ripples
+      p += gerstner(xz, vec4( 1.0, -0.30, 0.10 * amp, 3.6),  t, 5.3, tangent, binormal);
+      p += gerstner(xz, vec4(-1.0, -0.85, 0.08 * amp, 2.2),  t, 0.9, tangent, binormal);
+
+      vNormal = normalize(cross(binormal, tangent));
+      vWorld = p;
+      vCrest = p.y / max(amp * 2.4 * (1.0 + uStorm * 1.3), 0.001);
+      gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
+    }`,
+  fragmentShader: `
+    precision highp float;
+    varying vec3 vWorld;
+    varying vec3 vNormal;
+    varying float vCrest;
+    uniform vec3 uCam;
+    uniform float uTime;
+    uniform float uStorm;
+    uniform float uWind;
+    uniform vec3 uSunCalm;
+    ${skyGLSL}
+
+    void main(){
+      vec3 n = normalize(vNormal);
+      vec3 V = normalize(uCam - vWorld);
+      vec3 L = sunDir(uStorm, uSunCalm);
+
+      vec3 deep = mix(vec3(0.015, 0.10, 0.18), vec3(0.02, 0.05, 0.07), uStorm);
+      vec3 shallow = mix(vec3(0.05, 0.42, 0.45), vec3(0.10, 0.20, 0.22), uStorm);
+      vec3 base = mix(deep, shallow, clamp(vCrest * 0.5 + 0.5, 0.0, 1.0));
+
+      // fake subsurface: light shining through crests toward the viewer
+      float sss = pow(max(dot(V, -L), 0.0), 3.0) * clamp(vCrest + 0.4, 0.0, 1.5);
+      base += vec3(0.05, 0.45, 0.42) * sss * mix(0.9, 0.25, uStorm);
+
+      vec3 R = reflect(-V, n);
+      R.y = abs(R.y);
+      vec3 refl = skyColor(R, uStorm, uSunCalm);
+      float fres = mix(0.04, 1.0, pow(1.0 - max(dot(n, V), 0.0), 5.0));
+      vec3 col = mix(base, refl, fres);
+
+      // sun glint
+      float spec = pow(max(dot(R, L), 0.0), 240.0) * mix(3.0, 0.8, uStorm);
+      col += vec3(1.0, 0.85, 0.6) * spec;
+
+      // foam: crests + noise breakup
+      float foamN = fbm(vWorld.xz * 0.9 + uTime * 0.35);
+      float crest = smoothstep(0.55, 0.95, vCrest + (foamN - 0.5) * 0.5);
+      float flat2 = smoothstep(0.55, 0.95, 1.0 - n.y);   // steep faces
+      float foam = clamp(crest * 1.1 + flat2 * 0.7, 0.0, 1.0) * smoothstep(0.2, 0.6, foamN);
+      foam *= mix(0.8, 1.25, uStorm);
+      // windrows: streaks of residual foam stretched along the wind in heavy seas
+      vec2 wdir = normalize(vec2(1.0, 0.25));
+      vec2 wp = vec2(dot(vWorld.xz, wdir), dot(vWorld.xz, vec2(-wdir.y, wdir.x)));
+      float streaks = fbm(vec2(wp.x * 0.045, wp.y * 0.55) - vec2(uTime * 0.25, 0.0));
+      foam += smoothstep(0.58, 0.9, streaks) * uStorm * 0.4 * smoothstep(-0.2, 0.6, vCrest);
+      col = mix(col, vec3(0.92, 0.96, 0.97), clamp(foam, 0.0, 0.95));
+
+      // distance fog into horizon
+      float dist = length(uCam - vWorld);
+      vec3 fogC = skyColor(normalize(vec3(V.x, 0.04, V.z) * -1.0), uStorm, uSunCalm);
+      col = mix(col, fogC, smoothstep(120.0, 420.0, dist));
+
+      gl_FragColor = vec4(col, 1.0);
+    }`,
+});
+const ocean = new THREE.Mesh(new THREE.PlaneGeometry(EXTENT, EXTENT, GRID, GRID), oceanMat);
+ocean.rotation.x = -Math.PI / 2;
+scene.add(ocean);
+
+// ---------- UI ----------
+const sWind = document.getElementById('s-wind');
+const oWind = document.getElementById('o-wind');
+sWind.addEventListener('input', () => { oWind.textContent = sWind.value; });
+let stormTarget = 0;
+// deterministic state for screenshots / debugging: ?storm=1
+if (new URLSearchParams(location.search).get('storm') === '1') {
+  stormTarget = 1;
+  uniforms.uStorm.value = 1;
+  document.getElementById('b-storm').classList.add('on');
+  document.getElementById('b-storm').textContent = '🌤 凪に戻す';
+}
+const bStorm = document.getElementById('b-storm');
+bStorm.addEventListener('click', () => {
+  stormTarget = stormTarget > 0 ? 0 : 1;
+  bStorm.classList.toggle('on');
+  bStorm.textContent = stormTarget > 0 ? '🌤 凪に戻す' : '⛈ 嵐モード';
+});
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  uniforms.uTime.value += dt;
+  uniforms.uWind.value += (Number(sWind.value) / 100 - uniforms.uWind.value) * Math.min(1, dt * 2);
+  uniforms.uStorm.value += (stormTarget - uniforms.uStorm.value) * Math.min(1, dt * 0.8);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
