@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <radialGradient id="sphereGrad" cx="42%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="55%" stop-color="#eaf1f7"/>
+      <stop offset="100%" stop-color="#cfd9e3"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="#ffffff"/>
+
+  <text x="600" y="62" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="bold" fill="#111111">Bloch Sphere</text>
+
+  <!-- Sphere body -->
+  <circle cx="600" cy="460" r="250" fill="url(#sphereGrad)" stroke="#2c3e50" stroke-width="2.5"/>
+
+  <!-- Decorative faint meridian for volume -->
+  <ellipse cx="600" cy="460" rx="120" ry="250" fill="none" stroke="#95a5a6" stroke-width="1" stroke-dasharray="4,4" opacity="0.55"/>
+
+  <!-- Equator: back half (dashed, hidden) then front half (solid) -->
+  <path d="M 350,460 A 250,75 0 0 0 850,460" fill="none" stroke="#34495e" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.75"/>
+  <path d="M 350,460 A 250,75 0 0 1 850,460" fill="none" stroke="#34495e" stroke-width="1.8"/>
+
+  <!-- z axis -->
+  <line x1="600" y1="140" x2="600" y2="790" stroke="#1a1a1a" stroke-width="3"/>
+  <polygon points="600,140 592,158 608,158" fill="#1a1a1a"/>
+  <text x="620" y="132" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-style="italic" fill="#1a1a1a">z</text>
+  <text x="614" y="228" font-family="Georgia, 'Times New Roman', serif" font-size="24" fill="#1a1a1a">|0&#10217;</text>
+  <text x="614" y="738" font-family="Georgia, 'Times New Roman', serif" font-size="24" fill="#1a1a1a">|1&#10217;</text>
+
+  <!-- x axis: back stub (dashed) then front (solid) with arrow -->
+  <line x1="600" y1="460" x2="730" y2="395" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="6,5" opacity="0.6"/>
+  <line x1="600" y1="460" x2="365" y2="568" stroke="#1a1a1a" stroke-width="3"/>
+  <polygon points="365,568 378.0,553.2 384.7,567.8" fill="#1a1a1a"/>
+  <text x="322" y="608" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-style="italic" fill="#1a1a1a">x</text>
+
+  <!-- y axis: back stub (dashed) then front (solid) with arrow -->
+  <line x1="600" y1="460" x2="500" y2="430" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="6,5" opacity="0.6"/>
+  <line x1="600" y1="460" x2="880" y2="530" stroke="#1a1a1a" stroke-width="3"/>
+  <polygon points="880,530 860.6,533.4 864.5,517.9" fill="#1a1a1a"/>
+  <text x="898" y="558" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-style="italic" fill="#1a1a1a">y</text>
+
+  <!-- Origin -->
+  <circle cx="600" cy="460" r="4" fill="#1a1a1a"/>
+  <text x="578" y="480" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-style="italic" fill="#1a1a1a">O</text>
+
+  <!-- Projection helper lines: vertical drop from state point to equatorial plane, and radius to that shadow -->
+  <line x1="777" y1="283" x2="777" y2="513" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="600" y1="460" x2="777" y2="513" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- theta arc (between z axis and state vector) -->
+  <path d="M 600,390 A 70,70 0 0 1 649.5,410.5" fill="none" stroke="#e67e22" stroke-width="2.2"/>
+  <text x="638" y="422" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-style="italic" fill="#e67e22">&#952;</text>
+
+  <!-- phi arc (between x axis and equatorial projection of the state vector) -->
+  <path d="M 545.5,485.1 A 60,60 0 0 0 657.5,477.2" fill="none" stroke="#16a085" stroke-width="2.2"/>
+  <text x="596" y="552" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-style="italic" fill="#16a085">&#966;</text>
+
+  <!-- State vector |psi> -->
+  <line x1="600" y1="460" x2="777" y2="283" stroke="#c0392b" stroke-width="3.5"/>
+  <polygon points="777,283 769.9,301.4 758.6,290.1" fill="#c0392b"/>
+  <text x="792" y="250" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-style="italic" fill="#c0392b">|&#968;&#10217;</text>
+
+  <!-- Caption formula -->
+  <text x="600" y="855" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-style="italic" fill="#333333">|&#968;&#10217; = cos(&#952;/2) |0&#10217; + e^{i&#966;} sin(&#952;/2) |1&#10217;</text>
+</svg>

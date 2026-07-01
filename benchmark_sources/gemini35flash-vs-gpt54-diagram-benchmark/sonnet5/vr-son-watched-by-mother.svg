@@ -1,0 +1,283 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="'Helvetica Neue', Arial, sans-serif">
+  <title>VRゴーグルで遊ぶ息子をお母さんが見守る子ども部屋</title>
+
+  <defs>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e3edfb"/>
+      <stop offset="1" stop-color="#c7d7f0"/>
+    </linearGradient>
+    <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dcb488"/>
+      <stop offset="1" stop-color="#c2946a"/>
+    </linearGradient>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bfe3ff"/>
+      <stop offset="1" stop-color="#eaf7ff"/>
+    </linearGradient>
+    <linearGradient id="hallGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#232a3a"/>
+      <stop offset="1" stop-color="#454e64"/>
+    </linearGradient>
+    <linearGradient id="lensGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6fe0ff"/>
+      <stop offset="1" stop-color="#1f8fc4"/>
+    </linearGradient>
+    <radialGradient id="lampGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff7d6" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#fff7d6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ===== room shell ===== -->
+  <rect x="0" y="0" width="1200" height="640" fill="url(#wallGrad)"/>
+  <rect x="0" y="640" width="1200" height="260" fill="url(#floorGrad)"/>
+  <rect x="0" y="626" width="1200" height="20" fill="#f2ead9"/>
+
+  <!-- floor planks -->
+  <g stroke="#a97c52" stroke-width="2" opacity="0.35">
+    <line x1="0" y1="700" x2="1200" y2="700"/>
+    <line x1="0" y1="760" x2="1200" y2="760"/>
+    <line x1="0" y1="820" x2="1200" y2="820"/>
+    <line x1="0" y1="880" x2="1200" y2="880"/>
+    <line x1="150" y1="640" x2="90" y2="900"/>
+    <line x1="400" y1="640" x2="380" y2="900"/>
+    <line x1="650" y1="640" x2="660" y2="900"/>
+    <line x1="900" y1="640" x2="930" y2="900"/>
+  </g>
+
+  <!-- ceiling pendant lamp -->
+  <line x1="150" y1="0" x2="150" y2="60" stroke="#b8ab8e" stroke-width="4"/>
+  <circle cx="150" cy="95" r="60" fill="url(#lampGlow)"/>
+  <path d="M120,60 L180,60 L165,110 L135,110 Z" fill="#f6e7b8" stroke="#d8c07f" stroke-width="3"/>
+
+  <!-- ===== window with curtains ===== -->
+  <g>
+    <rect x="330" y="70" width="230" height="190" rx="8" fill="url(#skyGrad)" stroke="#b9c6e0" stroke-width="12"/>
+    <line x1="445" y1="70" x2="445" y2="260" stroke="#b9c6e0" stroke-width="8"/>
+    <line x1="330" y1="163" x2="560" y2="163" stroke="#b9c6e0" stroke-width="8"/>
+    <ellipse cx="500" cy="110" rx="26" ry="12" fill="#ffffff" opacity="0.8"/>
+    <ellipse cx="525" cy="120" rx="18" ry="9" fill="#ffffff" opacity="0.7"/>
+    <path d="M320,60 Q300,160 325,265 L355,265 Q335,160 350,60 Z" fill="#f5b6c6" opacity="0.85"/>
+    <path d="M570,60 Q590,160 565,265 L535,265 Q555,160 540,60 Z" fill="#f5b6c6" opacity="0.85"/>
+    <rect x="315" y="55" width="270" height="12" rx="4" fill="#c99a6b"/>
+  </g>
+
+  <!-- wall stickers -->
+  <g fill="#ffd23f" opacity="0.9">
+    <path d="M615,95 l6,14 15,2 -11,10 3,15 -13,-8 -13,8 3,-15 -11,-10 15,-2 z"/>
+    <path d="M660,150 l4,10 11,1 -8,7 2,11 -9,-6 -9,6 2,-11 -8,-7 11,-1 z"/>
+  </g>
+
+  <!-- rocket poster -->
+  <g transform="translate(645,90)">
+    <rect x="0" y="0" width="120" height="150" rx="10" fill="#ffffff" stroke="#d8c9a3" stroke-width="6"/>
+    <ellipse cx="60" cy="140" rx="34" ry="8" fill="#dfeeff"/>
+    <path d="M60,20 Q85,60 78,110 L42,110 Q35,60 60,20 Z" fill="#ff8a5c"/>
+    <circle cx="60" cy="65" r="12" fill="#bfe3ff" stroke="#1f8fc4" stroke-width="3"/>
+    <path d="M42,95 L28,120 L45,112 Z" fill="#f5b6c6"/>
+    <path d="M78,95 L92,120 L75,112 Z" fill="#f5b6c6"/>
+    <path d="M50,110 L45,132 L60,118 L75,132 L70,110 Z" fill="#ffd23f"/>
+  </g>
+
+  <!-- shelf with toys above desk -->
+  <g>
+    <rect x="820" y="330" width="220" height="14" rx="4" fill="#c99a6b"/>
+    <rect x="835" y="288" width="26" height="42" fill="#ff6b4a"/>
+    <rect x="864" y="278" width="26" height="52" fill="#4fd1ff"/>
+    <rect x="893" y="296" width="26" height="34" fill="#ffd23f"/>
+    <circle cx="960" cy="312" r="18" fill="#7bd389" stroke="#5aa869" stroke-width="3"/>
+    <g transform="translate(985,285)">
+      <rect x="0" y="20" width="30" height="26" rx="4" fill="#c7c9cf"/>
+      <circle cx="15" cy="14" r="14" fill="#e3e5ea" stroke="#aeb1ba" stroke-width="3"/>
+      <rect x="-6" y="24" width="6" height="16" rx="2" fill="#aeb1ba"/>
+      <rect x="30" y="24" width="6" height="16" rx="2" fill="#aeb1ba"/>
+    </g>
+  </g>
+
+  <!-- ===== bed (back left) ===== -->
+  <g>
+    <rect x="30" y="330" width="235" height="95" rx="12" fill="#c9976a" stroke="#a97a4f" stroke-width="4"/>
+    <rect x="20" y="415" width="270" height="150" rx="26" fill="#5fa8d3"/>
+    <g stroke="#ffffff" stroke-width="6" opacity="0.55">
+      <line x1="40" y1="430" x2="40" y2="560"/>
+      <line x1="80" y1="425" x2="80" y2="562"/>
+      <line x1="120" y1="422" x2="120" y2="564"/>
+      <line x1="160" y1="422" x2="160" y2="564"/>
+      <line x1="200" y1="424" x2="200" y2="562"/>
+      <line x1="240" y1="428" x2="240" y2="560"/>
+    </g>
+    <ellipse cx="95" cy="440" rx="55" ry="30" fill="#ffffff" stroke="#e5e2da" stroke-width="3"/>
+    <rect x="18" y="558" width="18" height="30" fill="#a97a4f"/>
+    <rect x="272" y="558" width="18" height="30" fill="#a97a4f"/>
+    <path d="M60,650 Q90,610 150,650" fill="none" stroke="#a2795a" stroke-width="4" opacity="0.5"/>
+  </g>
+
+  <!-- toy box + scattered blocks -->
+  <g>
+    <rect x="70" y="700" width="120" height="80" rx="10" fill="#f2a65a" stroke="#d68a3c" stroke-width="4"/>
+    <rect x="70" y="690" width="120" height="18" rx="8" fill="#f7c184"/>
+    <g>
+      <rect x="220" y="760" width="34" height="34" fill="#ff6b4a" transform="rotate(8 237 777)"/>
+      <rect x="270" y="780" width="30" height="30" fill="#4fd1ff" transform="rotate(-12 285 795)"/>
+      <circle cx="150" cy="815" r="24" fill="#7bd389" stroke="#5aa869" stroke-width="3"/>
+    </g>
+    <g transform="translate(180,830)">
+      <ellipse cx="0" cy="18" rx="30" ry="14" fill="#c9976a" opacity="0.5"/>
+      <circle cx="0" cy="0" r="20" fill="#c9976a"/>
+      <circle cx="-16" cy="-10" r="10" fill="#c9976a"/>
+      <circle cx="16" cy="-10" r="10" fill="#c9976a"/>
+      <circle cx="-6" cy="-2" r="2.4" fill="#3a2c22"/>
+      <circle cx="6" cy="-2" r="2.4" fill="#3a2c22"/>
+      <ellipse cx="0" cy="6" rx="5" ry="3" fill="#8a5f3a"/>
+    </g>
+  </g>
+
+  <!-- ===== desk (right, before doorway) ===== -->
+  <g>
+    <rect x="835" y="430" width="18" height="150" fill="#b98354"/>
+    <rect x="985" y="430" width="18" height="150" fill="#b98354"/>
+    <rect x="825" y="415" width="190" height="20" rx="4" fill="#d3a877"/>
+    <rect x="850" y="330" width="14" height="90" fill="#3a3d45"/>
+    <rect x="825" y="255" width="130" height="80" rx="6" fill="#2b2f3a"/>
+    <rect x="835" y="263" width="110" height="64" rx="3" fill="#4fd1ff" opacity="0.85"/>
+    <rect x="805" y="333" width="70" height="8" rx="4" fill="#2b2f3a"/>
+    <g transform="translate(915,470)">
+      <rect x="-24" y="0" width="48" height="55" rx="8" fill="#5fa8d3"/>
+      <circle cx="0" cy="-18" r="24" fill="#5fa8d3"/>
+      <rect x="-20" y="52" width="10" height="26" fill="#3a3d45"/>
+      <rect x="10" y="52" width="10" height="26" fill="#3a3d45"/>
+    </g>
+  </g>
+
+  <!-- ===== rug ===== -->
+  <ellipse cx="430" cy="795" rx="205" ry="52" fill="#ffdd77"/>
+  <ellipse cx="430" cy="795" rx="205" ry="52" fill="none" stroke="#ffb703" stroke-width="6"/>
+  <g fill="#ffb703" opacity="0.8">
+    <circle cx="330" cy="780" r="6"/>
+    <circle cx="380" cy="815" r="6"/>
+    <circle cx="440" cy="765" r="6"/>
+    <circle cx="500" cy="805" r="6"/>
+    <circle cx="550" cy="775" r="6"/>
+  </g>
+
+  <!-- ===== doorway with mother watching ===== -->
+  <g>
+    <rect x="965" y="105" width="195" height="545" fill="none" stroke="#b8ab8e" stroke-width="16" rx="6"/>
+    <rect x="982" y="122" width="161" height="512" fill="url(#hallGrad)"/>
+    <!-- door swung open, edge-on, near hinge on right wall -->
+    <rect x="1138" y="112" width="16" height="530" fill="#caa06b" stroke="#a97a4f" stroke-width="2"/>
+    <circle cx="1146" cy="330" r="4" fill="#5a4630"/>
+
+    <!-- mother figure standing in the doorway, watching her son -->
+    <g>
+      <!-- shadow -->
+      <ellipse cx="1055" cy="628" rx="55" ry="12" fill="#00000030"/>
+      <!-- legs / feet -->
+      <path d="M1030,560 L1022,620 L1044,620 L1048,565 Z" fill="#f6f1e6"/>
+      <path d="M1080,560 L1088,620 L1066,620 L1062,565 Z" fill="#f6f1e6"/>
+      <ellipse cx="1030" cy="624" rx="18" ry="8" fill="#7a5b3a"/>
+      <ellipse cx="1080" cy="624" rx="18" ry="8" fill="#7a5b3a"/>
+      <!-- dress body (A-line), turned toward the son on the left -->
+      <path d="M1018,270 Q1055,255 1092,270 L1108,565 Q1055,585 1002,565 Z" fill="#e58aa0"/>
+      <path d="M1030,340 Q1055,330 1080,340 L1088,500 Q1055,512 1022,500 Z" fill="#fbf3e6" opacity="0.9"/>
+      <!-- far arm resting near chest, surprised -->
+      <path d="M1082,285 Q1102,300 1092,325" fill="none" stroke="#e58aa0" stroke-width="20" stroke-linecap="round"/>
+      <circle cx="1090" cy="330" r="12" fill="#ffdec2"/>
+      <!-- near arm reaching to the door frame she just opened -->
+      <path d="M1022,285 Q995,310 992,345" fill="none" stroke="#e58aa0" stroke-width="20" stroke-linecap="round"/>
+      <circle cx="991" cy="350" r="12" fill="#ffdec2"/>
+      <!-- neck + head -->
+      <rect x="1042" y="248" width="26" height="24" fill="#ffdec2"/>
+      <circle cx="1055" cy="222" r="38" fill="#ffdec2"/>
+      <!-- hair: bun + bangs -->
+      <path d="M1017,222 Q1012,168 1055,164 Q1098,168 1093,222 Q1088,190 1055,186 Q1022,190 1017,222 Z" fill="#3a2c22"/>
+      <circle cx="1055" cy="158" r="16" fill="#3a2c22"/>
+      <!-- surprised eyebrows -->
+      <path d="M1030,206 Q1038,198 1047,204" fill="none" stroke="#3a2c22" stroke-width="3" stroke-linecap="round"/>
+      <path d="M1063,204 Q1072,198 1080,206" fill="none" stroke="#3a2c22" stroke-width="3" stroke-linecap="round"/>
+      <!-- eyes looking left toward her son -->
+      <ellipse cx="1038" cy="220" rx="8" ry="9" fill="#ffffff" stroke="#c79a80" stroke-width="1.5"/>
+      <ellipse cx="1073" cy="220" rx="8" ry="9" fill="#ffffff" stroke="#c79a80" stroke-width="1.5"/>
+      <circle cx="1034" cy="221" r="4" fill="#3a2c22"/>
+      <circle cx="1069" cy="221" r="4" fill="#3a2c22"/>
+      <!-- surprised open mouth -->
+      <ellipse cx="1055" cy="240" rx="7" ry="9" fill="#a95d5d"/>
+    </g>
+    <!-- small surprise mark above her head -->
+    <text x="1100" y="150" font-size="30" fill="#5a4a3a" font-weight="bold">!</text>
+  </g>
+
+  <!-- gaze line: mother watching her son (line-of-sight indicator) -->
+  <path d="M1015,222 C 820,240 640,300 466,432" fill="none" stroke="#ffd23f" stroke-width="3" stroke-dasharray="10 8" opacity="0.9"/>
+  <circle cx="1015" cy="222" r="6" fill="#ffd23f" stroke="#c79a1e" stroke-width="2"/>
+  <path d="M466,432 l-16,-6 4,17 z" fill="#ffd23f" stroke="#c79a1e" stroke-width="1.5"/>
+
+  <!-- motion / excitement marks around the son -->
+  <g stroke="#ffb703" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.75">
+    <path d="M255,400 Q235,415 250,435"/>
+    <path d="M585,395 Q605,410 590,432"/>
+    <path d="M350,760 Q330,780 345,800"/>
+  </g>
+  <g fill="#ffd23f" opacity="0.85">
+    <path d="M270,370 l4,10 11,1 -8,7 2,11 -9,-6 -9,6 2,-11 -8,-7 11,-1 z"/>
+    <path d="M580,360 l3,8 9,1 -7,6 2,9 -7,-5 -7,5 2,-9 -7,-6 9,-1 z"/>
+  </g>
+
+  <!-- ===== son playing VR in the middle of the room ===== -->
+  <g>
+    <!-- shadow -->
+    <ellipse cx="420" cy="828" rx="80" ry="14" fill="#00000025"/>
+
+    <!-- back (kicked-up) leg -->
+    <path d="M438,652 Q478,712 462,782" fill="none" stroke="#2f6f9c" stroke-width="34" stroke-linecap="round"/>
+    <ellipse cx="460" cy="790" rx="20" ry="12" fill="#26364a" transform="rotate(20 460 790)"/>
+
+    <!-- front (planted) leg -->
+    <path d="M402,652 L392,818" fill="none" stroke="#2f6f9c" stroke-width="34" stroke-linecap="round"/>
+    <ellipse cx="392" cy="826" rx="22" ry="13" fill="#26364a"/>
+
+    <!-- torso -->
+    <path d="M355,650 L352,510 Q352,494 368,494 L472,494 Q488,494 488,510 L486,650 Q420,668 355,650 Z" fill="#ff6b4a"/>
+    <path d="M368,494 L472,494 L476,530 L364,530 Z" fill="#ff8a6a"/>
+
+    <!-- far (right) arm raised with controller -->
+    <path d="M460,516 Q518,470 548,412" fill="none" stroke="#ff6b4a" stroke-width="26" stroke-linecap="round"/>
+    <circle cx="552" cy="404" r="15" fill="#ffd9b3"/>
+    <g transform="translate(552,404) rotate(30)">
+      <rect x="-10" y="-4" width="34" height="22" rx="8" fill="#3a3d45"/>
+      <circle cx="6" cy="-4" r="13" fill="none" stroke="#ff4d6d" stroke-width="5"/>
+    </g>
+
+    <!-- near (left) arm raised with controller -->
+    <path d="M378,516 Q322,472 296,416" fill="none" stroke="#ff6b4a" stroke-width="26" stroke-linecap="round"/>
+    <circle cx="293" cy="408" r="15" fill="#ffd9b3"/>
+    <g transform="translate(293,408) rotate(-30)">
+      <rect x="-24" y="-4" width="34" height="22" rx="8" fill="#3a3d45"/>
+      <circle cx="0" cy="-4" r="13" fill="none" stroke="#4dd0e1" stroke-width="5"/>
+    </g>
+
+    <!-- neck -->
+    <rect x="404" y="470" width="30" height="26" fill="#ffd9b3"/>
+
+    <!-- head -->
+    <circle cx="420" cy="443" r="47" fill="#ffd9b3"/>
+
+    <!-- hair (top/back only, front is covered by the headset) -->
+    <path d="M374,438 Q368,388 420,384 Q472,388 466,438 Q450,410 420,406 Q390,410 374,438 Z" fill="#5b3a29"/>
+
+    <!-- ears -->
+    <circle cx="371" cy="446" r="9" fill="#ffd9b3"/>
+    <circle cx="469" cy="446" r="9" fill="#ffd9b3"/>
+
+    <!-- VR headset -->
+    <path d="M368,418 Q420,378 472,418" fill="none" stroke="#14161c" stroke-width="14" stroke-linecap="round"/>
+    <rect x="362" y="420" width="18" height="26" rx="6" fill="#14161c"/>
+    <rect x="460" y="420" width="18" height="26" rx="6" fill="#14161c"/>
+    <rect x="378" y="424" width="84" height="50" rx="16" fill="#23262f"/>
+    <rect x="392" y="436" width="56" height="26" rx="10" fill="url(#lensGrad)" opacity="0.9"/>
+    <circle cx="405" cy="449" r="4" fill="#ffffff" opacity="0.7"/>
+
+    <!-- happy open mouth (visible below the visor) -->
+    <path d="M402,486 Q420,500 438,486" fill="none" stroke="#a95d5d" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>

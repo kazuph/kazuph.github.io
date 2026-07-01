@@ -1,0 +1,227 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="'Hiragino Kaku Gothic ProN','Noto Sans CJK JP','Yu Gothic','Meiryo',sans-serif">
+  <defs>
+    <marker id="arrBlack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#2b2b2b"/>
+    </marker>
+    <marker id="arrGreyThick" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#7a7a7a"/>
+    </marker>
+    <marker id="arrPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#7b2cbf"/>
+    </marker>
+    <marker id="arrBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#1565c0"/>
+    </marker>
+    <marker id="arrGreyDot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#888888"/>
+    </marker>
+    <marker id="arrGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrGreyDash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#8a8f99"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1200" height="900" fill="#f4f6fb"/>
+
+  <!-- title -->
+  <text x="600" y="32" text-anchor="middle" font-size="25" font-weight="700" fill="#16213e">ゼロトラスト認証とトークン交換</text>
+  <text x="600" y="52" text-anchor="middle" font-size="12.5" fill="#5b6472">Zero-Trust Authentication &amp; Token Exchange — User → Browser → IdP → API Gateway → Service A → Service B</text>
+
+  <!-- ============ TRUST ZONES (background layer) ============ -->
+  <rect x="20" y="140" width="270" height="700" rx="14" fill="#c0392b" fill-opacity="0.05" stroke="#c0392b" stroke-width="2" stroke-dasharray="10,6"/>
+  <text x="35" y="163" font-size="12.5" font-weight="700" fill="#a5301f">UNTRUSTED ZONE ― Public Internet</text>
+
+  <rect x="330" y="140" width="270" height="340" rx="14" fill="#1f7a4d" fill-opacity="0.05" stroke="#1f7a4d" stroke-width="2" stroke-dasharray="10,6"/>
+  <text x="345" y="163" font-size="12.5" font-weight="700" fill="#166238">TRUSTED ISSUER ZONE ― Identity Provider</text>
+
+  <rect x="330" y="500" width="270" height="340" rx="14" fill="#b8720a" fill-opacity="0.06" stroke="#b8720a" stroke-width="2" stroke-dasharray="10,6"/>
+  <text x="345" y="523" font-size="12.5" font-weight="700" fill="#95600a">EDGE ZONE ― Policy Enforcement Point</text>
+
+  <rect x="650" y="140" width="530" height="700" rx="14" fill="#1a4fa8" fill-opacity="0.05" stroke="#1a4fa8" stroke-width="2.4" stroke-dasharray="10,6"/>
+  <text x="665" y="163" font-size="12.5" font-weight="700" fill="#123a80">INTERNAL ZONE ― mTLS Service Mesh (Zero Trust Core)</text>
+
+  <rect x="680" y="185" width="470" height="650" rx="10" fill="none" stroke="#4d72b8" stroke-width="1.4" stroke-dasharray="4,4"/>
+  <text x="695" y="203" font-size="10" font-style="italic" fill="#4d72b8">SPIFFE / SPIRE Workload Identity Mesh</text>
+
+  <!-- ============ ENTITY BOXES ============ -->
+
+  <!-- User -->
+  <rect x="55" y="190" width="200" height="110" rx="10" fill="#ffffff" stroke="#a5301f" stroke-width="2"/>
+  <circle cx="85" cy="216" r="11" fill="#a5301f"/>
+  <path d="M68,248 Q85,228 102,248 L102,251 L68,251 Z" fill="#a5301f"/>
+  <text x="112" y="222" font-size="16" font-weight="700" fill="#16213e">User</text>
+  <text x="70" y="250" font-size="10.5" fill="#333">エンドユーザー (Resource Owner)</text>
+  <text x="70" y="270" font-size="9.5" fill="#666">資格情報: ID/Password, WebAuthn 等</text>
+
+  <!-- Browser -->
+  <rect x="55" y="430" width="200" height="270" rx="10" fill="#ffffff" stroke="#a5301f" stroke-width="2"/>
+  <rect x="68" y="445" width="34" height="22" rx="3" fill="none" stroke="#a5301f" stroke-width="2"/>
+  <circle cx="74" cy="451" r="1.8" fill="#a5301f"/>
+  <circle cx="80" cy="451" r="1.8" fill="#a5301f"/>
+  <line x1="68" y1="456" x2="102" y2="456" stroke="#a5301f" stroke-width="1.3"/>
+  <text x="112" y="462" font-size="16" font-weight="700" fill="#16213e">Browser</text>
+  <text x="70" y="485" font-size="10.5" fill="#333">Public Client (SPA) — client secretなし</text>
+  <line x1="68" y1="495" x2="240" y2="495" stroke="#ddd"/>
+  <text x="70" y="513" font-size="10" fill="#333" font-weight="600">保持するトークン:</text>
+  <text x="72" y="533" font-size="10" fill="#333">- ID Token (sessionStorage)</text>
+  <text x="72" y="551" font-size="10" fill="#333">- Access Token (メモリ推奨・短TTL)</text>
+  <text x="70" y="571" font-size="10" fill="#333">PKCE code_verifier を都度生成</text>
+  <text x="70" y="589" font-size="10" fill="#333">Refresh Tokenは使わない/常時Rotate</text>
+  <line x1="68" y1="602" x2="240" y2="602" stroke="#ddd"/>
+  <text x="155" y="624" text-anchor="middle" font-size="9.5" font-style="italic" fill="#a5301f">境界を越えるたびに再検証される</text>
+  <text x="155" y="644" text-anchor="middle" font-size="9.5" font-style="italic" fill="#a5301f">(Never Trust, Always Verify)</text>
+
+  <text x="155" y="815" text-anchor="middle" font-size="11" font-style="italic" font-weight="600" fill="#a5301f">端末とブラウザは常に非信頼として扱う</text>
+
+  <!-- Identity Provider -->
+  <rect x="365" y="195" width="200" height="260" rx="10" fill="#ffffff" stroke="#166238" stroke-width="2"/>
+  <path d="M382,205 L398,205 L398,222 Q398,236 390,244 Q382,236 382,222 Z" fill="none" stroke="#166238" stroke-width="2"/>
+  <circle cx="390" cy="219" r="2.6" fill="#166238"/>
+  <rect x="388.5" y="221" width="3" height="7" fill="#166238"/>
+  <text x="408" y="218" font-size="13.5" font-weight="700" fill="#16213e">Identity Provider (IdP)</text>
+  <text x="380" y="240" font-size="10" fill="#333">OIDC / OAuth 2.1 Authorization Server</text>
+  <line x1="378" y1="250" x2="552" y2="250" stroke="#ddd"/>
+  <text x="380" y="270" font-size="10" fill="#333">- ユーザー認証 + MFA</text>
+  <text x="380" y="290" font-size="10" fill="#333">- 同意(Consent)確認</text>
+  <text x="380" y="310" font-size="10" fill="#333">- ID Token発行 - 誰であるか</text>
+  <text x="380" y="330" font-size="10" fill="#333">- Access Token発行 - 何ができるか</text>
+  <text x="380" y="350" font-size="10" fill="#333">- JWKS公開鍵エンドポイント公開</text>
+  <line x1="378" y1="365" x2="552" y2="365" stroke="#ddd"/>
+  <text x="465" y="388" text-anchor="middle" font-size="9" font-style="italic" fill="#666">署名鍵はHSM/KMSで保護し</text>
+  <text x="465" y="403" text-anchor="middle" font-size="9" font-style="italic" fill="#666">定期的にローテーションする</text>
+
+  <!-- API Gateway -->
+  <rect x="365" y="555" width="200" height="260" rx="10" fill="#ffffff" stroke="#95600a" stroke-width="2"/>
+  <path d="M382,565 L398,565 L404,585 L376,585 Z" fill="none" stroke="#95600a" stroke-width="2"/>
+  <circle cx="390" cy="575" r="2" fill="#95600a"/>
+  <text x="408" y="578" font-size="14.5" font-weight="700" fill="#16213e">API Gateway</text>
+  <text x="380" y="600" font-size="10" fill="#333">Policy Enforcement Point (PEP)</text>
+  <line x1="378" y1="610" x2="552" y2="610" stroke="#ddd"/>
+  <text x="380" y="630" font-size="10" fill="#333">- Access Token署名検証(JWKS)</text>
+  <text x="380" y="650" font-size="10" fill="#333">- aud / scope / exp を検査</text>
+  <text x="380" y="670" font-size="10" fill="#333">- レート制限・WAF・mTLS終端</text>
+  <text x="380" y="690" font-size="10" fill="#333">- ユーザーコンテキストを伝播</text>
+  <text x="380" y="710" font-size="10" fill="#333">- 短命Service Tokenを発行(60秒)</text>
+  <line x1="378" y1="725" x2="552" y2="725" stroke="#ddd"/>
+  <text x="465" y="748" text-anchor="middle" font-size="9" font-style="italic" fill="#666">認可のないリクエストは</text>
+  <text x="465" y="763" text-anchor="middle" font-size="9" font-style="italic" fill="#666">即座にDenyする</text>
+
+  <!-- Service A -->
+  <rect x="710" y="225" width="220" height="170" rx="10" fill="#ffffff" stroke="#123a80" stroke-width="2"/>
+  <rect x="725" y="235" width="26" height="28" rx="2" fill="none" stroke="#123a80" stroke-width="2"/>
+  <circle cx="731" cy="242" r="1.8" fill="#2e7d32"/>
+  <circle cx="731" cy="250" r="1.8" fill="#123a80"/>
+  <line x1="736" y1="242" x2="746" y2="242" stroke="#123a80" stroke-width="1"/>
+  <line x1="736" y1="250" x2="746" y2="250" stroke="#123a80" stroke-width="1"/>
+  <text x="760" y="252" font-size="15" font-weight="700" fill="#16213e">Service A</text>
+  <text x="725" y="272" font-size="10.5" fill="#333">Order Service</text>
+  <line x1="723" y1="282" x2="912" y2="282" stroke="#ddd"/>
+  <text x="725" y="300" font-size="9.5" fill="#333">- Service Token検証(SPIFFE ID)</text>
+  <text x="725" y="318" font-size="9.5" fill="#333">- scope=orders:read を強制</text>
+  <text x="725" y="336" font-size="9.5" fill="#333">- mTLS証明書でピア認証</text>
+  <text x="725" y="354" font-size="9.5" fill="#333">- 全アクセスを監査ログへ記録</text>
+
+  <!-- Service B -->
+  <rect x="710" y="605" width="220" height="170" rx="10" fill="#ffffff" stroke="#123a80" stroke-width="2"/>
+  <rect x="725" y="615" width="26" height="28" rx="2" fill="none" stroke="#123a80" stroke-width="2"/>
+  <circle cx="731" cy="622" r="1.8" fill="#2e7d32"/>
+  <circle cx="731" cy="630" r="1.8" fill="#123a80"/>
+  <line x1="736" y1="622" x2="746" y2="622" stroke="#123a80" stroke-width="1"/>
+  <line x1="736" y1="630" x2="746" y2="630" stroke="#123a80" stroke-width="1"/>
+  <text x="760" y="632" font-size="15" font-weight="700" fill="#16213e">Service B</text>
+  <text x="725" y="652" font-size="10.5" fill="#333">Payment Service（高感度データ）</text>
+  <line x1="723" y1="662" x2="912" y2="662" stroke="#ddd"/>
+  <text x="725" y="680" font-size="9.5" fill="#333">- Service Token検証(SPIFFE ID)</text>
+  <text x="725" y="698" font-size="9.5" fill="#333">- scope=payments:write を強制</text>
+  <text x="725" y="716" font-size="9.5" fill="#333">- PCI境界: 追加ログを付与</text>
+  <text x="725" y="734" font-size="9.5" fill="#333">- 改ざん検知のため監査必須</text>
+
+  <rect x="710" y="790" width="220" height="32" rx="6" fill="#eef2fa" stroke="#4d72b8" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <text x="820" y="810" text-anchor="middle" font-size="9" fill="#123a80">→ DB/Ledgerへ: mTLSのみ／Bearerトークンは一切送らない</text>
+
+  <!-- ============ ARROWS / TOKEN FLOWS (top layer) ============ -->
+
+  <!-- 1: User -> Browser -->
+  <line x1="155" y1="300" x2="155" y2="428" stroke="#2b2b2b" stroke-width="2.2" marker-end="url(#arrBlack)"/>
+  <text x="163" y="370" font-size="10.3" font-weight="600" fill="#2b2b2b">1. アプリへアクセス</text>
+
+  <!-- 2: Browser <-> IdP (auth code + PKCE, login/MFA/consent) -->
+  <path d="M255,470 H308 V260 H363" fill="none" stroke="#7a7a7a" stroke-width="2.6" marker-start="url(#arrGreyThick)" marker-end="url(#arrGreyThick)"/>
+  <text x="312" y="300" text-anchor="middle" font-size="9" font-weight="600" fill="#4a4a4a">2. Authorization</text>
+  <text x="312" y="312" text-anchor="middle" font-size="9" font-weight="600" fill="#4a4a4a">Code Flow + PKCE</text>
+  <text x="312" y="324" text-anchor="middle" font-size="8.3" fill="#6a6a6a">(login / MFA / consent)</text>
+
+  <!-- 3: IdP -> Browser : ID Token -->
+  <path d="M363,320 H298 V435 H257" fill="none" stroke="#7b2cbf" stroke-width="2.2" stroke-dasharray="6,4" marker-end="url(#arrPurple)"/>
+  <text x="302" y="410" font-size="8.8" font-weight="600" fill="#7b2cbf">3. ID Token</text>
+  <text x="302" y="422" font-size="8.3" fill="#7b2cbf">(iss, sub, aud=client_id, nonce)</text>
+
+  <!-- 4: IdP -> Browser : Access Token -->
+  <path d="M363,360 H284 V563 H257" fill="none" stroke="#1565c0" stroke-width="2.4" marker-end="url(#arrBlue)"/>
+  <text x="288" y="505" font-size="8.8" font-weight="600" fill="#1565c0">4. Access Token</text>
+  <text x="288" y="517" font-size="8.3" fill="#1565c0">(aud=api, scope, exp=5分)</text>
+
+  <!-- checkpoint lock near zone1/zone2 boundary -->
+  <g>
+    <rect x="290" y="447" width="12" height="10" rx="2" fill="#fff" stroke="#555" stroke-width="1.3"/>
+    <path d="M293,447 V443 Q296,438 299,443 V447" fill="none" stroke="#555" stroke-width="1.3"/>
+  </g>
+
+  <!-- 5: Browser -> API Gateway : Bearer Access Token -->
+  <line x1="255" y1="655" x2="363" y2="655" stroke="#1565c0" stroke-width="3.2" marker-end="url(#arrBlue)"/>
+  <text x="260" y="643" font-size="9.3" font-weight="600" fill="#1565c0">5. Bearer Access Token (HTTPS)</text>
+  <g>
+    <rect x="303" y="648" width="12" height="10" rx="2" fill="#fff" stroke="#555" stroke-width="1.3"/>
+    <path d="M306,648 V644 Q309,639 312,644 V648" fill="none" stroke="#555" stroke-width="1.3"/>
+  </g>
+
+  <!-- 6: API Gateway <-> IdP : JWKS / Introspection -->
+  <line x1="465" y1="555" x2="465" y2="457" stroke="#888888" stroke-width="2" stroke-dasharray="1.5,3.5" marker-start="url(#arrGreyDot)" marker-end="url(#arrGreyDot)"/>
+  <text x="474" y="510" font-size="9" font-style="italic" fill="#666">6. JWKS取得 /</text>
+  <text x="474" y="522" font-size="9" font-style="italic" fill="#666">Token Introspection</text>
+
+  <!-- 7: API Gateway -> Service A : mTLS + Service Token -->
+  <path d="M565,590 H628 V300 H708" fill="none" stroke="#2e7d32" stroke-width="2.6" marker-end="url(#arrGreen)"/>
+  <text x="595" y="415" font-size="8.8" font-weight="600" fill="#1f7a2e">7. mTLS +</text>
+  <text x="595" y="427" font-size="8.8" font-weight="600" fill="#1f7a2e">Service Token</text>
+  <text x="595" y="439" font-size="8.2" fill="#1f7a2e">(orders:read, ttl=60s)</text>
+  <g>
+    <rect x="622" y="446" width="12" height="10" rx="2" fill="#fff" stroke="#555" stroke-width="1.3"/>
+    <path d="M625,446 V442 Q628,437 631,442 V446" fill="none" stroke="#555" stroke-width="1.3"/>
+  </g>
+
+  <!-- 8: Service A -> Service B : mTLS + Service Token -->
+  <line x1="820" y1="395" x2="820" y2="603" stroke="#2e7d32" stroke-width="2.6" marker-end="url(#arrGreen)"/>
+  <text x="832" y="483" font-size="8.8" font-weight="600" fill="#1f7a2e">8. mTLS + Service Token</text>
+  <text x="832" y="495" font-size="8.2" fill="#1f7a2e">(payments:write, ttl=30s)</text>
+
+  <!-- 9: Response returns through every boundary, re-validated each hop -->
+  <path d="M820,775 V860 H155 V702" fill="none" stroke="#8a8f99" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#arrGreyDash)"/>
+  <text x="480" y="852" text-anchor="middle" font-size="9.3" font-style="italic" fill="#5b6472">9. レスポンスは逆順で各信頼境界を再検証しながら返る（Defense in Depth）</text>
+
+  <!-- ============ LEGEND ============ -->
+  <rect x="846" y="6" width="348" height="132" rx="8" fill="#ffffff" stroke="#c7ccd6" stroke-width="1.3"/>
+  <text x="858" y="23" font-size="12.5" font-weight="700" fill="#16213e">凡例 (Legend)</text>
+  <line x1="858" y1="30" x2="1182" y2="30" stroke="#e0e3e9"/>
+
+  <line x1="858" y1="46" x2="886" y2="46" stroke="#7b2cbf" stroke-width="2.5" stroke-dasharray="5,4"/>
+  <text x="892" y="49" font-size="10" fill="#333">ID Token（本人確認・Authentication）</text>
+
+  <line x1="858" y1="63" x2="886" y2="63" stroke="#1565c0" stroke-width="3"/>
+  <text x="892" y="66" font-size="10" fill="#333">Access Token（API利用許可・Authorization）</text>
+
+  <line x1="858" y1="80" x2="886" y2="80" stroke="#2e7d32" stroke-width="3"/>
+  <text x="892" y="83" font-size="10" fill="#333">Service Token（サービス間・短命・mTLS）</text>
+
+  <line x1="858" y1="97" x2="886" y2="97" stroke="#888888" stroke-width="2" stroke-dasharray="1.5,3"/>
+  <text x="892" y="100" font-size="10" fill="#333">検証 / Introspection（署名鍵確認）</text>
+
+  <line x1="858" y1="114" x2="886" y2="114" stroke="#8a8f99" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="892" y="117" font-size="10" fill="#333">レスポンス経路（逆順で再検証）</text>
+
+  <rect x="858" y="125" width="28" height="12" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="892" y="134" font-size="10" fill="#333">信頼境界（越境時は必ず再検証）</text>
+</svg>

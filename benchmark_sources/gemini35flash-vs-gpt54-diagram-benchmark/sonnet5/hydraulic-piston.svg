@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect x="0" y="0" width="10" height="10" fill="#9aa4b2"/>
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#6b7684" stroke-width="3"/>
+    </pattern>
+    <linearGradient id="metalGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eef0f3"/>
+      <stop offset="45%" stop-color="#aab2bd"/>
+      <stop offset="55%" stop-color="#9aa2ad"/>
+      <stop offset="100%" stop-color="#eef0f3"/>
+    </linearGradient>
+    <linearGradient id="fluidGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9cd0ec"/>
+      <stop offset="50%" stop-color="#4a9fd6"/>
+      <stop offset="100%" stop-color="#9cd0ec"/>
+    </linearGradient>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#155a9c"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1200" height="900" fill="#f7f9fc"/>
+  <rect x="10" y="10" width="1180" height="880" fill="none" stroke="#d7dbe1" stroke-width="2" rx="10"/>
+
+  <!-- title -->
+  <text x="600" y="52" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="34" font-weight="700" fill="#1f2937">油圧ピストンの構造断面図</text>
+  <text x="600" y="80" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="16" fill="#5a6472">Hydraulic Piston — Cross-Section Structure Diagram</text>
+
+  <!-- ===================== main cylinder body ===================== -->
+  <!-- bottom wall -->
+  <rect x="160" y="540" width="780" height="20" fill="url(#hatch)" stroke="#4a5568" stroke-width="2"/>
+  <!-- left end cap (solid) -->
+  <rect x="140" y="250" width="20" height="310" fill="url(#hatch)" stroke="#4a5568" stroke-width="2"/>
+  <!-- right end cap, split for rod bore hole -->
+  <rect x="940" y="250" width="20" height="120" fill="url(#hatch)" stroke="#4a5568" stroke-width="2"/>
+  <rect x="940" y="440" width="20" height="120" fill="url(#hatch)" stroke="#4a5568" stroke-width="2"/>
+  <!-- top wall, split for port A / port B openings -->
+  <rect x="160" y="250" width="120" height="20" fill="url(#hatch)" stroke="#4a5568" stroke-width="2"/>
+  <rect x="334" y="250" width="426" height="20" fill="url(#hatch)" stroke="#4a5568" stroke-width="2"/>
+  <rect x="814" y="250" width="126" height="20" fill="url(#hatch)" stroke="#4a5568" stroke-width="2"/>
+
+  <!-- chamber A fluid (cap-end, no rod) -->
+  <rect x="160" y="270" width="360" height="270" fill="url(#fluidGrad)" stroke="#2b6ca3" stroke-width="1.5"/>
+  <!-- chamber B fluid (rod-end, split around rod) -->
+  <rect x="590" y="270" width="350" height="100" fill="url(#fluidGrad)" stroke="#2b6ca3" stroke-width="1.5"/>
+  <rect x="590" y="440" width="350" height="100" fill="url(#fluidGrad)" stroke="#2b6ca3" stroke-width="1.5"/>
+
+  <!-- port A (inlet) nozzle -->
+  <rect x="280" y="190" width="54" height="80" fill="url(#fluidGrad)" stroke="#2b6ca3" stroke-width="1.5"/>
+  <rect x="272" y="176" width="70" height="18" rx="4" fill="url(#metalGrad)" stroke="#4a5568" stroke-width="2"/>
+  <!-- port B (outlet) nozzle -->
+  <rect x="760" y="190" width="54" height="80" fill="url(#fluidGrad)" stroke="#2b6ca3" stroke-width="1.5"/>
+  <rect x="752" y="176" width="70" height="18" rx="4" fill="url(#metalGrad)" stroke="#4a5568" stroke-width="2"/>
+
+  <!-- rod (passes through right end cap bore) -->
+  <rect x="590" y="370" width="420" height="70" fill="url(#metalGrad)" stroke="#4a5568" stroke-width="2"/>
+  <!-- rod tip clevis -->
+  <rect x="990" y="385" width="25" height="40" fill="url(#metalGrad)" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="1015" cy="405" r="18" fill="#eef0f3" stroke="#4a5568" stroke-width="3"/>
+  <circle cx="1015" cy="405" r="7" fill="#f7f9fc" stroke="#4a5568" stroke-width="1.5"/>
+
+  <!-- piston -->
+  <rect x="520" y="270" width="70" height="270" fill="url(#metalGrad)" stroke="#4a5568" stroke-width="2.5"/>
+  <rect x="524" y="272" width="62" height="12" fill="#2b2f38"/>
+  <rect x="524" y="398" width="62" height="8" fill="#3d4552"/>
+  <rect x="524" y="526" width="62" height="12" fill="#2b2f38"/>
+
+  <!-- ===================== flow arrows ===================== -->
+  <line x1="307" y1="153" x2="307" y2="186" stroke="#155a9c" stroke-width="4" marker-end="url(#arrowBlue)"/>
+  <line x1="787" y1="186" x2="787" y2="153" stroke="#155a9c" stroke-width="4" marker-end="url(#arrowBlue)"/>
+
+  <line x1="210" y1="350" x2="470" y2="350" stroke="#155a9c" stroke-width="3" opacity="0.85" marker-end="url(#arrowBlue)"/>
+  <line x1="210" y1="405" x2="480" y2="405" stroke="#155a9c" stroke-width="3" opacity="0.85" marker-end="url(#arrowBlue)"/>
+  <line x1="210" y1="460" x2="470" y2="460" stroke="#155a9c" stroke-width="3" opacity="0.85" marker-end="url(#arrowBlue)"/>
+
+  <line x1="630" y1="320" x2="735" y2="320" stroke="#155a9c" stroke-width="3" opacity="0.85" marker-end="url(#arrowBlue)"/>
+  <line x1="630" y1="490" x2="735" y2="490" stroke="#155a9c" stroke-width="3" opacity="0.85" marker-end="url(#arrowBlue)"/>
+
+  <!-- ===================== leader lines + labels ===================== -->
+  <!-- port A -->
+  <text x="307" y="130" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="17" font-weight="700" fill="#155a9c">作動油 流入</text>
+  <text x="307" y="148" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="12" fill="#5a6472">(Fluid In)</text>
+
+  <!-- port B -->
+  <text x="787" y="130" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="17" font-weight="700" fill="#155a9c">作動油 流出</text>
+  <text x="787" y="148" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="12" fill="#5a6472">(Fluid Out)</text>
+
+  <!-- cylinder body label -->
+  <line x1="547" y1="124" x2="547" y2="248" stroke="#4a5568" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <circle cx="547" cy="248" r="3" fill="#4a5568"/>
+  <text x="547" y="104" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="18" font-weight="700" fill="#1f2937">シリンダー本体</text>
+  <text x="547" y="120" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="12" fill="#5a6472">(Cylinder Body)</text>
+
+  <!-- end cap label -->
+  <line x1="70" y1="226" x2="150" y2="248" stroke="#4a5568" stroke-width="1" stroke-dasharray="3,3"/>
+  <circle cx="150" cy="248" r="3" fill="#4a5568"/>
+  <text x="70" y="205" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="13" font-weight="700" fill="#1f2937">エンドキャップ</text>
+  <text x="70" y="220" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="10" fill="#5a6472">(End Cap, 両端)</text>
+
+  <!-- rod label -->
+  <line x1="1035" y1="405" x2="1080" y2="405" stroke="#4a5568" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <circle cx="1035" cy="405" r="3" fill="#4a5568"/>
+  <text x="1090" y="400" text-anchor="start" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="18" font-weight="700" fill="#1f2937">ロッド</text>
+  <text x="1090" y="418" text-anchor="start" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="12" fill="#5a6472">(Piston Rod)</text>
+
+  <!-- chamber A label -->
+  <line x1="340" y1="560" x2="340" y2="590" stroke="#4a5568" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <circle cx="340" cy="560" r="3" fill="#4a5568"/>
+  <text x="340" y="612" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="17" font-weight="700" fill="#1f2937">圧力室 A</text>
+  <text x="340" y="630" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="11" fill="#5a6472">(押込側・ボトム側 / Cap-End)</text>
+
+  <!-- piston label -->
+  <line x1="555" y1="560" x2="555" y2="590" stroke="#4a5568" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <circle cx="555" cy="560" r="3" fill="#4a5568"/>
+  <text x="555" y="612" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="17" font-weight="700" fill="#1f2937">ピストン</text>
+  <text x="555" y="630" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="11" fill="#5a6472">(Piston)</text>
+
+  <!-- chamber B label -->
+  <line x1="765" y1="560" x2="765" y2="590" stroke="#4a5568" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <circle cx="765" cy="560" r="3" fill="#4a5568"/>
+  <text x="765" y="612" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="17" font-weight="700" fill="#1f2937">圧力室 B</text>
+  <text x="765" y="630" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="11" fill="#5a6472">(戻り側・ロッド側 / Rod-End)</text>
+
+  <!-- oil seal label -->
+  <line x1="600" y1="532" x2="660" y2="636" stroke="#4a5568" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <circle cx="600" cy="532" r="3" fill="#4a5568"/>
+  <text x="660" y="652" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="15" font-weight="700" fill="#1f2937">オイルシール</text>
+  <text x="660" y="668" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="10" fill="#5a6472">(Seal / O-ring)</text>
+
+  <!-- ===================== motion direction ===================== -->
+  <text x="565" y="705" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="14" font-weight="700" fill="#c0392b">ピストン前進方向（伸長ストローク）</text>
+  <line x1="470" y1="722" x2="660" y2="722" stroke="#c0392b" stroke-width="6" marker-end="url(#arrowOrange)"/>
+  <text x="565" y="748" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="12" fill="#5a6472">Piston Extend Stroke Direction</text>
+
+  <!-- ===================== legend ===================== -->
+  <text x="150" y="790" text-anchor="start" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="16" font-weight="700" fill="#1f2937">凡例 (Legend)</text>
+
+  <rect x="150" y="805" width="28" height="20" fill="url(#fluidGrad)" stroke="#2b6ca3" stroke-width="1.5"/>
+  <text x="188" y="820" text-anchor="start" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="14" fill="#333333">作動油 (Hydraulic Fluid)</text>
+
+  <rect x="450" y="805" width="28" height="20" fill="url(#metalGrad)" stroke="#4a5568" stroke-width="1.5"/>
+  <text x="488" y="820" text-anchor="start" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="14" fill="#333333">金属部品 (Metal Parts)</text>
+
+  <rect x="720" y="805" width="28" height="20" fill="url(#hatch)" stroke="#4a5568" stroke-width="1.5"/>
+  <text x="758" y="820" text-anchor="start" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="14" fill="#333333">切断面 (Cross-Section / Casing)</text>
+</svg>

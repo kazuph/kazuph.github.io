@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#faf1e0"/>
+      <stop offset="100%" stop-color="#ecd6ac"/>
+    </linearGradient>
+    <linearGradient id="floorGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b9835a"/>
+      <stop offset="50%" stop-color="#9c6a41"/>
+      <stop offset="100%" stop-color="#b9835a"/>
+    </linearGradient>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5f7aa3"/>
+      <stop offset="55%" stop-color="#a87f8f"/>
+      <stop offset="100%" stop-color="#e8a35f"/>
+    </linearGradient>
+    <radialGradient id="tvGlowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#bfe0ff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#bfe0ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lampGlowGrad" cx="50%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ffd98f" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffd98f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="chairGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7a3535"/>
+      <stop offset="100%" stop-color="#9c4a4a"/>
+    </linearGradient>
+    <linearGradient id="chairSeatGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b56464"/>
+      <stop offset="100%" stop-color="#9c4a4a"/>
+    </linearGradient>
+    <linearGradient id="hairGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e8e2d6"/>
+      <stop offset="100%" stop-color="#b8b0a0"/>
+    </linearGradient>
+    <linearGradient id="consoleGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6b4429"/>
+      <stop offset="100%" stop-color="#4d3018"/>
+    </linearGradient>
+    <radialGradient id="vignetteGrad" cx="50%" cy="45%" r="75%">
+      <stop offset="60%" stop-color="#2a1808" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#2a1808" stop-opacity="0.18"/>
+    </radialGradient>
+  </defs>
+
+  <!-- wall -->
+  <rect x="0" y="0" width="1200" height="600" fill="url(#wallGrad)"/>
+  <rect x="0" y="584" width="1200" height="10" fill="#d8c39a"/>
+  <rect x="0" y="594" width="1200" height="6" fill="#c9a876"/>
+
+  <!-- window -->
+  <rect x="50" y="55" width="370" height="10" rx="5" fill="#5c3b22"/>
+  <rect x="70" y="70" width="330" height="430" rx="10" fill="#fff8ec"/>
+  <rect x="95" y="95" width="280" height="340" fill="url(#skyGrad)"/>
+  <path d="M95,380 C150,340 220,360 280,330 C320,315 355,340 375,320 L375,435 L95,435 Z" fill="#5b6f8f" opacity="0.55"/>
+  <rect x="231" y="95" width="8" height="340" fill="#fff8ec"/>
+  <rect x="95" y="261" width="280" height="8" fill="#fff8ec"/>
+  <rect x="60" y="495" width="350" height="18" rx="4" fill="#e8d7b0"/>
+
+  <!-- curtains -->
+  <path d="M62,60 C55,150 70,260 58,350 C50,420 68,490 62,558 L150,558 C158,480 140,410 150,340 C158,260 145,170 158,68 Z" fill="#8a3f2c"/>
+  <path d="M75,70 C70,160 80,260 72,350 C66,420 76,490 74,555 L100,555 C96,480 90,400 96,330 C100,250 92,160 100,72 Z" fill="#a5503a" opacity="0.7"/>
+  <path d="M408,60 C415,150 400,260 412,350 C420,420 402,490 408,558 L320,558 C312,480 330,410 320,340 C312,260 325,170 312,68 Z" fill="#8a3f2c"/>
+  <path d="M395,70 C400,160 390,260 398,350 C404,420 394,490 396,555 L370,555 C374,480 380,400 374,330 C370,250 378,160 370,72 Z" fill="#a5503a" opacity="0.7"/>
+  <rect x="90" y="330" width="45" height="14" rx="7" fill="#5c3b22"/>
+  <rect x="335" y="330" width="45" height="14" rx="7" fill="#5c3b22"/>
+
+  <!-- clock -->
+  <circle cx="640" cy="150" r="42" fill="#fdf6e3" stroke="#6b4423" stroke-width="6"/>
+  <line x1="640" y1="114" x2="640" y2="122" stroke="#6b4423" stroke-width="3"/>
+  <line x1="640" y1="178" x2="640" y2="186" stroke="#6b4423" stroke-width="3"/>
+  <line x1="604" y1="150" x2="612" y2="150" stroke="#6b4423" stroke-width="3"/>
+  <line x1="668" y1="150" x2="676" y2="150" stroke="#6b4423" stroke-width="3"/>
+  <line x1="640" y1="120" x2="640" y2="150" stroke="#3c2a1a" stroke-width="4" stroke-linecap="round"/>
+  <line x1="640" y1="150" x2="662" y2="150" stroke="#3c2a1a" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="640" cy="150" r="4" fill="#3c2a1a"/>
+
+  <!-- framed photos -->
+  <rect x="720" y="110" width="60" height="75" rx="4" fill="#7a4e2e"/>
+  <rect x="726" y="116" width="48" height="45" fill="#dce8f0"/>
+  <rect x="800" y="128" width="50" height="62" rx="4" fill="#7a4e2e"/>
+  <rect x="805" y="133" width="40" height="36" fill="#f0e0c8"/>
+
+  <!-- floor -->
+  <rect x="0" y="600" width="1200" height="300" fill="url(#floorGrad)"/>
+  <line x1="100" y1="600" x2="100" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="200" y1="600" x2="200" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="300" y1="600" x2="300" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="400" y1="600" x2="400" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="500" y1="600" x2="500" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="600" y1="600" x2="600" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="700" y1="600" x2="700" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="800" y1="600" x2="800" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="900" y1="600" x2="900" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="1000" y1="600" x2="1000" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+  <line x1="1100" y1="600" x2="1100" y2="900" stroke="#7a4f2c" stroke-width="2" opacity="0.25"/>
+
+  <!-- rug -->
+  <ellipse cx="560" cy="770" rx="270" ry="95" fill="#8a3520"/>
+  <ellipse cx="560" cy="770" rx="215" ry="75" fill="#a24632"/>
+  <ellipse cx="560" cy="770" rx="150" ry="52" fill="#c96a4d"/>
+  <ellipse cx="560" cy="770" rx="85" ry="28" fill="#a24632"/>
+
+  <!-- warm glows -->
+  <ellipse cx="995" cy="410" rx="320" ry="260" fill="url(#tvGlowGrad)"/>
+  <ellipse cx="345" cy="430" rx="260" ry="280" fill="url(#lampGlowGrad)"/>
+
+  <!-- tv console -->
+  <rect x="840" y="560" width="300" height="85" rx="10" fill="url(#consoleGrad)"/>
+  <rect x="855" y="575" width="125" height="55" rx="6" fill="#5a3820" stroke="#3f2814" stroke-width="2"/>
+  <rect x="990" y="575" width="125" height="55" rx="6" fill="#5a3820" stroke="#3f2814" stroke-width="2"/>
+  <rect x="855" y="645" width="14" height="26" fill="#3f2814"/>
+  <rect x="1116" y="645" width="14" height="26" fill="#3f2814"/>
+
+  <!-- tv unit -->
+  <rect x="965" y="518" width="60" height="48" fill="#2b2b2b"/>
+  <rect x="845" y="300" width="300" height="225" rx="16" fill="#232323"/>
+  <rect x="862" y="317" width="266" height="190" rx="6" fill="#0d1b2a"/>
+  <rect x="862" y="317" width="266" height="95" fill="#3a6ea5"/>
+  <circle cx="1010" cy="345" r="22" fill="#f4d35e"/>
+  <path d="M862,412 C900,395 960,405 1000,392 C1050,382 1090,398 1128,388 L1128,507 L862,507 Z" fill="#4c7a3c"/>
+  <rect x="862" y="317" width="266" height="190" rx="6" fill="#ffffff" opacity="0.04"/>
+  <circle cx="995" cy="308" r="2.5" fill="#666666"/>
+  <circle cx="1120" cy="505" r="3" fill="#e05555"/>
+
+  <!-- side table with tea and flower -->
+  <rect x="808" y="655" width="16" height="85" fill="#5c3f22"/>
+  <ellipse cx="816" cy="748" rx="38" ry="10" fill="#4a331b"/>
+  <ellipse cx="816" cy="648" rx="55" ry="18" fill="#7a5636"/>
+  <ellipse cx="800" cy="640" rx="20" ry="7" fill="#fdf6e3" stroke="#cbb187" stroke-width="1.5"/>
+  <ellipse cx="800" cy="632" rx="13" ry="9" fill="#ffffff" stroke="#d8c39a" stroke-width="1.5"/>
+  <path d="M812,630 C822,628 822,640 812,638" fill="none" stroke="#d8c39a" stroke-width="2"/>
+  <ellipse cx="838" cy="638" rx="9" ry="6" fill="#6b8f5a"/>
+  <line x1="838" y1="632" x2="838" y2="605" stroke="#4f7a3f" stroke-width="2"/>
+  <path d="M830,615 C822,612 822,622 830,622 Z" fill="#6b9a52"/>
+  <circle cx="838" cy="600" r="8" fill="#e8899a"/>
+
+  <!-- ottoman -->
+  <rect x="660" y="740" width="100" height="45" rx="16" fill="#9c5a52"/>
+  <rect x="668" y="780" width="10" height="18" fill="#4a2e1c"/>
+  <rect x="742" y="780" width="10" height="18" fill="#4a2e1c"/>
+
+  <!-- armchair back and seat -->
+  <rect x="430" y="420" width="150" height="345" rx="45" fill="url(#chairGrad)"/>
+  <rect x="470" y="560" width="90" height="40" rx="20" fill="#7a3535"/>
+  <rect x="505" y="650" width="250" height="105" rx="35" fill="url(#chairSeatGrad)"/>
+  <rect x="450" y="755" width="18" height="45" fill="#4a2e1c"/>
+  <rect x="700" y="745" width="18" height="55" fill="#4a2e1c"/>
+
+  <!-- grandmother, seated, facing right toward the tv -->
+  <path d="M552,665 L675,688 L671,728 L548,712 Z" fill="#3f5a6b"/>
+  <rect x="652" y="712" width="24" height="55" rx="11" fill="#d9c9b0"/>
+  <ellipse cx="688" cy="746" rx="30" ry="14" fill="#8a3f3f"/>
+  <path d="M548,650 C542,600 548,548 566,518 C598,506 634,518 644,545 C652,572 648,612 636,652 C608,662 574,662 548,650 Z" fill="#c98a4b"/>
+  <path d="M538,528 C560,512 612,512 632,533 C642,554 636,576 620,582 L558,582 C542,576 533,554 538,528 Z" fill="#8a5a8f" opacity="0.92"/>
+  <path d="M602,543 C624,553 634,585 626,616 C622,636 612,652 598,656 L580,650 C586,614 586,578 596,553 Z" fill="#b57a3f"/>
+  <ellipse cx="594" cy="656" rx="15" ry="11" fill="#e8c3a0"/>
+  <rect x="613" y="503" width="22" height="28" rx="8" fill="#e8c3a0"/>
+  <ellipse cx="628" cy="474" rx="40" ry="44" fill="#e8c3a0"/>
+  <ellipse cx="596" cy="480" rx="8" ry="12" fill="#d9ad84"/>
+  <path d="M666,468 C676,472 676,482 666,487 C662,482 662,473 666,468 Z" fill="#e8c3a0"/>
+  <circle cx="580" cy="452" r="30" fill="url(#hairGrad)"/>
+  <path d="M598,438 C606,410 652,408 660,436 C644,426 614,426 598,438 Z" fill="url(#hairGrad)"/>
+  <path d="M575,425 C580,418 592,416 600,420" stroke="#b8b0a0" stroke-width="2" fill="none"/>
+  <path d="M642,452 C648,448 658,448 663,452" stroke="#b8b0a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <rect x="642" y="458" width="24" height="17" rx="7" fill="none" stroke="#4a4a4a" stroke-width="2.5"/>
+  <line x1="642" y1="466" x2="600" y2="475" stroke="#4a4a4a" stroke-width="2"/>
+  <ellipse cx="652" cy="466" rx="3.5" ry="2.5" fill="#3a2a1a"/>
+  <ellipse cx="648" cy="484" rx="7" ry="4" fill="#e8a3a3" opacity="0.5"/>
+  <path d="M650,496 C656,500 662,500 668,496" stroke="#8a5a45" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- floor lamp -->
+  <path d="M303,330 L387,330 L400,393 L290,393 Z" fill="#e8b769" stroke="#b5822f" stroke-width="2"/>
+  <circle cx="345" cy="326" r="6" fill="#b5822f"/>
+  <rect x="340" y="393" width="10" height="312" fill="#5c4530"/>
+  <ellipse cx="345" cy="707" rx="42" ry="14" fill="#4a3626"/>
+
+  <!-- sleeping cat -->
+  <ellipse cx="400" cy="782" rx="46" ry="24" fill="#8a8378"/>
+  <path d="M356,780 C336,790 336,760 360,758" stroke="#8a8378" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <circle cx="442" cy="766" r="17" fill="#8a8378"/>
+  <path d="M430,752 L436,738 L444,752 Z" fill="#8a8378"/>
+  <path d="M448,752 L456,738 L462,753 Z" fill="#8a8378"/>
+  <path d="M434,764 C437,761 441,761 444,764" stroke="#4a453d" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <circle cx="452" cy="770" r="2.5" fill="#c96a6a"/>
+
+  <!-- potted plant -->
+  <rect x="45" y="754" width="90" height="10" rx="3" fill="#c9764a"/>
+  <path d="M45,760 L135,760 L122,822 L58,822 Z" fill="#b5643a"/>
+  <path d="M90,760 C60,730 40,690 55,650 C75,685 88,720 90,760 Z" fill="#5c8a48"/>
+  <path d="M90,760 C60,720 55,660 85,610 C95,660 95,720 90,760 Z" fill="#4f7a3f"/>
+  <path d="M90,760 C120,715 130,655 105,608 C100,660 95,720 90,760 Z" fill="#6b9a52"/>
+  <path d="M90,760 C120,735 138,700 128,660 C110,695 95,730 90,760 Z" fill="#3f6633"/>
+
+  <!-- vignette -->
+  <rect x="0" y="0" width="1200" height="900" fill="url(#vignetteGrad)"/>
+</svg>

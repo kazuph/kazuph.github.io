@@ -1,0 +1,279 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',Arial,sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eef4fa"/>
+      <stop offset="100%" stop-color="#dbe4ec"/>
+    </linearGradient>
+    <radialGradient id="floorGrad" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#7d8b98" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#7d8b98" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="linkGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2f6fa"/>
+      <stop offset="42%" stop-color="#b9c9d8"/>
+      <stop offset="58%" stop-color="#8fa3b8"/>
+      <stop offset="100%" stop-color="#546a7e"/>
+    </linearGradient>
+    <linearGradient id="baseSideGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5c7286"/>
+      <stop offset="50%" stop-color="#c3d1de"/>
+      <stop offset="100%" stop-color="#516576"/>
+    </linearGradient>
+    <radialGradient id="capGrad" cx="38%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#f7fafd"/>
+      <stop offset="100%" stop-color="#aebfcd"/>
+    </radialGradient>
+    <radialGradient id="jointGrad" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="38%" stop-color="#cfe0ee"/>
+      <stop offset="72%" stop-color="#7d93ab"/>
+      <stop offset="100%" stop-color="#43566a"/>
+    </radialGradient>
+    <radialGradient id="jointGradSm" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#d6e4f0"/>
+      <stop offset="100%" stop-color="#5c7286"/>
+    </radialGradient>
+    <linearGradient id="fingerGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eef3f8"/>
+      <stop offset="100%" stop-color="#7d93ab"/>
+    </linearGradient>
+    <marker id="arrowPitch" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#e07b1a"/>
+    </marker>
+    <marker id="arrowRoll" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#12836f"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1200" height="900" fill="url(#bgGrad)"/>
+
+  <!-- Title -->
+  <text x="600" y="50" text-anchor="middle" font-size="30" font-weight="800" fill="#1b2a38">7軸垂直多関節ロボットアーム</text>
+  <text x="600" y="76" text-anchor="middle" font-size="15" fill="#516576">7-Axis Articulated Robot Arm - Joints (J1-J7) and Rotation Axes</text>
+
+  <!-- Floor -->
+  <ellipse cx="260" cy="838" rx="330" ry="70" fill="url(#floorGrad)"/>
+  <ellipse cx="260" cy="826" rx="152" ry="34" fill="#1b2a38" opacity="0.18"/>
+
+  <!-- Base -->
+  <g id="base">
+    <path d="M120,820 L162,712 A98,25 0 0 0 358,712 L400,820 A140,36 0 0 0 120,820 Z" fill="url(#baseSideGrad)" stroke="#3d4f60" stroke-width="2.5" stroke-linejoin="round"/>
+    <ellipse cx="260" cy="712" rx="98" ry="25" fill="url(#capGrad)" stroke="#3d4f60" stroke-width="2.5"/>
+  </g>
+
+  <!-- Links -->
+  <g id="links">
+    <rect x="260" y="691" width="120" height="42" rx="21" ry="21" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="2" transform="rotate(-90 260 712)"/>
+    <rect x="260" y="573" width="152.64" height="38" rx="19" ry="19" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="2" transform="rotate(-31.6 260 592)"/>
+    <rect x="390" y="496" width="105.0" height="32" rx="16" ry="16" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="2" transform="rotate(-17.74 390 512)"/>
+    <rect x="490" y="466" width="106.3" height="28" rx="14" ry="14" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="2" transform="rotate(-48.81 490 480)"/>
+    <rect x="560" y="388" width="92.2" height="24" rx="12" ry="12" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="2" transform="rotate(-40.6 560 400)"/>
+    <rect x="630" y="330" width="72.11" height="20" rx="10" ry="10" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="2" transform="rotate(-33.69 630 340)"/>
+    <rect x="690" y="292" width="51.48" height="16" rx="8" ry="8" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="2" transform="rotate(-29.05 690 300)"/>
+  </g>
+
+  <!-- Joints -->
+  <g id="joints">
+    <circle cx="260" cy="712" r="34" fill="url(#jointGrad)" stroke="#e07b1a" stroke-width="5"/>
+    <circle cx="260" cy="712" r="34" fill="none" stroke="#2c3a47" stroke-width="1.5"/>
+    <circle cx="260" cy="592" r="30" fill="url(#jointGrad)" stroke="#e07b1a" stroke-width="5"/>
+    <circle cx="260" cy="592" r="30" fill="none" stroke="#2c3a47" stroke-width="1.5"/>
+    <circle cx="390" cy="512" r="24" fill="url(#jointGrad)" stroke="#e07b1a" stroke-width="4.5"/>
+    <circle cx="390" cy="512" r="24" fill="none" stroke="#2c3a47" stroke-width="1.5"/>
+    <circle cx="490" cy="480" r="22" fill="url(#jointGrad)" stroke="#e07b1a" stroke-width="4.5"/>
+    <circle cx="490" cy="480" r="22" fill="none" stroke="#2c3a47" stroke-width="1.5"/>
+    <circle cx="560" cy="400" r="18" fill="url(#jointGrad)" stroke="#e07b1a" stroke-width="4"/>
+    <circle cx="560" cy="400" r="18" fill="none" stroke="#2c3a47" stroke-width="1.5"/>
+    <circle cx="630" cy="340" r="16" fill="url(#jointGrad)" stroke="#e07b1a" stroke-width="4"/>
+    <circle cx="630" cy="340" r="16" fill="none" stroke="#2c3a47" stroke-width="1.5"/>
+    <circle cx="690" cy="300" r="13" fill="url(#jointGrad)" stroke="#e07b1a" stroke-width="3.5"/>
+    <circle cx="690" cy="300" r="13" fill="none" stroke="#2c3a47" stroke-width="1.5"/>
+  </g>
+
+  <!-- Gripper / end effector -->
+  <g id="gripper">
+    <rect x="761.23" y="255.94" width="55" height="9" rx="4.5" ry="4.5" fill="url(#fingerGrad)" stroke="#3d4f60" stroke-width="1.5" transform="rotate(-49.05 761.23 260.44)"/>
+    <rect x="761.23" y="255.94" width="55" height="9" rx="4.5" ry="4.5" fill="url(#fingerGrad)" stroke="#3d4f60" stroke-width="1.5" transform="rotate(-9.05 761.23 260.44)"/>
+    <rect x="735" y="264" width="30" height="22" rx="8" ry="8" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="2" transform="rotate(-29.05 735 275)"/>
+    <circle cx="735" cy="275" r="11" fill="url(#jointGradSm)" stroke="#e07b1a" stroke-width="3"/>
+    <circle cx="806.43" cy="235.36" r="6" fill="none" stroke="#12836f" stroke-width="2"/>
+    <line x1="798.43" y1="235.36" x2="814.43" y2="235.36" stroke="#12836f" stroke-width="1.5"/>
+    <line x1="806.43" y1="227.36" x2="806.43" y2="243.36" stroke="#12836f" stroke-width="1.5"/>
+    <text x="813" y="250" font-size="10" fill="#12836f">TCP</text>
+  </g>
+
+  <!-- Rotation-direction indicators -->
+  <g id="rotation-indicators">
+    <!-- J1 roll (base yaw, vertical axis) -->
+    <line x1="260" y1="766" x2="260" y2="658" stroke="#12836f" stroke-width="2" stroke-dasharray="4,3"/>
+    <g transform="rotate(0 260 712)">
+      <ellipse cx="260" cy="712" rx="48" ry="15.36" fill="none" stroke="#12836f" stroke-width="2" stroke-dasharray="3,3"/>
+      <path d="M214.89,706.75 A48,15.36 0 0 1 305.11,706.75" fill="none" stroke="#12836f" stroke-width="3.5" marker-end="url(#arrowRoll)"/>
+    </g>
+
+    <!-- J2 pitch (shoulder) -->
+    <circle cx="260" cy="592" r="9" fill="none" stroke="#e07b1a" stroke-width="2.5"/>
+    <circle cx="260" cy="592" r="3" fill="#e07b1a"/>
+    <path d="M301.35,607.05 A44,44 0 1 1 275.05,550.65" fill="none" stroke="#e07b1a" stroke-width="3.5" marker-end="url(#arrowPitch)"/>
+
+    <!-- J3 roll (upper-arm) -->
+    <line x1="350.0" y1="530.35" x2="430.0" y2="493.65" stroke="#12836f" stroke-width="2" stroke-dasharray="4,3"/>
+    <g transform="rotate(65.33 390 512)">
+      <ellipse cx="390" cy="512" rx="38" ry="12.16" fill="none" stroke="#12836f" stroke-width="2" stroke-dasharray="3,3"/>
+      <path d="M354.29,507.84 A38,12.16 0 0 1 425.71,507.84" fill="none" stroke="#12836f" stroke-width="3.5" marker-end="url(#arrowRoll)"/>
+    </g>
+
+    <!-- J4 pitch (elbow) -->
+    <circle cx="490" cy="480" r="8" fill="none" stroke="#e07b1a" stroke-width="2.5"/>
+    <circle cx="490" cy="480" r="2.8" fill="#e07b1a"/>
+    <path d="M523.83,492.31 A36,36 0 1 1 502.31,446.17" fill="none" stroke="#e07b1a" stroke-width="3.5" marker-end="url(#arrowPitch)"/>
+
+    <!-- J5 roll (forearm) -->
+    <line x1="532.97" y1="426.71" x2="587.03" y2="373.29" stroke="#12836f" stroke-width="2" stroke-dasharray="4,3"/>
+    <g transform="rotate(45.29 560 400)">
+      <ellipse cx="560" cy="400" rx="32" ry="10.24" fill="none" stroke="#12836f" stroke-width="2" stroke-dasharray="3,3"/>
+      <path d="M529.93,396.50 A32,10.24 0 0 1 590.07,396.50" fill="none" stroke="#12836f" stroke-width="3" marker-end="url(#arrowRoll)"/>
+    </g>
+
+    <!-- J6 pitch (wrist) -->
+    <circle cx="630" cy="340" r="7" fill="none" stroke="#e07b1a" stroke-width="2.5"/>
+    <circle cx="630" cy="340" r="2.5" fill="#e07b1a"/>
+    <path d="M658.19,350.26 A30,30 0 1 1 640.26,311.81" fill="none" stroke="#e07b1a" stroke-width="3" marker-end="url(#arrowPitch)"/>
+
+    <!-- J7 roll (flange) -->
+    <line x1="661.83" y1="317.19" x2="718.17" y2="282.81" stroke="#12836f" stroke-width="2" stroke-dasharray="4,3"/>
+    <g transform="rotate(58.63 690 300)">
+      <ellipse cx="690" cy="300" rx="27" ry="8.64" fill="none" stroke="#12836f" stroke-width="2" stroke-dasharray="3,3"/>
+      <path d="M664.63,297.04 A27,8.64 0 0 1 715.37,297.04" fill="none" stroke="#12836f" stroke-width="3" marker-end="url(#arrowRoll)"/>
+    </g>
+  </g>
+
+  <!-- Base / Link / End-effector callouts -->
+  <g id="callouts">
+    <text x="60" y="775" font-size="15" font-weight="700" fill="#1b2a38">BASE</text>
+    <text x="60" y="792" font-size="12" fill="#516576">(旋回台)</text>
+    <line x1="95" y1="782" x2="150" y2="798" stroke="#3d4f60" stroke-width="1.5"/>
+
+    <text x="330" y="605" font-size="15" font-weight="700" fill="#1b2a38">LINK</text>
+    <text x="330" y="622" font-size="12" fill="#516576">(リンク)</text>
+    <line x1="345" y1="608" x2="330" y2="558" stroke="#3d4f60" stroke-width="1.5"/>
+
+    <text x="640" y="150" font-size="15" font-weight="700" fill="#1b2a38">END EFFECTOR</text>
+    <text x="640" y="167" font-size="12" fill="#516576">(エンドエフェクタ / ハンド)</text>
+    <line x1="700" y1="172" x2="806" y2="228" stroke="#3d4f60" stroke-width="1.5"/>
+  </g>
+
+  <!-- Joint labels J1-J7 -->
+  <g id="joint-labels">
+    <line x1="236.0" y1="688.0" x2="186" y2="664" stroke="#3d4f60" stroke-width="1.5"/>
+    <rect x="168" y="652" width="36" height="24" rx="6" ry="6" fill="#ffffff" fill-opacity="0.92" stroke="#3d4f60" stroke-width="1.5"/>
+    <text x="186" y="669" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a38">J1</text>
+
+    <line x1="238.8" y1="570.8" x2="190" y2="548" stroke="#3d4f60" stroke-width="1.5"/>
+    <rect x="172" y="536" width="36" height="24" rx="6" ry="6" fill="#ffffff" fill-opacity="0.92" stroke="#3d4f60" stroke-width="1.5"/>
+    <text x="190" y="553" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a38">J2</text>
+
+    <line x1="373.0" y1="495.0" x2="326" y2="474" stroke="#3d4f60" stroke-width="1.5"/>
+    <rect x="308" y="462" width="36" height="24" rx="6" ry="6" fill="#ffffff" fill-opacity="0.92" stroke="#3d4f60" stroke-width="1.5"/>
+    <text x="326" y="479" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a38">J3</text>
+
+    <line x1="474.4" y1="464.4" x2="428" y2="444" stroke="#3d4f60" stroke-width="1.5"/>
+    <rect x="410" y="432" width="36" height="24" rx="6" ry="6" fill="#ffffff" fill-opacity="0.92" stroke="#3d4f60" stroke-width="1.5"/>
+    <text x="428" y="449" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a38">J4</text>
+
+    <line x1="547.3" y1="387.3" x2="502" y2="368" stroke="#3d4f60" stroke-width="1.5"/>
+    <rect x="484" y="356" width="36" height="24" rx="6" ry="6" fill="#ffffff" fill-opacity="0.92" stroke="#3d4f60" stroke-width="1.5"/>
+    <text x="502" y="373" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a38">J5</text>
+
+    <line x1="618.7" y1="328.7" x2="574" y2="310" stroke="#3d4f60" stroke-width="1.5"/>
+    <rect x="556" y="298" width="36" height="24" rx="6" ry="6" fill="#ffffff" fill-opacity="0.92" stroke="#3d4f60" stroke-width="1.5"/>
+    <text x="574" y="315" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a38">J6</text>
+
+    <line x1="680.8" y1="290.8" x2="637" y2="273" stroke="#3d4f60" stroke-width="1.5"/>
+    <rect x="619" y="261" width="36" height="24" rx="6" ry="6" fill="#ffffff" fill-opacity="0.92" stroke="#3d4f60" stroke-width="1.5"/>
+    <text x="637" y="278" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a38">J7</text>
+  </g>
+
+  <!-- Legend panel -->
+  <g id="legend">
+    <rect x="858" y="105" width="330" height="760" rx="18" ry="18" fill="#1b2a38" opacity="0.12"/>
+    <rect x="850" y="95" width="330" height="760" rx="18" ry="18" fill="#ffffff" fill-opacity="0.94" stroke="#a9bccb" stroke-width="2"/>
+    <text x="1015" y="130" text-anchor="middle" font-size="19" font-weight="700" fill="#1b2a38">関節構成 / Joint Axes</text>
+    <line x1="875" y1="142" x2="1155" y2="142" stroke="#a9bccb" stroke-width="1.5"/>
+
+    <!-- J1 -->
+    <ellipse cx="878" cy="168" rx="10" ry="4" fill="none" stroke="#12836f" stroke-width="2.5"/>
+    <line x1="868" y1="168" x2="888" y2="168" stroke="#12836f" stroke-width="2"/>
+    <text x="900" y="162" font-size="18" font-weight="700" fill="#1b2a38">J1</text>
+    <text x="900" y="182" font-size="13" fill="#2c3a47">旋回 (Yaw)</text>
+    <text x="900" y="198" font-size="11" font-style="italic" fill="#7c8a97">Base - vertical axis rotation</text>
+    <line x1="868" y1="214" x2="1162" y2="214" stroke="#dbe4ec" stroke-width="1"/>
+
+    <!-- J2 -->
+    <circle cx="878" cy="246" r="10" fill="none" stroke="#e07b1a" stroke-width="2.5"/>
+    <circle cx="878" cy="246" r="3" fill="#e07b1a"/>
+    <text x="900" y="240" font-size="18" font-weight="700" fill="#1b2a38">J2</text>
+    <text x="900" y="260" font-size="13" fill="#2c3a47">肩ピッチ (Shoulder Pitch)</text>
+    <text x="900" y="276" font-size="11" font-style="italic" fill="#7c8a97">Forward-back swing</text>
+    <line x1="868" y1="292" x2="1162" y2="292" stroke="#dbe4ec" stroke-width="1"/>
+
+    <!-- J3 -->
+    <ellipse cx="878" cy="324" rx="10" ry="4" fill="none" stroke="#12836f" stroke-width="2.5"/>
+    <line x1="868" y1="324" x2="888" y2="324" stroke="#12836f" stroke-width="2"/>
+    <text x="900" y="318" font-size="18" font-weight="700" fill="#1b2a38">J3</text>
+    <text x="900" y="338" font-size="13" fill="#2c3a47">上腕ロール (Upper-arm Roll)</text>
+    <text x="900" y="354" font-size="11" font-style="italic" fill="#7c8a97">Spin about upper arm</text>
+    <line x1="868" y1="370" x2="1162" y2="370" stroke="#dbe4ec" stroke-width="1"/>
+
+    <!-- J4 -->
+    <circle cx="878" cy="402" r="10" fill="none" stroke="#e07b1a" stroke-width="2.5"/>
+    <circle cx="878" cy="402" r="3" fill="#e07b1a"/>
+    <text x="900" y="396" font-size="18" font-weight="700" fill="#1b2a38">J4</text>
+    <text x="900" y="416" font-size="13" fill="#2c3a47">肘ピッチ (Elbow Pitch)</text>
+    <text x="900" y="432" font-size="11" font-style="italic" fill="#7c8a97">Elbow bend</text>
+    <line x1="868" y1="448" x2="1162" y2="448" stroke="#dbe4ec" stroke-width="1"/>
+
+    <!-- J5 -->
+    <ellipse cx="878" cy="480" rx="10" ry="4" fill="none" stroke="#12836f" stroke-width="2.5"/>
+    <line x1="868" y1="480" x2="888" y2="480" stroke="#12836f" stroke-width="2"/>
+    <text x="900" y="474" font-size="18" font-weight="700" fill="#1b2a38">J5</text>
+    <text x="900" y="494" font-size="13" fill="#2c3a47">前腕ロール (Forearm Roll)</text>
+    <text x="900" y="510" font-size="11" font-style="italic" fill="#7c8a97">Spin about forearm</text>
+    <line x1="868" y1="526" x2="1162" y2="526" stroke="#dbe4ec" stroke-width="1"/>
+
+    <!-- J6 -->
+    <circle cx="878" cy="558" r="10" fill="none" stroke="#e07b1a" stroke-width="2.5"/>
+    <circle cx="878" cy="558" r="3" fill="#e07b1a"/>
+    <text x="900" y="552" font-size="18" font-weight="700" fill="#1b2a38">J6</text>
+    <text x="900" y="572" font-size="13" fill="#2c3a47">手首ピッチ (Wrist Pitch)</text>
+    <text x="900" y="588" font-size="11" font-style="italic" fill="#7c8a97">Wrist up-down</text>
+    <line x1="868" y1="604" x2="1162" y2="604" stroke="#dbe4ec" stroke-width="1"/>
+
+    <!-- J7 -->
+    <ellipse cx="878" cy="636" rx="10" ry="4" fill="none" stroke="#12836f" stroke-width="2.5"/>
+    <line x1="868" y1="636" x2="888" y2="636" stroke="#12836f" stroke-width="2"/>
+    <text x="900" y="630" font-size="18" font-weight="700" fill="#1b2a38">J7</text>
+    <text x="900" y="650" font-size="13" fill="#2c3a47">フランジロール (Flange Roll)</text>
+    <text x="900" y="666" font-size="11" font-style="italic" fill="#7c8a97">Tool rotation</text>
+    <line x1="868" y1="682" x2="1162" y2="682" stroke="#dbe4ec" stroke-width="1"/>
+
+    <!-- Bottom legend -->
+    <text x="1015" y="708" text-anchor="middle" font-size="15" font-weight="700" fill="#1b2a38">凡例 / Legend</text>
+
+    <circle cx="878" cy="734" r="9" fill="url(#linkGrad)" stroke="#3d4f60" stroke-width="1.5"/>
+    <text x="900" y="739" font-size="12" fill="#2c3a47">本体・リンク / Base &amp; Link</text>
+
+    <circle cx="878" cy="768" r="9" fill="url(#jointGrad)" stroke="#e07b1a" stroke-width="3"/>
+    <text x="900" y="773" font-size="12" fill="#2c3a47">関節（モーター）/ Motorized Joint</text>
+
+    <circle cx="878" cy="802" r="8" fill="none" stroke="#e07b1a" stroke-width="2"/>
+    <circle cx="878" cy="802" r="2.5" fill="#e07b1a"/>
+    <text x="900" y="807" font-size="12" fill="#2c3a47">ピッチ軸（紙面に垂直）/ Pitch axis</text>
+
+    <ellipse cx="878" cy="836" rx="9" ry="3.5" fill="none" stroke="#12836f" stroke-width="2"/>
+    <line x1="868" y1="836" x2="888" y2="836" stroke="#12836f" stroke-width="1.5"/>
+    <text x="900" y="841" font-size="12" fill="#2c3a47">ロール軸（リンクに沿う）/ Roll axis</text>
+  </g>
+</svg>

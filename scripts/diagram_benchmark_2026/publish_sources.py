@@ -9,7 +9,7 @@ PUBLIC = ROOT.parent.parent / "benchmark_sources" / "gemini35flash-vs-gpt54-diag
 
 
 def main() -> None:
-    for model in ("gpt54", "gemini35flash", "opus48", "fable5", "gpt55"):
+    for model in ("gpt54", "gemini35flash", "opus48", "fable5", "gpt55", "sonnet5"):
         src_dir = ROOT / model
         out_dir = PUBLIC / model
         out_dir.mkdir(parents=True, exist_ok=True)

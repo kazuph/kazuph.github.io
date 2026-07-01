@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF7EA"/>
+      <stop offset="100%" stop-color="#FFDCAA"/>
+    </linearGradient>
+    <radialGradient id="furGrad" cx="38%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#F1C68F"/>
+      <stop offset="100%" stop-color="#CC8E54"/>
+    </radialGradient>
+    <radialGradient id="creamGrad" cx="42%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#FCF1DC"/>
+      <stop offset="100%" stop-color="#EDD2A6"/>
+    </radialGradient>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1200" height="900" fill="url(#bgGrad)"/>
+  <circle cx="150" cy="150" r="40" fill="#FFDDAA" opacity="0.4"/>
+  <circle cx="1080" cy="180" r="55" fill="#FFE8C2" opacity="0.35"/>
+  <circle cx="180" cy="760" r="35" fill="#FFCBA0" opacity="0.3"/>
+  <circle cx="1050" cy="740" r="45" fill="#FFE0B0" opacity="0.3"/>
+
+  <!-- ground shadow -->
+  <ellipse cx="600" cy="855" rx="300" ry="35" fill="#8B5A2B" opacity="0.15"/>
+
+  <!-- legs -->
+  <g stroke="#8B5A2B" stroke-width="7" stroke-linejoin="round">
+    <ellipse cx="505" cy="790" rx="95" ry="115" fill="url(#furGrad)"/>
+    <ellipse cx="695" cy="790" rx="95" ry="115" fill="url(#furGrad)"/>
+  </g>
+
+  <!-- foot soles -->
+  <g stroke="#8B5A2B" stroke-width="4" stroke-linejoin="round">
+    <ellipse cx="505" cy="845" rx="70" ry="45" fill="url(#creamGrad)"/>
+    <ellipse cx="695" cy="845" rx="70" ry="45" fill="url(#creamGrad)"/>
+  </g>
+  <g fill="url(#creamGrad)" stroke="#8B5A2B" stroke-width="3">
+    <circle cx="475" cy="805" r="14"/>
+    <circle cx="505" cy="798" r="15"/>
+    <circle cx="535" cy="805" r="14"/>
+    <circle cx="665" cy="805" r="14"/>
+    <circle cx="695" cy="798" r="15"/>
+    <circle cx="725" cy="805" r="14"/>
+  </g>
+
+  <!-- body -->
+  <ellipse cx="600" cy="640" rx="210" ry="175" fill="url(#furGrad)" stroke="#8B5A2B" stroke-width="7"/>
+  <ellipse cx="520" cy="560" rx="90" ry="60" fill="#FFFFFF" opacity="0.12"/>
+
+  <!-- arms -->
+  <g stroke="#8B5A2B" stroke-width="7" stroke-linejoin="round">
+    <ellipse cx="405" cy="610" rx="75" ry="150" fill="url(#furGrad)" transform="rotate(25 405 610)"/>
+    <ellipse cx="795" cy="610" rx="75" ry="150" fill="url(#furGrad)" transform="rotate(-25 795 610)"/>
+  </g>
+  <g stroke="#8B5A2B" stroke-width="4">
+    <ellipse cx="345" cy="750" rx="48" ry="40" fill="url(#creamGrad)" transform="rotate(25 345 750)"/>
+    <ellipse cx="855" cy="750" rx="48" ry="40" fill="url(#creamGrad)" transform="rotate(-25 855 750)"/>
+  </g>
+
+  <!-- ears (outer, drawn before head so head overlaps the base) -->
+  <g stroke="#8B5A2B" stroke-width="6">
+    <circle cx="430" cy="205" r="95" fill="url(#furGrad)"/>
+    <circle cx="770" cy="205" r="95" fill="url(#furGrad)"/>
+  </g>
+  <g fill="url(#creamGrad)">
+    <circle cx="440" cy="212" r="50"/>
+    <circle cx="760" cy="212" r="50"/>
+  </g>
+
+  <!-- head -->
+  <circle cx="600" cy="350" r="185" fill="url(#furGrad)" stroke="#8B5A2B" stroke-width="7"/>
+  <ellipse cx="545" cy="280" rx="65" ry="45" fill="#FFFFFF" opacity="0.15"/>
+
+  <!-- fur texture tufts -->
+  <g fill="none" stroke="#8B5A2B" stroke-width="4" stroke-linecap="round" opacity="0.2">
+    <path d="M470,195 Q458,176 480,162"/>
+    <path d="M730,195 Q742,176 720,162"/>
+    <path d="M418,478 Q398,458 414,434"/>
+    <path d="M782,478 Q802,458 786,434"/>
+    <path d="M478,758 Q458,780 474,800"/>
+    <path d="M722,758 Q742,780 726,800"/>
+  </g>
+
+  <!-- muzzle -->
+  <ellipse cx="600" cy="405" rx="115" ry="90" fill="url(#creamGrad)" stroke="#8B5A2B" stroke-width="5"/>
+
+  <!-- cheeks -->
+  <ellipse cx="500" cy="392" rx="35" ry="22" fill="#F4A9A0" opacity="0.5"/>
+  <ellipse cx="700" cy="392" rx="35" ry="22" fill="#F4A9A0" opacity="0.5"/>
+
+  <!-- eyes -->
+  <circle cx="545" cy="330" r="20" fill="#3A2A1E"/>
+  <circle cx="655" cy="330" r="20" fill="#3A2A1E"/>
+  <circle cx="538" cy="322" r="6" fill="#FFFFFF"/>
+  <circle cx="662" cy="322" r="6" fill="#FFFFFF"/>
+
+  <!-- nose and mouth -->
+  <ellipse cx="600" cy="386" rx="28" ry="20" fill="#3A2A1E"/>
+  <path d="M600,406 L600,434" fill="none" stroke="#3A2A1E" stroke-width="5" stroke-linecap="round"/>
+  <path d="M572,436 Q600,462 628,436" fill="none" stroke="#3A2A1E" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- chest patch (wappen) with stitched border -->
+  <rect x="530" y="550" width="140" height="110" rx="22" ry="22" fill="url(#creamGrad)" stroke="#8B5A2B" stroke-width="4" stroke-dasharray="6,7"/>
+  <path d="M600,573 L607.6,594.5 L630.4,595.1 L612.4,608.0 L618.8,630.9 L600,618 L581.2,630.9 L587.6,608.0 L569.6,595.1 L592.4,594.5 Z" fill="#E08E45" stroke="#8B5A2B" stroke-width="2" stroke-linejoin="round"/>
+</svg>
