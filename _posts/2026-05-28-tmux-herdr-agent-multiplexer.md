@@ -30,6 +30,8 @@ tmux でいいじゃん！
 
 今はその Herdr をそのまま使うだけではなく、[kazuph/herdr](https://github.com/kazuph/herdr) という fork で、自分たちが AI Agent を並列にぶん回すために欲しかった機能を足しています。
 
+先に注意点です。この記事は fork 版をもとに書いています。fork 版は僕の使い方という狭い範囲で最適化されている可能性が高いので、これから触る人はぜひ[本家](https://github.com/ogulcancelik/herdr)を使ってください。
+
 <figure>
   <img src="/images/posts/herdr-agent-multiplexer/herdr-overview.png" alt="Herdr(fork) の全体表示" loading="lazy">
   <figcaption>Herdr(fork) の全体表示。左にワークスペースと Agent、右に複数のペインが並びます。</figcaption>
@@ -190,6 +192,104 @@ switcher では、`spaces`、`tabs`、`agents`、`menu` を同じ画面に並べ
 本家 Herdr は出発点として良いです。
 
 そのうえで、AI Agent を複数常設するなら、[kazuph/herdr](https://github.com/kazuph/herdr) 側に入っている変更が効いてきます。ワークスペース、ブランチ、Agent の状態、pane ID が見えているだけで、複数 Agent を並列に動かす時の迷子感がかなり減ります。
+
+## ここから追記（2026-07-02）
+
+ここから先は追記です。公開してから 1 ヶ月ちょっと、Herdr(fork) を毎日使いながらさらに機能を足したので、その分を書きます。
+
+方向は変わっていません。AI Agent を並列にぶん回すために、「画面を見れば分かる」と「AI が CLI から安全に操作できる」を増やし続けた結果です。
+
+## ペインタイトルに「いま何をやってるか」を出させる
+
+`%pane_id` が見えるようになると、次は「この Codex、いま何をやってたっけ？」が気になり始めます。同じ repo に Codex を 2〜3 枚並べていると、`%1 codex`、`%2 codex` だけでは区別がつきません。
+
+そこで、Agent 自身に短いタスク名を報告させるようにしました。
+
+```bash
+herdr pane report-agent "$HERDR_PANE_ID" \
+  --source codex --agent codex --state working \
+  --title "restore pane sessions"
+```
+
+CLAUDE.md や AGENTS.md に「タスク開始時と、タスク内容が変わった時に報告しろ」と書いておくと、Agent が勝手にこれを打ちます。すると pane タイトルが `%81 codex restore pane sessions` になり、workspace 名も `herdr-restore pane sessions` のように変わる。
+
+pane タイトルには cwd の Git branch も末尾に出るので、sidebar を見るだけで「どの pane の、どの Agent が、どのブランチで、何をしているか」まで分かります。
+
+## AI が herdr 自体を使う前提の CLI になってきた
+
+`herdr help` の出力は、人間向けの短い usage ではなく、AI がそのまま読める形にしました。YAML front matter 付きで、`## Agent Rules` や `## Essential Agent Recipes` が入っています。
+
+```
+## Agent Rules
+- Use `herdr pane current` to identify the calling pane. It first trusts HERDR_PANE_ID, then resolves the calling process session.
+- Do not infer the requester pane from the focused pane, active window, pane list order, or UI selection.
+```
+
+Agent には「まず `herdr help` を読め」と言うだけで済みます。
+
+この中でも大事にしているのが fail-closed です。`herdr pane current` は「呼び出し元プロセスが属する pane」だけを返します。解決できなければ失敗する。focus 中の pane や pane 一覧の先頭から推測して返すことはしません。AI が「自分がいる pane」を取り違えて別 pane に送信する事故は、一度起きると被害が大きいので、ここは推測禁止に振り切りました。
+
+`herdr agent send` は、テキストを書いてから少し待って Enter まで送ります。「入力欄に文字は入ったが送信されてない」という AI あるあるを、送信側で潰しています。
+
+長いコマンドを別 pane に投げる時は `herdr pane run-notify` を使います。
+
+```bash
+herdr pane run-notify %3 -- cargo test
+```
+
+対象 pane で普通に出力が流れて、終了すると依頼元 pane に `pane job exited: 0` のような toast が届きます。exit code、末尾ログ、job log への参照が入っていて、`herdr pane job-log <job_id>` で全文も追えます。AI に別 pane で作業させたあと、「終わったかな」と目視巡回する必要がなくなりました。
+
+## 通知だけで「どの workspace の、どの返事か」まで分かる
+
+background の Agent が質問してきたり作業を終えたりすると通知が出ますが、最初は「pi finished」みたいな通知で、どこの何が終わったのか分かりませんでした。
+
+fork では通知タイトルを `2 herdr-planner` のように「workspace 番号 + workspace 名」にして、本文には対象 pane の最後の AI 応答を入れています。Codex の `• `、Claude Code の `⏺ ` を応答マーカーとして拾い、罫線や入力欄、`esc to interrupt` のような UI ノイズは削って、本文だけを 120 文字まで。
+
+通知はクリックすると、その pane まで飛びます。workspace とタブも切り替わる。macOS なら `terminal-notifier` 経由の OS 通知からも同じように戻れて、`prefix+o` でも表示中の通知の対象 pane へ移動できます。
+
+連発対策も入れました。同じ pane の同じ種類の通知は 10 秒間出さない。どこかの pane が「質問してます」の通知を出した直後は、別 pane の「終わりました」通知で上書きしない。質問に気づく前に完了通知で流されるのが一番困るので。
+
+## Herdr を再起動しても、各ペインの会話に戻る
+
+これが最近やった中で一番重い変更です。
+
+Herdr を再起動すると、pane の中で動いていた Claude Code や Codex は当然死にます。復元機能自体はありますが、雑にやると事故ります。同じ cwd で Codex を 3 枚動かしていた場合、「そのディレクトリの最新セッションに resume」みたいな復元だと、3 枚とも同じ会話に潰れる。
+
+なので fork の復元は fail-closed にしました。
+
+- 復元に使うのは、その pane で実際に観測した session id か、その pane 自身が `--session-id` で報告した session id だけ
+- `claude --resume --last` や `codex resume --last` のような「最後のセッション」系は全面禁止。復元コマンドの template に `--last` が入っていたら拒否
+- session id が分からない pane は復元しない。代わりに restart の確認ダイアログが `Restart with missing agent sessions?` になって、どの pane が復元できないか（workspace、pane、agent、cwd、理由）を一覧で見せる
+
+復元の実行は menu の `Restore agents...` から。dry-run もあって、実行前に「この pane にはこのコマンドを打つ」を確認できます。
+
+```
+codex resume 019ef3a2-749c-7b52-b324-2c20cb0b2379
+```
+
+推測で別の会話を開くくらいなら、復元しないで「この pane は復元できない」と言ってほしい。AI Agent を常駐させると、pane の中の会話そのものが作業状態なので、ここの信頼性は譲れませんでした。
+
+## tmux の手癖はそのまま持ち込む
+
+10 年ものの手癖は消えないので、fork 側を手癖に合わせました。
+
+- `prefix+%` で左右に、`prefix+"` で上下に split（tmux のデフォルトと同じ）
+- copy mode は `prefix+[` に加えて `prefix+]` でも入れる
+- `[ui] vim_mode = true` で Vim 風の Normal / Insert モード
+
+vim mode は、Normal mode で `h` / `l` が pane 移動、`j` / `k` が workspace 移動。`Ctrl+[` / `Ctrl+]` で pane の focus 履歴を戻ったり進んだりできます。workspace やタブをまたいだ履歴も追えるので、「さっきの pane に戻る」がキーボードだけで済む。`i` か `Enter` で Insert に入れば普通に pane へ入力できて、画面下のバーに ` VIM NORMAL ` / ` VIM INSERT ` が出るので、今どっちにいるかも迷いません。
+
+## レイアウトいじりはまだ続いている
+
+前半で書いた「Move to split」と「Equalize」のあとも、レイアウト操作は増えています。
+
+tmux の `Ctrl-b` + `Space` の答えとして `Cycle pane layout` を入れました。横一列 → 縦一列 → 左メイン + グリッド → 右メイン + グリッド → 上メイン + 下一列 → 下メイン + 上一列、を 1 操作で巡回します。Agent を 4〜5 枚並べている時は「メイン 1 枚 + 残りグリッド」が一番見やすいので、そこに一発で行けるのが効きます。
+
+`Rotate panes` は split の形を保ったまま、中身だけ回す操作です。ここで大事なのが、回しても `%pane_id` と terminal の対応は変わらないこと。位置が変わっても `%2` は同じ Codex のままなので、Agent 同士の宛先が壊れません。
+
+ターミナル領域の下には 1 行だけの action bar を置いて、` CYCLE LAYOUT ` ` ROTATE PANES ` ` EQUALIZE ` をクリックで叩けるようにしました。pane タイトルのクリックで zoom のトグルもできます。スマホ SSH だと、キーバインドよりこういう「見えてるものを押す」の方が速い。
+
+あと、右クリックメニューに `New Claude Code agent` / `New Codex agent` / `New Gemini agent` を足して、split 作成、CLI 起動、agent 登録まで一発でやるようにしました。「pane を割って、shell で claude と打って」の初動が 1 クリックになります。
 
 ## おわりに
 
