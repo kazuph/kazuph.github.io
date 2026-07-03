@@ -61,13 +61,24 @@
         return null;
       }
     };
+    const loadSavedParked = () => {
+      // デフォルトは右下でお留守番。クリックした時だけ追従する。
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (!raw) return true;
+        return JSON.parse(raw)?.parked !== false;
+      } catch (_error) {
+        return true;
+      }
+    };
     const savePosition = (position) => {
       try {
-        localStorage.setItem(storageKey, JSON.stringify(position));
+        localStorage.setItem(storageKey, JSON.stringify({ ...position, parked }));
       } catch (_error) {
       }
     };
 
+    let parked = loadSavedParked();
     let position = loadSavedPosition() ?? clampPosition(defaultPosition());
     let target = { ...position };
     let state = 'idle';
@@ -154,7 +165,7 @@
       lastTickAt = now;
       petHover = !dragging && pet.matches(':hover');
 
-      const allowFollow = pointerActive && !prefersReducedMotion && now >= manualUntil && !petHover;
+      const allowFollow = pointerActive && !prefersReducedMotion && !parked && now >= manualUntil && !petHover;
       if (allowFollow) aimForPointer();
 
       if (!dragging) {
@@ -253,20 +264,31 @@
       lastDragPoint = null;
       pet.classList.remove('is-dragging');
       pet.releasePointerCapture?.(event.pointerId);
+      manualUntil = 0;
       if (draggedDuringPointer) {
-        manualUntil = performance.now() + 5000;
-        savePosition(position);
-        setState('jumping');
-      } else {
-        manualUntil = performance.now() + 5000;
-        pointerActive = false;
-        waveUntil = performance.now() + 1800;
-        position = clampPosition(defaultPosition());
+        // ドラッグで動かした場合は、置いた場所にお留守番（クリックするまで追従しない）
+        parked = true;
         target = { ...position };
         savePosition(position);
-        setState('waving');
-        syncPosition();
-        sayRandomPhrase();
+        setState('jumping');
+        showSpeech('ここでお留守番します。');
+      } else {
+        // タップはお留守番モードのトグル
+        parked = !parked;
+        pointerActive = false;
+        waveUntil = performance.now() + 1800;
+        if (parked) {
+          position = clampPosition(defaultPosition());
+          target = { ...position };
+          savePosition(position);
+          setState('waving');
+          syncPosition();
+          sayRandomPhrase();
+        } else {
+          savePosition(position);
+          setState('waving');
+          showSpeech('おさんぽ再開します！');
+        }
       }
     };
 
