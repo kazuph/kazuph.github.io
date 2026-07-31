@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F5E6D3"/>
+      <stop offset="100%" stop-color="#E8D4BC"/>
+    </linearGradient>
+    <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C4A574"/>
+      <stop offset="100%" stop-color="#A8845A"/>
+    </linearGradient>
+    <linearGradient id="curtainGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C45C4A"/>
+      <stop offset="50%" stop-color="#D4705E"/>
+      <stop offset="100%" stop-color="#B84E3C"/>
+    </linearGradient>
+    <linearGradient id="tvGlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7EC8E8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#7EC8E8" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFE8A0" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#FFE8A0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ceilingGlow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#FFF5D6" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FFF5D6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Room background -->
+  <rect width="1200" height="900" fill="url(#wallGrad)"/>
+  <!-- Floor -->
+  <rect y="620" width="1200" height="280" fill="url(#floorGrad)"/>
+  <!-- Floor planks -->
+  <g stroke="#8B6B45" stroke-width="1.5" opacity="0.35">
+    <line x1="0" y1="670" x2="1200" y2="670"/>
+    <line x1="0" y1="720" x2="1200" y2="720"/>
+    <line x1="0" y1="770" x2="1200" y2="770"/>
+    <line x1="0" y1="820" x2="1200" y2="820"/>
+    <line x1="0" y1="870" x2="1200" y2="870"/>
+  </g>
+  <!-- Baseboard -->
+  <rect y="610" width="1200" height="14" fill="#8B7355"/>
+  <rect y="608" width="1200" height="4" fill="#A08060"/>
+
+  <!-- Window with curtains (left) -->
+  <rect x="40" y="80" width="220" height="320" rx="4" fill="#87B8D4"/>
+  <!-- Window panes -->
+  <rect x="50" y="90" width="95" height="145" fill="#B8D9EC"/>
+  <rect x="155" y="90" width="95" height="145" fill="#A8CFE4"/>
+  <rect x="50" y="245" width="95" height="145" fill="#A8CFE4"/>
+  <rect x="155" y="245" width="95" height="145" fill="#B8D9EC"/>
+  <!-- Soft evening light suggestion -->
+  <ellipse cx="150" cy="200" rx="80" ry="100" fill="#FFE8C0" opacity="0.25"/>
+  <!-- Curtain rod -->
+  <rect x="25" y="70" width="250" height="12" rx="4" fill="#6B5344"/>
+  <circle cx="30" cy="76" r="8" fill="#8B7355"/>
+  <circle cx="270" cy="76" r="8" fill="#8B7355"/>
+  <!-- Left curtain -->
+  <path d="M35 82 Q55 200 40 400 L95 400 Q80 200 100 82 Z" fill="url(#curtainGrad)"/>
+  <path d="M100 82 Q115 220 105 400 L145 400 Q135 220 145 82 Z" fill="#D4705E" opacity="0.85"/>
+  <!-- Right curtain -->
+  <path d="M250 82 Q235 200 250 400 L195 400 Q210 200 190 82 Z" fill="url(#curtainGrad)"/>
+  <path d="M190 82 Q175 220 185 400 L155 400 Q165 220 155 82 Z" fill="#D4705E" opacity="0.85"/>
+  <!-- Curtain folds -->
+  <g stroke="#A84335" stroke-width="2" fill="none" opacity="0.4">
+    <path d="M50 100 Q60 250 48 380"/>
+    <path d="M75 95 Q85 240 72 385"/>
+    <path d="M230 100 Q220 250 232 380"/>
+    <path d="M205 95 Q195 240 208 385"/>
+  </g>
+
+  <!-- Ceiling light fixture -->
+  <ellipse cx="600" cy="30" rx="180" ry="50" fill="url(#ceilingGlow)"/>
+  <rect x="585" y="0" width="30" height="25" fill="#8B7355"/>
+  <ellipse cx="600" cy="45" rx="55" ry="18" fill="#F5E6C8"/>
+  <ellipse cx="600" cy="42" rx="48" ry="12" fill="#FFF8E0"/>
+  <circle cx="600" cy="48" r="8" fill="#FFE090"/>
+
+  <!-- TV stand / console (right-ish center) -->
+  <rect x="720" y="480" width="340" height="140" rx="6" fill="#6B4E3D"/>
+  <rect x="725" y="485" width="330" height="20" fill="#8B6B55"/>
+  <!-- Cabinet doors -->
+  <rect x="740" y="520" width="140" height="85" rx="3" fill="#5A4032"/>
+  <rect x="900" y="520" width="140" height="85" rx="3" fill="#5A4032"/>
+  <circle cx="865" cy="562" r="5" fill="#C9A86C"/>
+  <circle cx="915" cy="562" r="5" fill="#C9A86C"/>
+  <!-- Legs -->
+  <rect x="740" y="618" width="18" height="25" fill="#4A3528"/>
+  <rect x="1022" y="618" width="18" height="25" fill="#4A3528"/>
+
+  <!-- Television -->
+  <rect x="755" y="300" width="270" height="175" rx="8" fill="#2A2A2A"/>
+  <rect x="768" y="312" width="244" height="140" rx="3" fill="#1A3A4A"/>
+  <!-- TV screen content (soft landscape program) -->
+  <rect x="768" y="312" width="244" height="140" rx="3" fill="#3A6B7A"/>
+  <ellipse cx="890" cy="370" rx="90" ry="40" fill="#4A8A6A" opacity="0.8"/>
+  <ellipse cx="850" cy="390" rx="70" ry="30" fill="#5A9A5A" opacity="0.7"/>
+  <rect x="768" y="400" width="244" height="52" fill="#2A5A4A"/>
+  <circle cx="920" cy="340" r="22" fill="#F0D080" opacity="0.85"/>
+  <ellipse cx="920" cy="340" rx="28" ry="12" fill="#FFF0C0" opacity="0.4"/>
+  <!-- TV bezel highlight -->
+  <rect x="768" y="312" width="244" height="6" fill="#4A4A4A" opacity="0.5"/>
+  <!-- TV stand neck -->
+  <rect x="870" y="475" width="40" height="10" fill="#333"/>
+  <rect x="855" y="470" width="70" height="12" rx="2" fill="#444"/>
+  <!-- Soft TV light cast toward grandma -->
+  <polygon points="768,320 768,450 420,580 420,400" fill="url(#tvGlow)"/>
+
+  <!-- Side table (near grandma) -->
+  <ellipse cx="280" cy="580" rx="70" ry="18" fill="#8B6B4A"/>
+  <rect x="255" y="580" width="50" height="70" fill="#7A5A3A"/>
+  <ellipse cx="280" cy="650" rx="55" ry="12" fill="#6B4A2A"/>
+  <!-- Teacup on side table -->
+  <ellipse cx="265" cy="565" rx="16" ry="7" fill="#E8E0D0"/>
+  <rect x="252" y="548" width="26" height="20" rx="3" fill="#F5F0E6"/>
+  <ellipse cx="265" cy="548" rx="13" ry="5" fill="#D4C8A8"/>
+  <path d="M278 555 Q290 555 290 565 Q290 572 278 570" fill="none" stroke="#E8E0D0" stroke-width="3"/>
+  <!-- Saucer -->
+  <ellipse cx="265" cy="568" rx="20" ry="5" fill="#DDD5C5"/>
+
+  <!-- Floor lamp (behind / beside sofa) -->
+  <ellipse cx="160" cy="640" rx="35" ry="10" fill="#5A4030"/>
+  <rect x="152" y="320" width="16" height="320" fill="#6B5344"/>
+  <polygon points="160,200 100,320 220,320" fill="#E8C878"/>
+  <polygon points="160,210 115,315 205,315" fill="#F5D890"/>
+  <ellipse cx="160" cy="280" rx="70" ry="50" fill="url(#lampGlow)"/>
+
+  <!-- Sofa -->
+  <!-- Sofa base -->
+  <ellipse cx="480" cy="640" rx="200" ry="45" fill="#6B5B4A"/>
+  <rect x="290" y="520" width="380" height="130" rx="20" fill="#8B7355"/>
+  <!-- Seat cushion -->
+  <ellipse cx="420" cy="580" rx="120" ry="55" fill="#A08060"/>
+  <ellipse cx="520" cy="575" rx="100" ry="50" fill="#98785A"/>
+  <!-- Backrest -->
+  <path d="M300 520 Q310 430 400 420 Q480 415 560 430 Q640 450 660 520 Z" fill="#7A6550"/>
+  <path d="M320 515 Q330 450 400 442 Q470 438 540 450 Q620 470 640 515 Z" fill="#9A8068"/>
+  <!-- Armrests -->
+  <ellipse cx="300" cy="540" rx="40" ry="55" fill="#6B5848"/>
+  <ellipse cx="660" cy="545" rx="38" ry="50" fill="#6B5848"/>
+  <ellipse cx="300" cy="525" rx="28" ry="20" fill="#8B7355"/>
+  <ellipse cx="660" cy="530" rx="26" ry="18" fill="#8B7355"/>
+  <!-- Sofa skirt / legs hint -->
+  <rect x="320" y="640" width="20" height="30" rx="3" fill="#5A4535"/>
+  <rect x="600" y="640" width="20" height="30" rx="3" fill="#5A4535"/>
+
+  <!-- Throw blanket on sofa arm -->
+  <path d="M640 500 Q680 520 670 580 Q660 600 630 590 Q620 540 640 500" fill="#C45C4A" opacity="0.85"/>
+  <path d="M645 510 Q665 530 658 570" fill="none" stroke="#A84335" stroke-width="2" opacity="0.5"/>
+
+  <!-- Grandma sitting on sofa, facing toward TV (right) -->
+  <!-- Body / dress -->
+  <ellipse cx="430" cy="560" rx="55" ry="70" fill="#5B7A9A"/>
+  <path d="M375 520 Q400 480 430 475 Q460 480 485 520 L490 580 Q460 600 430 605 Q400 600 370 580 Z" fill="#4A6A8A"/>
+  <!-- Collar -->
+  <ellipse cx="430" cy="490" rx="28" ry="12" fill="#E8E0D8"/>
+  <!-- Arms -->
+  <!-- Left arm resting -->
+  <path d="M380 510 Q350 540 355 575 Q365 585 380 575 Q385 545 395 520" fill="#E8C8B0"/>
+  <ellipse cx="360" cy="580" rx="14" ry="10" fill="#E0C0A8"/>
+  <!-- Right arm toward remote / lap, oriented to TV -->
+  <path d="M475 505 Q510 530 520 565 Q510 575 495 568 Q485 540 470 515" fill="#E8C8B0"/>
+  <ellipse cx="515" cy="568" rx="12" ry="9" fill="#E0C0A8"/>
+  <!-- Remote in hand -->
+  <rect x="505" y="560" width="28" height="12" rx="2" fill="#333"/>
+  <circle cx="512" cy="566" r="2" fill="#666"/>
+  <circle cx="520" cy="566" r="2" fill="#666"/>
+
+  <!-- Head - turned toward TV (right) -->
+  <ellipse cx="445" cy="430" rx="38" ry="42" fill="#E8C8B0"/>
+  <!-- Hair (gray bun / short curls) -->
+  <ellipse cx="440" cy="400" rx="42" ry="28" fill="#C0C0C0"/>
+  <ellipse cx="415" cy="420" rx="18" ry="25" fill="#B8B8B8"/>
+  <ellipse cx="460" cy="415" rx="20" ry="22" fill="#B8B8B8"/>
+  <circle cx="445" cy="385" r="18" fill="#D0D0D0"/>
+  <!-- Bun -->
+  <circle cx="430" cy="375" r="16" fill="#A8A8A8"/>
+  <circle cx="430" cy="375" r="10" fill="#C0C0C0"/>
+  <!-- Ear -->
+  <ellipse cx="415" cy="435" rx="8" ry="12" fill="#D8B898"/>
+  <!-- Face features - looking right toward TV -->
+  <!-- Eye (visible, looking right) -->
+  <ellipse cx="458" cy="428" rx="7" ry="5" fill="#FFF"/>
+  <circle cx="461" cy="428" r="3.5" fill="#5A4030"/>
+  <circle cx="462" cy="427" r="1.2" fill="#FFF"/>
+  <!-- Closed/soft smile -->
+  <path d="M450 448 Q460 455 470 448" fill="none" stroke="#C07060" stroke-width="2" stroke-linecap="round"/>
+  <!-- Nose pointing rightish -->
+  <path d="M468 430 Q478 438 470 444" fill="none" stroke="#D0A888" stroke-width="2"/>
+  <!-- Cheek blush -->
+  <ellipse cx="450" cy="442" rx="8" ry="5" fill="#E8A090" opacity="0.45"/>
+  <!-- Glasses -->
+  <circle cx="458" cy="428" r="11" fill="none" stroke="#666" stroke-width="2"/>
+  <path d="M447 425 Q435 422 420 428" fill="none" stroke="#666" stroke-width="2"/>
+  <line x1="447" y1="428" x2="435" y2="428" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Neck -->
+  <rect x="428" y="465" width="24" height="22" fill="#E8C8B0"/>
+
+  <!-- Slippers on floor -->
+  <ellipse cx="400" cy="655" rx="28" ry="12" fill="#8B5A4A"/>
+  <ellipse cx="445" cy="658" rx="26" ry="11" fill="#8B5A4A"/>
+  <ellipse cx="395" cy="652" rx="12" ry="8" fill="#A07060"/>
+  <ellipse cx="440" cy="655" rx="11" ry="7" fill="#A07060"/>
+
+  <!-- Rug under sofa / coffee area -->
+  <ellipse cx="550" cy="700" rx="220" ry="50" fill="#A85848" opacity="0.55"/>
+  <ellipse cx="550" cy="700" rx="180" ry="38" fill="#C07060" opacity="0.35"/>
+  <ellipse cx="550" cy="700" rx="100" ry="20" fill="#D88878" opacity="0.25"/>
+
+  <!-- Small coffee table in front -->
+  <ellipse cx="560" cy="660" rx="80" ry="22" fill="#7A5A3A"/>
+  <rect x="530" y="660" width="16" height="45" fill="#6B4A2A"/>
+  <rect x="574" y="660" width="16" height="45" fill="#6B4A2A"/>
+  <ellipse cx="560" cy="705" rx="60" ry="12" fill="#5A3A1A" opacity="0.5"/>
+  <!-- Plate of cookies -->
+  <ellipse cx="545" cy="648" rx="22" ry="8" fill="#E8E0D0"/>
+  <circle cx="538" cy="645" r="6" fill="#D4A060"/>
+  <circle cx="550" cy="643" r="6" fill="#C89050"/>
+  <circle cx="545" cy="650" r="5" fill="#D4A060"/>
+  <!-- Small vase with flower -->
+  <ellipse cx="585" cy="645" rx="10" ry="6" fill="#6B8B6B"/>
+  <rect x="580" y="620" width="10" height="28" rx="3" fill="#8BAA8B"/>
+  <circle cx="585" cy="612" r="10" fill="#E07070"/>
+  <circle cx="578" cy="618" r="7" fill="#E88888"/>
+  <circle cx="592" cy="616" r="6" fill="#D06060"/>
+  <line x1="585" y1="620" x2="585" y2="600" stroke="#4A7A4A" stroke-width="2"/>
+
+  <!-- Picture frame on wall -->
+  <rect x="380" y="100" width="100" height="80" rx="3" fill="#8B7355"/>
+  <rect x="390" y="110" width="80" height="60" fill="#C8D8E8"/>
+  <circle cx="420" cy="140" r="12" fill="#E8C070"/>
+  <ellipse cx="440" cy="155" rx="25" ry="12" fill="#6B9A6B"/>
+  <rect x="420" y="80" width="20" height="22" fill="#8B7355"/>
+
+  <!-- Wall clock -->
+  <circle cx="560" cy="160" r="40" fill="#F5F0E6" stroke="#6B5344" stroke-width="6"/>
+  <circle cx="560" cy="160" r="3" fill="#333"/>
+  <line x1="560" y1="160" x2="560" y2="135" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+  <line x1="560" y1="160" x2="580" y2="170" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+  <g fill="#555" font-family="Georgia, serif" font-size="10">
+    <text x="556" y="132">12</text>
+    <text x="580" y="164">3</text>
+    <text x="556" y="192">6</text>
+    <text x="532" y="164">9</text>
+  </g>
+
+  <!-- Books on TV stand -->
+  <rect x="760" y="470" width="12" height="28" fill="#6B4A8A"/>
+  <rect x="772" y="468" width="14" height="30" fill="#4A6A8A"/>
+  <rect x="786" y="472" width="10" height="26" fill="#8A5A4A"/>
+
+  <!-- Plant in corner near TV -->
+  <ellipse cx="1100" cy="620" rx="30" ry="12" fill="#6B5344"/>
+  <rect x="1088" y="560" width="24" height="65" rx="4" fill="#8B6B4A"/>
+  <ellipse cx="1100" cy="540" rx="35" ry="40" fill="#4A8A4A"/>
+  <ellipse cx="1075" cy="555" rx="22" ry="28" fill="#5A9A5A"/>
+  <ellipse cx="1125" cy="550" rx="20" ry="30" fill="#3A7A3A"/>
+  <ellipse cx="1100" cy="520" rx="18" ry="22" fill="#6BAA6B"/>
+
+  <!-- Soft ambient warmth overlay near lamp -->
+  <ellipse cx="160" cy="350" rx="100" ry="120" fill="#FFE8A0" opacity="0.12"/>
+
+  <!-- Title label (ASCII only) -->
+  <text x="600" y="870" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#5A4030" opacity="0.7">Quiet evening - grandma watching TV</text>
+</svg>

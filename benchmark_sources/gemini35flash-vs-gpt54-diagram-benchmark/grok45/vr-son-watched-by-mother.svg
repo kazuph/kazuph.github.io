@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <title>Son playing VR watched by mother</title>
+  <desc>A boy with VR headset and controllers in his room; mother watches from the doorway.</desc>
+
+  <!-- Room background -->
+  <rect x="0" y="0" width="1200" height="900" fill="#e8f0f7"/>
+  <!-- Floor -->
+  <polygon points="0,620 1200,620 1200,900 0,900" fill="#c4a574"/>
+  <g stroke="#a8885a" stroke-width="1" opacity="0.45">
+    <line x1="0" y1="660" x2="1200" y2="660"/>
+    <line x1="0" y1="700" x2="1200" y2="700"/>
+    <line x1="0" y1="740" x2="1200" y2="740"/>
+    <line x1="0" y1="780" x2="1200" y2="780"/>
+    <line x1="0" y1="820" x2="1200" y2="820"/>
+    <line x1="0" y1="860" x2="1200" y2="860"/>
+  </g>
+  <!-- Back wall -->
+  <rect x="0" y="0" width="1200" height="620" fill="#d9e6f2"/>
+  <!-- Wall baseboard -->
+  <rect x="0" y="600" width="1200" height="20" fill="#8fa8bc"/>
+
+  <!-- Window on back wall -->
+  <rect x="720" y="80" width="280" height="220" rx="6" fill="#b8d4ea" stroke="#6a8aa0" stroke-width="8"/>
+  <line x1="860" y1="80" x2="860" y2="300" stroke="#6a8aa0" stroke-width="6"/>
+  <line x1="720" y1="190" x2="1000" y2="190" stroke="#6a8aa0" stroke-width="6"/>
+  <rect x="730" y="90" width="120" height="90" fill="#9ec8e8" opacity="0.7"/>
+  <rect x="870" y="90" width="120" height="90" fill="#9ec8e8" opacity="0.7"/>
+  <rect x="730" y="200" width="120" height="90" fill="#8ebce0" opacity="0.55"/>
+  <rect x="870" y="200" width="120" height="90" fill="#8ebce0" opacity="0.55"/>
+  <!-- Curtains -->
+  <path d="M710,70 Q740,180 715,300 L700,300 Q720,160 700,70 Z" fill="#f0a060"/>
+  <path d="M1010,70 Q980,180 1005,300 L1020,300 Q1000,160 1020,70 Z" fill="#f0a060"/>
+
+  <!-- Poster on wall -->
+  <rect x="480" y="100" width="140" height="160" rx="4" fill="#fff8e7" stroke="#c9a060" stroke-width="4"/>
+  <circle cx="550" cy="155" r="28" fill="#ffcc66"/>
+  <path d="M520,210 Q550,180 580,210" fill="none" stroke="#66aa88" stroke-width="6" stroke-linecap="round"/>
+  <text x="550" y="245" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#886644">SPACE</text>
+
+  <!-- Bookshelf left -->
+  <g id="bookshelf">
+    <rect x="40" y="200" width="160" height="380" fill="#8b6914" stroke="#5c4510" stroke-width="3"/>
+    <rect x="50" y="210" width="140" height="8" fill="#6e5210"/>
+    <rect x="50" y="300" width="140" height="8" fill="#6e5210"/>
+    <rect x="50" y="390" width="140" height="8" fill="#6e5210"/>
+    <rect x="50" y="480" width="140" height="8" fill="#6e5210"/>
+    <!-- books -->
+    <rect x="58" y="220" width="22" height="70" fill="#d44"/>
+    <rect x="84" y="225" width="18" height="65" fill="#48a"/>
+    <rect x="106" y="218" width="24" height="72" fill="#3a8"/>
+    <rect x="134" y="228" width="20" height="62" fill="#c84"/>
+    <rect x="158" y="222" width="16" height="68" fill="#86a"/>
+    <rect x="60" y="315" width="28" height="65" fill="#a35"/>
+    <rect x="92" y="320" width="20" height="60" fill="#258"/>
+    <rect x="116" y="312" width="26" height="68" fill="#e83"/>
+    <rect x="146" y="318" width="22" height="62" fill="#585"/>
+    <rect x="58" y="405" width="24" height="65" fill="#46a"/>
+    <rect x="86" y="410" width="30" height="60" fill="#b53"/>
+    <rect x="120" y="402" width="18" height="68" fill="#793"/>
+    <rect x="142" y="408" width="26" height="62" fill="#369"/>
+    <!-- toy box bottom -->
+    <rect x="60" y="500" width="120" height="65" rx="4" fill="#ee8844"/>
+    <circle cx="95" cy="530" r="10" fill="#ffcc44"/>
+    <rect x="115" y="515" width="40" height="25" rx="3" fill="#66ccaa"/>
+  </g>
+
+  <!-- Desk under window area (right-center) -->
+  <g id="desk">
+    <rect x="780" y="430" width="280" height="18" rx="2" fill="#a67c52"/>
+    <rect x="800" y="448" width="24" height="100" fill="#8a6540"/>
+    <rect x="1016" y="448" width="24" height="100" fill="#8a6540"/>
+    <!-- laptop -->
+    <rect x="860" y="390" width="120" height="8" rx="2" fill="#555"/>
+    <rect x="870" y="320" width="100" height="70" rx="3" fill="#333"/>
+    <rect x="878" y="328" width="84" height="54" fill="#6ab0e0"/>
+    <!-- lamp -->
+    <rect x="1000" y="380" width="10" height="50" fill="#777"/>
+    <path d="M980,380 Q1005,340 1030,380 Z" fill="#f5e6a0" stroke="#ccb060" stroke-width="2"/>
+    <ellipse cx="1005" cy="378" rx="18" ry="6" fill="#fff3b0" opacity="0.8"/>
+    <!-- mug -->
+    <rect x="830" y="405" width="22" height="25" rx="3" fill="#e07070"/>
+    <path d="M852,410 Q862,417 852,424" fill="none" stroke="#e07070" stroke-width="3"/>
+  </g>
+
+  <!-- Bed on right -->
+  <g id="bed">
+    <rect x="980" y="560" width="200" height="120" rx="8" fill="#6a9fd0"/>
+    <rect x="980" y="560" width="200" height="30" rx="6" fill="#4a7fb0"/>
+    <rect x="1000" y="520" width="70" height="45" rx="10" fill="#f5f0e0"/>
+    <ellipse cx="1035" cy="530" rx="28" ry="14" fill="#efe8d0"/>
+    <rect x="990" y="590" width="180" height="70" rx="4" fill="#8ec0e8"/>
+    <!-- blanket pattern -->
+    <line x1="1000" y1="610" x2="1160" y2="610" stroke="#6aa8d0" stroke-width="3"/>
+    <line x1="1000" y1="635" x2="1160" y2="635" stroke="#6aa8d0" stroke-width="3"/>
+  </g>
+
+  <!-- Rug under son -->
+  <ellipse cx="520" cy="720" rx="200" ry="70" fill="#e07060" opacity="0.55"/>
+  <ellipse cx="520" cy="720" rx="160" ry="50" fill="#f09080" opacity="0.4"/>
+
+  <!-- Doorway / entrance on left-front wall perspective -->
+  <g id="doorway">
+    <!-- Door frame -->
+    <rect x="220" y="140" width="160" height="480" fill="#5a4a3a"/>
+    <rect x="235" y="155" width="130" height="465" fill="#2a3540"/>
+    <!-- Hallway beyond -->
+    <rect x="245" y="165" width="110" height="445" fill="#3d4a58"/>
+    <rect x="245" y="500" width="110" height="110" fill="#6b5a48"/>
+    <!-- Door open (hinged left, swung into room) -->
+    <path d="M220,140 L175,160 L175,640 L220,620 Z" fill="#a08060" stroke="#6a5040" stroke-width="3"/>
+    <circle cx="190" cy="400" r="6" fill="#d4af37"/>
+  </g>
+
+  <!-- Mother at doorway watching -->
+  <g id="mother">
+    <!-- Body -->
+    <ellipse cx="300" cy="480" rx="42" ry="70" fill="#c45c8a"/>
+    <!-- Arms crossed / one hand on doorframe -->
+    <path d="M260,450 Q230,420 245,380" fill="none" stroke="#e8b090" stroke-width="14" stroke-linecap="round"/>
+    <path d="M340,450 Q365,430 355,400" fill="none" stroke="#e8b090" stroke-width="14" stroke-linecap="round"/>
+    <!-- Hand on frame -->
+    <circle cx="245" cy="375" r="12" fill="#e8b090"/>
+    <!-- Neck -->
+    <rect x="288" y="330" width="24" height="28" rx="6" fill="#e8b090"/>
+    <!-- Head -->
+    <circle cx="300" cy="295" r="42" fill="#e8b090"/>
+    <!-- Hair -->
+    <path d="M258,290 Q260,240 300,235 Q340,240 342,290 Q340,255 300,250 Q260,255 258,290 Z" fill="#4a3020"/>
+    <path d="M258,295 Q250,340 265,360 Q275,330 280,300" fill="#4a3020"/>
+    <path d="M342,295 Q350,340 335,360 Q325,330 320,300" fill="#4a3020"/>
+    <!-- Face looking toward son (right/down) -->
+    <ellipse cx="312" cy="295" rx="5" ry="6" fill="#2a2018"/>
+    <ellipse cx="330" cy="295" rx="5" ry="6" fill="#2a2018"/>
+    <path d="M318,312 Q325,318 332,312" fill="none" stroke="#c07060" stroke-width="2" stroke-linecap="round"/>
+    <!-- Soft concerned/curious brows -->
+    <path d="M305,282 Q312,278 320,282" fill="none" stroke="#3a2818" stroke-width="2"/>
+    <path d="M324,282 Q330,278 338,282" fill="none" stroke="#3a2818" stroke-width="2"/>
+    <!-- Skirt / legs -->
+    <path d="M262,530 L300,620 L338,530 Z" fill="#8a3a68"/>
+    <rect x="278" y="615" width="16" height="40" fill="#3a3030"/>
+    <rect x="306" y="615" width="16" height="40" fill="#3a3030"/>
+    <ellipse cx="286" cy="658" rx="16" ry="8" fill="#2a2020"/>
+    <ellipse cx="314" cy="658" rx="16" ry="8" fill="#2a2020"/>
+  </g>
+
+  <!-- Sightline: mother eyes -> son -->
+  <g id="sightline" stroke="#ff6688" stroke-width="2" stroke-dasharray="8 6" opacity="0.75" fill="none">
+    <path d="M330,298 Q420,360 470,430"/>
+    <polygon points="468,422 482,438 462,436" fill="#ff6688" stroke="none" opacity="0.85"/>
+  </g>
+  <text x="390" y="360" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#cc4466" transform="rotate(-18 390,360)">watching</text>
+
+  <!-- Son in center of room with VR -->
+  <g id="son">
+    <!-- Shadow -->
+    <ellipse cx="520" cy="750" rx="70" ry="18" fill="#000" opacity="0.18"/>
+    <!-- Legs in motion -->
+    <path d="M500,620 Q470,680 455,740" fill="none" stroke="#3a6ab0" stroke-width="22" stroke-linecap="round"/>
+    <path d="M540,620 Q580,670 600,735" fill="none" stroke="#3a6ab0" stroke-width="22" stroke-linecap="round"/>
+    <!-- Shoes -->
+    <ellipse cx="450" cy="748" rx="22" ry="12" fill="#e05050"/>
+    <ellipse cx="608" cy="742" rx="22" ry="12" fill="#e05050"/>
+    <!-- Torso leaning playful -->
+    <ellipse cx="520" cy="540" rx="55" ry="85" fill="#40b070"/>
+    <!-- Shirt stripes -->
+    <path d="M470,510 Q520,500 570,510" fill="none" stroke="#2e9058" stroke-width="4"/>
+    <path d="M468,540 Q520,530 572,540" fill="none" stroke="#2e9058" stroke-width="4"/>
+    <path d="M470,570 Q520,560 570,570" fill="none" stroke="#2e9058" stroke-width="4"/>
+    <!-- Arms raised with controllers -->
+    <path d="M475,500 Q400,440 360,400" fill="none" stroke="#e8b090" stroke-width="16" stroke-linecap="round"/>
+    <path d="M565,500 Q640,450 700,390" fill="none" stroke="#e8b090" stroke-width="16" stroke-linecap="round"/>
+    <!-- Controllers -->
+    <rect x="335" y="375" width="40" height="28" rx="8" fill="#222" stroke="#555" stroke-width="2"/>
+    <circle cx="348" cy="389" r="5" fill="#4af"/>
+    <circle cx="362" cy="389" r="5" fill="#f44"/>
+    <rect x="685" y="365" width="40" height="28" rx="8" fill="#222" stroke="#555" stroke-width="2"/>
+    <circle cx="698" cy="379" r="5" fill="#4af"/>
+    <circle cx="712" cy="379" r="5" fill="#f44"/>
+    <!-- Hands -->
+    <circle cx="355" cy="398" r="14" fill="#e8b090"/>
+    <circle cx="705" cy="388" r="14" fill="#e8b090"/>
+    <!-- Neck -->
+    <rect x="505" y="440" width="30" height="30" rx="8" fill="#e8b090"/>
+    <!-- Head -->
+    <circle cx="520" cy="400" r="48" fill="#e8b090"/>
+    <!-- Hair under headset -->
+    <path d="M475,390 Q480,350 520,345 Q560,350 565,390" fill="#5a3a20"/>
+    <!-- VR headset -->
+    <rect x="478" y="378" width="84" height="42" rx="10" fill="#1a1a1a" stroke="#444" stroke-width="2"/>
+    <rect x="486" y="386" width="30" height="26" rx="4" fill="#222"/>
+    <rect x="524" y="386" width="30" height="26" rx="4" fill="#222"/>
+    <rect x="498" y="392" width="14" height="14" rx="2" fill="#3cf" opacity="0.7"/>
+    <rect x="536" y="392" width="14" height="14" rx="2" fill="#3cf" opacity="0.7"/>
+    <!-- Headset strap -->
+    <path d="M478,395 Q455,400 468,430" fill="none" stroke="#333" stroke-width="8"/>
+    <path d="M562,395 Q585,400 572,430" fill="none" stroke="#333" stroke-width="8"/>
+    <ellipse cx="520" cy="438" rx="28" ry="10" fill="#2a2a2a"/>
+    <!-- Big smile (enjoying) -->
+    <path d="M500,430 Q520,450 540,430" fill="none" stroke="#c05050" stroke-width="3" stroke-linecap="round"/>
+    <!-- Motion swooshes -->
+    <path d="M320,360 Q300,340 310,320" fill="none" stroke="#88ccee" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <path d="M310,380 Q285,370 290,350" fill="none" stroke="#88ccee" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <path d="M730,350 Q755,330 750,310" fill="none" stroke="#88ccee" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <path d="M740,375 Q770,360 765,340" fill="none" stroke="#88ccee" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  </g>
+
+  <!-- VR play aura / floating icons near son -->
+  <g opacity="0.65">
+    <circle cx="620" cy="300" r="18" fill="none" stroke="#66ddaa" stroke-width="3"/>
+    <path d="M620,288 L624,298 L635,298 L626,305 L630,316 L620,309 L610,316 L614,305 L605,298 L616,298 Z" fill="#66ddaa"/>
+    <rect x="400" y="280" width="36" height="36" rx="6" fill="none" stroke="#ffaa44" stroke-width="3" transform="rotate(15 418 298)"/>
+    <text x="418" y="305" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" fill="#ffaa44" transform="rotate(15 418 298)">?</text>
+  </g>
+
+  <!-- Labels -->
+  <text x="520" y="820" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="bold" fill="#2a4050">Son (VR play)</text>
+  <text x="300" y="710" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="bold" fill="#6a3050">Mother</text>
+  <text x="120" y="180" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#5a4a30">bookshelf</text>
+  <text x="920" y="420" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#5a4a30">desk</text>
+  <text x="1080" y="700" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#4a6080">bed</text>
+  <text x="300" y="130" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#4a5560">doorway</text>
+
+  <!-- Caption -->
+  <rect x="280" y="850" width="640" height="36" rx="8" fill="#2a3540" opacity="0.85"/>
+  <text x="600" y="874" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" fill="#ffffff">Kids room: son lost in VR, mother watching from the door</text>
+</svg>

@@ -1,0 +1,194 @@
+\documentclass[border=8pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,calc,positioning}
+\definecolor{wall}{RGB}{245,238,228}
+\definecolor{floor}{RGB}{210,190,160}
+\definecolor{wood}{RGB}{160,110,70}
+\definecolor{bed}{RGB}{120,170,210}
+\definecolor{bedsheet}{RGB}{200,220,235}
+\definecolor{skin}{RGB}{240,200,170}
+\definecolor{hairson}{RGB}{80,55,40}
+\definecolor{hairmom}{RGB}{90,60,45}
+\definecolor{shirt}{RGB}{70,150,100}
+\definecolor{pants}{RGB}{60,80,140}
+\definecolor{dress}{RGB}{180,90,100}
+\definecolor{vr}{RGB}{40,40,45}
+\definecolor{ctrl}{RGB}{50,50,55}
+\definecolor{door}{RGB}{140,100,70}
+\definecolor{doorframe}{RGB}{100,70,45}
+\definecolor{shelf}{RGB}{175,130,85}
+\definecolor{book1}{RGB}{200,80,70}
+\definecolor{book2}{RGB}{70,130,180}
+\definecolor{book3}{RGB}{90,160,90}
+\definecolor{window}{RGB}{180,210,230}
+\definecolor{gaze}{RGB}{200,60,60}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  % canvas ~ 12 x 9
+  \clip (-0.2,-0.2) rectangle (12.2,9.2);
+
+  % --- room background ---
+  \fill[wall] (0,2.2) rectangle (12,9);
+  \fill[floor] (0,0) -- (12,0) -- (12,2.2) -- (0,2.2) -- cycle;
+  % floor boards
+  \foreach \y in {0.35,0.7,1.05,1.4,1.75} {
+    \draw[wood!50!black,opacity=0.25,line width=0.4pt] (0,\y) -- (12,\y);
+  }
+
+  % --- window ---
+  \fill[window] (8.2,5.8) rectangle (11.2,8.4);
+  \draw[doorframe,line width=1.6pt] (8.2,5.8) rectangle (11.2,8.4);
+  \draw[doorframe,line width=0.8pt] (9.7,5.8) -- (9.7,8.4);
+  \draw[doorframe,line width=0.8pt] (8.2,7.1) -- (11.2,7.1);
+  % curtains
+  \fill[bed!70] (8.1,5.7) rectangle (8.55,8.5);
+  \fill[bed!70] (10.85,5.7) rectangle (11.3,8.5);
+
+  % --- bed (left) ---
+  \fill[wood] (0.3,1.6) rectangle (4.0,2.3);
+  \fill[bedsheet] (0.4,2.3) rectangle (3.9,3.6);
+  \fill[bed] (0.4,3.4) rectangle (3.9,4.0);
+  \fill[bedsheet!90!white] (0.5,3.55) rectangle (1.6,3.95);
+  \draw[wood!60!black,line width=0.8pt] (0.3,1.6) rectangle (4.0,2.3);
+  \draw[bed!60!black,line width=0.6pt] (0.4,2.3) rectangle (3.9,4.0);
+  % bed legs
+  \fill[wood!70!black] (0.4,1.2) rectangle (0.65,1.6);
+  \fill[wood!70!black] (3.65,1.2) rectangle (3.9,1.6);
+
+  % --- desk (right-back) ---
+  \fill[wood] (7.0,2.0) rectangle (10.6,2.55);
+  \fill[wood!80!black] (7.1,1.1) rectangle (7.4,2.0);
+  \fill[wood!80!black] (10.2,1.1) rectangle (10.5,2.0);
+  \draw[wood!50!black,line width=0.7pt] (7.0,2.0) rectangle (10.6,2.55);
+  % laptop on desk
+  \fill[vr!80] (8.0,2.55) rectangle (9.6,2.75);
+  \fill[window!80] (8.1,2.75) -- (8.2,3.7) -- (9.5,3.7) -- (9.5,2.75) -- cycle;
+  \draw[vr,line width=0.5pt] (8.1,2.75) -- (8.2,3.7) -- (9.5,3.7) -- (9.5,2.75);
+
+  % --- shelf (back wall) ---
+  \fill[shelf] (4.3,4.5) rectangle (6.8,8.2);
+  \draw[shelf!50!black,line width=1pt] (4.3,4.5) rectangle (6.8,8.2);
+  \foreach \y in {5.3,6.2,7.1} {
+    \fill[shelf!85!black] (4.4,\y) rectangle (6.7,\y+0.12);
+  }
+  % books
+  \fill[book1] (4.5,5.42) rectangle (4.85,6.1);
+  \fill[book2] (4.95,5.42) rectangle (5.25,6.1);
+  \fill[book3] (5.35,5.42) rectangle (5.7,6.1);
+  \fill[book2] (4.5,6.32) rectangle (4.9,7.0);
+  \fill[book1] (5.0,6.32) rectangle (5.4,7.0);
+  \fill[book3] (5.5,6.32) rectangle (5.85,7.0);
+  \fill[book3] (4.5,7.22) rectangle (5.0,8.0);
+  \fill[book2] (5.1,7.22) rectangle (5.5,8.0);
+  % toy box on lower shelf
+  \fill[shirt] (5.9,4.62) rectangle (6.6,5.2);
+  \draw[shirt!50!black] (5.9,4.62) rectangle (6.6,5.2);
+
+  % --- door / entrance (right side, mother stands here) ---
+  \fill[doorframe] (10.8,0.8) rectangle (12.0,6.8);
+  \fill[door] (11.0,1.0) rectangle (11.95,6.6);
+  \fill[wall] (11.15,1.15) rectangle (11.8,6.45);
+  % door partially open (panel swung)
+  \fill[door] (10.5,1.0) -- (11.0,1.0) -- (11.0,6.6) -- (10.35,6.5) -- cycle;
+  \draw[door!50!black,line width=0.8pt] (10.5,1.0) -- (11.0,1.0) -- (11.0,6.6) -- (10.35,6.5) -- cycle;
+  \fill[wood!40] (10.7,3.6) circle (0.08);
+
+  % ========== SON (center-ish, playing VR) ==========
+  % body pose: slightly leaning, arms raised with controllers
+  % legs
+  \fill[pants] (5.05,1.35) -- (5.35,1.35) -- (5.45,2.55) -- (5.15,2.55) -- cycle;
+  \fill[pants] (5.55,1.35) -- (5.85,1.35) -- (5.75,2.55) -- (5.45,2.55) -- cycle;
+  % shoes
+  \fill[vr] (4.95,1.15) rectangle (5.4,1.4);
+  \fill[vr] (5.5,1.15) rectangle (5.95,1.4);
+  % torso
+  \fill[shirt] (5.05,2.5) -- (5.85,2.5) -- (5.95,4.0) -- (4.95,4.0) -- cycle;
+  \draw[shirt!50!black,line width=0.5pt] (5.05,2.5) -- (5.85,2.5) -- (5.95,4.0) -- (4.95,4.0) -- cycle;
+  % neck
+  \fill[skin] (5.3,4.0) rectangle (5.6,4.35);
+  % head
+  \fill[skin] (5.45,4.85) circle (0.55);
+  % hair
+  \fill[hairson] (4.95,4.95) .. controls (5.0,5.55) and (5.9,5.55) .. (5.95,4.95)
+    -- (5.85,5.0) .. controls (5.7,5.25) and (5.2,5.25) .. (5.05,5.0) -- cycle;
+  % VR goggles
+  \fill[vr] (4.95,4.7) rectangle (5.95,5.15);
+  \fill[vr!70!white] (5.05,4.8) rectangle (5.4,5.05);
+  \fill[vr!70!white] (5.5,4.8) rectangle (5.85,5.05);
+  \draw[vr!40!black,line width=0.6pt] (4.95,4.7) rectangle (5.95,5.15);
+  % strap
+  \draw[vr,line width=1.8pt] (4.95,4.95) .. controls (4.85,5.2) and (4.9,5.35) .. (5.45,5.4);
+  \draw[vr,line width=1.8pt] (5.95,4.95) .. controls (6.05,5.2) and (6.0,5.35) .. (5.45,5.4);
+  % smile (mouth under goggles area - chin)
+  \draw[hairson,line width=1pt] (5.25,4.5) .. controls (5.4,4.38) and (5.5,4.38) .. (5.65,4.5);
+
+  % left arm raised with controller
+  \fill[skin] (4.95,3.7) -- (4.7,3.5) -- (4.0,4.6) -- (4.25,4.8) -- cycle;
+  \fill[shirt] (4.9,3.55) -- (5.15,3.75) -- (4.95,4.0) -- (4.75,3.85) -- cycle;
+  % left controller
+  \fill[ctrl] (3.75,4.55) rectangle (4.35,5.0);
+  \fill[ctrl!70!white] (3.9,5.0) rectangle (4.2,5.2);
+  \fill[book2] (3.95,4.7) circle (0.08);
+  \draw[ctrl!30!black,line width=0.5pt] (3.75,4.55) rectangle (4.35,5.0);
+
+  % right arm raised with controller
+  \fill[skin] (5.9,3.7) -- (6.15,3.5) -- (6.85,4.55) -- (6.55,4.75) -- cycle;
+  \fill[shirt] (5.75,3.55) -- (6.0,3.75) -- (5.95,4.0) -- (5.7,3.85) -- cycle;
+  % right controller
+  \fill[ctrl] (6.45,4.5) rectangle (7.05,4.95);
+  \fill[ctrl!70!white] (6.6,4.95) rectangle (6.9,5.15);
+  \fill[book1] (6.65,4.65) circle (0.08);
+  \draw[ctrl!30!black,line width=0.5pt] (6.45,4.5) rectangle (7.05,4.95);
+
+  % motion swooshes (fun movement)
+  \draw[shirt!60!white,line width=1.2pt,opacity=0.7]
+    (3.5,5.3) .. controls (3.3,5.6) and (3.4,5.9) .. (3.7,6.0);
+  \draw[shirt!60!white,line width=1.2pt,opacity=0.7]
+    (7.2,5.2) .. controls (7.4,5.5) and (7.35,5.85) .. (7.05,6.0);
+  \draw[shirt!40!white,line width=0.9pt,opacity=0.5]
+    (3.6,4.3) .. controls (3.2,4.5) and (3.1,4.9) .. (3.4,5.1);
+
+  % ========== MOTHER (at doorway, watching) ==========
+  % standing at entrance looking left toward son
+  % legs / skirt
+  \fill[dress] (10.55,1.2) -- (11.35,1.2) -- (11.25,3.4) -- (10.65,3.4) -- cycle;
+  % torso
+  \fill[dress!85!black] (10.6,3.35) -- (11.3,3.35) -- (11.25,4.7) -- (10.65,4.7) -- cycle;
+  % arms folded / one hand near chin observing
+  \fill[skin] (10.55,4.0) -- (10.35,3.7) -- (10.2,4.4) -- (10.4,4.55) -- cycle;
+  \fill[skin] (11.3,4.0) -- (11.5,3.8) -- (11.55,4.5) -- (11.35,4.55) -- cycle;
+  % neck
+  \fill[skin] (10.85,4.7) rectangle (11.1,5.05);
+  % head facing left (toward son)
+  \fill[skin] (10.55,5.45) ellipse (0.48 and 0.52);
+  % hair
+  \fill[hairmom] (10.15,5.5) .. controls (10.2,6.2) and (11.2,6.25) .. (11.25,5.45)
+    -- (11.15,5.5) .. controls (11.0,5.9) and (10.4,5.9) .. (10.25,5.5) -- cycle;
+  \fill[hairmom] (10.2,5.2) .. controls (10.0,4.8) and (10.1,4.5) .. (10.35,4.4)
+    -- (10.45,4.7) -- (10.3,5.3) -- cycle;
+  % eye looking left
+  \fill[white] (10.4,5.5) circle (0.1);
+  \fill[vr] (10.35,5.5) circle (0.05);
+  % mild surprised / watching mouth
+  \draw[hairmom,line width=0.9pt] (10.35,5.15) .. controls (10.45,5.05) and (10.55,5.05) .. (10.65,5.18);
+
+  % ========== gaze relation ==========
+  % mother's gaze toward son's VR / face
+  \draw[gaze,thick,-{Stealth[length=2.5mm]},opacity=0.85]
+    (10.35,5.5) .. controls (8.5,5.8) and (7.0,5.5) .. (5.95,5.0);
+  \node[gaze,font=\footnotesize\sffamily] at (8.2,6.15) {見守る視線};
+
+  % son's virtual focus (forward, unaware of mother)
+  \draw[book2,thick,-{Stealth[length=2.5mm]},opacity=0.7,dashed]
+    (5.45,5.0) .. controls (5.2,6.2) and (4.5,7.0) .. (3.5,7.5);
+  \node[book2!70!black,font=\footnotesize\sffamily] at (3.8,7.9) {VRの世界};
+
+  % labels
+  \node[font=\small\sffamily\bfseries,hairson] at (5.45,0.55) {息子};
+  \node[font=\small\sffamily\bfseries,dress!60!black] at (10.95,0.55) {お母さん};
+
+  % room label
+  \node[font=\sffamily\large\bfseries,wood!50!black,opacity=0.55] at (2.2,8.5) {子ども部屋};
+
+\end{tikzpicture}
+\end{document}

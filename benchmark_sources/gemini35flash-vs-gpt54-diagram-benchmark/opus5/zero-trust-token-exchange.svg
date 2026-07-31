@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/>
+    </marker>
+    <marker id="ah-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/>
+    </marker>
+    <marker id="ah-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="ah-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="#f8fafc"/>
+
+  <text x="30" y="34" font-size="23" font-weight="bold" fill="#0f172a">Zero Trust Authentication and Token Exchange</text>
+  <text x="30" y="57" font-size="12.5" fill="#475569">OIDC login with PKCE, gateway enforcement, and RFC 8693 downscoped service tokens across three trust boundaries</text>
+
+  <!-- trust boundaries -->
+  <rect x="30" y="76" width="360" height="712" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="8 5"/>
+  <text x="42" y="94" font-size="11.5" font-weight="bold" fill="#b91c1c">TRUST BOUNDARY 1 - Untrusted zone (public internet)</text>
+
+  <rect x="398" y="76" width="166" height="712" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6" stroke-dasharray="8 5"/>
+  <text x="410" y="94" font-size="11.5" font-weight="bold" fill="#6d28d9">BOUNDARY 2 - Identity domain</text>
+
+  <rect x="580" y="76" width="600" height="712" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.6" stroke-dasharray="8 5"/>
+  <text x="592" y="94" font-size="11.5" font-weight="bold" fill="#15803d">TRUST BOUNDARY 3 - Protected zone (DMZ + internal workloads)</text>
+
+  <rect x="812" y="104" width="366" height="676" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="824" y="772" font-size="11" font-weight="bold" fill="#0e7490">Service mesh - mTLS only, SPIFFE workload identity</text>
+
+  <!-- lifelines -->
+  <line x1="110" y1="152" x2="110" y2="776" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="285" y1="152" x2="285" y2="776" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="481" y1="152" x2="481" y2="776" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="690" y1="152" x2="690" y2="776" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="900" y1="152" x2="900" y2="776" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="1095" y1="152" x2="1095" y2="776" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+  <!-- actors -->
+  <g text-anchor="middle">
+    <rect x="32" y="106" width="156" height="46" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.6"/>
+    <text x="110" y="126" font-size="13" font-weight="bold" fill="#0f172a">User</text>
+    <text x="110" y="142" font-size="9.5" fill="#64748b">Human + managed device</text>
+
+    <rect x="207" y="106" width="156" height="46" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.6"/>
+    <text x="285" y="126" font-size="13" font-weight="bold" fill="#0f172a">Browser</text>
+    <text x="285" y="142" font-size="9.5" fill="#64748b">Public client, PKCE</text>
+
+    <rect x="403" y="106" width="156" height="46" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.6"/>
+    <text x="481" y="126" font-size="13" font-weight="bold" fill="#0f172a">IdP</text>
+    <text x="481" y="142" font-size="9.5" fill="#64748b">OIDC provider + STS</text>
+
+    <rect x="612" y="106" width="156" height="46" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.6"/>
+    <text x="690" y="126" font-size="13" font-weight="bold" fill="#0f172a">API Gateway</text>
+    <text x="690" y="142" font-size="9.5" fill="#64748b">PEP: authn + authz</text>
+
+    <rect x="822" y="106" width="156" height="46" rx="8" fill="#ffffff" stroke="#0891b2" stroke-width="1.6"/>
+    <text x="900" y="126" font-size="13" font-weight="bold" fill="#0f172a">Service A</text>
+    <text x="900" y="142" font-size="9.5" fill="#64748b">Orders service</text>
+
+    <rect x="1017" y="106" width="156" height="46" rx="8" fill="#ffffff" stroke="#0891b2" stroke-width="1.6"/>
+    <text x="1095" y="126" font-size="13" font-weight="bold" fill="#0f172a">Service B</text>
+    <text x="1095" y="142" font-size="9.5" fill="#64748b">Ledger service</text>
+  </g>
+
+  <!-- flow -->
+  <g text-anchor="middle" font-size="11">
+    <line x1="110" y1="178" x2="285" y2="178" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah-gray)"/>
+    <text x="198" y="171" fill="#334155">1. Open app, no valid session</text>
+
+    <line x1="285" y1="214" x2="481" y2="214" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ah-blue)"/>
+    <text x="383" y="207" fill="#1d4ed8">2. /authorize: PKCE S256, nonce, redirect_uri</text>
+
+    <line x1="481" y1="250" x2="110" y2="250" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
+    <text x="296" y="243" fill="#6d28d9">3. Step-up MFA plus device posture check</text>
+
+    <line x1="110" y1="286" x2="481" y2="286" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
+    <text x="296" y="279" fill="#6d28d9">4. WebAuthn assertion + compliant device signal</text>
+
+    <line x1="481" y1="322" x2="285" y2="322" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ah-blue)"/>
+    <text x="383" y="315" fill="#1d4ed8">5. Redirect with one-time authorization code</text>
+
+    <line x1="285" y1="358" x2="481" y2="358" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ah-blue)"/>
+    <text x="383" y="351" fill="#1d4ed8">6. /token: code + code_verifier</text>
+
+    <line x1="481" y1="394" x2="285" y2="394" stroke="#2563eb" stroke-width="2.4" marker-end="url(#ah-blue)"/>
+    <text x="383" y="387" fill="#1d4ed8" font-weight="bold">7. ID TOKEN: aud=app, nonce, acr=mfa</text>
+
+    <line x1="481" y1="430" x2="285" y2="430" stroke="#059669" stroke-width="2.4" marker-end="url(#ah-green)"/>
+    <text x="383" y="423" fill="#047857" font-weight="bold">8. ACCESS TOKEN: aud=api, scope=read:orders, ttl 5m</text>
+
+    <line x1="285" y1="466" x2="690" y2="466" stroke="#059669" stroke-width="2.4" marker-end="url(#ah-green)"/>
+    <text x="488" y="459" fill="#047857">9. GET /orders with Bearer access token (TLS)</text>
+
+    <line x1="690" y1="502" x2="481" y2="502" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
+    <text x="586" y="495" fill="#6d28d9">10. JWKS fetch + token introspection</text>
+
+    <line x1="481" y1="538" x2="690" y2="538" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-purple)"/>
+    <text x="586" y="531" fill="#6d28d9">11. active=true, signing keys, verified claims</text>
+
+    <line x1="690" y1="574" x2="900" y2="574" stroke="#ea580c" stroke-width="2.4" marker-end="url(#ah-orange)"/>
+    <text x="795" y="567" fill="#c2410c" font-weight="bold">12. Forward over mTLS + gateway service token</text>
+
+    <line x1="900" y1="610" x2="481" y2="610" stroke="#ea580c" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-orange)"/>
+    <text x="690" y="603" fill="#c2410c">13. RFC 8693 exchange: subject_token + actor_token</text>
+
+    <line x1="481" y1="646" x2="900" y2="646" stroke="#ea580c" stroke-width="2.4" marker-end="url(#ah-orange)"/>
+    <text x="690" y="639" fill="#c2410c" font-weight="bold">14. SERVICE TOKEN: aud=svc-b, scope=write:ledger, ttl 60s</text>
+
+    <line x1="900" y1="682" x2="1095" y2="682" stroke="#ea580c" stroke-width="2.4" marker-end="url(#ah-orange)"/>
+    <text x="998" y="675" fill="#c2410c">15. gRPC + service token, mTLS SPIFFE peer check</text>
+
+    <line x1="1095" y1="718" x2="900" y2="718" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah-gray)"/>
+    <text x="998" y="711" fill="#334155">16. Result + audit record with trace id</text>
+
+    <line x1="900" y1="754" x2="285" y2="754" stroke="#64748b" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#ah-gray)"/>
+    <text x="593" y="747" fill="#334155">17. Response relayed by gateway; no internal token leaves the protected zone</text>
+  </g>
+
+  <!-- legend -->
+  <rect x="30" y="800" width="1140" height="88" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+  <text x="46" y="820" font-size="12" font-weight="bold" fill="#0f172a">Legend</text>
+
+  <g font-size="11" fill="#334155">
+    <line x1="46" y1="838" x2="80" y2="838" stroke="#2563eb" stroke-width="2.4"/>
+    <text x="88" y="842">ID token (identity, OIDC)</text>
+
+    <line x1="250" y1="838" x2="284" y2="838" stroke="#059669" stroke-width="2.4"/>
+    <text x="292" y="842">Access token (user to API)</text>
+
+    <line x1="470" y1="838" x2="504" y2="838" stroke="#ea580c" stroke-width="2.4"/>
+    <text x="512" y="842">Service token (RFC 8693, downscoped)</text>
+
+    <line x1="760" y1="838" x2="794" y2="838" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="6 4"/>
+    <text x="802" y="842">Policy, key and posture verification</text>
+
+    <line x1="1030" y1="838" x2="1064" y2="838" stroke="#64748b" stroke-width="1.8"/>
+    <text x="1072" y="842">App traffic</text>
+
+    <rect x="46" y="860" width="20" height="12" rx="3" fill="#fef2f2" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="74" y="870">Untrusted zone</text>
+
+    <rect x="250" y="860" width="20" height="12" rx="3" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="278" y="870">Identity trust domain</text>
+
+    <rect x="470" y="860" width="20" height="12" rx="3" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="498" y="870">Protected zone</text>
+
+    <rect x="760" y="860" width="20" height="12" rx="3" fill="#ecfeff" stroke="#0891b2" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="788" y="870">Service mesh (mTLS, SPIFFE)</text>
+
+    <text x="1156" y="870" text-anchor="end" font-style="italic" fill="#475569">Every hop re-verifies identity.</text>
+  </g>
+</svg>

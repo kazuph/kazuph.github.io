@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <marker id="arrowHead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#222222"/>
+    </marker>
+    <marker id="arrowHeadPsi" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c0392b"/>
+    </marker>
+    <radialGradient id="sphereFill" cx="42%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#f7fbff"/>
+      <stop offset="55%" stop-color="#e8f0f8"/>
+      <stop offset="100%" stop-color="#d0dce8"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="900" fill="#fafafa"/>
+  <text x="600" y="48" text-anchor="middle" font-family="Times New Roman, Times, serif" font-size="28" fill="#222222">Bloch Sphere</text>
+  <ellipse cx="600" cy="470" rx="280" ry="280" fill="url(#sphereFill)" stroke="#555555" stroke-width="2.2"/>
+  <ellipse cx="600" cy="470" rx="280" ry="95" fill="none" stroke="#888888" stroke-width="1.4"/>
+  <ellipse cx="600" cy="470" rx="95" ry="280" fill="none" stroke="#aaaaaa" stroke-width="1.1" stroke-dasharray="6 5"/>
+  <path d="M 320 470 A 280 95 0 0 0 880 470" fill="none" stroke="#bbbbbb" stroke-width="1" stroke-dasharray="4 6"/>
+  <line x1="600" y1="790" x2="600" y2="130" stroke="#222222" stroke-width="2" marker-end="url(#arrowHead)"/>
+  <text x="618" y="125" font-family="Times New Roman, Times, serif" font-size="26" fill="#222222">z</text>
+  <text x="618" y="158" font-family="Times New Roman, Times, serif" font-size="18" fill="#444444">|0&#9001;</text>
+  <text x="618" y="805" font-family="Times New Roman, Times, serif" font-size="18" fill="#444444">|1&#9001;</text>
+  <line x1="300" y1="560" x2="920" y2="360" stroke="#222222" stroke-width="2" marker-end="url(#arrowHead)"/>
+  <text x="935" y="355" font-family="Times New Roman, Times, serif" font-size="26" fill="#222222">x</text>
+  <line x1="780" y1="650" x2="380" y2="250" stroke="#222222" stroke-width="2" marker-end="url(#arrowHead)"/>
+  <text x="355" y="245" font-family="Times New Roman, Times, serif" font-size="26" fill="#222222">y</text>
+  <circle cx="600" cy="470" r="4.5" fill="#222222"/>
+  <line x1="600" y1="470" x2="780" y2="350" stroke="#c0392b" stroke-width="3.2" marker-end="url(#arrowHeadPsi)"/>
+  <circle cx="780" cy="350" r="7" fill="#c0392b" stroke="#922b21" stroke-width="1"/>
+  <line x1="600" y1="470" x2="760" y2="490" stroke="#c0392b" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.85"/>
+  <line x1="780" y1="350" x2="760" y2="490" stroke="#888888" stroke-width="1.1" stroke-dasharray="4 3"/>
+  <circle cx="760" cy="490" r="3.5" fill="#c0392b" opacity="0.8"/>
+  <path d="M 600 310 Q 670 320 720 380" fill="none" stroke="#2980b9" stroke-width="2"/>
+  <text x="690" y="300" font-family="Times New Roman, Times, serif" font-size="22" fill="#2980b9">&#952;</text>
+  <path d="M 720 440 Q 740 470 745 500" fill="none" stroke="#27ae60" stroke-width="2"/>
+  <text x="760" y="530" font-family="Times New Roman, Times, serif" font-size="22" fill="#27ae60">&#966;</text>
+  <text x="800" y="330" font-family="Times New Roman, Times, serif" font-size="24" fill="#c0392b">|&#968;&#9001;</text>
+  <rect x="70" y="700" width="320" height="130" rx="6" fill="#ffffff" stroke="#cccccc" stroke-width="1.2"/>
+  <text x="90" y="735" font-family="Times New Roman, Times, serif" font-size="18" fill="#222222">|&#968;&#9001; = cos(&#952;/2)|0&#9001;</text>
+  <text x="90" y="765" font-family="Times New Roman, Times, serif" font-size="18" fill="#222222">        + e<tspan baseline-shift="super" font-size="12">i&#966;</tspan> sin(&#952;/2)|1&#9001;</text>
+  <text x="90" y="800" font-family="Times New Roman, Times, serif" font-size="16" fill="#555555">0 &#8804; &#952; &#8804; &#960;,  0 &#8804; &#966; &lt; 2&#960;</text>
+  <text x="870" y="400" font-family="Times New Roman, Times, serif" font-size="15" fill="#666666">+x</text>
+  <text x="420" y="290" font-family="Times New Roman, Times, serif" font-size="15" fill="#666666">+y</text>
+  <text x="575" y="175" font-family="Times New Roman, Times, serif" font-size="15" fill="#666666">+z</text>
+</svg>

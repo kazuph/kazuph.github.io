@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Summer festival fireworks over food stalls and a crowd at night">
+  <title>Summer Festival Fireworks</title>
+
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#03061c"/>
+      <stop offset="0.35" stop-color="#0a1140"/>
+      <stop offset="0.62" stop-color="#152159"/>
+      <stop offset="0.82" stop-color="#2b2f6b"/>
+      <stop offset="1" stop-color="#4a3560"/>
+    </linearGradient>
+
+    <radialGradient id="skyWash" cx="0.5" cy="0.28" r="0.75">
+      <stop offset="0" stop-color="#4d6bd6" stop-opacity="0.30"/>
+      <stop offset="0.55" stop-color="#22306e" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#000018" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="glowGold" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff6c9" stop-opacity="0.85"/>
+      <stop offset="0.35" stop-color="#ffcc55" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#ff9a2e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowPink" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffe3f4" stop-opacity="0.80"/>
+      <stop offset="0.35" stop-color="#ff6fb5" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#c02a86" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowCyan" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#dcfffb" stop-opacity="0.80"/>
+      <stop offset="0.35" stop-color="#57e8d8" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#1a8fa8" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="lampGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffd98a" stop-opacity="0.75"/>
+      <stop offset="0.45" stop-color="#ff9d3c" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="lampBody" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c8531f"/>
+      <stop offset="0.28" stop-color="#ffd77a"/>
+      <stop offset="0.55" stop-color="#ffb347"/>
+      <stop offset="1" stop-color="#b6461c"/>
+    </linearGradient>
+
+    <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a2a4a"/>
+      <stop offset="0.45" stop-color="#241a33"/>
+      <stop offset="1" stop-color="#0e0a18"/>
+    </linearGradient>
+
+    <linearGradient id="reflectFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="awningA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8534e"/>
+      <stop offset="1" stop-color="#9c2b30"/>
+    </linearGradient>
+    <linearGradient id="awningB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4fb0c4"/>
+      <stop offset="1" stop-color="#1f5f78"/>
+    </linearGradient>
+    <linearGradient id="awningC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0c04a"/>
+      <stop offset="1" stop-color="#a4761d"/>
+    </linearGradient>
+
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="wideGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="smokeBlur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <filter id="tinyGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+
+    <!-- chrysanthemum burst: 36 rays, alternating length -->
+    <g id="burstA" stroke-linecap="round" fill="none">
+      <g transform="rotate(0)"><line x1="0" y1="-14" x2="0" y2="-98" stroke-width="3"/></g>
+      <g transform="rotate(10)"><line x1="0" y1="-12" x2="0" y2="-72" stroke-width="2"/></g>
+      <g transform="rotate(20)"><line x1="0" y1="-14" x2="0" y2="-96" stroke-width="3"/></g>
+      <g transform="rotate(30)"><line x1="0" y1="-12" x2="0" y2="-70" stroke-width="2"/></g>
+      <g transform="rotate(40)"><line x1="0" y1="-14" x2="0" y2="-100" stroke-width="3"/></g>
+      <g transform="rotate(50)"><line x1="0" y1="-12" x2="0" y2="-74" stroke-width="2"/></g>
+      <g transform="rotate(60)"><line x1="0" y1="-14" x2="0" y2="-95" stroke-width="3"/></g>
+      <g transform="rotate(70)"><line x1="0" y1="-12" x2="0" y2="-68" stroke-width="2"/></g>
+      <g transform="rotate(80)"><line x1="0" y1="-14" x2="0" y2="-99" stroke-width="3"/></g>
+      <g transform="rotate(90)"><line x1="0" y1="-12" x2="0" y2="-73" stroke-width="2"/></g>
+      <g transform="rotate(100)"><line x1="0" y1="-14" x2="0" y2="-97" stroke-width="3"/></g>
+      <g transform="rotate(110)"><line x1="0" y1="-12" x2="0" y2="-71" stroke-width="2"/></g>
+      <g transform="rotate(120)"><line x1="0" y1="-14" x2="0" y2="-101" stroke-width="3"/></g>
+      <g transform="rotate(130)"><line x1="0" y1="-12" x2="0" y2="-69" stroke-width="2"/></g>
+      <g transform="rotate(140)"><line x1="0" y1="-14" x2="0" y2="-94" stroke-width="3"/></g>
+      <g transform="rotate(150)"><line x1="0" y1="-12" x2="0" y2="-75" stroke-width="2"/></g>
+      <g transform="rotate(160)"><line x1="0" y1="-14" x2="0" y2="-98" stroke-width="3"/></g>
+      <g transform="rotate(170)"><line x1="0" y1="-12" x2="0" y2="-70" stroke-width="2"/></g>
+      <g transform="rotate(180)"><line x1="0" y1="-14" x2="0" y2="-96" stroke-width="3"/></g>
+      <g transform="rotate(190)"><line x1="0" y1="-12" x2="0" y2="-73" stroke-width="2"/></g>
+      <g transform="rotate(200)"><line x1="0" y1="-14" x2="0" y2="-100" stroke-width="3"/></g>
+      <g transform="rotate(210)"><line x1="0" y1="-12" x2="0" y2="-71" stroke-width="2"/></g>
+      <g transform="rotate(220)"><line x1="0" y1="-14" x2="0" y2="-95" stroke-width="3"/></g>
+      <g transform="rotate(230)"><line x1="0" y1="-12" x2="0" y2="-74" stroke-width="2"/></g>
+      <g transform="rotate(240)"><line x1="0" y1="-14" x2="0" y2="-99" stroke-width="3"/></g>
+      <g transform="rotate(250)"><line x1="0" y1="-12" x2="0" y2="-68" stroke-width="2"/></g>
+      <g transform="rotate(260)"><line x1="0" y1="-14" x2="0" y2="-97" stroke-width="3"/></g>
+      <g transform="rotate(270)"><line x1="0" y1="-12" x2="0" y2="-72" stroke-width="2"/></g>
+      <g transform="rotate(280)"><line x1="0" y1="-14" x2="0" y2="-101" stroke-width="3"/></g>
+      <g transform="rotate(290)"><line x1="0" y1="-12" x2="0" y2="-70" stroke-width="2"/></g>
+      <g transform="rotate(300)"><line x1="0" y1="-14" x2="0" y2="-94" stroke-width="3"/></g>
+      <g transform="rotate(310)"><line x1="0" y1="-12" x2="0" y2="-75" stroke-width="2"/></g>
+      <g transform="rotate(320)"><line x1="0" y1="-14" x2="0" y2="-98" stroke-width="3"/></g>
+      <g transform="rotate(330)"><line x1="0" y1="-12" x2="0" y2="-69" stroke-width="2"/></g>
+      <g transform="rotate(340)"><line x1="0" y1="-14" x2="0" y2="-96" stroke-width="3"/></g>
+      <g transform="rotate(350)"><line x1="0" y1="-12" x2="0" y2="-73" stroke-width="2"/></g>
+    </g>
+
+    <!-- tips for burstA -->
+    <g id="tipsA" stroke="none">
+      <g transform="rotate(0)"><circle cx="0" cy="-104" r="4"/></g>
+      <g transform="rotate(10)"><circle cx="0" cy="-78" r="2.6"/></g>
+      <g transform="rotate(20)"><circle cx="0" cy="-102" r="4"/></g>
+      <g transform="rotate(30)"><circle cx="0" cy="-76" r="2.6"/></g>
+      <g transform="rotate(40)"><circle cx="0" cy="-106" r="4"/></g>
+      <g transform="rotate(50)"><circle cx="0" cy="-80" r="2.6"/></g>
+      <g transform="rotate(60)"><circle cx="0" cy="-101" r="4"/></g>
+      <g transform="rotate(70)"><circle cx="0" cy="-74" r="2.6"/></g>
+      <g transform="rotate(80)"><circle cx="0" cy="-105" r="4"/></g>
+      <g transform="rotate(90)"><circle cx="0" cy="-79" r="2.6"/></g>
+      <g transform="rotate(100)"><circle cx="0" cy="-103" r="4"/></g>
+      <g transform="rotate(110)"><circle cx="0" cy="-77" r="2.6"/></g>
+      <g transform="rotate(120)"><circle cx="0" cy="-107" r="4"/></g>
+      <g transform="rotate(130)"><circle cx="0" cy="-75" r="2.6"/></g>
+      <g transform="rotate(140)"><circle cx="0" cy="-100" r="4"/></g>
+      <g transform="rotate(150)"><circle cx="0" cy="-81" r="2.6"/></g>
+      <g transform="rotate(160)"><circle cx="0" cy="-104" r="4"/></g>
+      <g transform="rotate(170)"><circle cx="0" cy="-76" r="2.6"/></g>
+      <g transform="rotate(180)"><circle cx="0" cy="-102" r="4"/></g>
+      <g transform="rotate(190)"><circle cx="0" cy="-79" r="2.6"/></g>
+      <g transform="rotate(200)"><circle cx="0" cy="-106" r="4"/></g>
+      <g transform="rotate(210)"><circle cx="0" cy="-77" r="2.6"/></g>
+      <g transform="rotate(220)"><circle cx="0" cy="-101" r="4"/></g>
+      <g transform="rotate(230)"><circle cx="0" cy="-80" r="2.6"/></g>
+      <g transform="rotate(240)"><circle cx="0" cy="-105" r="4"/></g>
+      <g transform="rotate(250)"><circle cx="0" cy="-74" r="2.6"/></g>
+      <g transform="rotate(260)"><circle cx="0" cy="-103" r="4"/></g>
+      <g transform="rotate(270)"><circle cx="0" cy="-78" r="2.6"/></g>
+      <g transform="rotate(280)"><circle cx="0" cy="-107" r="4"/></g>
+      <g transform="rotate(290)"><circle cx="0" cy="-76" r="2.6"/></g>
+      <g transform="rotate(300)"><circle cx="0" cy="-100" r="4"/></g>
+      <g transform="rotate(310)"><circle cx="0" cy="-81" r="2.6"/></g>
+      <g transform="rotate(320)"><circle cx="0" cy="-104" r="4"/></g>
+      <g transform="rotate(330)"><circle cx="0" cy="-75" r="2.6"/></g>
+      <g transform="rotate(340)"><circle cx="0" cy="-102" r="4"/></g>
+      <g transform="rotate(350)"><circle cx="0" cy="-79" r="2.6"/></g>
+    </g>
+
+    <!-- willow burst: 24 drooping curved rays -->
+    <g id="burstB" fill="none" stroke-linecap="round">
+      <g transform="rotate(0)"><path d="M0,-10 Q6,-56 18,-100" stroke-width="2.6"/></g>
+      <g transform="rotate(15)"><path d="M0,-10 Q6,-52 17,-92" stroke-width="2.2"/></g>
+      <g transform="rotate(30)"><path d="M0,-10 Q6,-56 18,-102" stroke-width="2.6"/></g>
+      <g transform="rotate(45)"><path d="M0,-10 Q6,-50 16,-88" stroke-width="2.2"/></g>
+      <g transform="rotate(60)"><path d="M0,-10 Q6,-56 18,-99" stroke-width="2.6"/></g>
+      <g transform="rotate(75)"><path d="M0,-10 Q6,-52 17,-94" stroke-width="2.2"/></g>
+      <g transform="rotate(90)"><path d="M0,-10 Q6,-56 18,-103" stroke-width="2.6"/></g>
+      <g transform="rotate(105)"><path d="M0,-10 Q6,-50 16,-87" stroke-width="2.2"/></g>
+      <g transform="rotate(120)"><path d="M0,-10 Q6,-56 18,-98" stroke-width="2.6"/></g>
+      <g transform="rotate(135)"><path d="M0,-10 Q6,-52 17,-95" stroke-width="2.2"/></g>
+      <g transform="rotate(150)"><path d="M0,-10 Q6,-56 18,-101" stroke-width="2.6"/></g>
+      <g transform="rotate(165)"><path d="M0,-10 Q6,-50 16,-89" stroke-width="2.2"/></g>
+      <g transform="rotate(180)"><path d="M0,-10 Q6,-56 18,-100" stroke-width="2.6"/></g>
+      <g transform="rotate(195)"><path d="M0,-10 Q6,-52 17,-93" stroke-width="2.2"/></g>
+      <g transform="rotate(210)"><path d="M0,-10 Q6,-56 18,-102" stroke-width="2.6"/></g>
+      <g transform="rotate(225)"><path d="M0,-10 Q6,-50 16,-88" stroke-width="2.2"/></g>
+      <g transform="rotate(240)"><path d="M0,-10 Q6,-56 18,-99" stroke-width="2.6"/></g>
+      <g transform="rotate(255)"><path d="M0,-10 Q6,-52 17,-94" stroke-width="2.2"/></g>
+      <g transform="rotate(270)"><path d="M0,-10 Q6,-56 18,-103" stroke-width="2.6"/></g>
+      <g transform="rotate(285)"><path d="M0,-10 Q6,-50 16,-87" stroke-width="2.2"/></g>
+      <g transform="rotate(300)"><path d="M0,-10 Q6,-56 18,-98" stroke-width="2.6"/></g>
+      <g transform="rotate(315)"><path d="M0,-10 Q6,-52 17,-95" stroke-width="2.2"/></g>
+      <g transform="rotate(330)"><path d="M0,-10 Q6,-56 18,-101" stroke-width="2.6"/></g>
+      <g transform="rotate(345)"><path d="M0,-10 Q6,-50 16,-89" stroke-width="2.2"/></g>
+    </g>
+
+    <g id="tipsB" stroke="none">
+      <g transform="rotate(0)"><circle cx="19" cy="-105" r="3.4"/></g>
+      <g transform="rotate(15)"><circle cx="18" cy="-97" r="2.6"/></g>
+      <g transform="rotate(30)"><circle cx="19" cy="-107" r="3.4"/></g>
+      <g transform="rotate(45)"><circle cx="17" cy="-93" r="2.6"/></g>
+      <g transform="rotate(60)"><circle cx="19" cy="-104" r="3.4"/></g>
+      <g transform="rotate(75)"><circle cx="18" cy="-99" r="2.6"/></g>
+      <g transform="rotate(90)"><circle cx="19" cy="-108" r="3.4"/></g>
+      <g transform="rotate(105)"><circle cx="17" cy="-92" r="2.6"/></g>
+      <g transform="rotate(120)"><circle cx="19" cy="-103" r="3.4"/></g>
+      <g transform="rotate(135)"><circle cx="18" cy="-100" r="2.6"/></g>
+      <g transform="rotate(150)"><circle cx="19" cy="-106" r="3.4"/></g>
+      <g transform="rotate(165)"><circle cx="17" cy="-94" r="2.6"/></g>
+      <g transform="rotate(180)"><circle cx="19" cy="-105" r="3.4"/></g>
+      <g transform="rotate(195)"><circle cx="18" cy="-98" r="2.6"/></g>
+      <g transform="rotate(210)"><circle cx="19" cy="-107" r="3.4"/></g>
+      <g transform="rotate(225)"><circle cx="17" cy="-93" r="2.6"/></g>
+      <g transform="rotate(240)"><circle cx="19" cy="-104" r="3.4"/></g>
+      <g transform="rotate(255)"><circle cx="18" cy="-99" r="2.6"/></g>
+      <g transform="rotate(270)"><circle cx="19" cy="-108" r="3.4"/></g>
+      <g transform="rotate(285)"><circle cx="17" cy="-92" r="2.6"/></g>
+      <g transform="rotate(300)"><circle cx="19" cy="-103" r="3.4"/></g>
+      <g transform="rotate(315)"><circle cx="18" cy="-100" r="2.6"/></g>
+      <g transform="rotate(330)"><circle cx="19" cy="-106" r="3.4"/></g>
+      <g transform="rotate(345)"><circle cx="17" cy="-94" r="2.6"/></g>
+    </g>
+
+    <!-- paper lantern (chochin), origin at hanger point -->
+    <g id="lantern">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#2b1a12" stroke-width="2"/>
+      <rect x="-8" y="7" width="16" height="5" rx="1.5" fill="#3a2118"/>
+      <path d="M-8,12 Q-15,26 -8,40 L8,40 Q15,26 8,12 Z" fill="url(#lampBody)"/>
+      <path d="M-11.6,20 Q0,22 11.6,20" fill="none" stroke="#8f3a16" stroke-width="0.9" opacity="0.55"/>
+      <path d="M-12.6,26 Q0,28 12.6,26" fill="none" stroke="#8f3a16" stroke-width="0.9" opacity="0.55"/>
+      <path d="M-11.6,32 Q0,34 11.6,32" fill="none" stroke="#8f3a16" stroke-width="0.9" opacity="0.55"/>
+      <rect x="-7" y="39" width="14" height="4" rx="1.5" fill="#3a2118"/>
+      <ellipse cx="-3" cy="24" rx="3.5" ry="9" fill="#fff2c4" opacity="0.5"/>
+    </g>
+
+    <!-- crowd silhouettes -->
+    <g id="personA">
+      <circle cx="0" cy="-104" r="13"/>
+      <path d="M-9,-95 Q0,-88 9,-95 L20,-52 Q24,-22 26,0 L-26,0 Q-24,-22 -20,-52 Z"/>
+      <path d="M-20,-72 Q-30,-46 -27,-20 L-19,-22 Q-21,-46 -14,-66 Z"/>
+      <path d="M20,-72 Q30,-46 27,-20 L19,-22 Q21,-46 14,-66 Z"/>
+    </g>
+    <g id="personB">
+      <circle cx="0" cy="-100" r="12"/>
+      <path d="M-14,-106 Q0,-120 14,-106 Q10,-112 0,-113 Q-10,-112 -14,-106 Z"/>
+      <circle cx="0" cy="-116" r="7"/>
+      <path d="M-8,-92 Q0,-86 8,-92 L18,-50 Q23,-22 25,0 L-25,0 Q-23,-22 -18,-50 Z"/>
+      <path d="M-18,-70 Q-27,-44 -25,-18 L-17,-20 Q-19,-44 -12,-64 Z"/>
+      <path d="M18,-70 Q26,-50 22,-34 L15,-38 Q19,-50 12,-64 Z"/>
+    </g>
+    <g id="personC">
+      <circle cx="0" cy="-92" r="11"/>
+      <path d="M-7,-84 Q0,-79 7,-84 L15,-46 Q20,-20 21,0 L-21,0 Q-20,-20 -15,-46 Z"/>
+      <path d="M-15,-64 Q-24,-42 -22,-16 L-15,-18 Q-17,-42 -10,-58 Z"/>
+      <path d="M15,-64 Q22,-44 20,-30 L13,-32 Q16,-44 10,-58 Z"/>
+    </g>
+  </defs>
+
+  <!-- ===== NIGHT SKY ===== -->
+  <rect x="0" y="0" width="1200" height="900" fill="url(#skyGrad)"/>
+  <rect x="0" y="0" width="1200" height="760" fill="url(#skyWash)"/>
+
+  <!-- milky haze -->
+  <g opacity="0.10" filter="url(#smokeBlur)">
+    <ellipse cx="600" cy="200" rx="480" ry="90" fill="#8fa8ff"/>
+    <ellipse cx="240" cy="330" rx="260" ry="70" fill="#7f9bff"/>
+  </g>
+
+  <!-- ===== STARS ===== -->
+  <g fill="#ffffff">
+    <circle cx="42" cy="58" r="1.6" opacity="0.85"/>
+    <circle cx="96" cy="122" r="1.1" opacity="0.6"/>
+    <circle cx="150" cy="40" r="2.0" opacity="0.9"/>
+    <circle cx="198" cy="96" r="1.2" opacity="0.55"/>
+    <circle cx="245" cy="168" r="1.5" opacity="0.75"/>
+    <circle cx="285" cy="62" r="1.0" opacity="0.5"/>
+    <circle cx="330" cy="118" r="1.7" opacity="0.8"/>
+    <circle cx="372" cy="34" r="1.2" opacity="0.6"/>
+    <circle cx="418" cy="150" r="1.4" opacity="0.7"/>
+    <circle cx="462" cy="76" r="2.1" opacity="0.95"/>
+    <circle cx="508" cy="128" r="1.1" opacity="0.5"/>
+    <circle cx="546" cy="46" r="1.5" opacity="0.75"/>
+    <circle cx="590" cy="104" r="1.2" opacity="0.6"/>
+    <circle cx="634" cy="168" r="1.6" opacity="0.8"/>
+    <circle cx="678" cy="52" r="1.0" opacity="0.5"/>
+    <circle cx="722" cy="120" r="1.8" opacity="0.85"/>
+    <circle cx="768" cy="66" r="1.2" opacity="0.6"/>
+    <circle cx="812" cy="140" r="1.4" opacity="0.7"/>
+    <circle cx="856" cy="38" r="2.0" opacity="0.9"/>
+    <circle cx="900" cy="98" r="1.1" opacity="0.55"/>
+    <circle cx="944" cy="158" r="1.6" opacity="0.8"/>
+    <circle cx="988" cy="60" r="1.3" opacity="0.65"/>
+    <circle cx="1032" cy="122" r="1.5" opacity="0.75"/>
+    <circle cx="1076" cy="44" r="1.1" opacity="0.55"/>
+    <circle cx="1120" cy="106" r="1.9" opacity="0.9"/>
+    <circle cx="1164" cy="170" r="1.2" opacity="0.6"/>
+    <circle cx="66" cy="206" r="1.3" opacity="0.65"/>
+    <circle cx="128" cy="264" r="1.6" opacity="0.75"/>
+    <circle cx="182" cy="332" r="1.1" opacity="0.5"/>
+    <circle cx="58" cy="382" r="1.5" opacity="0.7"/>
+    <circle cx="112" cy="446" r="1.2" opacity="0.6"/>
+    <circle cx="26" cy="490" r="1.7" opacity="0.8"/>
+    <circle cx="176" cy="512" r="1.0" opacity="0.45"/>
+    <circle cx="228" cy="420" r="1.4" opacity="0.65"/>
+    <circle cx="292" cy="486" r="1.1" opacity="0.5"/>
+    <circle cx="358" cy="536" r="1.3" opacity="0.55"/>
+    <circle cx="430" cy="452" r="1.5" opacity="0.7"/>
+    <circle cx="498" cy="524" r="1.0" opacity="0.45"/>
+    <circle cx="556" cy="466" r="1.2" opacity="0.55"/>
+    <circle cx="612" cy="540" r="1.4" opacity="0.6"/>
+    <circle cx="688" cy="470" r="1.1" opacity="0.5"/>
+    <circle cx="742" cy="536" r="1.3" opacity="0.55"/>
+    <circle cx="806" cy="462" r="1.0" opacity="0.45"/>
+    <circle cx="874" cy="520" r="1.4" opacity="0.6"/>
+    <circle cx="936" cy="446" r="1.2" opacity="0.55"/>
+    <circle cx="1004" cy="512" r="1.5" opacity="0.65"/>
+    <circle cx="1068" cy="440" r="1.1" opacity="0.5"/>
+    <circle cx="1134" cy="500" r="1.3" opacity="0.55"/>
+    <circle cx="1178" cy="418" r="1.6" opacity="0.7"/>
+    <circle cx="1150" cy="266" r="1.4" opacity="0.65"/>
+    <circle cx="1092" cy="212" r="1.1" opacity="0.5"/>
+    <circle cx="1024" cy="264" r="1.3" opacity="0.6"/>
+    <circle cx="82" cy="308" r="1.0" opacity="0.45"/>
+    <circle cx="256" cy="252" r="1.2" opacity="0.55"/>
+    <circle cx="404" cy="228" r="1.0" opacity="0.4"/>
+    <circle cx="620" cy="252" r="1.1" opacity="0.45"/>
+    <circle cx="880" cy="242" r="1.3" opacity="0.55"/>
+  </g>
+
+  <!-- twinkles -->
+  <g stroke="#ffffff" stroke-linecap="round" opacity="0.55">
+    <path d="M150,30 L150,50 M140,40 L160,40" stroke-width="1"/>
+    <path d="M462,64 L462,88 M450,76 L474,76" stroke-width="1"/>
+    <path d="M856,26 L856,50 M844,38 L868,38" stroke-width="1"/>
+    <path d="M1120,94 L1120,118 M1108,106 L1132,106" stroke-width="1"/>
+  </g>
+
+  <!-- moon -->
+  <g>
+    <circle cx="1090" cy="150" r="52" fill="#fff6d8" opacity="0.16" filter="url(#wideGlow)"/>
+    <path d="M1108,112 A40,40 0 1,0 1108,188 A32,32 0 1,1 1108,112 Z" fill="#fdf3cf" opacity="0.9"/>
+  </g>
+
+  <!-- ===== SMOKE FROM PREVIOUS BURSTS ===== -->
+  <g filter="url(#smokeBlur)" opacity="0.16">
+    <ellipse cx="330" cy="270" rx="150" ry="110" fill="#6f7bc9"/>
+    <ellipse cx="790" cy="205" rx="130" ry="95" fill="#c07fb5"/>
+    <ellipse cx="990" cy="400" rx="105" ry="80" fill="#5fb6bb"/>
+  </g>
+
+  <!-- ===== FIREWORK 1 : GOLD CHRYSANTHEMUM ===== -->
+  <g transform="translate(330,268)">
+    <ellipse cx="0" cy="0" rx="300" ry="300" fill="url(#glowGold)"/>
+    <g transform="scale(1.55)" opacity="0.55" filter="url(#softGlow)">
+      <use xlink:href="#burstA" stroke="#ffb03a"/>
+      <use xlink:href="#tipsA" fill="#ffd76a"/>
+    </g>
+    <g transform="scale(1.55)">
+      <use xlink:href="#burstA" stroke="#ffd36b" opacity="0.95"/>
+      <use xlink:href="#tipsA" fill="#fff6d0"/>
+    </g>
+    <g transform="scale(0.72) rotate(5)" opacity="0.85">
+      <use xlink:href="#burstA" stroke="#fff2b8"/>
+      <use xlink:href="#tipsA" fill="#ffffff"/>
+    </g>
+    <circle cx="0" cy="0" r="26" fill="#fff8dd" opacity="0.55" filter="url(#softGlow)"/>
+    <circle cx="0" cy="0" r="9" fill="#ffffff" opacity="0.9"/>
+    <!-- rising trail -->
+    <path d="M0,120 Q-6,300 -34,470" fill="none" stroke="#ffcf7a" stroke-width="2" opacity="0.20"/>
+  </g>
+
+  <!-- ===== FIREWORK 2 : PINK WILLOW ===== -->
+  <g transform="translate(790,206)">
+    <ellipse cx="0" cy="0" rx="250" ry="250" fill="url(#glowPink)"/>
+    <g transform="scale(1.30)" opacity="0.55" filter="url(#softGlow)">
+      <use xlink:href="#burstB" stroke="#ff4f9e"/>
+      <use xlink:href="#tipsB" fill="#ff8ec4"/>
+    </g>
+    <g transform="scale(1.30)">
+      <use xlink:href="#burstB" stroke="#ff8ac6" opacity="0.95"/>
+      <use xlink:href="#tipsB" fill="#ffe6f5"/>
+    </g>
+    <g transform="scale(0.62) rotate(-8)" opacity="0.85">
+      <use xlink:href="#burstB" stroke="#ffd2ea"/>
+      <use xlink:href="#tipsB" fill="#ffffff"/>
+    </g>
+    <circle cx="0" cy="0" r="22" fill="#ffe0f2" opacity="0.5" filter="url(#softGlow)"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff" opacity="0.9"/>
+    <path d="M0,110 Q16,300 50,500" fill="none" stroke="#ff9dcd" stroke-width="2" opacity="0.18"/>
+  </g>
+
+  <!-- ===== FIREWORK 3 : CYAN-GREEN BURST ===== -->
+  <g transform="translate(990,404)">
+    <ellipse cx="0" cy="0" rx="195" ry="195" fill="url(#glowCyan)"/>
+    <g transform="scale(1.02) rotate(4)" opacity="0.55" filter="url(#softGlow)">
+      <use xlink:href="#burstA" stroke="#2fd8c4"/>
+      <use xlink:href="#tipsA" fill="#8ff5e6"/>
+    </g>
+    <g transform="scale(1.02) rotate(4)">
+      <use xlink:href="#burstA" stroke="#7ef0dd" opacity="0.92"/>
+      <use xlink:href="#tipsA" fill="#e6fffb"/>
+    </g>
+    <g transform="scale(0.48) rotate(-10)" opacity="0.85">
+      <use xlink:href="#burstA" stroke="#d8fff8"/>
+      <use xlink:href="#tipsA" fill="#ffffff"/>
+    </g>
+    <circle cx="0" cy="0" r="18" fill="#dffffa" opacity="0.5" filter="url(#softGlow)"/>
+    <circle cx="0" cy="0" r="7" fill="#ffffff" opacity="0.9"/>
+    <path d="M0,90 Q20,240 60,400" fill="none" stroke="#8ef0e2" stroke-width="1.8" opacity="0.16"/>
+  </g>
+
+  <!-- ===== DISTANT SMALL FIREWORKS ===== -->
+  <g transform="translate(140,470) scale(0.30)" opacity="0.55">
+    <use xlink:href="#burstA" stroke="#ffa8d8"/>
+    <use xlink:href="#tipsA" fill="#ffe4f3"/>
+  </g>
+  <g transform="translate(560,352) scale(0.24) rotate(12)" opacity="0.45">
+    <use xlink:href="#burstB" stroke="#ffe08a"/>
+    <use xlink:href="#tipsB" fill="#fff6d5"/>
+  </g>
+  <g transform="translate(1150,300) scale(0.20)" opacity="0.40">
+    <use xlink:href="#burstA" stroke="#a9c8ff"/>
+    <use xlink:href="#tipsA" fill="#e8f1ff"/>
+  </g>
+
+  <!-- rising shells -->
+  <g stroke-linecap="round">
+    <path d="M470,690 Q486,600 496,520" fill="none" stroke="#ffd79a" stroke-width="2" opacity="0.35"/>
+    <circle cx="496" cy="518" r="3.5" fill="#fff3cf" opacity="0.9" filter="url(#tinyGlow)"/>
+    <path d="M690,700 Q676,630 668,566" fill="none" stroke="#9fe8ff" stroke-width="2" opacity="0.30"/>
+    <circle cx="668" cy="564" r="3" fill="#e6fbff" opacity="0.85" filter="url(#tinyGlow)"/>
+  </g>
+
+  <!-- ===== HORIZON GLOW + DISTANT TOWN ===== -->
+  <rect x="0" y="600" width="1200" height="170" fill="url(#reflectFade)" opacity="0.10"/>
+  <g fill="#171b3d" opacity="0.9">
+    <path d="M0,700 L0,660 L40,660 L40,640 L86,640 L86,672 L130,672 L130,626 L172,626 L172,668 L214,668 L214,646 L262,646 L262,684 L306,684 L306,652 L350,652 L350,676 L396,676 L396,634 L440,634 L440,674 L486,674 L486,656 L534,656 L534,690 L580,690 L580,648 L626,648 L626,680 L672,680 L672,640 L716,640 L716,672 L764,672 L764,652 L810,652 L810,686 L856,686 L856,644 L900,644 L900,676 L946,676 L946,656 L992,656 L992,690 L1038,690 L1038,650 L1084,650 L1084,678 L1130,678 L1130,658 L1176,658 L1176,684 L1200,684 L1200,700 Z"/>
+  </g>
+  <!-- windows in town -->
+  <g fill="#ffca7a" opacity="0.55">
+    <rect x="52" y="650" width="4" height="6"/>
+    <rect x="140" y="638" width="4" height="6"/>
+    <rect x="182" y="678" width="4" height="6"/>
+    <rect x="272" y="692" width="4" height="6"/>
+    <rect x="360" y="686" width="4" height="6"/>
+    <rect x="406" y="646" width="4" height="6"/>
+    <rect x="496" y="666" width="4" height="6"/>
+    <rect x="590" y="660" width="4" height="6"/>
+    <rect x="682" y="652" width="4" height="6"/>
+    <rect x="774" y="664" width="4" height="6"/>
+    <rect x="866" y="656" width="4" height="6"/>
+    <rect x="956" y="668" width="4" height="6"/>
+    <rect x="1048" y="662" width="4" height="6"/>
+    <rect x="1140" y="670" width="4" height="6"/>
+  </g>
+
+  <!-- shrine torii silhouette -->
+  <g fill="#20132a" opacity="0.95">
+    <path d="M556,700 L556,606 L546,606 L546,596 L654,596 L654,606 L644,606 L644,700 L634,700 L634,606 L566,606 L566,700 Z"/>
+    <rect x="536" y="580" width="128" height="12" rx="3"/>
+    <rect x="562" y="620" width="76" height="8"/>
+  </g>
+
+  <!-- ===== GROUND / FESTIVAL STREET ===== -->
+  <rect x="0" y="700" width="1200" height="200" fill="url(#groundGrad)"/>
+
+  <!-- light pools reflected on the ground -->
+  <g filter="url(#smokeBlur)" opacity="0.30">
+    <ellipse cx="300" cy="800" rx="260" ry="52" fill="#ffb454"/>
+    <ellipse cx="760" cy="812" rx="240" ry="48" fill="#ff7fb6"/>
+    <ellipse cx="1030" cy="790" rx="190" ry="42" fill="#4fd6c8"/>
+  </g>
+  <!-- vertical reflection streaks -->
+  <g opacity="0.16">
+    <rect x="322" y="702" width="18" height="150" fill="#ffd07a"/>
+    <rect x="784" y="702" width="14" height="150" fill="#ff9ecb"/>
+    <rect x="984" y="702" width="12" height="150" fill="#8ff0e2"/>
+  </g>
+
+  <!-- ===== LANTERN GARLAND ACROSS THE STREET ===== -->
+  <path d="M-10,624 Q300,672 600,640 Q900,608 1210,652" fill="none" stroke="#241326" stroke-width="3"/>
+  <g>
+    <g transform="translate(60,634)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(178,650)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(296,661)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(414,665)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(532,655)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(650,637)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(768,622)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(886,613)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(1004,617)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(1122,634)"><circle cx="0" cy="26" r="42" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+  </g>
+
+  <!-- ===== STALL 1 (left) ===== -->
+  <g transform="translate(90,700)">
+    <ellipse cx="130" cy="120" rx="180" ry="30" fill="#ffb454" opacity="0.16" filter="url(#smokeBlur)"/>
+    <rect x="12" y="10" width="236" height="112" fill="#2a1c30"/>
+    <rect x="26" y="34" width="208" height="52" fill="#ffcf86" opacity="0.30"/>
+    <rect x="10" y="0" width="240" height="8" fill="#3d2a24"/>
+    <path d="M0,0 L260,0 L246,-40 L14,-40 Z" fill="url(#awningA)"/>
+    <g fill="#f6efe0" opacity="0.9">
+      <path d="M22,0 L36,-40 L58,-40 L44,0 Z"/>
+      <path d="M66,0 L80,-40 L102,-40 L88,0 Z"/>
+      <path d="M110,0 L124,-40 L146,-40 L132,0 Z"/>
+      <path d="M154,0 L168,-40 L190,-40 L176,0 Z"/>
+      <path d="M198,0 L212,-40 L234,-40 L220,0 Z"/>
+    </g>
+    <rect x="6" y="-46" width="248" height="10" rx="3" fill="#4a3226"/>
+    <rect x="8" y="86" width="244" height="14" fill="#4a3226"/>
+    <rect x="4" y="100" width="252" height="22" fill="#2f2038"/>
+    <!-- signboard -->
+    <rect x="70" y="-84" width="120" height="30" rx="4" fill="#f4e6c8" opacity="0.92"/>
+    <text x="130" y="-63" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" fill="#8c2f22" text-anchor="middle" letter-spacing="1">TAKOYAKI</text>
+    <!-- lanterns on stall -->
+    <g transform="translate(28,-40)"><circle cx="0" cy="26" r="40" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(232,-40)"><circle cx="0" cy="26" r="40" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <!-- vendor silhouette -->
+    <g fill="#150d1c" opacity="0.95" transform="translate(130,86) scale(0.55)">
+      <use xlink:href="#personC"/>
+    </g>
+    <!-- steam -->
+    <g fill="none" stroke="#ffe9c0" stroke-width="2" opacity="0.22">
+      <path d="M96,34 Q88,16 96,0 Q104,-14 96,-28"/>
+      <path d="M164,34 Q156,18 164,4 Q172,-10 164,-22"/>
+    </g>
+  </g>
+
+  <!-- ===== STALL 2 (right) ===== -->
+  <g transform="translate(700,690)">
+    <ellipse cx="140" cy="130" rx="190" ry="32" fill="#7fe0d4" opacity="0.14" filter="url(#smokeBlur)"/>
+    <rect x="14" y="12" width="254" height="118" fill="#231b32"/>
+    <rect x="30" y="38" width="222" height="56" fill="#bff3ec" opacity="0.22"/>
+    <rect x="12" y="2" width="258" height="8" fill="#33262e"/>
+    <path d="M0,2 L282,2 L268,-42 L14,-42 Z" fill="url(#awningB)"/>
+    <g fill="#f6efe0" opacity="0.9">
+      <path d="M24,2 L38,-42 L62,-42 L48,2 Z"/>
+      <path d="M72,2 L86,-42 L110,-42 L96,2 Z"/>
+      <path d="M120,2 L134,-42 L158,-42 L144,2 Z"/>
+      <path d="M168,2 L182,-42 L206,-42 L192,2 Z"/>
+      <path d="M216,2 L230,-42 L254,-42 L240,2 Z"/>
+    </g>
+    <rect x="8" y="-48" width="268" height="10" rx="3" fill="#3f3345"/>
+    <rect x="10" y="94" width="262" height="14" fill="#3f3345"/>
+    <rect x="6" y="108" width="270" height="22" fill="#291f36"/>
+    <rect x="78" y="-88" width="130" height="30" rx="4" fill="#f4e6c8" opacity="0.92"/>
+    <text x="143" y="-67" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" fill="#1d5f74" text-anchor="middle" letter-spacing="1">KAKIGORI</text>
+    <g transform="translate(30,-42)"><circle cx="0" cy="26" r="40" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(252,-42)"><circle cx="0" cy="26" r="40" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g fill="#150d1c" opacity="0.95" transform="translate(142,94) scale(0.55)">
+      <use xlink:href="#personC"/>
+    </g>
+  </g>
+
+  <!-- ===== STALL 3 (far right, small) ===== -->
+  <g transform="translate(1010,706)">
+    <rect x="10" y="8" width="170" height="96" fill="#241a2e"/>
+    <rect x="24" y="30" width="142" height="44" fill="#ffdc9e" opacity="0.24"/>
+    <path d="M0,0 L190,0 L178,-34 L12,-34 Z" fill="url(#awningC)"/>
+    <g fill="#f6efe0" opacity="0.88">
+      <path d="M20,0 L32,-34 L50,-34 L38,0 Z"/>
+      <path d="M58,0 L70,-34 L88,-34 L76,0 Z"/>
+      <path d="M96,0 L108,-34 L126,-34 L114,0 Z"/>
+      <path d="M134,0 L146,-34 L164,-34 L152,0 Z"/>
+    </g>
+    <rect x="6" y="-40" width="180" height="9" rx="3" fill="#463525"/>
+    <rect x="8" y="74" width="176" height="12" fill="#463525"/>
+    <rect x="4" y="86" width="182" height="18" fill="#2b2036"/>
+    <rect x="52" y="-74" width="96" height="26" rx="4" fill="#f4e6c8" opacity="0.9"/>
+    <text x="100" y="-56" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#7a5312" text-anchor="middle" letter-spacing="1">RAMUNE</text>
+    <g transform="translate(24,-34)"><circle cx="0" cy="24" r="36" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+    <g transform="translate(168,-34)"><circle cx="0" cy="24" r="36" fill="url(#lampGlow)"/><use xlink:href="#lantern"/></g>
+  </g>
+
+  <!-- ===== CROWD : FAR ROW ===== -->
+  <g fill="#1b1226" opacity="0.85">
+    <g transform="translate(60,812) scale(0.62)"><use xlink:href="#personA"/></g>
+    <g transform="translate(140,816) scale(0.60)"><use xlink:href="#personC"/></g>
+    <g transform="translate(226,810) scale(0.64)"><use xlink:href="#personB"/></g>
+    <g transform="translate(320,818) scale(0.58)"><use xlink:href="#personA"/></g>
+    <g transform="translate(404,812) scale(0.63)"><use xlink:href="#personC"/></g>
+    <g transform="translate(492,816) scale(0.60)"><use xlink:href="#personB"/></g>
+    <g transform="translate(578,810) scale(0.65)"><use xlink:href="#personA"/></g>
+    <g transform="translate(668,818) scale(0.58)"><use xlink:href="#personC"/></g>
+    <g transform="translate(752,812) scale(0.62)"><use xlink:href="#personB"/></g>
+    <g transform="translate(840,816) scale(0.60)"><use xlink:href="#personA"/></g>
+    <g transform="translate(926,810) scale(0.64)"><use xlink:href="#personC"/></g>
+    <g transform="translate(1014,818) scale(0.58)"><use xlink:href="#personB"/></g>
+    <g transform="translate(1098,812) scale(0.62)"><use xlink:href="#personA"/></g>
+    <g transform="translate(1174,816) scale(0.60)"><use xlink:href="#personC"/></g>
+  </g>
+
+  <!-- rim light on the far crowd from the fireworks -->
+  <g opacity="0.20" filter="url(#tinyGlow)">
+    <rect x="0" y="748" width="1200" height="3" fill="#ffd79a"/>
+  </g>
+
+  <!-- ===== CROWD : NEAR ROW (large silhouettes) ===== -->
+  <g fill="#0b0714">
+    <g transform="translate(120,900) scale(1.06)"><use xlink:href="#personA"/></g>
+    <g transform="translate(250,900) scale(1.00)"><use xlink:href="#personB"/></g>
+    <g transform="translate(348,900) scale(0.72)"><use xlink:href="#personC"/></g>
+    <g transform="translate(470,900) scale(1.10)"><use xlink:href="#personC"/></g>
+    <g transform="translate(596,900) scale(1.02)"><use xlink:href="#personB"/></g>
+    <g transform="translate(690,900) scale(0.68)"><use xlink:href="#personA"/></g>
+    <g transform="translate(806,900) scale(1.08)"><use xlink:href="#personA"/></g>
+    <g transform="translate(930,900) scale(1.00)"><use xlink:href="#personC"/></g>
+    <g transform="translate(1026,900) scale(0.70)"><use xlink:href="#personB"/></g>
+    <g transform="translate(1140,900) scale(1.06)"><use xlink:href="#personB"/></g>
+  </g>
+
+  <!-- child holding a small lantern -->
+  <g transform="translate(348,900)">
+    <line x1="26" y1="-58" x2="34" y2="-40" stroke="#0b0714" stroke-width="3"/>
+    <g transform="translate(34,-40) scale(0.55)">
+      <circle cx="0" cy="26" r="46" fill="url(#lampGlow)"/>
+      <use xlink:href="#lantern"/>
+    </g>
+  </g>
+  <g transform="translate(690,900)">
+    <line x1="-24" y1="-56" x2="-32" y2="-38" stroke="#0b0714" stroke-width="3"/>
+    <g transform="translate(-32,-38) scale(0.52)">
+      <circle cx="0" cy="26" r="46" fill="url(#lampGlow)"/>
+      <use xlink:href="#lantern"/>
+    </g>
+  </g>
+
+  <!-- warm rim highlight along the near crowd shoulders -->
+  <g stroke="#ffbf70" stroke-width="2" fill="none" opacity="0.30" stroke-linecap="round">
+    <path d="M104,798 Q120,786 138,798"/>
+    <path d="M236,802 Q250,790 266,802"/>
+    <path d="M454,794 Q470,780 488,794"/>
+    <path d="M582,800 Q596,788 612,800"/>
+    <path d="M790,796 Q806,784 824,796"/>
+    <path d="M916,802 Q930,790 946,802"/>
+    <path d="M1124,798 Q1140,786 1158,798"/>
+  </g>
+
+  <!-- floating embers / sparks in the foreground -->
+  <g fill="#ffd58a">
+    <circle cx="180" cy="700" r="2.2" opacity="0.55"/>
+    <circle cx="392" cy="742" r="1.8" opacity="0.45"/>
+    <circle cx="560" cy="716" r="2.4" opacity="0.5"/>
+    <circle cx="734" cy="756" r="1.6" opacity="0.4"/>
+    <circle cx="880" cy="722" r="2.2" opacity="0.5"/>
+    <circle cx="1064" cy="748" r="1.8" opacity="0.42"/>
+    <circle cx="286" cy="770" r="1.5" opacity="0.35"/>
+    <circle cx="640" cy="786" r="1.5" opacity="0.32"/>
+    <circle cx="980" cy="774" r="1.6" opacity="0.35"/>
+  </g>
+
+  <!-- subtle vignette -->
+  <rect x="0" y="0" width="1200" height="900" fill="none" stroke="#000010" stroke-width="34" opacity="0.28"/>
+</svg>

@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="An elderly woman sitting alone in a warm living room, watching television">
+  <title>Grandmother watching TV alone in a cozy living room</title>
+  <desc>Evening living room scene: a grandmother in a green armchair with a lap blanket looks toward a switched-on television. Window with curtains, pendant lamp, side table with tea, rug, plant and a sleeping cat.</desc>
+
+  <defs>
+    <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbeeda"/>
+      <stop offset="1" stop-color="#eed5b2"/>
+    </linearGradient>
+    <linearGradient id="gWains" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eacca6"/>
+      <stop offset="1" stop-color="#ddb78d"/>
+    </linearGradient>
+    <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c99667"/>
+      <stop offset="1" stop-color="#a26e3e"/>
+    </linearGradient>
+    <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5f7ca8"/>
+      <stop offset="0.55" stop-color="#c58f8c"/>
+      <stop offset="1" stop-color="#ffcf95"/>
+    </linearGradient>
+    <linearGradient id="gCurtain" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e9aca4"/>
+      <stop offset="1" stop-color="#c67f7b"/>
+    </linearGradient>
+    <linearGradient id="gChair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8cb0a4"/>
+      <stop offset="1" stop-color="#5f8279"/>
+    </linearGradient>
+    <linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c08a55"/>
+      <stop offset="1" stop-color="#94612f"/>
+    </linearGradient>
+    <linearGradient id="gShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe0ac"/>
+      <stop offset="1" stop-color="#efb267"/>
+    </linearGradient>
+    <linearGradient id="gScreen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfe7f4"/>
+      <stop offset="0.62" stop-color="#ffe3ae"/>
+      <stop offset="1" stop-color="#ffc887"/>
+    </linearGradient>
+    <linearGradient id="gPot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cd7852"/>
+      <stop offset="1" stop-color="#a1523a"/>
+    </linearGradient>
+    <radialGradient id="gRug" cx="0.5" cy="0.5" r="0.6">
+      <stop offset="0" stop-color="#eab89e"/>
+      <stop offset="1" stop-color="#cb8a70"/>
+    </radialGradient>
+    <radialGradient id="gGlowWarm" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffe4ac" stop-opacity="0.72"/>
+      <stop offset="0.55" stop-color="#ffd292" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#ffc98a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gGlowTV" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff0c6" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#ffdc9a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gVig" cx="0.5" cy="0.46" r="0.78">
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#5b3617" stop-opacity="0.3"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ROOM SHELL -->
+  <rect x="0" y="0" width="1200" height="900" fill="#f7e7ce"/>
+  <rect x="0" y="0" width="1200" height="626" fill="url(#gWall)"/>
+  <rect x="0" y="0" width="1200" height="42" fill="#e6cba6"/>
+  <rect x="0" y="42" width="1200" height="8" fill="#d0a97f"/>
+  <rect x="0" y="546" width="1200" height="80" fill="url(#gWains)"/>
+  <rect x="0" y="540" width="1200" height="10" rx="4" fill="#d3ac82"/>
+  <rect x="0" y="626" width="1200" height="274" fill="url(#gFloor)"/>
+  <rect x="0" y="620" width="1200" height="10" fill="#8d5c2f" opacity="0.55"/>
+
+  <!-- floor planks -->
+  <g stroke="#8a5a2e" stroke-width="2" opacity="0.22">
+    <line x1="0" y1="672" x2="1200" y2="672"/>
+    <line x1="0" y1="726" x2="1200" y2="726"/>
+    <line x1="0" y1="790" x2="1200" y2="790"/>
+    <line x1="0" y1="862" x2="1200" y2="862"/>
+    <line x1="180" y1="626" x2="180" y2="672"/>
+    <line x1="520" y1="626" x2="520" y2="672"/>
+    <line x1="880" y1="626" x2="880" y2="672"/>
+    <line x1="320" y1="672" x2="320" y2="726"/>
+    <line x1="700" y1="672" x2="700" y2="726"/>
+    <line x1="1040" y1="672" x2="1040" y2="726"/>
+    <line x1="140" y1="726" x2="140" y2="790"/>
+    <line x1="560" y1="726" x2="560" y2="790"/>
+    <line x1="960" y1="726" x2="960" y2="790"/>
+    <line x1="380" y1="790" x2="380" y2="862"/>
+    <line x1="820" y1="790" x2="820" y2="862"/>
+  </g>
+
+  <!-- WINDOW -->
+  <g>
+    <rect x="62" y="88" width="246" height="314" rx="8" fill="#a9764a"/>
+    <rect x="74" y="100" width="222" height="290" rx="4" fill="url(#gSky)"/>
+    <!-- evening sky details -->
+    <circle cx="236" cy="146" r="20" fill="#fff3cf" opacity="0.92"/>
+    <circle cx="230" cy="140" r="20" fill="url(#gSky)" opacity="0.35"/>
+    <g fill="#ffffff" opacity="0.75">
+      <circle cx="120" cy="128" r="2.4"/>
+      <circle cx="160" cy="160" r="1.8"/>
+      <circle cx="104" cy="182" r="2"/>
+      <circle cx="196" cy="118" r="1.7"/>
+    </g>
+    <path d="M74 318 C 116 286 148 306 178 288 C 208 270 250 292 296 276 L296 390 L74 390 Z" fill="#7a6f96" opacity="0.75"/>
+    <path d="M74 344 C 122 326 156 344 200 330 C 240 318 272 336 296 328 L296 390 L74 390 Z" fill="#5c5679" opacity="0.8"/>
+    <g fill="#463f5e">
+      <rect x="98" y="344" width="34" height="46"/>
+      <path d="M94 346 L115 328 L136 346 Z"/>
+      <rect x="250" y="352" width="30" height="38"/>
+      <path d="M246 354 L265 338 L284 354 Z"/>
+    </g>
+    <rect x="106" y="360" width="10" height="12" fill="#ffd48a"/>
+    <rect x="258" y="366" width="9" height="11" fill="#ffd48a"/>
+    <!-- mullions -->
+    <rect x="180" y="100" width="10" height="290" fill="#a9764a"/>
+    <rect x="74" y="240" width="222" height="10" fill="#a9764a"/>
+    <rect x="52" y="400" width="266" height="16" rx="5" fill="#b98254"/>
+    <rect x="74" y="100" width="222" height="290" rx="4" fill="none" stroke="#8c5f3a" stroke-width="3"/>
+    <!-- glass sheen -->
+    <path d="M92 380 L164 108 L192 108 L120 380 Z" fill="#ffffff" opacity="0.12"/>
+  </g>
+
+  <!-- CURTAINS -->
+  <g>
+    <rect x="36" y="70" width="310" height="10" rx="5" fill="#8c5f3c"/>
+    <circle cx="38" cy="75" r="9" fill="#a9764a"/>
+    <circle cx="344" cy="75" r="9" fill="#a9764a"/>
+    <path d="M46 78 C 40 180 30 300 52 452 L120 452 C 108 300 122 180 116 78 Z" fill="url(#gCurtain)"/>
+    <g stroke="#b06f6b" stroke-width="3" opacity="0.5" fill="none">
+      <path d="M64 84 C 58 190 52 320 68 448"/>
+      <path d="M88 84 C 84 190 80 320 92 448"/>
+      <path d="M106 84 C 104 190 100 320 110 448"/>
+    </g>
+    <path d="M262 78 C 256 180 268 300 254 452 L332 452 C 348 300 336 180 332 78 Z" fill="url(#gCurtain)"/>
+    <g stroke="#b06f6b" stroke-width="3" opacity="0.5" fill="none">
+      <path d="M282 84 C 276 190 284 320 274 448"/>
+      <path d="M302 84 C 298 190 306 320 298 448"/>
+      <path d="M320 84 C 318 190 322 320 316 448"/>
+    </g>
+  </g>
+
+  <!-- PENDANT LAMP -->
+  <g>
+    <circle cx="400" cy="252" r="230" fill="url(#gGlowWarm)"/>
+    <rect x="396" y="44" width="8" height="128" fill="#6f5236"/>
+    <circle cx="400" cy="46" r="12" fill="#6f5236"/>
+    <path d="M362 172 L438 172 L456 236 L344 236 Z" fill="url(#gShade)"/>
+    <path d="M344 236 L456 236 L456 244 L344 244 Z" fill="#e5a558"/>
+    <ellipse cx="400" cy="172" rx="38" ry="7" fill="#ffe9c2"/>
+    <ellipse cx="400" cy="240" rx="56" ry="10" fill="#fff2d0" opacity="0.9"/>
+    <circle cx="400" cy="252" r="13" fill="#fff6dc"/>
+  </g>
+
+  <!-- WALL PHOTO FRAME -->
+  <g>
+    <rect x="490" y="256" width="112" height="92" rx="4" fill="#a9764a"/>
+    <rect x="500" y="266" width="92" height="72" fill="#fdf3df"/>
+    <circle cx="528" cy="298" r="12" fill="#c8a184"/>
+    <path d="M512 338 C 514 316 542 316 544 338 Z" fill="#8fa8bf"/>
+    <circle cx="562" cy="304" r="10" fill="#d5b295"/>
+    <path d="M548 338 C 550 320 574 320 576 338 Z" fill="#c98f8a"/>
+  </g>
+
+  <!-- WALL CLOCK -->
+  <g>
+    <circle cx="700" cy="152" r="46" fill="#f9f2e2" stroke="#a9764a" stroke-width="7"/>
+    <g stroke="#8a7358" stroke-width="3" stroke-linecap="round">
+      <line x1="700" y1="116" x2="700" y2="123"/>
+      <line x1="736" y1="152" x2="729" y2="152"/>
+      <line x1="700" y1="188" x2="700" y2="181"/>
+      <line x1="664" y1="152" x2="671" y2="152"/>
+    </g>
+    <line x1="700" y1="152" x2="678" y2="172" stroke="#5c4a36" stroke-width="5" stroke-linecap="round"/>
+    <line x1="700" y1="152" x2="726" y2="132" stroke="#5c4a36" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="700" cy="152" r="4" fill="#8a5a3a"/>
+  </g>
+
+  <!-- WALL SHELF ABOVE TV -->
+  <g>
+    <rect x="876" y="216" width="234" height="12" rx="4" fill="#b5804f"/>
+    <rect x="890" y="228" width="10" height="12" fill="#9a6a3e"/>
+    <rect x="1088" y="228" width="10" height="12" fill="#9a6a3e"/>
+    <rect x="892" y="178" width="15" height="38" fill="#c07a6e"/>
+    <rect x="910" y="172" width="13" height="44" fill="#7f9bb5"/>
+    <rect x="926" y="182" width="16" height="34" fill="#cdae6a"/>
+    <rect x="1044" y="184" width="46" height="32" rx="3" fill="#a9764a"/>
+    <rect x="1051" y="191" width="32" height="18" fill="#fdf3df"/>
+    <path d="M978 216 L1010 216 L1005 192 L983 192 Z" fill="#b5714f"/>
+    <path d="M994 192 C 972 184 968 160 984 152 C 992 168 992 180 994 192 Z" fill="#6f9464"/>
+    <path d="M996 192 C 1018 182 1024 160 1008 150 C 998 166 996 180 996 192 Z" fill="#84a874"/>
+  </g>
+
+  <!-- RUG -->
+  <g>
+    <ellipse cx="620" cy="772" rx="432" ry="116" fill="url(#gRug)"/>
+    <ellipse cx="620" cy="772" rx="382" ry="96" fill="none" stroke="#f6dcc2" stroke-width="7" opacity="0.75"/>
+    <ellipse cx="620" cy="772" rx="300" ry="70" fill="none" stroke="#b97a62" stroke-width="5" opacity="0.55" stroke-dasharray="16 12"/>
+    <ellipse cx="620" cy="772" rx="200" ry="44" fill="#f0c4a8" opacity="0.35"/>
+  </g>
+
+  <!-- TV LIGHT ON FLOOR -->
+  <ellipse cx="1000" cy="690" rx="240" ry="58" fill="url(#gGlowTV)"/>
+
+  <!-- TV CABINET AND TELEVISION -->
+  <g>
+    <rect x="836" y="470" width="326" height="146" rx="10" fill="url(#gWood)"/>
+    <rect x="836" y="470" width="326" height="12" rx="6" fill="#cf9c66"/>
+    <rect x="852" y="496" width="140" height="50" rx="6" fill="#a97341"/>
+    <rect x="1006" y="496" width="140" height="50" rx="6" fill="#a97341"/>
+    <rect x="852" y="560" width="140" height="42" rx="6" fill="#a97341"/>
+    <rect x="1006" y="560" width="140" height="42" rx="6" fill="#a97341"/>
+    <rect x="900" y="518" width="44" height="7" rx="3" fill="#e0b57e"/>
+    <rect x="1054" y="518" width="44" height="7" rx="3" fill="#e0b57e"/>
+    <rect x="900" y="578" width="44" height="7" rx="3" fill="#e0b57e"/>
+    <rect x="1054" y="578" width="44" height="7" rx="3" fill="#e0b57e"/>
+    <rect x="852" y="616" width="18" height="18" rx="4" fill="#7a5230"/>
+    <rect x="1128" y="616" width="18" height="18" rx="4" fill="#7a5230"/>
+
+    <!-- warm objects on the cabinet -->
+    <g>
+      <rect x="1080" y="440" width="54" height="30" rx="4" fill="#c07a6e"/>
+      <rect x="1086" y="432" width="42" height="9" rx="3" fill="#8fa8bf"/>
+    </g>
+
+    <!-- TV -->
+    <ellipse cx="1000" cy="470" rx="62" ry="9" fill="#3a3a44"/>
+    <rect x="984" y="454" width="32" height="16" fill="#33333d"/>
+    <rect x="856" y="266" width="288" height="196" rx="12" fill="#33333d"/>
+    <rect x="864" y="274" width="272" height="180" rx="8" fill="#22222a"/>
+    <rect x="872" y="282" width="256" height="164" rx="5" fill="url(#gScreen)"/>
+    <!-- program on screen -->
+    <circle cx="1052" cy="322" r="20" fill="#ffd884"/>
+    <path d="M872 400 C 916 372 950 396 992 382 C 1032 368 1074 396 1128 380 L1128 446 L872 446 Z" fill="#8fb583"/>
+    <path d="M872 420 C 928 404 966 424 1024 412 C 1072 402 1104 418 1128 412 L1128 446 L872 446 Z" fill="#6f9d68"/>
+    <path d="M896 314 q 10 -8 20 0" fill="none" stroke="#6f7f95" stroke-width="3"/>
+    <path d="M924 302 q 10 -8 20 0" fill="none" stroke="#6f7f95" stroke-width="3"/>
+    <g stroke="#ffffff" opacity="0.09" stroke-width="2">
+      <line x1="872" y1="296" x2="1128" y2="296"/>
+      <line x1="872" y1="316" x2="1128" y2="316"/>
+      <line x1="872" y1="336" x2="1128" y2="336"/>
+      <line x1="872" y1="356" x2="1128" y2="356"/>
+      <line x1="872" y1="376" x2="1128" y2="376"/>
+      <line x1="872" y1="396" x2="1128" y2="396"/>
+      <line x1="872" y1="416" x2="1128" y2="416"/>
+      <line x1="872" y1="436" x2="1128" y2="436"/>
+    </g>
+    <path d="M872 282 L960 282 L892 446 L872 446 Z" fill="#ffffff" opacity="0.14"/>
+    <circle cx="1000" cy="458" r="4" fill="#ff9f6b"/>
+  </g>
+
+  <!-- SOFT LIGHT SPILLING FROM THE SCREEN TOWARD THE GRANDMOTHER -->
+  <g fill="#ffe3a8" opacity="0.13">
+    <path d="M868 292 L868 340 L540 396 L556 330 Z"/>
+    <path d="M868 350 L868 420 L560 470 L548 410 Z"/>
+  </g>
+  <ellipse cx="880" cy="364" rx="200" ry="150" fill="url(#gGlowTV)" opacity="0.55"/>
+
+  <!-- POTTED PLANT (left corner) -->
+  <g>
+    <path d="M118 594 L200 594 L188 656 L130 656 Z" fill="url(#gPot)"/>
+    <rect x="112" y="584" width="94" height="16" rx="6" fill="#d4835a"/>
+    <g fill="#5f8f5c">
+      <path d="M158 588 C 118 566 106 508 126 470 C 152 508 160 550 158 588 Z"/>
+      <path d="M160 588 C 200 562 214 504 192 466 C 168 506 160 550 160 588 Z"/>
+      <path d="M159 586 C 152 540 158 486 176 452 C 184 500 172 550 159 586 Z" fill="#79a86f"/>
+      <path d="M156 588 C 128 560 108 528 92 504 C 124 516 146 552 156 588 Z" fill="#4f7d4d"/>
+    </g>
+  </g>
+
+  <!-- KNITTING BASKET -->
+  <g>
+    <path d="M232 592 L310 592 L300 644 L242 644 Z" fill="#cb9c63"/>
+    <g stroke="#a97b45" stroke-width="3" opacity="0.7">
+      <line x1="236" y1="606" x2="306" y2="606"/>
+      <line x1="238" y1="620" x2="304" y2="620"/>
+      <line x1="240" y1="634" x2="302" y2="634"/>
+    </g>
+    <rect x="228" y="584" width="86" height="12" rx="6" fill="#b5854c"/>
+    <circle cx="266" cy="574" r="18" fill="#d98282"/>
+    <path d="M252 570 C 262 560 276 566 280 578" fill="none" stroke="#b96a6a" stroke-width="2.5"/>
+    <line x1="258" y1="562" x2="292" y2="540" stroke="#e6cba6" stroke-width="4" stroke-linecap="round"/>
+    <line x1="266" y1="560" x2="300" y2="548" stroke="#e6cba6" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- ARMCHAIR BACK AND FAR ARMREST (behind the figure) -->
+  <g>
+    <ellipse cx="520" cy="668" rx="180" ry="26" fill="#6b4326" opacity="0.22"/>
+    <rect x="350" y="366" width="100" height="258" rx="36" fill="url(#gChair)"/>
+    <rect x="366" y="384" width="70" height="222" rx="28" fill="#96b7ab" opacity="0.85"/>
+    <rect x="382" y="404" width="38" height="182" rx="18" fill="#7fa094" opacity="0.6"/>
+    <rect x="404" y="430" width="62" height="96" rx="22" fill="#e2a992"/>
+    <path d="M416 452 q 20 -6 38 4" fill="none" stroke="#cf8f78" stroke-width="3"/>
+    <rect x="440" y="498" width="222" height="28" rx="14" fill="#65877e"/>
+    <rect x="644" y="518" width="20" height="42" rx="6" fill="#5f8279"/>
+  </g>
+
+  <!-- SEAT CUSHION -->
+  <rect x="428" y="546" width="238" height="54" rx="20" fill="#96b7ab"/>
+
+  <!-- GRANDMOTHER (profile, facing right toward the TV) -->
+  <g>
+    <!-- lower legs and slippers -->
+    <line x1="614" y1="580" x2="628" y2="674" stroke="#ecdccb" stroke-width="24" stroke-linecap="round"/>
+    <line x1="640" y1="586" x2="656" y2="678" stroke="#e2d1bf" stroke-width="24" stroke-linecap="round"/>
+    <!-- neck and head -->
+    <rect x="468" y="432" width="28" height="26" rx="8" fill="#e9c2a2"/>
+    <ellipse cx="478" cy="396" rx="45" ry="43" fill="#dcdce2"/>
+    <circle cx="486" cy="404" r="40" fill="#f4d5ba"/>
+    <path d="M452 392 C 458 366 482 356 504 366 C 514 371 520 379 521 389 C 506 375 470 373 452 392 Z" fill="#dcdce2"/>
+    <ellipse cx="444" cy="386" rx="20" ry="19" fill="#dcdce2" stroke="#c3c3cb" stroke-width="2"/>
+    <path d="M448 372 q 12 -8 22 -2" fill="none" stroke="#c3c3cb" stroke-width="2.5"/>
+    <path d="M522 400 q 15 9 1 19" fill="#f4d5ba" stroke="#e0b190" stroke-width="2"/>
+    <ellipse cx="472" cy="414" rx="7" ry="9" fill="#eec3a6"/>
+    <ellipse cx="504" cy="419" rx="9" ry="6" fill="#e08e7c" opacity="0.32"/>
+    <!-- eye clearly directed to the right, toward the TV -->
+    <ellipse cx="513" cy="402" rx="7" ry="5" fill="#ffffff"/>
+    <circle cx="517" cy="403" r="3.2" fill="#38302e"/>
+    <circle cx="518.6" cy="401.4" r="1" fill="#ffffff"/>
+    <path d="M504 389 q 10 -6 20 -1" fill="none" stroke="#b8b2ac" stroke-width="3" stroke-linecap="round"/>
+    <path d="M508 428 q 10 8 20 -3" fill="none" stroke="#bb7160" stroke-width="3" stroke-linecap="round"/>
+    <!-- glasses -->
+    <g stroke="#7a6a58" stroke-width="3" fill="#ffffff" fill-opacity="0.2">
+      <rect x="496" y="390" width="34" height="26" rx="10"/>
+    </g>
+    <line x1="497" y1="398" x2="472" y2="405" stroke="#7a6a58" stroke-width="3" stroke-linecap="round"/>
+    <!-- torso in a lavender cardigan -->
+    <path d="M452 470 C 446 502 446 530 456 550 C 472 560 512 558 526 548 C 532 520 530 492 520 470 C 508 450 464 450 452 470 Z" fill="#b9a6c4"/>
+    <path d="M452 466 C 468 456 508 456 522 468 C 512 486 496 492 486 492 C 474 492 460 482 452 466 Z" fill="#a794b6"/>
+    <!-- shawl over the shoulders -->
+    <path d="M450 468 C 466 454 510 454 524 470 C 528 492 522 516 512 528 C 498 520 470 520 458 528 C 448 512 446 488 450 468 Z" fill="#e3a89c" opacity="0.95"/>
+    <path d="M456 486 q 30 12 60 0" fill="none" stroke="#cf8d80" stroke-width="3"/>
+    <path d="M456 506 q 30 12 58 -2" fill="none" stroke="#cf8d80" stroke-width="3"/>
+    <!-- arm resting on the lap -->
+    <path d="M498 480 Q 508 514 540 530" fill="none" stroke="#b9a6c4" stroke-width="26" stroke-linecap="round"/>
+    <path d="M498 480 Q 508 514 540 530" fill="none" stroke="#a794b6" stroke-width="8" stroke-linecap="round" opacity="0.5"/>
+    <circle cx="550" cy="534" r="12" fill="#f4d5ba"/>
+    <!-- lap blanket -->
+    <path d="M450 534 C 480 514 570 526 638 552 C 662 562 660 596 644 610 C 610 630 500 626 462 606 C 444 596 440 550 450 534 Z" fill="#edb79b"/>
+    <g stroke="#d5947a" stroke-width="3" opacity="0.65" fill="none">
+      <path d="M470 522 C 484 560 486 592 478 614"/>
+      <path d="M520 524 C 534 562 536 596 528 620"/>
+      <path d="M572 536 C 586 570 588 600 580 620"/>
+      <path d="M452 552 C 500 566 580 578 650 578"/>
+      <path d="M452 578 C 500 592 580 602 646 600"/>
+    </g>
+    <path d="M462 606 q 22 14 44 4 q 22 14 44 2 q 22 14 44 -2 q 20 12 40 0 l 0 10 q -20 12 -40 0 q -22 16 -44 2 q -22 12 -44 -2 q -22 10 -44 -4 Z" fill="#e0a488"/>
+    <!-- slippers -->
+    <ellipse cx="622" cy="688" rx="27" ry="13" fill="#cf7f6d"/>
+    <ellipse cx="652" cy="694" rx="27" ry="13" fill="#c4735f"/>
+    <path d="M604 686 q 18 -10 36 -2" fill="none" stroke="#a95f4e" stroke-width="3"/>
+    <path d="M634 692 q 18 -10 36 -2" fill="none" stroke="#a95f4e" stroke-width="3"/>
+  </g>
+
+  <!-- CHAIR FRONT (near armrest fragment, skirt, legs) -->
+  <g>
+    <path d="M432 592 L664 592 L660 618 L436 620 Z" fill="#7fa094"/>
+    <path d="M438 616 L658 614 L654 636 L444 638 Z" fill="#5f8279"/>
+    <rect x="596" y="510" width="76" height="32" rx="15" fill="#96b7ab"/>
+    <rect x="602" y="516" width="60" height="8" rx="4" fill="#b3cec4" opacity="0.8"/>
+    <rect x="638" y="632" width="18" height="34" rx="5" fill="#7a5436"/>
+    <rect x="444" y="632" width="18" height="34" rx="5" fill="#7a5436"/>
+  </g>
+
+  <!-- SIDE TABLE WITH TEA -->
+  <g>
+    <ellipse cx="760" cy="656" rx="60" ry="16" fill="#6b4326" opacity="0.2"/>
+    <rect x="752" y="556" width="16" height="80" fill="#9a6538"/>
+    <ellipse cx="760" cy="640" rx="46" ry="13" fill="#a9764a"/>
+    <ellipse cx="760" cy="552" rx="74" ry="19" fill="url(#gWood)"/>
+    <ellipse cx="760" cy="548" rx="74" ry="19" fill="#c99260"/>
+    <ellipse cx="760" cy="546" rx="60" ry="14" fill="#d8a670" opacity="0.7"/>
+    <!-- teapot -->
+    <ellipse cx="784" cy="530" rx="22" ry="17" fill="#f2ece0"/>
+    <path d="M784 513 q 8 -10 2 -14" fill="none" stroke="#c9b9a2" stroke-width="3"/>
+    <path d="M804 524 q 12 -2 12 8" fill="none" stroke="#f2ece0" stroke-width="6" stroke-linecap="round"/>
+    <path d="M762 526 q -10 4 -8 10" fill="none" stroke="#f2ece0" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="784" cy="546" rx="20" ry="6" fill="#d9d2c4"/>
+    <!-- teacup with steam -->
+    <ellipse cx="726" cy="542" rx="20" ry="6" fill="#e2dccd"/>
+    <path d="M708 532 q 18 12 36 0 l -4 8 q -14 8 -28 0 Z" fill="#fbf7ee"/>
+    <ellipse cx="726" cy="532" rx="18" ry="6" fill="#e7c48d"/>
+    <path d="M745 530 q 10 2 4 10" fill="none" stroke="#fbf7ee" stroke-width="4"/>
+    <g fill="none" stroke="#ffffff" stroke-width="3" opacity="0.55" stroke-linecap="round">
+      <path d="M720 522 q -6 -10 2 -18 q 8 -8 2 -16"/>
+      <path d="M734 520 q 6 -10 -2 -18"/>
+    </g>
+    <!-- book and remote -->
+    <rect x="700" y="544" width="34" height="8" rx="2" fill="#8fa8bf"/>
+    <rect x="702" y="538" width="30" height="7" rx="2" fill="#c07a6e"/>
+    <rect x="798" y="546" width="12" height="30" rx="4" fill="#4c4c58" transform="rotate(78 804 561)"/>
+  </g>
+
+  <!-- SLEEPING CAT ON THE RUG -->
+  <g>
+    <ellipse cx="336" cy="722" rx="52" ry="26" fill="#d9a86a"/>
+    <ellipse cx="336" cy="716" rx="46" ry="20" fill="#e5b878"/>
+    <circle cx="292" cy="706" r="19" fill="#d9a86a"/>
+    <path d="M278 694 L280 678 L292 690 Z" fill="#c9944f"/>
+    <path d="M304 690 L310 676 L314 692 Z" fill="#c9944f"/>
+    <path d="M282 704 q 8 5 16 0" fill="none" stroke="#8a6234" stroke-width="2.5"/>
+    <path d="M288 712 q 5 4 9 0" fill="none" stroke="#8a6234" stroke-width="2.5"/>
+    <path d="M382 716 C 404 706 408 736 386 740 C 372 742 368 730 376 726" fill="none" stroke="#d9a86a" stroke-width="13" stroke-linecap="round"/>
+    <g stroke="#c9944f" stroke-width="4" opacity="0.8">
+      <line x1="316" y1="710" x2="330" y2="704"/>
+      <line x1="344" y1="708" x2="358" y2="702"/>
+    </g>
+  </g>
+
+  <!-- GAZE DIRECTION FROM THE GRANDMOTHER TO THE TV SCREEN -->
+  <g opacity="0.42">
+    <path d="M540 400 C 640 384 760 362 856 346" fill="none" stroke="#b7793a" stroke-width="4" stroke-dasharray="14 12" stroke-linecap="round"/>
+    <polygon points="852,336 876,346 852,356" fill="#b7793a"/>
+    <circle cx="540" cy="400" r="5" fill="#b7793a"/>
+  </g>
+
+  <!-- WARM ATMOSPHERE OVERLAY -->
+  <rect x="0" y="0" width="1200" height="900" fill="#ffb765" opacity="0.07"/>
+  <rect x="0" y="0" width="1200" height="900" fill="url(#gVig)"/>
+</svg>

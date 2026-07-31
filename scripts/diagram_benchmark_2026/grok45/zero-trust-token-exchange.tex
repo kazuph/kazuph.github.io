@@ -1,0 +1,162 @@
+\documentclass[border=12pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,shapes.geometric}
+\usepackage{fontspec}
+\setmainfont{Hiragino Sans}
+
+\definecolor{bgpage}{HTML}{F7F5F0}
+\definecolor{userzone}{HTML}{E8F0F7}
+\definecolor{idzone}{HTML}{F0E8F5}
+\definecolor{edgezone}{HTML}{E8F5EE}
+\definecolor{svczone}{HTML}{F5F0E8}
+\definecolor{userfill}{HTML}{2B5A8C}
+\definecolor{browserfill}{HTML}{3A6EA5}
+\definecolor{idpfill}{HTML}{6B3A8C}
+\definecolor{gwfill}{HTML}{1A7A5A}
+\definecolor{svcafill}{HTML}{B86B2A}
+\definecolor{svcbfill}{HTML}{8C4A1A}
+\definecolor{idtok}{HTML}{8B2E6B}
+\definecolor{acctok}{HTML}{1A6B8C}
+\definecolor{svctok}{HTML}{8C5A10}
+\definecolor{bound}{HTML}{5A5A5A}
+\definecolor{labelfg}{HTML}{222222}
+\definecolor{stepfg}{HTML}{444444}
+
+\begin{document}
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >=Stealth,
+  box/.style={
+    draw=#1!80!black,
+    fill=#1,
+    text=white,
+    rounded corners=3pt,
+    align=center,
+    minimum width=2.1cm,
+    minimum height=0.95cm,
+    font=\sffamily\bfseries\small,
+    line width=0.8pt
+  },
+  zone/.style={
+    draw=#1!60!black,
+    fill=#1,
+    rounded corners=6pt,
+    line width=1.1pt,
+    inner sep=10pt
+  },
+  steplbl/.style={font=\sffamily\tiny,text=stepfg,align=center},
+  tok/.style={font=\sffamily\bfseries\tiny},
+  arrid/.style={->,line width=1.15pt,draw=idtok},
+  arrac/.style={->,line width=1.15pt,draw=acctok},
+  arrsvc/.style={->,line width=1.15pt,draw=svctok},
+  arrctl/.style={->,line width=0.9pt,draw=bound,dashed},
+]
+
+\fill[bgpage] (-0.4,-0.6) rectangle (15.6,10.2);
+
+% Trust boundary regions
+\node[zone=userzone,fit={(0.2,7.6) (4.6,9.6)}] (zuser) {};
+\node[anchor=north west,font=\sffamily\bfseries\scriptsize,text=userfill]
+  at ([xshift=4pt,yshift=-3pt]zuser.north west) {信頼境界: クライアント};
+
+\node[zone=idzone,fit={(5.2,7.6) (10.0,9.6)}] (zidp) {};
+\node[anchor=north west,font=\sffamily\bfseries\scriptsize,text=idpfill]
+  at ([xshift=4pt,yshift=-3pt]zidp.north west) {信頼境界: Identity Provider};
+
+\node[zone=edgezone,fit={(0.2,3.4) (6.8,6.8)}] (zedge) {};
+\node[anchor=north west,font=\sffamily\bfseries\scriptsize,text=gwfill]
+  at ([xshift=4pt,yshift=-3pt]zedge.north west) {信頼境界: Zero Trust Edge};
+
+\node[zone=svczone,fit={(7.4,0.4) (15.0,6.8)}] (zsvc) {};
+\node[anchor=north west,font=\sffamily\bfseries\scriptsize,text=svcafill]
+  at ([xshift=4pt,yshift=-3pt]zsvc.north west) {信頼境界: 内部サービスメッシュ};
+
+% Actors
+\node[box=userfill] (user) at (1.4,8.4) {User};
+\node[box=browserfill] (browser) at (3.5,8.4) {Browser};
+\node[box=idpfill] (idp) at (7.6,8.4) {IdP\\[-1pt]{\normalfont\tiny OIDC / OAuth}};
+\node[box=gwfill] (gw) at (3.5,4.7) {API Gateway\\[-1pt]{\normalfont\tiny Policy / PEP}};
+\node[box=svcafill] (svca) at (9.6,4.7) {Service A};
+\node[box=svcbfill] (svcb) at (13.2,2.2) {Service B};
+
+% Legend
+\node[draw=bound,fill=white,rounded corners=3pt,line width=0.7pt,
+  anchor=north east,align=left,inner sep=5pt,font=\sffamily\tiny]
+  (legend) at (14.9,9.85) {%
+  \begin{tabular}{@{}ll@{}}
+  \textcolor{idtok}{\rule{0.55cm}{1.4pt}} & ID token \\
+  \textcolor{acctok}{\rule{0.55cm}{1.4pt}} & access token \\
+  \textcolor{svctok}{\rule{0.55cm}{1.4pt}} & service token \\
+  \textcolor{bound}{\rule[0.4pt]{0.55cm}{0.7pt}} & 制御 / メタデータ \\
+  \end{tabular}};
+
+% Title
+\node[font=\sffamily\bfseries\large,text=labelfg,anchor=west]
+  at (0.2,10.0) {ゼロトラスト認証とトークン交換};
+
+% Step 1: User -> Browser auth intent
+\draw[arrctl] (user) -- node[steplbl,above] {1. ログイン要求} (browser);
+
+% Step 2: Browser -> IdP
+\draw[arrctl] (browser.east) -- ++(0.35,0) |- node[steplbl,pos=0.22,above]
+  {2. OIDC AuthN} (idp.west);
+
+% Step 3: IdP issues ID + access token
+\draw[arrid] (idp.south west) ++(0.15,0) -- ++(0,-0.55)
+  -| node[steplbl,pos=0.25,left,text=idtok] {3a. ID token}
+  ([xshift=-0.15cm]browser.south);
+
+\draw[arrac] (idp.south) -- ++(0,-1.15) -|
+  node[steplbl,pos=0.32,right,text=acctok] {3b. access token}
+  ([xshift=0.25cm]browser.south);
+
+% Step 4: Browser presents access token to Gateway
+\draw[arrac] (browser.south) --
+  node[steplbl,right,text=acctok,xshift=2pt] {4. Bearer\\access token}
+  (gw.north);
+
+% Step 5: Gateway validates with IdP (introspection / JWKS)
+\draw[arrctl] (gw.north east) -- ++(0.9,0.9) -|
+  node[steplbl,pos=0.55,above] {5. 検証 / JWKS}
+  (idp.south);
+
+% Step 6: Gateway issues / exchanges service token for Service A
+\draw[arrsvc] (gw.east) --
+  node[steplbl,above,text=svctok] {6. token exchange $\rightarrow$ service token}
+  (svca.west);
+
+% Step 7: Service A calls Service B with service token
+\draw[arrsvc] (svca.south) |-
+  node[steplbl,pos=0.25,left,text=svctok] {7. mTLS + service token}
+  (svcb.west);
+
+% Step 8: Policy decision annotations
+\node[draw=gwfill,fill=white,rounded corners=2pt,align=left,
+  font=\sffamily\tiny,inner sep=4pt,text=labelfg]
+  (pol) at (1.55,5.55) {PEP:\\デバイス姿勢\\セッション連続性\\最小権限};
+
+\draw[arrctl] (pol.east) -- (gw.west);
+
+\node[draw=svcafill,fill=white,rounded corners=2pt,align=left,
+  font=\sffamily\tiny,inner sep=4pt,text=labelfg]
+  (mesh) at (10.8,6.1) {SPIFFE / workload identity\\audience = Service B\\短命 JWT};
+
+\draw[arrctl] (mesh.south) -- (svca.north);
+
+% Token type callouts near flows
+\node[tok,text=idtok,anchor=west] at (0.4,7.15)
+  {ID token: 利用者身元（Browser 保持・API には送らない）};
+\node[tok,text=acctok,anchor=west] at (0.4,6.85)
+  {access token: Browser $\rightarrow$ Gateway の API 認可};
+\node[tok,text=svctok,anchor=west] at (7.6,3.55)
+  {service token: Gateway / Service A $\rightarrow$ Service B の内部委任};
+
+% Sequence numbers strip
+\node[font=\sffamily\tiny,text=stepfg,align=left,anchor=north west]
+  at (0.3,0.95) {%
+  流れ: 1 AuthN要求 $\rightarrow$ 2 IdP認証 $\rightarrow$ 3 トークン発行
+  $\rightarrow$ 4 Gateway提示 $\rightarrow$ 5 検証 $\rightarrow$ 6 交換
+  $\rightarrow$ 7 サービス間呼び出し};
+
+\end{tikzpicture}
+\end{document}

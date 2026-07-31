@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Helvetica, Arial, sans-serif">
+  <title>7-Axis Robot Arm and its Joint Axes</title>
+  <desc>Overall view of a seven axis articulated robot arm with joints J1 to J7, rotation direction arrows, and an axis reference panel.</desc>
+
+  <defs>
+    <linearGradient id="gBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f7fb"/>
+      <stop offset="1" stop-color="#e4e9f1"/>
+    </linearGradient>
+
+    <linearGradient id="gBase" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#69737f"/>
+      <stop offset="0.16" stop-color="#f0f4f9"/>
+      <stop offset="0.52" stop-color="#b0bac7"/>
+      <stop offset="1" stop-color="#5a6472"/>
+    </linearGradient>
+
+    <linearGradient id="gTop" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfdff"/>
+      <stop offset="1" stop-color="#a9b4c2"/>
+    </linearGradient>
+
+    <linearGradient id="gPed" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5f6a78"/>
+      <stop offset="0.18" stop-color="#eef2f8"/>
+      <stop offset="0.55" stop-color="#aab5c3"/>
+      <stop offset="1" stop-color="#525c69"/>
+    </linearGradient>
+
+    <linearGradient id="gShoulder" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#67717f"/>
+      <stop offset="0.2" stop-color="#eff3f9"/>
+      <stop offset="0.58" stop-color="#a8b3c1"/>
+      <stop offset="1" stop-color="#4f5966"/>
+    </linearGradient>
+
+    <linearGradient id="gL2" gradientUnits="userSpaceOnUse" x1="247.4" y1="575.2" x2="292.6" y2="604.8">
+      <stop offset="0" stop-color="#b7c1ce"/>
+      <stop offset="0.18" stop-color="#f5f8fc"/>
+      <stop offset="0.55" stop-color="#b1bbc8"/>
+      <stop offset="1" stop-color="#606b7a"/>
+    </linearGradient>
+
+    <linearGradient id="gL3" gradientUnits="userSpaceOnUse" x1="452.6" y1="279.3" x2="467.4" y2="320.7">
+      <stop offset="0" stop-color="#b7c1ce"/>
+      <stop offset="0.18" stop-color="#f5f8fc"/>
+      <stop offset="0.55" stop-color="#b1bbc8"/>
+      <stop offset="1" stop-color="#606b7a"/>
+    </linearGradient>
+
+    <linearGradient id="gL4" gradientUnits="userSpaceOnUse" x1="664.4" y1="208.9" x2="675.6" y2="241.1">
+      <stop offset="0" stop-color="#bcc6d2"/>
+      <stop offset="0.2" stop-color="#f6f9fd"/>
+      <stop offset="0.58" stop-color="#adb7c4"/>
+      <stop offset="1" stop-color="#5c6675"/>
+    </linearGradient>
+
+    <radialGradient id="gPitch" cx="0.34" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#ffe0ae"/>
+      <stop offset="0.55" stop-color="#f0a041"/>
+      <stop offset="1" stop-color="#c96a17"/>
+    </radialGradient>
+
+    <radialGradient id="gRoll" cx="0.34" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#c8f2ef"/>
+      <stop offset="0.55" stop-color="#3fb3ad"/>
+      <stop offset="1" stop-color="#127a76"/>
+    </radialGradient>
+
+    <marker id="rollEnd" viewBox="0 0 7 7" refX="5.6" refY="3.5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto">
+      <path d="M0,0.5 L6.5,3.5 L0,6.5 L1.7,3.5 Z" fill="#0f8f89"/>
+    </marker>
+    <marker id="rollStart" viewBox="0 0 7 7" refX="1.4" refY="3.5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto">
+      <path d="M6.5,0.5 L0,3.5 L6.5,6.5 L4.8,3.5 Z" fill="#0f8f89"/>
+    </marker>
+    <marker id="pitchEnd" viewBox="0 0 7 7" refX="5.6" refY="3.5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto">
+      <path d="M0,0.5 L6.5,3.5 L0,6.5 L1.7,3.5 Z" fill="#d9541f"/>
+    </marker>
+    <marker id="pitchStart" viewBox="0 0 7 7" refX="1.4" refY="3.5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto">
+      <path d="M6.5,0.5 L0,3.5 L6.5,6.5 L4.8,3.5 Z" fill="#d9541f"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#gBg)"/>
+
+  <!-- title -->
+  <rect x="64" y="42" width="6" height="58" rx="3" fill="#d9541f"/>
+  <text x="88" y="70" font-size="31" font-weight="bold" fill="#1f2733" letter-spacing="0.5">7-AXIS ROBOT ARM</text>
+  <text x="89" y="94" font-size="14" fill="#5a6675">Kinematic chain, joint numbering and axis rotation directions (J1 - J7)</text>
+
+  <!-- floor -->
+  <g>
+    <ellipse cx="270" cy="792" rx="250" ry="58" fill="#dbe1ea" stroke="#c4cdd9" stroke-width="1.5"/>
+    <ellipse cx="270" cy="792" rx="182" ry="42" fill="none" stroke="#c9d1dc" stroke-width="1" stroke-dasharray="6 6"/>
+    <ellipse cx="270" cy="792" rx="112" ry="26" fill="none" stroke="#c9d1dc" stroke-width="1" stroke-dasharray="6 6"/>
+    <ellipse cx="292" cy="786" rx="152" ry="36" fill="#0d1620" opacity="0.10"/>
+  </g>
+
+  <!-- fixed base plate -->
+  <g stroke="#3f4956" stroke-width="1.6">
+    <path d="M 152,746 L 152,768 A 118,28 0 0 0 388,768 L 388,746 A 118,28 0 0 1 152,746 Z" fill="url(#gBase)"/>
+    <ellipse cx="270" cy="746" rx="118" ry="28" fill="url(#gTop)"/>
+  </g>
+  <ellipse cx="270" cy="746" rx="96" ry="22" fill="none" stroke="#8c97a5" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <g fill="#5a6472">
+    <circle cx="176" cy="740" r="5"/>
+    <circle cx="364" cy="740" r="5"/>
+    <circle cx="270" cy="769" r="5"/>
+  </g>
+
+  <!-- J1 rotating pedestal -->
+  <g stroke="#3f4956" stroke-width="1.6">
+    <path d="M 178,692 L 178,744 A 92,24 0 0 0 362,744 L 362,692 A 92,24 0 0 1 178,692 Z" fill="url(#gPed)"/>
+    <ellipse cx="270" cy="692" rx="92" ry="24" fill="url(#gTop)"/>
+  </g>
+
+  <!-- J1 rotation arrow (roll about the vertical base axis) -->
+  <path d="M 194,692 A 76,24 0 0 0 346,692" fill="none" stroke="#0f8f89" stroke-width="3.4"
+        marker-start="url(#rollStart)" marker-end="url(#rollEnd)"/>
+  <line x1="270" y1="736" x2="270" y2="654" stroke="#0f8f89" stroke-width="1.6" stroke-dasharray="7 5" opacity="0.75"/>
+
+  <!-- shoulder housing (link 0) -->
+  <g stroke="#3f4956" stroke-width="1.6">
+    <path d="M 231,600 L 231,690 A 39,11 0 0 0 309,690 L 309,600 A 39,11 0 0 1 231,600 Z" fill="url(#gShoulder)"/>
+    <ellipse cx="270" cy="600" rx="39" ry="11" fill="url(#gTop)"/>
+  </g>
+
+  <!-- link 1 : upper arm  J2 -> J4 -->
+  <polygon points="247.4,575.2 292.6,604.8 482.6,314.8 437.4,285.2" fill="url(#gL2)" stroke="#4a5462" stroke-width="1.6"/>
+  <line x1="259" y1="572" x2="449" y2="282" stroke="#ffffff" stroke-width="3" opacity="0.55"/>
+  <line x1="299" y1="590" x2="489" y2="300" stroke="#39424f" stroke-width="1" opacity="0.35"/>
+
+  <!-- link 2 : forearm  J4 -> J6 -->
+  <polygon points="452.6,279.3 467.4,320.7 677.4,245.7 662.6,204.3" fill="url(#gL3)" stroke="#4a5462" stroke-width="1.6"/>
+  <line x1="457" y1="285" x2="667" y2="210" stroke="#ffffff" stroke-width="2.6" opacity="0.55"/>
+
+  <!-- link 3 : wrist housing  J6 -> J7 -->
+  <polygon points="664.4,208.9 675.6,241.1 747.6,216.1 736.4,183.9" fill="url(#gL4)" stroke="#4a5462" stroke-width="1.6"/>
+  <line x1="668" y1="213" x2="740" y2="188" stroke="#ffffff" stroke-width="2.2" opacity="0.55"/>
+
+  <!-- tool flange and two finger gripper -->
+  <g stroke-linecap="round" fill="none">
+    <line x1="742" y1="200" x2="772" y2="189" stroke="#5f6a78" stroke-width="34"/>
+    <line x1="742" y1="200" x2="772" y2="189" stroke="#bfc9d5" stroke-width="24"/>
+    <line x1="744" y1="192" x2="770" y2="183" stroke="#f1f5fa" stroke-width="7" opacity="0.9"/>
+    <line x1="775" y1="204" x2="820" y2="189" stroke="#4f5967" stroke-width="15"/>
+    <line x1="775" y1="204" x2="820" y2="189" stroke="#aab5c3" stroke-width="8"/>
+    <line x1="765" y1="176" x2="811" y2="160" stroke="#4f5967" stroke-width="15"/>
+    <line x1="765" y1="176" x2="811" y2="160" stroke="#aab5c3" stroke-width="8"/>
+    <line x1="818" y1="190" x2="808" y2="161" stroke="#d9541f" stroke-width="1.4" stroke-dasharray="4 4"/>
+  </g>
+  <g stroke="#d9541f" stroke-width="2">
+    <line x1="805" y1="175" x2="825" y2="175"/>
+    <line x1="815" y1="165" x2="815" y2="185"/>
+  </g>
+  <circle cx="815" cy="175" r="4" fill="#d9541f"/>
+
+  <!-- ================= rotation arrows ================= -->
+  <!-- J2 shoulder pitch -->
+  <path d="M 244,635 A 52,52 0 0 1 244,545" fill="none" stroke="#d9541f" stroke-width="3.4"
+        marker-start="url(#pitchStart)" marker-end="url(#pitchEnd)"/>
+  <!-- J3 upper arm roll -->
+  <path d="M 332,423 A 40,13 33.25 0 1 398,467" fill="none" stroke="#0f8f89" stroke-width="3.2"
+        marker-start="url(#rollStart)" marker-end="url(#rollEnd)"/>
+  <!-- J4 elbow pitch -->
+  <path d="M 406,280 A 58,58 0 0 1 489,250" fill="none" stroke="#d9541f" stroke-width="3.4"
+        marker-start="url(#pitchStart)" marker-end="url(#pitchEnd)"/>
+  <!-- J5 forearm roll -->
+  <path d="M 554,230 A 34,11 70.35 0 1 576,294" fill="none" stroke="#0f8f89" stroke-width="3.2"
+        marker-start="url(#rollStart)" marker-end="url(#rollEnd)"/>
+  <!-- J6 wrist pitch -->
+  <path d="M 631,198 A 48,48 0 0 1 704,191" fill="none" stroke="#d9541f" stroke-width="3.2"
+        marker-start="url(#pitchStart)" marker-end="url(#pitchEnd)"/>
+  <!-- J7 flange roll -->
+  <path d="M 733,174 A 28,9 70.85 0 1 751,227" fill="none" stroke="#0f8f89" stroke-width="3"
+        marker-start="url(#rollStart)" marker-end="url(#rollEnd)"/>
+
+  <!-- ================= joints ================= -->
+  <g stroke-width="2.2">
+    <!-- J1 hub on top of the pedestal -->
+    <circle cx="270" cy="692" r="21" fill="url(#gRoll)" stroke="#0d5f5c"/>
+    <circle cx="270" cy="692" r="8" fill="#0d4f4c"/>
+    <!-- J2 -->
+    <circle cx="270" cy="590" r="30" fill="url(#gPitch)" stroke="#a3541a"/>
+    <circle cx="270" cy="590" r="11" fill="#8a4413"/>
+    <!-- J3 -->
+    <circle cx="365" cy="445" r="23" fill="url(#gRoll)" stroke="#0d5f5c"/>
+    <circle cx="365" cy="445" r="8" fill="#0d4f4c"/>
+    <!-- J4 -->
+    <circle cx="460" cy="300" r="26" fill="url(#gPitch)" stroke="#a3541a"/>
+    <circle cx="460" cy="300" r="10" fill="#8a4413"/>
+    <!-- J5 -->
+    <circle cx="565" cy="262" r="19" fill="url(#gRoll)" stroke="#0d5f5c"/>
+    <circle cx="565" cy="262" r="7" fill="#0d4f4c"/>
+    <!-- J6 -->
+    <circle cx="670" cy="225" r="19" fill="url(#gPitch)" stroke="#a3541a"/>
+    <circle cx="670" cy="225" r="7" fill="#8a4413"/>
+    <!-- J7 -->
+    <circle cx="742" cy="200" r="14" fill="url(#gRoll)" stroke="#0d5f5c"/>
+    <circle cx="742" cy="200" r="5.5" fill="#0d4f4c"/>
+  </g>
+
+  <!-- ================= leader lines and joint labels ================= -->
+  <g stroke="#7a8593" stroke-width="1.3">
+    <line x1="172" y1="698" x2="240" y2="694"/>
+    <line x1="182" y1="606" x2="218" y2="592"/>
+    <line x1="266" y1="404" x2="330" y2="424"/>
+    <line x1="394" y1="224" x2="434" y2="246"/>
+    <line x1="586" y1="344" x2="574" y2="298"/>
+    <line x1="682" y1="344" x2="674" y2="252"/>
+    <line x1="784" y1="344" x2="752" y2="226"/>
+    <line x1="828" y1="128" x2="814" y2="164"/>
+  </g>
+
+  <g font-size="19" font-weight="bold" text-anchor="middle">
+    <g fill="#0f8f89">
+      <text x="150" y="704">J1</text>
+      <text x="248" y="400">J3</text>
+      <text x="592" y="358">J5</text>
+      <text x="788" y="358">J7</text>
+    </g>
+    <g fill="#c04a19">
+      <text x="164" y="612">J2</text>
+      <text x="380" y="218">J4</text>
+      <text x="682" y="358">J6</text>
+    </g>
+  </g>
+
+  <g font-size="11.5" fill="#5a6675" text-anchor="middle">
+    <text x="150" y="722">base yaw</text>
+    <text x="164" y="630">shoulder</text>
+    <text x="248" y="418">arm roll</text>
+    <text x="380" y="236">elbow</text>
+    <text x="592" y="376">arm roll</text>
+    <text x="682" y="376">wrist</text>
+    <text x="788" y="376">flange</text>
+  </g>
+
+  <!-- structure labels -->
+  <g font-size="12.5" font-weight="bold" fill="#3c4654" letter-spacing="1.2">
+    <text x="270" y="828" text-anchor="middle">BASE (FIXED MOUNT)</text>
+    <text x="302" y="502" text-anchor="end">UPPER ARM / LINK 1</text>
+    <text x="516" y="196" text-anchor="middle">FOREARM / LINK 2</text>
+    <text x="852" y="120" text-anchor="end">TOOL FLANGE + TCP</text>
+  </g>
+
+  <text x="88" y="864" font-size="12.5" fill="#5a6675">7 axes give full 6-DOF pose control plus one redundant axis, so the arm can reach around obstacles and dodge singular poses.</text>
+
+  <!-- ================= reference panel ================= -->
+  <rect x="860" y="88" width="310" height="618" rx="14" fill="#ffffff" stroke="#ccd4e0" stroke-width="1.5"/>
+  <text x="880" y="120" font-size="14" font-weight="bold" fill="#1f2733" letter-spacing="1.4">JOINT / AXIS REFERENCE</text>
+  <line x1="878" y1="132" x2="1152" y2="132" stroke="#d9e0ea" stroke-width="1.2"/>
+
+  <!-- row J1 -->
+  <g>
+    <circle cx="894" cy="156" r="13" fill="#0f8f89"/>
+    <text x="894" y="161" font-size="11.5" font-weight="bold" fill="#ffffff" text-anchor="middle">J1</text>
+    <text x="918" y="152" font-size="13.5" font-weight="bold" fill="#1f2733">BASE YAW</text>
+    <text x="1152" y="152" font-size="10.5" font-weight="bold" fill="#0f8f89" text-anchor="end">ROLL</text>
+    <text x="918" y="174" font-size="12" fill="#5a6675">rotates the whole arm around</text>
+    <text x="918" y="190" font-size="12" fill="#5a6675">the vertical axis of the base</text>
+    <line x1="894" y1="206" x2="1152" y2="206" stroke="#eaeff5" stroke-width="1"/>
+  </g>
+  <!-- row J2 -->
+  <g>
+    <circle cx="894" cy="235" r="13" fill="#d9541f"/>
+    <text x="894" y="240" font-size="11.5" font-weight="bold" fill="#ffffff" text-anchor="middle">J2</text>
+    <text x="918" y="231" font-size="13.5" font-weight="bold" fill="#1f2733">SHOULDER PITCH</text>
+    <text x="1152" y="231" font-size="10.5" font-weight="bold" fill="#d9541f" text-anchor="end">PITCH</text>
+    <text x="918" y="253" font-size="12" fill="#5a6675">swings the upper arm</text>
+    <text x="918" y="269" font-size="12" fill="#5a6675">forward and backward</text>
+    <line x1="894" y1="285" x2="1152" y2="285" stroke="#eaeff5" stroke-width="1"/>
+  </g>
+  <!-- row J3 -->
+  <g>
+    <circle cx="894" cy="314" r="13" fill="#0f8f89"/>
+    <text x="894" y="319" font-size="11.5" font-weight="bold" fill="#ffffff" text-anchor="middle">J3</text>
+    <text x="918" y="310" font-size="13.5" font-weight="bold" fill="#1f2733">UPPER ARM ROLL</text>
+    <text x="1152" y="310" font-size="10.5" font-weight="bold" fill="#0f8f89" text-anchor="end">ROLL</text>
+    <text x="918" y="332" font-size="12" fill="#5a6675">twists the upper arm about</text>
+    <text x="918" y="348" font-size="12" fill="#5a6675">its own centre line</text>
+    <line x1="894" y1="364" x2="1152" y2="364" stroke="#eaeff5" stroke-width="1"/>
+  </g>
+  <!-- row J4 -->
+  <g>
+    <circle cx="894" cy="393" r="13" fill="#d9541f"/>
+    <text x="894" y="398" font-size="11.5" font-weight="bold" fill="#ffffff" text-anchor="middle">J4</text>
+    <text x="918" y="389" font-size="13.5" font-weight="bold" fill="#1f2733">ELBOW PITCH</text>
+    <text x="1152" y="389" font-size="10.5" font-weight="bold" fill="#d9541f" text-anchor="end">PITCH</text>
+    <text x="918" y="411" font-size="12" fill="#5a6675">bends the forearm against</text>
+    <text x="918" y="427" font-size="12" fill="#5a6675">the upper arm</text>
+    <line x1="894" y1="443" x2="1152" y2="443" stroke="#eaeff5" stroke-width="1"/>
+  </g>
+  <!-- row J5 -->
+  <g>
+    <circle cx="894" cy="472" r="13" fill="#0f8f89"/>
+    <text x="894" y="477" font-size="11.5" font-weight="bold" fill="#ffffff" text-anchor="middle">J5</text>
+    <text x="918" y="468" font-size="13.5" font-weight="bold" fill="#1f2733">FOREARM ROLL</text>
+    <text x="1152" y="468" font-size="10.5" font-weight="bold" fill="#0f8f89" text-anchor="end">ROLL</text>
+    <text x="918" y="490" font-size="12" fill="#5a6675">twists the forearm about</text>
+    <text x="918" y="506" font-size="12" fill="#5a6675">its own centre line</text>
+    <line x1="894" y1="522" x2="1152" y2="522" stroke="#eaeff5" stroke-width="1"/>
+  </g>
+  <!-- row J6 -->
+  <g>
+    <circle cx="894" cy="551" r="13" fill="#d9541f"/>
+    <text x="894" y="556" font-size="11.5" font-weight="bold" fill="#ffffff" text-anchor="middle">J6</text>
+    <text x="918" y="547" font-size="13.5" font-weight="bold" fill="#1f2733">WRIST PITCH</text>
+    <text x="1152" y="547" font-size="10.5" font-weight="bold" fill="#d9541f" text-anchor="end">PITCH</text>
+    <text x="918" y="569" font-size="12" fill="#5a6675">tilts the tool head</text>
+    <text x="918" y="585" font-size="12" fill="#5a6675">up and down</text>
+    <line x1="894" y1="601" x2="1152" y2="601" stroke="#eaeff5" stroke-width="1"/>
+  </g>
+  <!-- row J7 -->
+  <g>
+    <circle cx="894" cy="630" r="13" fill="#0f8f89"/>
+    <text x="894" y="635" font-size="11.5" font-weight="bold" fill="#ffffff" text-anchor="middle">J7</text>
+    <text x="918" y="626" font-size="13.5" font-weight="bold" fill="#1f2733">FLANGE ROLL</text>
+    <text x="1152" y="626" font-size="10.5" font-weight="bold" fill="#0f8f89" text-anchor="end">ROLL</text>
+    <text x="918" y="648" font-size="12" fill="#5a6675">endless spin of the tool</text>
+    <text x="918" y="664" font-size="12" fill="#5a6675">flange that carries the TCP</text>
+  </g>
+
+  <!-- legend -->
+  <rect x="860" y="718" width="310" height="104" rx="12" fill="#f7f9fc" stroke="#ccd4e0" stroke-width="1.4"/>
+  <text x="880" y="742" font-size="12.5" font-weight="bold" fill="#1f2733" letter-spacing="1.2">ARROW LEGEND</text>
+  <path d="M 884,776 A 10,4 45 0 1 898,762" fill="none" stroke="#0f8f89" stroke-width="2.4"
+        marker-start="url(#rollStart)" marker-end="url(#rollEnd)"/>
+  <text x="916" y="772" font-size="10.5" fill="#3c4654">ROLL: twist about the link axis - J1 J3 J5 J7</text>
+  <path d="M 882,796 A 12,12 0 0 1 900,786" fill="none" stroke="#d9541f" stroke-width="2.4"
+        marker-start="url(#pitchStart)" marker-end="url(#pitchEnd)"/>
+  <text x="916" y="794" font-size="10.5" fill="#3c4654">PITCH: bend across the link axis - J2 J4 J6</text>
+  <text x="880" y="813" font-size="10.5" fill="#7a8593">Double heads mean the axis turns both ways.</text>
+</svg>

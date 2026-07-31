@@ -1,0 +1,121 @@
+\documentclass[border=12pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,patterns,calc}
+
+\definecolor{cylwall}{RGB}{70,78,90}
+\definecolor{cylfill}{RGB}{210,218,228}
+\definecolor{piston}{RGB}{95,105,120}
+\definecolor{rod}{RGB}{130,140,155}
+\definecolor{oilA}{RGB}{70,145,200}
+\definecolor{oilB}{RGB}{200,95,70}
+\definecolor{oilAlight}{RGB}{160,205,235}
+\definecolor{oilBlight}{RGB}{235,175,155}
+\definecolor{labelink}{RGB}{35,40,50}
+\definecolor{port}{RGB}{50,55,65}
+
+\begin{document}
+\begin{tikzpicture}[
+  >=Stealth,
+  font=\sffamily\small,
+  line cap=round,
+  line join=round
+]
+
+% --- Title ---
+\node[font=\sffamily\bfseries\large, text=labelink] at (5.2,6.35)
+  {油圧ピストンの断面構造};
+
+% --- Cylinder outer wall ---
+\fill[cylwall] (0.4,1.2) rectangle (9.2,5.0);
+% Inner bore (cutaway)
+\fill[cylfill] (0.7,1.55) rectangle (8.9,4.65);
+
+% --- Left pressure chamber (cap side) ---
+\fill[oilAlight] (0.7,1.55) rectangle (3.55,4.65);
+% --- Right pressure chamber (rod side) ---
+\fill[oilBlight] (4.55,1.55) rectangle (8.05,4.65);
+
+% --- Piston head ---
+\fill[piston] (3.55,1.55) rectangle (4.55,4.65);
+\draw[cylwall, line width=1.1pt] (3.55,1.55) -- (3.55,4.65);
+\draw[cylwall, line width=1.1pt] (4.55,1.55) -- (4.55,4.65);
+% Seal rings (schematic)
+\fill[labelink!70] (3.55,1.85) rectangle (4.55,2.05);
+\fill[labelink!70] (3.55,4.15) rectangle (4.55,4.35);
+
+% --- Piston rod ---
+\fill[rod] (4.55,2.55) rectangle (10.0,3.65);
+\draw[cylwall, line width=0.8pt] (4.55,2.55) -- (10.0,2.55);
+\draw[cylwall, line width=0.8pt] (4.55,3.65) -- (10.0,3.65);
+
+% --- Rod-end gland / bushing ---
+\fill[cylwall] (8.05,1.55) rectangle (8.9,2.55);
+\fill[cylwall] (8.05,3.65) rectangle (8.9,4.65);
+\fill[rod!80!black] (8.05,2.55) rectangle (8.9,3.65);
+
+% --- Cylinder end caps (visual thickness) ---
+\fill[cylwall] (0.4,1.2) rectangle (0.7,5.0);
+\fill[cylwall] (8.9,1.2) rectangle (9.2,5.0);
+
+% --- Outer outline ---
+\draw[cylwall, line width=1.4pt] (0.4,1.2) rectangle (9.2,5.0);
+\draw[cylwall, line width=0.7pt] (0.7,1.55) -- (8.9,1.55);
+\draw[cylwall, line width=0.7pt] (0.7,4.65) -- (8.9,4.65);
+
+% --- Ports ---
+% Left port (bottom)
+\fill[port] (1.55,0.85) rectangle (2.35,1.55);
+\draw[port, line width=0.9pt] (1.55,0.85) rectangle (2.35,1.55);
+% Right port (bottom)
+\fill[port] (6.15,0.85) rectangle (6.95,1.55);
+\draw[port, line width=0.9pt] (6.15,0.85) rectangle (6.95,1.55);
+
+% --- Fluid flow arrows: extend (pressure into left chamber) ---
+\draw[oilA, line width=2.2pt, ->] (1.95,-0.15) -- (1.95,0.85);
+\draw[oilA, line width=1.6pt, ->] (1.3,2.6) -- (3.25,2.6);
+\draw[oilA, line width=1.6pt, ->] (1.3,3.6) -- (3.25,3.6);
+
+% --- Fluid flow arrows: return from right chamber ---
+\draw[oilB, line width=1.6pt, ->] (7.7,2.6) -- (7.0,2.6);
+\draw[oilB, line width=1.6pt, ->] (7.7,3.6) -- (7.0,3.6);
+\draw[oilB, line width=2.2pt, ->] (6.55,0.85) -- (6.55,-0.15);
+
+% --- Motion arrow for rod (extension) ---
+\draw[labelink, line width=2pt, ->] (9.35,3.1) -- (10.55,3.1);
+\node[font=\sffamily\footnotesize, text=labelink, anchor=west] at (10.6,3.1) {伸長};
+
+% --- Chamber labels (inside) ---
+\node[font=\sffamily\footnotesize\bfseries, text=oilA!80!black] at (2.1,4.25)
+  {圧力室 A};
+\node[font=\sffamily\footnotesize\bfseries, text=oilB!80!black] at (6.3,4.25)
+  {圧力室 B};
+
+% --- Part callouts ---
+% Cylinder
+\draw[labelink, line width=0.7pt] (4.05,5.0) -- (4.05,5.55);
+\node[font=\sffamily\footnotesize, text=labelink, anchor=south] at (4.05,5.55) {シリンダー};
+
+% Piston
+\draw[labelink, line width=0.7pt] (4.05,1.55) -- (4.05,0.55);
+\node[font=\sffamily\footnotesize, text=labelink, anchor=north] at (4.05,0.55) {ピストン};
+
+% Rod
+\draw[labelink, line width=0.7pt] (9.4,3.65) -- (9.4,4.55);
+\node[font=\sffamily\footnotesize, text=labelink, anchor=south] at (9.4,4.55) {ロッド};
+
+% Left port label
+\node[font=\sffamily\footnotesize, text=oilA!70!black, anchor=east] at (1.4,-0.15) {給油口};
+
+% Right port label
+\node[font=\sffamily\footnotesize, text=oilB!70!black, anchor=west] at (7.1,-0.15) {排油口};
+
+% Seal note
+\draw[labelink, line width=0.6pt] (4.55,4.25) -- (5.35,5.15);
+\node[font=\sffamily\footnotesize, text=labelink, anchor=west] at (5.4,5.15) {シール};
+
+% Legend / caption
+\node[anchor=west, font=\sffamily\footnotesize, text=labelink] at (0.4,-0.85)
+  {青矢印: 高圧油の流入\quad 橙矢印: 戻り油の流出\quad （ロッド側へ伸長する例）};
+
+\end{tikzpicture}
+\end{document}

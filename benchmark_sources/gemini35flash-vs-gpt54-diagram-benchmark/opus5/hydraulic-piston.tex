@@ -1,0 +1,196 @@
+% !TEX program = xelatex
+\documentclass[border=4pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{Hiragino Sans}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,patterns}
+
+\definecolor{paper}{RGB}{252,251,247}
+\definecolor{ink}{RGB}{38,42,50}
+\definecolor{steel}{RGB}{208,215,222}
+\definecolor{steeldk}{RGB}{132,144,157}
+\definecolor{steeled}{RGB}{70,80,92}
+\definecolor{rodgray}{RGB}{233,237,242}
+\definecolor{oilhot}{RGB}{233,140,60}
+\definecolor{oilcold}{RGB}{110,175,220}
+\definecolor{sealblk}{RGB}{52,56,64}
+\definecolor{redar}{RGB}{198,58,52}
+\definecolor{bluear}{RGB}{34,105,175}
+\definecolor{gridgray}{RGB}{150,156,164}
+
+% 金属断面（濃色ハッチング）
+\newcommand{\metal}[4]{%
+  \fill[steel] (#1,#2) rectangle (#3,#4);
+  \path[pattern=north east lines,pattern color=steeldk] (#1,#2) rectangle (#3,#4);
+  \draw[steeled,line width=0.9pt] (#1,#2) rectangle (#3,#4);
+}
+% 金属断面（ロッド・淡色）
+\newcommand{\metallt}[4]{%
+  \fill[rodgray] (#1,#2) rectangle (#3,#4);
+  \path[pattern=north east lines,pattern color=steeldk!70] (#1,#2) rectangle (#3,#4);
+  \draw[steeled,line width=0.9pt] (#1,#2) rectangle (#3,#4);
+}
+
+\begin{document}
+\begin{tikzpicture}[
+  line cap=round,
+  lbl/.style={font=\small,text=ink,align=center,inner sep=2pt},
+  lgd/.style={font=\footnotesize,text=ink,inner sep=2pt},
+  lead/.style={draw=ink!75,line width=0.55pt},
+  dim/.style={draw=gridgray,line width=0.5pt,{Latex[length=2mm]}-{Latex[length=2mm]}},
+  ext/.style={draw=gridgray,line width=0.4pt,dash pattern=on 2pt off 2pt},
+]
+
+%============================== 用紙 ==============================
+\fill[paper] (-2.6,-7.5) rectangle (15.9,6.4);
+
+%============================== 表題 ==============================
+\node[font=\Large\bfseries,text=ink,anchor=south]
+  at (6.6,5.45) {油圧ピストン（複動形油圧シリンダ）の断面構造};
+\node[font=\small,text=ink!70,anchor=north]
+  at (6.6,5.35) {ヘッド側へ高圧油を送り込み、ロッド側の油をタンクへ戻すことでロッドが前進する};
+
+%============================== 中心線 ==============================
+\draw[gridgray,line width=0.5pt,dash pattern=on 10pt off 3pt on 2pt off 3pt]
+  (-1.9,0) -- (15.1,0);
+
+%============================== 圧力室（作動油） ==============================
+% ヘッド側（高圧）
+\fill[oilhot!30] (0,-1.8) rectangle (4.1,1.8);
+\fill[oilhot!30] (0.7,-3.4) rectangle (1.3,-1.8);
+% ロッド側（低圧・戻り）
+\fill[oilcold!30] (5.5,0.45) rectangle (10,1.8);
+\fill[oilcold!30] (5.5,-1.8) rectangle (10,-0.45);
+\fill[oilcold!30] (8.3,-3.4) rectangle (8.9,-1.8);
+
+%============================== 金属部 ==============================
+% シリンダチューブ
+\metal{0}{1.8}{10}{2.3}
+\metal{0}{-2.3}{0.7}{-1.8}
+\metal{1.3}{-2.3}{8.3}{-1.8}
+\metal{8.9}{-2.3}{10}{-1.8}
+% ボトムカバー（ヘッド側キャップ）
+\metal{-0.85}{-2.3}{0}{2.3}
+% シリンダヘッド（ロッドカバー）: ロッド穴を残して上下2分割
+\metal{10}{0.45}{10.95}{2.3}
+\metal{10}{-2.3}{10.95}{-0.45}
+% ポートボス
+\metal{0.4}{-3.4}{0.7}{-2.3}
+\metal{1.3}{-3.4}{1.6}{-2.3}
+\metal{8.0}{-3.4}{8.3}{-2.3}
+\metal{8.9}{-3.4}{9.2}{-2.3}
+% ピストン
+\metal{4.1}{-1.8}{5.5}{1.8}
+% ピストンロッド
+\metallt{5.5}{-0.45}{13.2}{0.45}
+% ロッドアイ（取付部）
+\fill[rodgray] (13.9,0) circle (0.62);
+\path[pattern=north east lines,pattern color=steeldk!70] (13.9,0) circle (0.62);
+\draw[steeled,line width=0.9pt] (13.9,0) circle (0.62);
+\fill[paper] (13.9,0) circle (0.26);
+\draw[steeled,line width=0.9pt] (13.9,0) circle (0.26);
+
+%============================== シール類 ==============================
+% ピストンシール／ウェアリング
+\fill[sealblk] (4.30,1.50) rectangle (4.62,1.80);
+\fill[sealblk] (4.98,1.50) rectangle (5.30,1.80);
+\fill[sealblk] (4.30,-1.80) rectangle (4.62,-1.50);
+\fill[sealblk] (4.98,-1.80) rectangle (5.30,-1.50);
+% ロッドシール／ダストワイパ
+\fill[sealblk] (10.12,0.45) rectangle (10.44,0.78);
+\fill[sealblk] (10.58,0.45) rectangle (10.90,0.78);
+\fill[sealblk] (10.12,-0.78) rectangle (10.44,-0.45);
+\fill[sealblk] (10.58,-0.78) rectangle (10.90,-0.45);
+
+%============================== 流体の流れ ==============================
+% 供給（高圧）
+\draw[redar,line width=2pt,-{Stealth[length=4.5mm,width=3.8mm]}]
+  (1.0,-4.75) -- (1.0,-3.5);
+\draw[redar,line width=1.7pt,-{Stealth[length=4mm,width=3.4mm]}]
+  (1.0,-1.55) -- (1.0,0.9) -- (3.75,0.9);
+\draw[redar,line width=1.7pt,-{Stealth[length=4mm,width=3.4mm]}]
+  (2.1,-0.95) -- (3.75,-0.95);
+% 戻り（低圧）
+\draw[bluear,line width=1.7pt,-{Stealth[length=4mm,width=3.4mm]}]
+  (6.1,-1.0) -- (8.6,-1.0) -- (8.6,-1.62);
+\draw[bluear,line width=2pt,-{Stealth[length=4.5mm,width=3.8mm]}]
+  (8.6,-3.5) -- (8.6,-4.75);
+% ロッドの動き
+\draw[ink,line width=2.2pt,-{Stealth[length=5.5mm,width=4.6mm]}]
+  (11.6,-1.45) -- (13.6,-1.45);
+
+%============================== 寸法 ==============================
+\draw[ext] (-1.62,1.8) -- (-0.88,1.8);
+\draw[ext] (-1.62,-1.8) -- (-0.88,-1.8);
+\draw[dim] (-1.5,-1.8) -- (-1.5,1.8);
+\node[font=\small,text=ink,rotate=90] at (-1.78,0) {内径 $D$};
+
+\draw[ext] (5.5,1.95) -- (5.5,2.88);
+\draw[ext] (10.0,1.95) -- (10.0,2.88);
+\draw[dim] (5.5,2.70) -- (10.0,2.70);
+\node[font=\footnotesize,text=ink,anchor=south] at (7.75,2.72) {ストローク};
+
+%============================== 室内ラベル ==============================
+\node[lbl,text=redar!80!black] at (2.6,0.05)
+  {ヘッド側油室\\（高圧 $p_1$）};
+\node[lbl,text=bluear!80!black] at (7.6,1.12)
+  {ロッド側油室\\（低圧 $p_2$）};
+\node[font=\small,text=ink,rotate=90] at (4.80,0.55) {ピストン};
+\node[font=\small,text=ink,anchor=east] at (3.98,-1.42) {$A_1$};
+\node[font=\small,text=ink,anchor=west] at (5.62,-1.42) {$A_2$};
+
+%============================== 引出線ラベル ==============================
+% ボトムカバー
+\draw[lead] (-0.45,3.15) -- (-0.42,2.34);
+\fill[ink] (-0.42,2.34) circle (1.5pt);
+\node[lbl,anchor=south] at (-0.45,3.20) {ボトムカバー};
+% シリンダチューブ
+\draw[lead] (2.60,3.15) -- (2.60,2.34);
+\fill[ink] (2.60,2.34) circle (1.5pt);
+\node[lbl,anchor=south] at (2.60,3.20) {シリンダチューブ};
+% ピストンシール
+\draw[lead] (6.40,3.15) -- (5.22,1.66);
+\fill[ink] (5.22,1.66) circle (1.5pt);
+\node[lbl,anchor=south] at (6.40,3.20) {ピストンシール};
+% ロッドシール
+\draw[lead] (13.60,3.15) -- (10.72,0.62);
+\fill[ink] (10.72,0.62) circle (1.5pt);
+\node[lbl,anchor=south] at (13.60,3.20) {ロッドシール\\（パッキン・ワイパ）};
+% シリンダヘッド
+\draw[lead] (9.60,4.40) -- (10.45,2.34);
+\fill[ink] (10.45,2.34) circle (1.5pt);
+\node[lbl,anchor=south] at (9.60,4.45) {シリンダヘッド（ロッドカバー）};
+% ロッドアイ
+\draw[lead] (13.90,1.30) -- (13.90,0.68);
+\fill[ink] (13.90,0.68) circle (1.5pt);
+\node[lbl,anchor=south] at (13.90,1.35) {ロッドアイ};
+% ピストンロッド
+\draw[lead] (11.90,-0.58) -- (11.90,-0.47);
+\fill[ink] (11.90,-0.47) circle (1.5pt);
+\node[lbl,anchor=north] at (11.90,-0.62) {ピストンロッド};
+% 動作方向
+\node[lbl,anchor=north,font=\small\bfseries] at (12.60,-1.58) {ロッド前進方向};
+
+%============================== ポート ==============================
+\node[lbl,anchor=north] at (1.0,-4.90)
+  {ポート A（ヘッド側）\\ポンプからの高圧油 $P$};
+\node[lbl,anchor=north] at (8.6,-4.90)
+  {ポート B（ロッド側）\\タンクへの戻り油 $T$};
+
+%============================== 凡例 ==============================
+\draw[rounded corners=3pt,draw=gridgray,line width=0.6pt,fill=ink!3]
+  (-2.15,-7.35) rectangle (15.35,-6.25);
+\draw[redar,line width=1.8pt,-{Stealth[length=3.5mm,width=3mm]}]
+  (-1.85,-6.8) -- (-1.00,-6.8);
+\node[lgd,anchor=west] at (-0.85,-6.8) {高圧油の流れ（供給）};
+\draw[bluear,line width=1.8pt,-{Stealth[length=3.5mm,width=3mm]}]
+  (2.80,-6.8) -- (3.65,-6.8);
+\node[lgd,anchor=west] at (3.80,-6.8) {低圧油の流れ（戻り）};
+\fill[steel] (7.50,-7.00) rectangle (8.20,-6.60);
+\path[pattern=north east lines,pattern color=steeldk] (7.50,-7.00) rectangle (8.20,-6.60);
+\draw[steeled,line width=0.6pt] (7.50,-7.00) rectangle (8.20,-6.60);
+\node[lgd,anchor=west] at (8.35,-6.8) {金属部（断面）};
+\node[lgd,anchor=east] at (15.15,-6.8) {推力 $F = p_1 A_1 - p_2 A_2$};
+
+\end{tikzpicture}
+\end{document}

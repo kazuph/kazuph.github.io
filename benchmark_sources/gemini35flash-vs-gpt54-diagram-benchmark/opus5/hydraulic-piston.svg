@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <pattern id="hatchA" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)">
+      <rect width="9" height="9" fill="#c4ccd6"/>
+      <line x1="0" y1="0" x2="0" y2="9" stroke="#98a4b2" stroke-width="1.5"/>
+    </pattern>
+    <pattern id="hatchB" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(-45)">
+      <rect width="9" height="9" fill="#a9b6c4"/>
+      <line x1="0" y1="0" x2="0" y2="9" stroke="#7d8b9b" stroke-width="1.5"/>
+    </pattern>
+    <pattern id="hatchC" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(-45)">
+      <rect width="9" height="9" fill="#d9e0e8"/>
+      <line x1="0" y1="0" x2="0" y2="9" stroke="#a8b3bf" stroke-width="1.3"/>
+    </pattern>
+    <marker id="mBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f6fc4"/>
+    </marker>
+    <marker id="mOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d97b1a"/>
+    </marker>
+    <marker id="mRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="mDim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a5560"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="#f6f8fb"/>
+
+  <text x="600" y="46" text-anchor="middle" font-size="28" font-weight="bold" fill="#17222e">Hydraulic Cylinder (Double-Acting Piston) - Sectional View</text>
+  <text x="600" y="76" text-anchor="middle" font-size="15" fill="#55606b">Oil supplied to Port A extends the rod; displaced oil in the rod-end chamber returns through Port B</text>
+
+  <!-- ================= fluid chambers ================= -->
+  <rect x="212" y="320" width="258" height="220" fill="#cfe4f8"/>
+  <rect x="540" y="320" width="290" height="220" fill="#fbe3c4"/>
+
+  <!-- ================= cylinder structure ================= -->
+  <g stroke="#3d4854" stroke-width="2.5">
+    <rect x="170" y="294" width="42" height="272" fill="url(#hatchA)"/>
+    <rect x="212" y="294" width="618" height="26" fill="url(#hatchA)"/>
+    <rect x="212" y="540" width="618" height="26" fill="url(#hatchA)"/>
+    <rect x="830" y="294" width="52" height="108" fill="url(#hatchA)"/>
+    <rect x="830" y="458" width="52" height="108" fill="url(#hatchA)"/>
+  </g>
+  <rect x="212" y="320" width="258" height="220" fill="none" stroke="#1f6fc4" stroke-width="1.5"/>
+  <rect x="540" y="320" width="290" height="220" fill="none" stroke="#d97b1a" stroke-width="1.5"/>
+
+  <!-- ================= ports ================= -->
+  <g stroke="#3d4854" stroke-width="2.5">
+    <rect x="232" y="238" width="38" height="58" fill="url(#hatchA)"/>
+    <rect x="772" y="238" width="38" height="58" fill="url(#hatchA)"/>
+  </g>
+  <rect x="243" y="239" width="16" height="82" fill="#cfe4f8" stroke="#1f6fc4" stroke-width="1.5"/>
+  <rect x="783" y="239" width="16" height="82" fill="#fbe3c4" stroke="#d97b1a" stroke-width="1.5"/>
+
+  <!-- ================= piston and rod ================= -->
+  <rect x="470" y="320" width="70" height="220" fill="url(#hatchB)" stroke="#2f3a46" stroke-width="2.5"/>
+  <rect x="540" y="402" width="518" height="56" fill="url(#hatchC)" stroke="#2f3a46" stroke-width="2.5"/>
+  <rect x="1054" y="388" width="26" height="84" fill="url(#hatchC)" stroke="#2f3a46" stroke-width="2.5"/>
+  <circle cx="1067" cy="430" r="11" fill="#f6f8fb" stroke="#2f3a46" stroke-width="2.5"/>
+
+  <!-- piston seals -->
+  <g fill="#2f3640" stroke="#151a1f" stroke-width="1.2">
+    <rect x="478" y="320" width="20" height="15"/>
+    <rect x="512" y="320" width="20" height="15"/>
+    <rect x="478" y="525" width="20" height="15"/>
+    <rect x="512" y="525" width="20" height="15"/>
+  </g>
+  <!-- rod seal and wiper -->
+  <g fill="#2f3640" stroke="#151a1f" stroke-width="1.2">
+    <rect x="838" y="389" width="14" height="13"/>
+    <rect x="860" y="389" width="14" height="13"/>
+    <rect x="838" y="458" width="14" height="13"/>
+    <rect x="860" y="458" width="14" height="13"/>
+  </g>
+
+  <!-- ================= fluid flow arrows ================= -->
+  <g stroke="#1f6fc4" stroke-width="4.5" fill="none" stroke-linecap="round" marker-end="url(#mBlue)">
+    <line x1="251" y1="150" x2="251" y2="230"/>
+    <line x1="251" y1="302" x2="251" y2="344"/>
+    <line x1="248" y1="380" x2="438" y2="380"/>
+    <line x1="238" y1="432" x2="438" y2="432"/>
+    <line x1="238" y1="492" x2="438" y2="492"/>
+  </g>
+  <g stroke="#d97b1a" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mOrange)">
+    <path d="M575,354 L768,354 L791,340 L791,300"/>
+    <line x1="791" y1="230" x2="791" y2="150"/>
+    <line x1="575" y1="498" x2="748" y2="498"/>
+  </g>
+
+  <!-- output force -->
+  <line x1="1088" y1="430" x2="1176" y2="430" stroke="#c0392b" stroke-width="7" stroke-linecap="round" marker-end="url(#mRed)"/>
+  <text x="1132" y="398" text-anchor="middle" font-size="15" font-weight="bold" fill="#c0392b">Output Force</text>
+  <text x="1132" y="472" text-anchor="middle" font-size="13" fill="#c0392b">extend stroke</text>
+
+  <!-- ================= dimensions ================= -->
+  <g stroke="#4a5560" stroke-width="1.6" marker-start="url(#mDim)" marker-end="url(#mDim)">
+    <line x1="140" y1="320" x2="140" y2="540"/>
+    <line x1="1010" y1="402" x2="1010" y2="458"/>
+  </g>
+  <g stroke="#8a949e" stroke-width="1" stroke-dasharray="4 3">
+    <line x1="140" y1="320" x2="212" y2="320"/>
+    <line x1="140" y1="540" x2="212" y2="540"/>
+  </g>
+  <text x="122" y="430" text-anchor="middle" font-size="13" fill="#3d4854" transform="rotate(-90 122 430)">Bore diameter D</text>
+  <text x="1010" y="392" text-anchor="middle" font-size="13" fill="#3d4854">Rod dia. d</text>
+
+  <!-- ================= leader lines ================= -->
+  <g stroke="#6b7682" stroke-width="1.4" fill="none" stroke-dasharray="5 3">
+    <line x1="600" y1="294" x2="600" y2="212"/>
+    <line x1="505" y1="320" x2="505" y2="256"/>
+    <polyline points="856,396 890,302 902,292"/>
+    <line x1="190" y1="566" x2="190" y2="640"/>
+    <line x1="340" y1="540" x2="340" y2="640"/>
+    <line x1="505" y1="540" x2="505" y2="722"/>
+    <line x1="690" y1="540" x2="690" y2="640"/>
+    <polyline points="856,566 908,596 932,600"/>
+    <line x1="960" y1="458" x2="960" y2="528"/>
+  </g>
+  <g fill="#6b7682">
+    <circle cx="600" cy="294" r="3.5"/>
+    <circle cx="505" cy="322" r="3.5"/>
+    <circle cx="856" cy="396" r="3.5"/>
+    <circle cx="190" cy="566" r="3.5"/>
+    <circle cx="340" cy="540" r="3.5"/>
+    <circle cx="505" cy="540" r="3.5"/>
+    <circle cx="690" cy="540" r="3.5"/>
+    <circle cx="856" cy="566" r="3.5"/>
+    <circle cx="960" cy="458" r="3.5"/>
+  </g>
+
+  <!-- ================= labels ================= -->
+  <g font-size="15" fill="#17222e">
+    <text x="274" y="142" font-weight="bold" fill="#1f6fc4">Port A - Pressure IN</text>
+    <text x="274" y="162" font-size="13" fill="#4a5560">(from pump, P line)</text>
+    <text x="768" y="142" text-anchor="end" font-weight="bold" fill="#d97b1a">Port B - Return OUT</text>
+    <text x="768" y="162" text-anchor="end" font-size="13" fill="#4a5560">(to tank, T line)</text>
+
+    <text x="600" y="198" text-anchor="middle" font-weight="bold">Cylinder Barrel (Tube)</text>
+    <text x="505" y="242" text-anchor="middle" font-weight="bold">Piston Seals</text>
+    <text x="908" y="288" font-weight="bold">Rod Seal and Wiper</text>
+
+    <text x="190" y="662" text-anchor="middle" font-weight="bold">Cap End Cover</text>
+    <text x="190" y="682" text-anchor="middle" font-size="13" fill="#4a5560">(blind end)</text>
+
+    <text x="340" y="662" text-anchor="middle" font-weight="bold" fill="#1f6fc4">Cap-End Chamber</text>
+    <text x="340" y="682" text-anchor="middle" font-size="13" fill="#4a5560">full bore area, high pressure</text>
+
+    <text x="690" y="662" text-anchor="middle" font-weight="bold" fill="#d97b1a">Rod-End Chamber</text>
+    <text x="690" y="682" text-anchor="middle" font-size="13" fill="#4a5560">annulus area, returning oil</text>
+
+    <text x="505" y="744" text-anchor="middle" font-weight="bold">Piston</text>
+    <text x="938" y="604" font-weight="bold">Cylinder Head / Gland</text>
+    <text x="960" y="550" text-anchor="middle" font-weight="bold">Piston Rod</text>
+  </g>
+
+  <!-- ================= legend ================= -->
+  <rect x="840" y="636" width="320" height="150" rx="10" fill="#ffffff" stroke="#c3ccd6" stroke-width="1.5"/>
+  <text x="858" y="664" font-size="15" font-weight="bold" fill="#17222e">Legend</text>
+  <g font-size="14" fill="#25313d">
+    <rect x="858" y="682" width="22" height="14" fill="#cfe4f8" stroke="#1f6fc4" stroke-width="1.5"/>
+    <text x="890" y="694">Pressurized oil (supply)</text>
+    <rect x="858" y="710" width="22" height="14" fill="#fbe3c4" stroke="#d97b1a" stroke-width="1.5"/>
+    <text x="890" y="722">Return oil (to tank)</text>
+    <rect x="858" y="738" width="22" height="14" fill="url(#hatchA)" stroke="#3d4854" stroke-width="1.5"/>
+    <text x="890" y="750">Metal structure (section)</text>
+    <rect x="858" y="766" width="22" height="14" fill="#2f3640" stroke="#151a1f" stroke-width="1.2"/>
+    <text x="890" y="778">Seal / wiper</text>
+  </g>
+
+  <!-- ================= note ================= -->
+  <rect x="60" y="792" width="750" height="82" rx="10" fill="#eef3f9" stroke="#c3ccd6" stroke-width="1.5"/>
+  <g font-size="14" fill="#25313d">
+    <text x="78" y="818">Double-acting cylinder: pressurized oil enters Port A and acts on the full bore area of the piston.</text>
+    <text x="78" y="840">The piston moves right and oil in the rod-end chamber is pushed out through Port B back to the tank.</text>
+    <text x="78" y="862">Force = Pressure x Effective Area; bore-side area is larger, so extend force exceeds retract force.</text>
+  </g>
+</svg>
