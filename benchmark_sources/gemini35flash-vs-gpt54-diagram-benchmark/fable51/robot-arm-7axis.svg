@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="linkG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F6F8FA"/><stop offset="60%" stop-color="#E4E9EF"/><stop offset="100%" stop-color="#C3CBD5"/>
+    </linearGradient>
+    <linearGradient id="baseG" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4F5C68"/><stop offset="50%" stop-color="#7B8A98"/><stop offset="100%" stop-color="#4F5C68"/>
+    </linearGradient>
+    <radialGradient id="jointG" cx="35%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#FBC58A"/><stop offset="100%" stop-color="#E58A3F"/>
+    </radialGradient>
+    <marker id="mPitch" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2A6F97"/></marker>
+    <marker id="mRoll" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#C0392B"/></marker>
+    <marker id="mYaw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2E8B57"/></marker>
+    <clipPath id="floorClip"><rect x="0" y="620" width="1200" height="280"/></clipPath>
+  </defs>
+
+  <rect width="1200" height="900" fill="#F7F8FA"/>
+  <text x="30" y="52" font-size="26" font-weight="bold" fill="#233044">7-axis articulated robot arm: joints J1–J7</text>
+
+  <!-- floor grid -->
+  <g clip-path="url(#floorClip)" stroke="#E3E6EB" stroke-width="1">
+    <line x1="-60" y1="900" x2="180" y2="620"/><line x1="30" y1="900" x2="270" y2="620"/><line x1="120" y1="900" x2="360" y2="620"/><line x1="210" y1="900" x2="450" y2="620"/><line x1="300" y1="900" x2="540" y2="620"/><line x1="390" y1="900" x2="630" y2="620"/><line x1="480" y1="900" x2="720" y2="620"/><line x1="570" y1="900" x2="810" y2="620"/><line x1="660" y1="900" x2="900" y2="620"/><line x1="750" y1="900" x2="990" y2="620"/><line x1="840" y1="900" x2="1080" y2="620"/><line x1="930" y1="900" x2="1170" y2="620"/><line x1="1020" y1="900" x2="1260" y2="620"/>
+    <line x1="0" y1="890" x2="1200" y2="830"/><line x1="0" y1="845" x2="1200" y2="785"/><line x1="0" y1="800" x2="1200" y2="740"/><line x1="0" y1="755" x2="1200" y2="695"/><line x1="0" y1="710" x2="1200" y2="650"/><line x1="0" y1="665" x2="1200" y2="605"/>
+  </g>
+  <ellipse cx="460" cy="785" rx="260" ry="45" fill="#000000" opacity="0.08"/>
+
+  <!-- base -->
+  <ellipse cx="390" cy="765" rx="120" ry="35" fill="#4F5C68" stroke="#5B6773" stroke-width="2"/>
+  <rect x="270" y="730" width="240" height="35" fill="url(#baseG)"/>
+  <line x1="270" y1="730" x2="270" y2="765" stroke="#5B6773" stroke-width="2"/><line x1="510" y1="730" x2="510" y2="765" stroke="#5B6773" stroke-width="2"/>
+  <ellipse cx="390" cy="730" rx="120" ry="35" fill="#6B7A88" stroke="#5B6773" stroke-width="2"/>
+  <rect x="340" y="590" width="100" height="140" fill="#BFC8D2"/>
+  <rect x="355" y="590" width="70" height="140" fill="url(#linkG)"/>
+  <line x1="340" y1="590" x2="340" y2="730" stroke="#5B6773" stroke-width="2"/><line x1="440" y1="590" x2="440" y2="730" stroke="#5B6773" stroke-width="2"/>
+  <ellipse cx="390" cy="590" rx="50" ry="16" fill="#E9EDF2" stroke="#5B6773" stroke-width="2"/>
+  <rect x="335" y="515" width="110" height="80" rx="10" fill="url(#linkG)" stroke="#5B6773" stroke-width="2"/>
+
+  <!-- upper arm: J2 (390,615) -> J4 (570,330) -->
+  <g transform="rotate(-57.7 390 615)">
+    <rect x="390" y="575" width="340" height="80" rx="12" fill="#BFC8D2"/>
+    <rect x="390" y="580" width="340" height="70" rx="12" fill="url(#linkG)" stroke="#5B6773" stroke-width="2"/>
+    <rect x="410" y="590" width="300" height="12" rx="5" fill="#FFFFFF" opacity="0.55"/>
+  </g>
+  <!-- forearm: J4 (570,330) -> J6 (870,395) -->
+  <g transform="rotate(12.2 570 330)">
+    <rect x="570" y="295" width="307" height="70" rx="12" fill="#BFC8D2"/>
+    <rect x="570" y="300" width="307" height="60" rx="12" fill="url(#linkG)" stroke="#5B6773" stroke-width="2"/>
+    <rect x="590" y="308" width="270" height="12" rx="5" fill="#FFFFFF" opacity="0.55"/>
+  </g>
+  <!-- wrist: J6 (870,395) -> J7 (970,470) -->
+  <g transform="rotate(36.9 870 395)">
+    <rect x="870" y="370" width="125" height="50" rx="10" fill="#BFC8D2"/>
+    <rect x="870" y="372" width="125" height="46" rx="10" fill="url(#linkG)" stroke="#5B6773" stroke-width="2"/>
+  </g>
+  <!-- flange + gripper -->
+  <g transform="rotate(36.9 970 470)">
+    <rect x="970" y="440" width="25" height="60" fill="#BFC8D2" stroke="#5B6773" stroke-width="2"/>
+    <rect x="995" y="440" width="80" height="18" rx="4" fill="url(#linkG)" stroke="#5B6773" stroke-width="2"/>
+    <rect x="995" y="482" width="80" height="18" rx="4" fill="url(#linkG)" stroke="#5B6773" stroke-width="2"/>
+    <rect x="1075" y="445" width="40" height="13" fill="#BFC8D2" stroke="#5B6773" stroke-width="2"/>
+    <rect x="1075" y="482" width="40" height="13" fill="#BFC8D2" stroke="#5B6773" stroke-width="2"/>
+  </g>
+
+  <!-- J1 yaw -->
+  <line x1="390" y1="780" x2="390" y2="480" stroke="#2E8B57" stroke-width="2" stroke-dasharray="7 5"/>
+  <path d="M315 710 A75 22 0 0 0 464 706" fill="none" stroke="#2A6F97" stroke-width="0"/>
+  <path d="M315 710 A75 22 0 0 0 464 714" fill="none" stroke="#2E8B57" stroke-width="2.5" marker-end="url(#mYaw)"/>
+  <text x="235" y="702" font-size="20" font-weight="bold" fill="#2E8B57">J1</text>
+
+  <!-- J2 pitch -->
+  <circle cx="390" cy="615" r="30" fill="url(#jointG)" stroke="#B8632A" stroke-width="2"/>
+  <circle cx="390" cy="615" r="10" fill="#FFFFFF"/>
+  <path d="M338 634 A55 55 0 0 0 438 643" fill="none" stroke="#2A6F97" stroke-width="2.5" marker-end="url(#mPitch)"/>
+  <text x="270" y="560" font-size="20" font-weight="bold" fill="#2A6F97">J2</text>
+
+  <!-- J3 roll (around upper arm) -->
+  <g transform="rotate(-57.7 480 472)">
+    <ellipse cx="480" cy="472" rx="13" ry="42" fill="url(#jointG)" stroke="#B8632A" stroke-width="1.5"/>
+    <path d="M480 522 A17 50 0 1 0 465 429" fill="none" stroke="#C0392B" stroke-width="2.5" marker-end="url(#mRoll)"/>
+  </g>
+  <text x="340" y="452" font-size="20" font-weight="bold" fill="#C0392B">J3</text>
+
+  <!-- J4 pitch -->
+  <circle cx="570" cy="330" r="30" fill="url(#jointG)" stroke="#B8632A" stroke-width="2"/>
+  <circle cx="570" cy="330" r="10" fill="#FFFFFF"/>
+  <path d="M522 302 A55 55 0 0 1 622 311" fill="none" stroke="#2A6F97" stroke-width="2.5" marker-end="url(#mPitch)"/>
+  <text x="556" y="248" font-size="20" font-weight="bold" fill="#2A6F97">J4</text>
+
+  <!-- J5 roll (around forearm) -->
+  <g transform="rotate(12.2 720 362)">
+    <ellipse cx="720" cy="362" rx="13" ry="42" fill="url(#jointG)" stroke="#B8632A" stroke-width="1.5"/>
+    <path d="M720 412 A17 50 0 1 0 705 319" fill="none" stroke="#C0392B" stroke-width="2.5" marker-end="url(#mRoll)"/>
+  </g>
+  <text x="706" y="452" font-size="20" font-weight="bold" fill="#C0392B">J5</text>
+
+  <!-- J6 pitch -->
+  <circle cx="870" cy="395" r="26" fill="url(#jointG)" stroke="#B8632A" stroke-width="2"/>
+  <circle cx="870" cy="395" r="9" fill="#FFFFFF"/>
+  <path d="M845 352 A50 50 0 0 1 919 404" fill="none" stroke="#2A6F97" stroke-width="2.5" marker-end="url(#mPitch)"/>
+  <text x="850" y="318" font-size="20" font-weight="bold" fill="#2A6F97">J6</text>
+
+  <!-- J7 roll (flange) -->
+  <g transform="rotate(36.9 970 470)">
+    <ellipse cx="970" cy="470" rx="13" ry="36" fill="url(#jointG)" stroke="#B8632A" stroke-width="1.5"/>
+    <path d="M970 520 A17 50 0 1 0 955 427" fill="none" stroke="#C0392B" stroke-width="2.5" marker-end="url(#mRoll)"/>
+  </g>
+  <text x="962" y="412" font-size="20" font-weight="bold" fill="#C0392B">J7</text>
+
+  <!-- TCP and part labels -->
+  <circle cx="1095" cy="565" r="5" fill="#233044"/>
+  <line x1="1095" y1="565" x2="1130" y2="630" stroke="#233044" stroke-width="1.2"/>
+  <g font-size="15" fill="#233044">
+    <text x="1085" y="660">TCP</text>
+    <line x1="510" y1="755" x2="600" y2="755" stroke="#233044" stroke-width="1.2"/><text x="610" y="760">Base</text>
+    <line x1="460" y1="500" x2="600" y2="540" stroke="#233044" stroke-width="1.2"/><text x="610" y="545">Link 2 (upper arm)</text>
+    <line x1="780" y1="340" x2="740" y2="200" stroke="#233044" stroke-width="1.2"/><text x="735" y="205" text-anchor="end">Link 4 (forearm)</text>
+    <line x1="1080" y1="470" x2="1100" y2="340" stroke="#233044" stroke-width="1.2"/><text x="1045" y="320">Gripper</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="15" fill="#233044">
+    <path d="M40 118 A22 22 0 1 1 84 118" fill="none" stroke="#2A6F97" stroke-width="2.5" marker-end="url(#mPitch)"/>
+    <text x="95" y="120">Pitch axis (J2, J4, J6)</text>
+    <path d="M62 197 A9 22 0 1 0 54 155" fill="none" stroke="#C0392B" stroke-width="2.5" marker-end="url(#mRoll)"/>
+    <text x="95" y="180">Roll axis (J3, J5, J7)</text>
+    <path d="M40 235 A22 9 0 0 0 84 233" fill="none" stroke="#2E8B57" stroke-width="2.5" marker-end="url(#mYaw)"/>
+    <text x="95" y="240">Yaw axis (J1, base rotation)</text>
+    <text x="30" y="290" fill="#5B6773">Extra J3 roll gives redundancy: the elbow can</text>
+    <text x="30" y="312" fill="#5B6773">swing without moving the tool (null-space motion).</text>
+  </g>
+</svg>

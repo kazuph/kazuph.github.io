@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8EEDC"/>
+      <stop offset="100%" stop-color="#F0DFC2"/>
+    </linearGradient>
+    <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D3A16A"/>
+      <stop offset="100%" stop-color="#B5824A"/>
+    </linearGradient>
+    <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF1BF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#FFF1BF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="screenGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8ED4EC"/>
+      <stop offset="100%" stop-color="#5FB3D3"/>
+    </linearGradient>
+    <linearGradient id="tvGlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7EC8E3" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#7EC8E3" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="curtainGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E29A78"/>
+      <stop offset="50%" stop-color="#C97654"/>
+      <stop offset="100%" stop-color="#E29A78"/>
+    </linearGradient>
+  </defs>
+
+  <!-- walls & floor -->
+  <rect width="1200" height="900" fill="url(#wallGrad)"/>
+  <rect x="0" y="640" width="1200" height="260" fill="url(#floorGrad)"/>
+  <g stroke="#A9773F" stroke-width="1.5" opacity="0.7">
+    <line x1="0" y1="690" x2="1200" y2="690"/><line x1="0" y1="740" x2="1200" y2="740"/>
+    <line x1="0" y1="790" x2="1200" y2="790"/><line x1="0" y1="840" x2="1200" y2="840"/>
+  </g>
+  <line x1="0" y1="640" x2="1200" y2="640" stroke="#8F6535" stroke-width="3"/>
+
+  <!-- window with night sky and curtains -->
+  <rect x="840" y="90" width="280" height="330" fill="#D5DAE6"/>
+  <rect x="855" y="105" width="250" height="300" fill="#3C4E7A"/>
+  <circle cx="1035" cy="155" r="28" fill="#FFE9A8"/>
+  <g fill="#FFFFFF">
+    <circle cx="900" cy="160" r="3"/><circle cx="960" cy="130" r="3"/><circle cx="1070" cy="210" r="3"/><circle cx="930" cy="240" r="3"/>
+  </g>
+  <line x1="980" y1="105" x2="980" y2="405" stroke="#D5DAE6" stroke-width="8"/>
+  <line x1="855" y1="255" x2="1105" y2="255" stroke="#D5DAE6" stroke-width="8"/>
+  <rect x="820" y="72" width="320" height="8" fill="#8B5A2B"/>
+  <g fill="url(#curtainGrad)" stroke="#B9704F" stroke-width="1.5">
+    <path d="M820 440 Q825 260 815 80 L855 80 Q850 260 860 440 Z"/>
+    <path d="M855 440 Q860 260 850 80 L890 80 Q885 260 895 440 Z"/>
+    <path d="M1075 440 Q1080 260 1070 80 L1110 80 Q1105 260 1115 440 Z"/>
+    <path d="M1110 440 Q1115 260 1105 80 L1145 80 Q1140 260 1150 440 Z"/>
+  </g>
+
+  <!-- framed picture -->
+  <rect x="470" y="130" width="190" height="130" fill="#8B5A2B"/>
+  <rect x="485" y="145" width="160" height="50" fill="#B4DEEC"/>
+  <rect x="485" y="195" width="160" height="50" fill="#B7CFB4"/>
+  <circle cx="605" cy="170" r="14" fill="#E9C46A"/>
+
+  <!-- floor lamp -->
+  <circle cx="140" cy="240" r="170" fill="url(#lampGlow)"/>
+  <rect x="132" y="300" width="16" height="340" fill="#8B5A2B"/>
+  <rect x="90" y="625" width="100" height="20" rx="6" fill="#8B5A2B"/>
+  <polygon points="70,310 210,310 185,180 95,180" fill="#FFE9A8" stroke="#B9704F" stroke-width="2"/>
+  <line x1="85" y1="265" x2="195" y2="265" stroke="#B9704F" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- TV cabinet & TV -->
+  <rect x="240" y="530" width="320" height="110" fill="#8B5A2B" stroke="#A9773F" stroke-width="2"/>
+  <line x1="400" y1="530" x2="400" y2="640" stroke="#A9773F" stroke-width="1.5"/>
+  <line x1="255" y1="585" x2="545" y2="585" stroke="#A9773F" stroke-width="1.5"/>
+  <circle cx="320" cy="560" r="6" fill="#A9773F"/><circle cx="480" cy="560" r="6" fill="#A9773F"/>
+  <rect x="280" y="495" width="240" height="20" rx="4" fill="#2F3640"/>
+  <rect x="390" y="505" width="20" height="25" fill="#2F3640"/>
+  <rect x="230" y="270" width="340" height="230" rx="8" fill="#2F3640" stroke="#1A1E24" stroke-width="2"/>
+  <rect x="250" y="290" width="300" height="190" fill="url(#screenGrad)"/>
+  <rect x="250" y="400" width="300" height="80" fill="#A8DBEA"/>
+  <path d="M250 480 C350 380 450 440 550 400 L550 480 Z" fill="#8FB88C"/>
+  <circle cx="490" cy="330" r="22" fill="#E9C46A"/>
+  <path d="M330 340 Q345 325 360 340 Q375 325 390 340" fill="none" stroke="#2F3640" stroke-width="2"/>
+  <polygon points="570,500 860,580 860,210 570,270" fill="url(#tvGlow)"/>
+
+  <!-- rug -->
+  <polygon points="540,845 1160,845 1100,675 600,675" fill="#C86B5A"/>
+  <polygon points="575,820 1125,820 1075,700 625,700" fill="#E9A68E" opacity="0.6"/>
+  <polygon points="605,800 1095,800 1055,720 645,720" fill="#C86B5A"/>
+
+  <!-- side table & tea -->
+  <rect x="615" y="625" width="15" height="135" fill="#8B5A2B"/>
+  <ellipse cx="575" cy="625" rx="62" ry="18" fill="#8B5A2B" stroke="#A9773F" stroke-width="1.5"/>
+  <rect x="555" y="585" width="40" height="30" rx="3" fill="#FFFFFF" stroke="#999999" stroke-width="1.5"/>
+  <path d="M595 595 a10 10 0 0 1 0 20" fill="none" stroke="#999999" stroke-width="1.5"/>
+  <g fill="none" stroke="#BBBBBB" stroke-width="1.5">
+    <path d="M568 578 Q560 562 572 545"/><path d="M585 578 Q578 562 590 540"/>
+  </g>
+
+  <!-- sofa (facing TV) -->
+  <rect x="700" y="715" width="360" height="30" fill="#4F6E4C"/>
+  <rect x="700" y="595" width="370" height="130" rx="14" fill="#6E8F6B" stroke="#4F6E4C" stroke-width="2"/>
+  <rect x="700" y="460" width="370" height="150" rx="18" fill="#6E8F6B" stroke="#4F6E4C" stroke-width="2"/>
+  <rect x="670" y="540" width="65" height="110" rx="18" fill="#5E7B5B" stroke="#4F6E4C" stroke-width="2"/>
+  <rect x="1035" y="540" width="65" height="110" rx="18" fill="#5E7B5B" stroke="#4F6E4C" stroke-width="2"/>
+  <rect x="940" y="505" width="95" height="95" rx="10" fill="#E9C46A" stroke="#9C7F36" stroke-width="1.5" transform="rotate(-8 990 550)"/>
+
+  <!-- grandmother -->
+  <g>
+    <rect x="760" y="605" width="45" height="120" fill="#6C4E86"/>
+    <rect x="815" y="605" width="45" height="120" fill="#6C4E86"/>
+    <rect x="760" y="695" width="45" height="20" fill="#F5D6B8"/>
+    <rect x="815" y="695" width="45" height="20" fill="#F5D6B8"/>
+    <rect x="745" y="715" width="65" height="30" rx="6" fill="#C9B8A0"/>
+    <rect x="805" y="715" width="60" height="30" rx="6" fill="#C9B8A0"/>
+    <polygon points="745,625 875,625 885,555 750,555" fill="#F3DEA4" stroke="#9C7F36" stroke-width="1.5"/>
+    <rect x="755" y="425" width="140" height="155" rx="20" fill="#8E6BA8" stroke="#6C4E86" stroke-width="2"/>
+    <line x1="825" y1="440" x2="825" y2="560" stroke="#6C4E86" stroke-width="1.5"/>
+    <circle cx="825" cy="460" r="5" fill="#6C4E86"/><circle cx="825" cy="495" r="5" fill="#6C4E86"/><circle cx="825" cy="530" r="5" fill="#6C4E86"/>
+    <rect x="735" y="465" width="45" height="85" rx="14" fill="#8E6BA8" stroke="#6C4E86" stroke-width="1.5"/>
+    <rect x="870" y="465" width="45" height="85" rx="14" fill="#8E6BA8" stroke="#6C4E86" stroke-width="1.5"/>
+    <circle cx="750" cy="565" r="18" fill="#F5D6B8"/>
+    <circle cx="895" cy="565" r="18" fill="#F5D6B8"/>
+    <rect x="810" y="405" width="35" height="30" fill="#F5D6B8"/>
+    <circle cx="828" cy="355" r="62" fill="#F5D6B8" stroke="#C9A688" stroke-width="1.5"/>
+    <path d="M830 338 C815 275 875 270 890 325 C895 345 885 360 875 365 C870 325 805 315 790 355 C785 345 800 325 830 338 Z" fill="#E6E2DA" stroke="#BDB8AE" stroke-width="1.5"/>
+    <circle cx="885" cy="315" r="26" fill="#E6E2DA" stroke="#BDB8AE" stroke-width="1.5"/>
+    <g fill="none" stroke="#444444" stroke-width="1.5">
+      <circle cx="782" cy="355" r="14"/><circle cx="816" cy="355" r="14"/>
+      <line x1="796" y1="355" x2="802" y2="355"/><line x1="830" y1="355" x2="860" y2="350"/>
+    </g>
+    <circle cx="780" cy="355" r="4.5" fill="#444444"/><circle cx="814" cy="355" r="4.5" fill="#444444"/>
+    <path d="M785 385 Q797 396 810 388" fill="none" stroke="#A9773F" stroke-width="1.5"/>
+    <ellipse cx="805" cy="375" rx="12" ry="7" fill="#C86B5A" opacity="0.35"/>
+    <!-- gaze toward TV -->
+    <line x1="765" y1="360" x2="590" y2="380" stroke="#3E7F94" stroke-width="2" stroke-dasharray="7 6"/>
+    <polygon points="575,382 596,372 594,390" fill="#3E7F94"/>
+    <!-- knitting -->
+    <circle cx="855" cy="595" r="20" fill="#C86B5A"/>
+    <line x1="750" y1="560" x2="790" y2="605" stroke="#777777" stroke-width="1.5"/>
+    <line x1="895" y1="560" x2="860" y2="600" stroke="#777777" stroke-width="1.5"/>
+    <path d="M760 565 Q800 580 855 595" fill="none" stroke="#C86B5A" stroke-width="2"/>
+  </g>
+
+  <!-- cat on the rug -->
+  <ellipse cx="990" cy="765" rx="55" ry="30" fill="#DDC1A4" stroke="#A9773F" stroke-width="1.5"/>
+  <circle cx="1035" cy="745" r="22" fill="#DDC1A4" stroke="#A9773F" stroke-width="1.5"/>
+  <polygon points="1025,725 1030,705 1040,725" fill="#DDC1A4"/>
+  <polygon points="1040,725 1050,707 1055,728" fill="#DDC1A4"/>
+  <path d="M940 770 Q915 750 950 740" fill="none" stroke="#A9773F" stroke-width="2"/>
+  <path d="M1030 745 Q1033 740 1036 745 M1040 745 Q1043 740 1046 745" fill="none" stroke="#444444" stroke-width="1.5"/>
+</svg>

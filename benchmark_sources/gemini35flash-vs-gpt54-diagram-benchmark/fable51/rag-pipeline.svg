@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="Hiragino Sans, Noto Sans CJK JP, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#3A3F47"/></marker>
+    <marker id="arp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#7B5EA7"/></marker>
+    <linearGradient id="cyl" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#CFE8D8"/><stop offset="50%" stop-color="#EAF6EE"/><stop offset="100%" stop-color="#CFE8D8"/>
+    </linearGradient>
+    <style>
+      .t { font-size: 15px; font-weight: bold; fill: #233044; }
+      .s { font-size: 12px; fill: #233044; }
+      .l { font-size: 12px; fill: #233044; }
+      .lane { font-size: 16px; font-weight: bold; }
+      .flow { fill: none; stroke: #3A3F47; stroke-width: 2.2; }
+      .off { fill: none; stroke: #7B5EA7; stroke-width: 2.2; stroke-dasharray: 7 5; }
+      .bx { stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="1200" height="900" fill="#FAFBFD"/>
+  <text x="30" y="52" font-size="24" font-weight="bold" fill="#233044">RAGパイプライン: オフラインの文書投入とオンラインの検索拡張生成</text>
+
+  <!-- lanes -->
+  <rect x="30" y="90" width="1240" height="230" rx="16" fill="#F3F0FA" stroke="#7B5EA7" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="50" y="122" class="lane" fill="#7B5EA7">OFFLINE: 文書投入（バッチ。初回と更新時だけ実行）</text>
+  <rect x="30" y="370" width="1240" height="450" rx="16" fill="#EAF4FB" stroke="#2A6F97" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="50" y="402" class="lane" fill="#2A6F97">ONLINE: リクエストごとに実行（レイテンシが重要）</text>
+
+  <!-- offline row -->
+  <g class="bx">
+    <rect x="60" y="180" width="180" height="100" rx="10" fill="#FFF4DC" stroke="#C98A1B"/>
+    <text x="150" y="222" text-anchor="middle" class="t">Documents</text>
+    <text x="150" y="250" text-anchor="middle" class="s">PDF / HTML / wiki</text>
+    <rect x="300" y="180" width="180" height="100" rx="10" fill="#FFFFFF" stroke="#7B5EA7"/>
+    <text x="390" y="222" text-anchor="middle" class="t">Chunking</text>
+    <text x="390" y="250" text-anchor="middle" class="s">分割 + オーバーラップ</text>
+    <rect x="540" y="180" width="210" height="100" rx="10" fill="#FFFFFF" stroke="#7B5EA7"/>
+    <text x="645" y="222" text-anchor="middle" class="t">Embedding model</text>
+    <text x="645" y="250" text-anchor="middle" class="s">テキスト → ベクトル</text>
+    <rect x="810" y="180" width="180" height="100" rx="10" fill="#FFFFFF" stroke="#7B5EA7"/>
+    <text x="900" y="222" text-anchor="middle" class="t">Index build</text>
+    <text x="900" y="250" text-anchor="middle" class="s">HNSW / IVF</text>
+  </g>
+  <g class="flow" marker-end="url(#ar)">
+    <line x1="240" y1="230" x2="298" y2="230"/>
+    <line x1="480" y1="230" x2="538" y2="230"/>
+    <line x1="750" y1="230" x2="808" y2="230"/>
+  </g>
+  <text x="509" y="220" text-anchor="middle" class="l">chunks</text>
+  <text x="779" y="220" text-anchor="middle" class="l">vectors</text>
+
+  <!-- vector DB -->
+  <g>
+    <rect x="1000" y="290" width="200" height="150" fill="url(#cyl)"/>
+    <line x1="1000" y1="290" x2="1000" y2="440" stroke="#2E7D4F" stroke-width="2"/>
+    <line x1="1200" y1="290" x2="1200" y2="440" stroke="#2E7D4F" stroke-width="2"/>
+    <ellipse cx="1100" cy="440" rx="100" ry="22" fill="#E3F2EA" stroke="#2E7D4F" stroke-width="2"/>
+    <ellipse cx="1100" cy="290" rx="100" ry="22" fill="#CFE8D8" stroke="#2E7D4F" stroke-width="2"/>
+    <text x="1100" y="345" text-anchor="middle" class="t">Vector DB</text>
+    <text x="1100" y="372" text-anchor="middle" class="s">vectors + metadata</text>
+    <text x="1100" y="392" text-anchor="middle" class="s">+ chunk text</text>
+  </g>
+  <polyline points="990,230 1100,230 1100,266" class="off" marker-end="url(#arp)"/>
+  <text x="1045" y="220" text-anchor="middle" class="l" fill="#7B5EA7">upsert</text>
+
+  <!-- online row -->
+  <g class="bx">
+    <rect x="50" y="530" width="170" height="100" rx="10" fill="#FFFFFF" stroke="#2A6F97"/>
+    <text x="135" y="572" text-anchor="middle" class="t">User Query</text>
+    <text x="135" y="600" text-anchor="middle" class="s">「〜するには？」</text>
+    <rect x="290" y="530" width="220" height="100" rx="10" fill="#FFFFFF" stroke="#2A6F97"/>
+    <text x="400" y="565" text-anchor="middle" class="t">Embed / Retrieve</text>
+    <text x="400" y="588" text-anchor="middle" class="s">query → vector</text>
+    <text x="400" y="608" text-anchor="middle" class="s">top-k ANN search</text>
+    <rect x="570" y="530" width="210" height="100" rx="10" fill="#E3F2EA" stroke="#2E7D4F"/>
+    <text x="675" y="572" text-anchor="middle" class="t">Retrieved Context</text>
+    <text x="675" y="600" text-anchor="middle" class="s">k chunks + 出典</text>
+    <rect x="560" y="700" width="230" height="100" rx="10" fill="#FFFFFF" stroke="#2A6F97"/>
+    <text x="675" y="742" text-anchor="middle" class="t">Prompt builder</text>
+    <text x="675" y="770" text-anchor="middle" class="s">system + context + query</text>
+    <rect x="850" y="530" width="160" height="100" rx="10" fill="#FDE7E7" stroke="#C0392B"/>
+    <text x="930" y="572" text-anchor="middle" class="t">LLM</text>
+    <text x="930" y="600" text-anchor="middle" class="s">generation</text>
+    <rect x="1060" y="530" width="160" height="100" rx="10" fill="#FFFFFF" stroke="#2A6F97"/>
+    <text x="1140" y="572" text-anchor="middle" class="t">Answer</text>
+    <text x="1140" y="600" text-anchor="middle" class="s">+ citations</text>
+  </g>
+  <g class="flow" marker-end="url(#ar)">
+    <line x1="220" y1="580" x2="288" y2="580"/>
+    <polyline points="400,530 400,460 1040,460 1040,442"/>
+    <polyline points="1140,440 1140,490 720,490 720,528"/>
+    <line x1="510" y1="580" x2="568" y2="580"/>
+    <line x1="675" y1="630" x2="675" y2="698"/>
+    <polyline points="135,630 135,750 558,750"/>
+    <polyline points="790,750 930,750 930,632"/>
+    <line x1="1010" y1="580" x2="1058" y2="580"/>
+    <polyline points="1140,530 1140,510 135,510 135,528"/>
+  </g>
+  <g class="l">
+    <text x="254" y="570" text-anchor="middle">query</text>
+    <text x="700" y="452" text-anchor="middle">query vector</text>
+    <text x="930" y="482" text-anchor="middle">top-k hits</text>
+    <text x="690" y="670">context</text>
+    <text x="330" y="742" text-anchor="middle">query</text>
+    <text x="860" y="742" text-anchor="middle">augmented prompt</text>
+    <text x="1034" y="570" text-anchor="middle">tokens</text>
+    <text x="640" y="503" text-anchor="middle">response back to the user</text>
+  </g>
+
+  <text x="40" y="855" font-size="13" fill="#5C6470">共通部品: オフライン（索引作成）とオンライン（クエリ）で同じ埋め込みモデルを使い、ベクトル空間を揃える。</text>
+  <text x="40" y="880" font-size="13" fill="#5C6470">グラウンディング: LLM は取得した chunk だけを根拠に回答し、出典を引用する。</text>
+</svg>

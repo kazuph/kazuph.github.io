@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#060B2A"/><stop offset="55%" stop-color="#0F1E5A"/><stop offset="100%" stop-color="#2A3C86"/>
+    </linearGradient>
+    <radialGradient id="g1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FF5E7E" stop-opacity="0.35"/><stop offset="100%" stop-color="#FF5E7E" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFD166" stop-opacity="0.35"/><stop offset="100%" stop-color="#FFD166" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6EE7F9" stop-opacity="0.35"/><stop offset="100%" stop-color="#6EE7F9" stop-opacity="0"/></radialGradient>
+    <radialGradient id="lg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FF8C42" stop-opacity="0.55"/><stop offset="100%" stop-color="#FF8C42" stop-opacity="0"/></radialGradient>
+    <linearGradient id="counter" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFD9A8" stop-opacity="0.6"/><stop offset="100%" stop-color="#FF8C42" stop-opacity="0.5"/></linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0D1B4B"/><stop offset="100%" stop-color="#060B2A"/></linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="4"/></filter>
+    <!-- one spoke pattern reused by rotation -->
+    <g id="spoke1"><line x1="0" y1="0" x2="0" y2="-200" stroke="#FF5E7E" stroke-width="2.6" stroke-linecap="round" opacity="0.9"/><line x1="0" y1="0" x2="0" y2="-120" stroke="#FFC1CF" stroke-width="1.2"/><circle cx="0" cy="-200" r="4.5" fill="#FFC1CF"/><line x1="0" y1="-140" x2="0" y2="-175" stroke="#FFC1CF" stroke-width="1.6" opacity="0.8" transform="rotate(5)"/><circle cx="0" cy="-175" r="3" fill="#FFFFFF" transform="rotate(5)"/></g>
+    <g id="spoke2"><path d="M0 0 C0 -60 0 -120 -6 -160" fill="none" stroke="#FFD166" stroke-width="2.4" stroke-linecap="round" opacity="0.9"/><circle cx="-6" cy="-160" r="4" fill="#FFF3C4"/><line x1="0" y1="0" x2="0" y2="-105" stroke="#FFF3C4" stroke-width="1.2" opacity="0.85" transform="rotate(6)"/></g>
+    <g id="spoke3"><line x1="0" y1="0" x2="0" y2="-85" stroke="#6EE7F9" stroke-width="2" stroke-linecap="round" opacity="0.9"/><circle cx="0" cy="-85" r="3" fill="#D4FBFF"/></g>
+    <g id="lantern"><circle r="28" fill="url(#lg)"/><ellipse rx="11" ry="14" fill="#FF8C42"/><ellipse cx="-3" cy="-4" rx="4" ry="6" fill="#FFD9A8" opacity="0.7"/><line x1="-8" y1="0" x2="8" y2="0" stroke="#1A1530" stroke-width="1"/></g>
+    <g id="stall">
+      <rect x="0" y="0" width="220" height="125" fill="#1A1530"/>
+      <rect x="15" y="25" width="190" height="70" fill="url(#counter)"/>
+      <rect x="-10" y="-40" width="40" height="40" fill="#C0392B"/><rect x="30" y="-40" width="40" height="40" fill="#F4F1EA"/><rect x="70" y="-40" width="40" height="40" fill="#C0392B"/><rect x="110" y="-40" width="40" height="40" fill="#F4F1EA"/><rect x="150" y="-40" width="40" height="40" fill="#C0392B"/><rect x="190" y="-40" width="40" height="40" fill="#F4F1EA"/>
+      <polygon points="-10,-40 230,-40 210,-70 10,-70" fill="#C0392B"/>
+      <path d="M-10 -40 Q110 -10 230 -40" fill="none" stroke="#7A6146" stroke-width="1"/>
+      <use href="#lantern" x="35" y="-13"/><use href="#lantern" x="80" y="-5"/><use href="#lantern" x="125" y="-3"/><use href="#lantern" x="170" y="-8"/>
+    </g>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  <!-- stars -->
+  <g fill="#FFFFFF" opacity="0.85">
+    <circle cx="50" cy="60" r="3"/><circle cx="130" cy="140" r="2"/><circle cx="210" cy="30" r="2.5"/><circle cx="290" cy="210" r="2"/><circle cx="360" cy="80" r="3"/><circle cx="520" cy="40" r="2"/><circle cx="640" cy="110" r="2.5"/><circle cx="710" cy="50" r="2"/><circle cx="830" cy="180" r="3"/><circle cx="900" cy="60" r="2"/><circle cx="980" cy="220" r="2.5"/><circle cx="1060" cy="90" r="3"/><circle cx="1140" cy="160" r="2"/><circle cx="90" cy="280" r="2"/><circle cx="1100" cy="310" r="2"/><circle cx="440" cy="260" r="2"/><circle cx="180" cy="340" r="1.8"/><circle cx="1020" cy="140" r="2"/><circle cx="690" cy="240" r="1.8"/><circle cx="320" cy="120" r="2"/><circle cx="560" cy="300" r="1.6"/><circle cx="760" cy="330" r="1.6"/>
+  </g>
+  <!-- moon -->
+  <circle cx="1090" cy="100" r="32" fill="#FFF3C4" opacity="0.9"/>
+  <circle cx="1105" cy="90" r="28" fill="#060B2A"/>
+
+  <!-- firework 1: pink chrysanthemum -->
+  <g transform="translate(420 280)">
+    <circle r="235" fill="url(#g1)"/>
+    <use href="#spoke1"/><use href="#spoke1" transform="rotate(10)"/><use href="#spoke1" transform="rotate(20)"/><use href="#spoke1" transform="rotate(30)"/><use href="#spoke1" transform="rotate(40)"/><use href="#spoke1" transform="rotate(50)"/><use href="#spoke1" transform="rotate(60)"/><use href="#spoke1" transform="rotate(70)"/><use href="#spoke1" transform="rotate(80)"/><use href="#spoke1" transform="rotate(90)"/><use href="#spoke1" transform="rotate(100)"/><use href="#spoke1" transform="rotate(110)"/><use href="#spoke1" transform="rotate(120)"/><use href="#spoke1" transform="rotate(130)"/><use href="#spoke1" transform="rotate(140)"/><use href="#spoke1" transform="rotate(150)"/><use href="#spoke1" transform="rotate(160)"/><use href="#spoke1" transform="rotate(170)"/><use href="#spoke1" transform="rotate(180)"/><use href="#spoke1" transform="rotate(190)"/><use href="#spoke1" transform="rotate(200)"/><use href="#spoke1" transform="rotate(210)"/><use href="#spoke1" transform="rotate(220)"/><use href="#spoke1" transform="rotate(230)"/><use href="#spoke1" transform="rotate(240)"/><use href="#spoke1" transform="rotate(250)"/><use href="#spoke1" transform="rotate(260)"/><use href="#spoke1" transform="rotate(270)"/><use href="#spoke1" transform="rotate(280)"/><use href="#spoke1" transform="rotate(290)"/><use href="#spoke1" transform="rotate(300)"/><use href="#spoke1" transform="rotate(310)"/><use href="#spoke1" transform="rotate(320)"/><use href="#spoke1" transform="rotate(330)"/><use href="#spoke1" transform="rotate(340)"/><use href="#spoke1" transform="rotate(350)"/>
+    <circle r="30" fill="#FFC1CF" opacity="0.6"/><circle r="12" fill="#FFFFFF"/>
+  </g>
+  <!-- firework 2: golden willow -->
+  <g transform="translate(860 340)">
+    <circle r="195" fill="url(#g2)"/>
+    <use href="#spoke2"/><use href="#spoke2" transform="rotate(12)"/><use href="#spoke2" transform="rotate(24)"/><use href="#spoke2" transform="rotate(36)"/><use href="#spoke2" transform="rotate(48)"/><use href="#spoke2" transform="rotate(60)"/><use href="#spoke2" transform="rotate(72)"/><use href="#spoke2" transform="rotate(84)"/><use href="#spoke2" transform="rotate(96)"/><use href="#spoke2" transform="rotate(108)"/><use href="#spoke2" transform="rotate(120)"/><use href="#spoke2" transform="rotate(132)"/><use href="#spoke2" transform="rotate(144)"/><use href="#spoke2" transform="rotate(156)"/><use href="#spoke2" transform="rotate(168)"/><use href="#spoke2" transform="rotate(180)"/><use href="#spoke2" transform="rotate(192)"/><use href="#spoke2" transform="rotate(204)"/><use href="#spoke2" transform="rotate(216)"/><use href="#spoke2" transform="rotate(228)"/><use href="#spoke2" transform="rotate(240)"/><use href="#spoke2" transform="rotate(252)"/><use href="#spoke2" transform="rotate(264)"/><use href="#spoke2" transform="rotate(276)"/><use href="#spoke2" transform="rotate(288)"/><use href="#spoke2" transform="rotate(300)"/><use href="#spoke2" transform="rotate(312)"/><use href="#spoke2" transform="rotate(324)"/><use href="#spoke2" transform="rotate(336)"/><use href="#spoke2" transform="rotate(348)"/>
+    <circle r="25" fill="#FFF3C4" opacity="0.6"/><circle r="10" fill="#FFFFFF"/>
+  </g>
+  <!-- firework 3: small cyan burst -->
+  <g transform="translate(990 130)">
+    <circle r="100" fill="url(#g3)"/>
+    <use href="#spoke3"/><use href="#spoke3" transform="rotate(15)"/><use href="#spoke3" transform="rotate(30)"/><use href="#spoke3" transform="rotate(45)"/><use href="#spoke3" transform="rotate(60)"/><use href="#spoke3" transform="rotate(75)"/><use href="#spoke3" transform="rotate(90)"/><use href="#spoke3" transform="rotate(105)"/><use href="#spoke3" transform="rotate(120)"/><use href="#spoke3" transform="rotate(135)"/><use href="#spoke3" transform="rotate(150)"/><use href="#spoke3" transform="rotate(165)"/><use href="#spoke3" transform="rotate(180)"/><use href="#spoke3" transform="rotate(195)"/><use href="#spoke3" transform="rotate(210)"/><use href="#spoke3" transform="rotate(225)"/><use href="#spoke3" transform="rotate(240)"/><use href="#spoke3" transform="rotate(255)"/><use href="#spoke3" transform="rotate(270)"/><use href="#spoke3" transform="rotate(285)"/><use href="#spoke3" transform="rotate(300)"/><use href="#spoke3" transform="rotate(315)"/><use href="#spoke3" transform="rotate(330)"/><use href="#spoke3" transform="rotate(345)"/>
+    <circle r="7" fill="#FFFFFF"/>
+  </g>
+  <!-- rising trails -->
+  <g fill="none" stroke-width="1.5" stroke-dasharray="3 6" opacity="0.45">
+    <path d="M460 710 Q450 500 420 310" stroke="#FFF3C4"/>
+    <path d="M820 710 Q840 520 860 370" stroke="#FFF3C4"/>
+    <path d="M1040 710 Q1030 450 990 160" stroke="#D4FBFF"/>
+  </g>
+
+  <!-- river with reflections -->
+  <rect x="0" y="790" width="1200" height="110" fill="url(#water)"/>
+  <g stroke-width="2.5" opacity="0.35" stroke-linecap="round">
+    <g stroke="#FF5E7E"><line x1="260" y1="805" x2="420" y2="805"/><line x1="290" y1="825" x2="440" y2="825"/><line x1="330" y1="845" x2="520" y2="845"/><line x1="270" y1="865" x2="470" y2="865"/><line x1="360" y1="885" x2="500" y2="885"/></g>
+    <g stroke="#FFD166"><line x1="740" y1="805" x2="880" y2="805"/><line x1="770" y1="825" x2="960" y2="825"/><line x1="730" y1="845" x2="900" y2="845"/><line x1="800" y1="865" x2="940" y2="865"/><line x1="760" y1="885" x2="890" y2="885"/></g>
+    <g stroke="#6EE7F9"><line x1="960" y1="808" x2="1040" y2="808"/><line x1="990" y1="830" x2="1100" y2="830"/><line x1="950" y1="852" x2="1060" y2="852"/><line x1="1000" y1="874" x2="1080" y2="874"/></g>
+  </g>
+  <!-- riverbank -->
+  <rect x="0" y="700" width="1200" height="95" fill="#1C1838"/>
+  <rect x="0" y="705" width="860" height="85" fill="#FF8C42" opacity="0.28"/><rect x="860" y="705" width="340" height="85" fill="#FF8C42" opacity="0.12"/>
+
+  <!-- food stalls -->
+  <use href="#stall" x="60" y="585"/><use href="#stall" x="330" y="585"/><use href="#stall" x="600" y="585"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    <text x="170" y="536">YAKISOBA</text><text x="440" y="536">KAKIGORI</text><text x="710" y="536">TAKOYAKI</text>
+  </g>
+
+  <!-- crowd silhouettes -->
+  <g fill="#05040F">
+    <path d="M24 790 C24 740 56 740 56 790 Z"/><circle cx="40" cy="731" r="10"/>
+    <path d="M62 790 C62 727 98 727 98 790 Z"/><circle cx="80" cy="718" r="10"/>
+    <path d="M110 790 C110 745 140 745 140 790 Z"/><circle cx="125" cy="736" r="10"/>
+    <path d="M171 790 C171 725 209 725 209 790 Z"/><circle cx="190" cy="716" r="10"/>
+    <path d="M219 790 C219 736 251 736 251 790 Z"/><circle cx="235" cy="727" r="10"/>
+    <path d="M266 790 C266 750 294 750 294 790 Z"/><circle cx="280" cy="741" r="10"/>
+    <path d="M307 790 C307 729 343 729 343 790 Z"/><circle cx="325" cy="720" r="10"/>
+    <path d="M354 790 C354 740 386 740 386 790 Z"/><circle cx="370" cy="731" r="10"/>
+    <path d="M410 790 C410 722 450 722 450 790 Z"/><circle cx="430" cy="713" r="10"/>
+    <path d="M460 790 C460 745 490 745 490 790 Z"/><circle cx="475" cy="736" r="10"/>
+    <path d="M502 790 C502 731 538 731 538 790 Z"/><circle cx="520" cy="722" r="10"/>
+    <path d="M559 790 C559 738 591 738 591 790 Z"/><circle cx="575" cy="729" r="10"/>
+    <path d="M601 790 C601 725 639 725 639 790 Z"/><circle cx="620" cy="716" r="10"/>
+    <path d="M655 790 C655 747 685 747 685 790 Z"/><circle cx="670" cy="738" r="10"/>
+    <path d="M698 790 C698 732 732 732 732 790 Z"/><circle cx="715" cy="723" r="10"/>
+    <path d="M752 790 C752 727 788 727 788 790 Z"/><circle cx="770" cy="718" r="10"/>
+    <path d="M804 790 C804 743 836 743 836 790 Z"/><circle cx="820" cy="734" r="10"/>
+    <path d="M852 790 C852 731 888 731 888 790 Z"/><circle cx="870" cy="722" r="10"/>
+    <path d="M899 790 C899 738 931 738 931 790 Z"/><circle cx="915" cy="729" r="10"/>
+    <path d="M941 790 C941 723 979 723 979 790 Z"/><circle cx="960" cy="714" r="10"/>
+    <path d="M995 790 C995 745 1025 745 1025 790 Z"/><circle cx="1010" cy="736" r="10"/>
+    <path d="M1038 790 C1038 734 1072 734 1072 790 Z"/><circle cx="1055" cy="725" r="10"/>
+    <path d="M1082 790 C1082 727 1118 727 1118 790 Z"/><circle cx="1100" cy="718" r="10"/>
+    <path d="M1134 790 C1134 740 1166 740 1166 790 Z"/><circle cx="1150" cy="731" r="10"/>
+    <!-- raised arm and child on shoulders -->
+    <line x1="430" y1="715" x2="415" y2="680" stroke="#05040F" stroke-width="5" stroke-linecap="round"/>
+    <rect x="952" y="682" width="16" height="26" rx="4"/><circle cx="960" cy="675" r="8"/>
+    <line x1="960" y1="690" x2="942" y2="665" stroke="#05040F" stroke-width="4" stroke-linecap="round"/><line x1="960" y1="690" x2="978" y2="665" stroke="#05040F" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g fill="#FFD9A8" opacity="0.5">
+    <ellipse cx="60" cy="800" rx="18" ry="3"/><ellipse cx="140" cy="800" rx="18" ry="3"/><ellipse cx="220" cy="800" rx="18" ry="3"/><ellipse cx="590" cy="800" rx="18" ry="3"/><ellipse cx="660" cy="800" rx="18" ry="3"/><ellipse cx="730" cy="800" rx="18" ry="3"/><ellipse cx="1120" cy="800" rx="18" ry="3"/>
+  </g>
+</svg>

@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="sig" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#3A3F47"/></marker>
+    <marker id="fb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#6A3FA0"/></marker>
+    <style>
+      .blk { stroke-width: 2; }
+      .t { font-size: 15px; font-weight: bold; fill: #233044; }
+      .f { font-size: 15px; fill: #233044; font-family: "Times New Roman", Georgia, serif; font-style: italic; }
+      .s { font-size: 12.5px; fill: #233044; }
+      .g { font-size: 14px; font-weight: bold; }
+      .sig { fill: none; stroke: #3A3F47; stroke-width: 2; }
+      .fbk { fill: none; stroke: #6A3FA0; stroke-width: 2; stroke-dasharray: 7 5; }
+    </style>
+  </defs>
+  <rect width="1200" height="900" fill="#FBFBF9"/>
+  <text x="30" y="52" font-size="26" font-weight="bold" fill="#233044">Kalman filter – predict / update loop</text>
+
+  <!-- group frames -->
+  <rect x="105" y="245" width="410" height="330" rx="14" fill="none" stroke="#2A6F97" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="110" y="232" class="g" fill="#2A6F97">PREDICTION (time update)</text>
+  <rect x="625" y="185" width="545" height="670" rx="14" fill="none" stroke="#2E7D4F" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="635" y="872" class="g" fill="#2E7D4F">UPDATE (measurement update)</text>
+  <rect x="575" y="75" width="310" height="100" rx="14" fill="none" stroke="#C9731B" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="585" y="66" class="g" fill="#C9731B">SENSOR</text>
+
+  <!-- blocks -->
+  <g class="blk">
+    <rect x="130" y="270" width="360" height="110" rx="10" fill="#DCEBFA" stroke="#2A6F97"/>
+    <text x="310" y="305" text-anchor="middle" class="t">State prediction</text>
+    <text x="310" y="350" text-anchor="middle" class="f">x̂<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan> = F x̂<tspan baseline-shift="sub" font-size="70%">k−1</tspan> + B u<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+
+    <rect x="130" y="430" width="360" height="110" rx="10" fill="#DCEBFA" stroke="#2A6F97"/>
+    <text x="310" y="465" text-anchor="middle" class="t">Covariance prediction</text>
+    <text x="310" y="510" text-anchor="middle" class="f">P<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan> = F P<tspan baseline-shift="sub" font-size="70%">k−1</tspan> F<tspan baseline-shift="super" font-size="70%">T</tspan> + Q</text>
+
+    <rect x="600" y="90" width="260" height="70" rx="10" fill="#FDEBD3" stroke="#C9731B"/>
+    <text x="730" y="115" text-anchor="middle" class="t">Measurement</text>
+    <text x="730" y="145" text-anchor="middle" class="f">z<tspan baseline-shift="sub" font-size="70%">k</tspan> = H x<tspan baseline-shift="sub" font-size="70%">k</tspan> + v<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+
+    <rect x="655" y="290" width="150" height="70" rx="10" fill="#DCEBFA" stroke="#2A6F97"/>
+    <text x="730" y="332" text-anchor="middle" class="f">H x̂<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+
+    <polygon points="835,395 835,505 945,450" fill="#E5F3E1" stroke="#2E7D4F"/>
+    <text x="872" y="456" text-anchor="middle" class="f">K<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+
+    <rect x="640" y="595" width="400" height="110" rx="10" fill="#E5F3E1" stroke="#2E7D4F"/>
+    <text x="840" y="630" text-anchor="middle" class="t">Kalman gain</text>
+    <text x="840" y="675" text-anchor="middle" class="f">K<tspan baseline-shift="sub" font-size="70%">k</tspan> = P<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan> H<tspan baseline-shift="super" font-size="70%">T</tspan> (H P<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan> H<tspan baseline-shift="super" font-size="70%">T</tspan> + R)<tspan baseline-shift="super" font-size="70%">−1</tspan></text>
+
+    <rect x="660" y="745" width="360" height="90" rx="10" fill="#E5F3E1" stroke="#2E7D4F"/>
+    <text x="840" y="778" text-anchor="middle" class="t">Covariance update</text>
+    <text x="840" y="815" text-anchor="middle" class="f">P<tspan baseline-shift="sub" font-size="70%">k</tspan> = (I − K<tspan baseline-shift="sub" font-size="70%">k</tspan> H) P<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+
+    <rect x="1050" y="380" width="130" height="140" rx="10" fill="#EEE5F7" stroke="#6A3FA0"/>
+    <text x="1115" y="430" text-anchor="middle" class="t">State</text>
+    <text x="1115" y="452" text-anchor="middle" class="t">estimate</text>
+    <text x="1115" y="490" text-anchor="middle" class="f">x̂<tspan baseline-shift="sub" font-size="70%">k</tspan> , P<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+
+    <rect x="300" y="120" width="250" height="60" rx="10" fill="#EEE5F7" stroke="#6A3FA0"/>
+    <text x="425" y="157" text-anchor="middle" class="f">z<tspan baseline-shift="super" font-size="70%">−1</tspan> (one step delay)</text>
+  </g>
+
+  <!-- summing junctions -->
+  <g fill="#FFFFFF" stroke="#233044" stroke-width="2">
+    <circle cx="905" cy="230" r="22"/>
+    <circle cx="1115" cy="290" r="22"/>
+  </g>
+  <g stroke="#233044" stroke-width="1.2">
+    <line x1="890" y1="215" x2="920" y2="245"/><line x1="890" y1="245" x2="920" y2="215"/>
+    <line x1="1100" y1="275" x2="1130" y2="305"/><line x1="1100" y1="305" x2="1130" y2="275"/>
+  </g>
+
+  <!-- signal flow -->
+  <g class="sig" marker-end="url(#sig)">
+    <line x1="40" y1="325" x2="128" y2="325"/>
+    <line x1="490" y1="325" x2="653" y2="325"/>
+    <polyline points="805,325 835,325 835,230 881,230"/>
+    <polyline points="860,125 905,125 905,206"/>
+    <line x1="905" y1="252" x2="905" y2="393"/>
+    <polyline points="945,450 990,450 990,340 1115,340 1115,314"/>
+    <polyline points="490,355 520,355 520,395 1010,395 1010,290 1091,290"/>
+    <line x1="1115" y1="312" x2="1115" y2="378"/>
+    <line x1="1180" y1="450" x2="1195" y2="450"/>
+    <polyline points="490,485 560,485 560,650 638,650"/>
+    <line x1="840" y1="705" x2="840" y2="743"/>
+    <polyline points="1040,650 1080,650 1080,522"/>
+    <polyline points="1020,790 1115,790 1115,522"/>
+    <polyline points="872,595 872,555 905,555 905,507"/>
+  </g>
+  <g class="s">
+    <text x="45" y="312">u<tspan baseline-shift="sub" font-size="70%">k</tspan> control input</text>
+    <text x="500" y="312">x̂<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan> (a priori)</text>
+    <text x="820" y="222" text-anchor="end">−</text>
+    <text x="915" y="185">+</text>
+    <text x="925" y="330">residual y<tspan baseline-shift="sub" font-size="70%">k</tspan> = z<tspan baseline-shift="sub" font-size="70%">k</tspan> − H x̂<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="1095" y="270" text-anchor="end">+</text>
+    <text x="1120" y="335">K<tspan baseline-shift="sub" font-size="70%">k</tspan> y<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="1122" y="355">x̂<tspan baseline-shift="sub" font-size="70%">k</tspan> = x̂<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan> + K<tspan baseline-shift="sub" font-size="70%">k</tspan> y<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="565" y="510">P<tspan baseline-shift="super" font-size="70%">−</tspan><tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="850" y="728">K<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="1050" y="640">P<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="1085" y="600">P<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="912" y="550">K<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="910" y="115">z<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+  </g>
+
+  <!-- feedback -->
+  <g class="fbk" marker-end="url(#fb)">
+    <polyline points="1115,380 1115,365 1160,365 1160,150 552,150"/>
+    <polyline points="300,150 310,150 310,325 128,325"/>
+    <polyline points="660,790 460,790 460,542"/>
+  </g>
+  <g class="s" fill="#6A3FA0">
+    <text x="1165" y="260">x̂<tspan baseline-shift="sub" font-size="70%">k</tspan></text>
+    <text x="230" y="230" text-anchor="end">x̂<tspan baseline-shift="sub" font-size="70%">k−1</tspan></text>
+    <text x="470" y="660">P<tspan baseline-shift="sub" font-size="70%">k−1</tspan></text>
+    <text x="1030" y="373" class="s">OUTPUT</text>
+  </g>
+  <line x1="310" y1="325" x2="310" y2="150" class="fbk"/>
+  <polyline points="310,150 310,268" class="fbk" marker-end="url(#fb)"/>
+
+  <!-- legend -->
+  <line x1="40" y1="845" x2="110" y2="845" class="sig" marker-end="url(#sig)"/>
+  <text x="120" y="850" class="s">signal flow</text>
+  <line x1="240" y1="845" x2="310" y2="845" class="fbk" marker-end="url(#fb)"/>
+  <text x="320" y="850" class="s">feedback to the next step (k → k+1)</text>
+</svg>

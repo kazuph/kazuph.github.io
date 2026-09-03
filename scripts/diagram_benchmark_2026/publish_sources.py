@@ -21,6 +21,7 @@ def main() -> None:
         "sonnet5",
         "grok45",
         "opus5",
+        "fable51",
     ):
         src_dir = ROOT / model
         out_dir = PUBLIC / model
