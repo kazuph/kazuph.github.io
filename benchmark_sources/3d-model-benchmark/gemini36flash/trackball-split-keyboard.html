@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Custom Trackball Split Keyboard - Gemini 3.6 Flash</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #090a0f;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            user-select: none;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        .ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 15, 25, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+        }
+        h1 { margin: 0 0 5px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
+        p { margin: 0; font-size: 12px; color: #88aacc; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="ui">
+        <h1>// CYBER-SPLIT 40 //</h1>
+        <p>Ergonomic Trackball Keyboard</p>
+    </div>
+
+    <script>
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x090a0f);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 4, 4);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.target.set(0, 0.5, 0);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(2, 6, 4);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        // Cyber Cyan & Magenta Accent Lights
+        const cyanLight = new THREE.PointLight(0x00ffcc, 1.5, 10);
+        cyanLight.position.set(-1.5, 1, 0.5);
+        scene.add(cyanLight);
+
+        const magentaLight = new THREE.PointLight(0xff0077, 1.5, 10);
+        magentaLight.position.set(1.5, 1, 0.5);
+        scene.add(magentaLight);
+
+        // Grid
+        const grid = new THREE.GridHelper(10, 20, 0x00ffcc, 0x1a2b3c);
+        scene.add(grid);
+
+        // Materials
+        const caseMat = new THREE.MeshStandardMaterial({ color: 0x161922, metalness: 0.8, roughness: 0.3 });
+        const keycapDarkMat = new THREE.MeshStandardMaterial({ color: 0x222633, roughness: 0.4 });
+        const keycapCyanMat = new THREE.MeshStandardMaterial({ color: 0x00ccaa, roughness: 0.4 });
+        const keycapRedMat = new THREE.MeshStandardMaterial({ color: 0xdd3355, roughness: 0.4 });
+        const trackballMat = new THREE.MeshStandardMaterial({ color: 0xee2255, metalness: 0.3, roughness: 0.1 }); // Glowing Red/Magenta Ball
+        const oledMat = new THREE.MeshBasicMaterial({ color: 0x00ffcc });
+
+        // Build Keyboard Half Function
+        function createKeyboardHalf(isRight = false) {
+            const halfGroup = new THREE.Group();
+            const sign = isRight ? 1 : -1;
+            halfGroup.position.set(sign * 1.4, 0.3, 0);
+            halfGroup.rotation.y = -sign * 0.18; // Tilted ergonomically
+
+            // PCB / Case Base
+            const caseGeo = new THREE.BoxGeometry(2.0, 0.25, 1.6);
+            const kbdCase = new THREE.Mesh(caseGeo, caseMat);
+            kbdCase.castShadow = true;
+            halfGroup.add(kbdCase);
+
+            // OLED Display Screen
+            const oled = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.2), oledMat);
+            oled.position.set(-sign * 0.7, 0.13, -0.6);
+            oled.rotation.x = -Math.PI / 2;
+            halfGroup.add(oled);
+
+            // Key Matrix Grid (4 rows x 5 columns per half)
+            const keyGeo = new THREE.BoxGeometry(0.28, 0.18, 0.28);
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 5; c++) {
+                    let mat = keycapDarkMat;
+                    if (r === 0 && c === 0) mat = keycapRedMat;
+                    if (r === 3 && c === 2) mat = keycapCyanMat;
+
+                    const key = new THREE.Mesh(keyGeo, mat);
+                    const kx = (c - 2) * 0.34;
+                    const kz = (r - 1.5) * 0.34;
+                    key.position.set(kx, 0.2, kz);
+                    halfGroup.add(key);
+                }
+            }
+
+            // Right Half gets Trackball Module
+            if (isRight) {
+                // Trackball Ring Housing
+                const ringGeo = new THREE.CylinderGeometry(0.35, 0.38, 0.2, 32);
+                const ring = new THREE.Mesh(ringGeo, caseMat);
+                ring.position.set(0.6, 0.25, 0.4);
+                halfGroup.add(ring);
+
+                // Trackball Sphere
+                const ballGeo = new THREE.SphereGeometry(0.32, 32, 32);
+                const ball = new THREE.Mesh(ballGeo, trackballMat);
+                ball.position.set(0.6, 0.4, 0.4);
+                halfGroup.add(ball);
+                halfGroup.trackball = ball;
+            }
+
+            return halfGroup;
+        }
+
+        const leftHalf = createKeyboardHalf(false);
+        const rightHalf = createKeyboardHalf(true);
+        scene.add(leftHalf);
+        scene.add(rightHalf);
+
+        // Coiled Cable Connecting Left and Right Halves
+        const cablePoints = [];
+        for (let i = 0; i <= 40; i++) {
+            const t = i / 40;
+            const x = (t - 0.5) * 2.4;
+            const y = 0.25 + Math.sin(t * Math.PI * 8) * 0.05;
+            const z = -0.6 + Math.cos(t * Math.PI * 8) * 0.05;
+            cablePoints.push(new THREE.Vector3(x, y, z));
+        }
+        const cableGeo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cablePoints), 64, 0.03, 8, false);
+        const cableMat = new THREE.MeshStandardMaterial({ color: 0x00ffcc, metalness: 0.5, roughness: 0.3 });
+        const cable = new THREE.Mesh(cableGeo, cableMat);
+        scene.add(cable);
+
+        // Animation Loop
+        let clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // Rotate Trackball continuously
+            if (rightHalf.trackball) {
+                rightHalf.trackball.rotation.x = time * 1.5;
+                rightHalf.trackball.rotation.y = time * 2.0;
+            }
+
+            // Pulse RGB Lights
+            cyanLight.intensity = 1.5 + Math.sin(time * 3) * 0.5;
+            magentaLight.intensity = 1.5 + Math.cos(time * 3) * 0.5;
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

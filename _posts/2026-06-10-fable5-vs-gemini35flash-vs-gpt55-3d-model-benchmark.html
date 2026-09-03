@@ -28,6 +28,14 @@ full_ai_model: claude-fable-5
 <p>この記事は題材設計、コード生成、検証、記事化までをAIで進める <strong>Full AI</strong> 方式で書いています。</p>
 
 <style>
+.site-main > .inner:has(.v3d-wide) {
+  max-width: 1800px;
+  padding-inline: 12px;
+}
+.content-layout:has(.v3d-wide) {
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+}
 .v3d-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -35,6 +43,8 @@ full_ai_model: claude-fable-5
   margin: 1.2rem 0 1.6rem;
 }
 @media (max-width: 720px) {
+  .site-main > .inner:has(.v3d-wide) { padding-inline: 4px; }
+  .content-layout:has(.v3d-wide) { grid-template-columns: 1fr; gap: 8px; }
   .v3d-grid { grid-template-columns: 1fr; }
 }
 .v3d {
@@ -60,7 +70,7 @@ full_ai_model: claude-fable-5
 .v3d-head .v3d-links { display: flex; gap: 10px; white-space: nowrap; }
 .v3d-head a { color: #62d6e8; text-decoration: none; }
 .v3d-stage { position: relative; aspect-ratio: 4 / 3; background: #11141b; }
-.v3d-stage img { width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; }
+.v3d-stage img { box-sizing: border-box; width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; }
 .v3d-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .v3d-play {
   position: absolute;
@@ -108,9 +118,11 @@ full_ai_model: claude-fable-5
 .bench-table { width: 100%; }
 .bench-table th, .bench-table td { vertical-align: top; }
 .diagram-hero { margin: 2rem 0; }
-.diagram-hero img { width: 100%; height: auto; display: block; }
+.diagram-hero img { box-sizing: border-box; width: 100%; height: auto; display: block; }
 .diagram-hero figcaption { margin-top: 0.75rem; color: #666; font-size: 0.95rem; }
 </style>
+
+<div class="v3d-wide"></div>
 
 <figure class="diagram-hero">
   <img src="/images/posts/3d-model-benchmark/ogp-keyboard-3way.png" alt="トラックボール付き分割キーボードの3Dモデルを、Claude Fable 5・Gemini 3.5 Flash・GPT-5.5 の3モデルで横並び比較した画像" loading="eager">

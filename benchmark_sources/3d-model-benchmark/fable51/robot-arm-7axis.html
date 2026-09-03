@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7-axis robot arm – interactive 3D</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #eef1f5; font-family: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; }
+  #panel { position: fixed; left: 16px; top: 16px; width: 270px; background: rgba(255,255,255,.86); backdrop-filter: blur(8px); border-radius: 14px; padding: 14px 16px 12px; box-shadow: 0 8px 24px rgba(30,40,60,.14); color: #233044; font-size: 13px; }
+  #panel h1 { font-size: 15px; margin: 0 0 4px; }
+  #panel p { margin: 0 0 10px; color: #5c6470; font-size: 12px; line-height: 1.5; }
+  .row { display: grid; grid-template-columns: 34px 1fr 52px; align-items: center; gap: 8px; margin: 6px 0; }
+  .row label { font-weight: 700; }
+  .row .type { font-size: 10px; color: #7a8290; font-weight: 400; display: block; }
+  .row input[type=range] { width: 100%; accent-color: #2a6f97; }
+  .row output { text-align: right; font-variant-numeric: tabular-nums; color: #2a6f97; font-weight: 600; }
+  .btns { display: flex; gap: 8px; margin-top: 10px; }
+  button { flex: 1; border: 0; border-radius: 8px; padding: 7px 8px; background: #2a6f97; color: #fff; font-weight: 600; cursor: pointer; font-size: 12px; }
+  button.secondary { background: #e6ebf1; color: #233044; }
+  button.active { background: #2e7d4f; }
+  .lbl { color: #fff; background: rgba(35,48,68,.85); padding: 2px 7px; border-radius: 6px; font-size: 12px; font-weight: 700; white-space: nowrap; pointer-events: none; }
+  .lbl.tcp { background: rgba(192,57,43,.9); }
+  .hint { position: fixed; right: 16px; bottom: 14px; color: #5c6470; font-size: 12px; background: rgba(255,255,255,.7); padding: 6px 10px; border-radius: 8px; pointer-events: none; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="app"></div>
+<div id="panel">
+  <h1>7-axis articulated arm</h1>
+  <p>J1〜J7 を個別に動かせます。各関節は階層構造で接続され、先端のグリッパが追従します。</p>
+  <div id="sliders"></div>
+  <div class="row"><label>Grip</label><input id="grip" type="range" min="0" max="100" value="35"><output id="grip-out">35%</output></div>
+  <div class="btns">
+    <button id="home" class="secondary">Home</button>
+    <button id="demo">Demo motion</button>
+  </div>
+</div>
+<div class="hint">ドラッグで回転 / ホイールでズーム</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const app = document.getElementById('app');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+app.appendChild(renderer.domElement);
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+labelRenderer.domElement.style.position = 'fixed';
+labelRenderer.domElement.style.inset = '0';
+labelRenderer.domElement.style.pointerEvents = 'none';
+app.appendChild(labelRenderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xeef1f5);
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(7.5, 5.0, 8.5);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 2.6, 0);
+controls.enableDamping = true;
+controls.minDistance = 3; controls.maxDistance = 25;
+controls.maxPolarAngle = Math.PI * 0.49;
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0xb8c0cc, 0.7));
+const key = new THREE.DirectionalLight(0xffffff, 1.5);
+key.position.set(6, 10, 5); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.left = -8; key.shadow.camera.right = 8; key.shadow.camera.top = 8; key.shadow.camera.bottom = -8;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xcfe0ff, 0.5); rim.position.set(-6, 4, -6); scene.add(rim);
+
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshStandardMaterial({ color: 0xdfe4ea, roughness: 0.95 }));
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+const grid = new THREE.GridHelper(20, 40, 0xb9c2ce, 0xcfd6df); grid.position.y = 0.002; scene.add(grid);
+
+// ---------- materials ----------
+const white = new THREE.MeshStandardMaterial({ color: 0xf2f4f7, roughness: 0.45, metalness: 0.1 });
+const dark = new THREE.MeshStandardMaterial({ color: 0x3c4654, roughness: 0.5, metalness: 0.3 });
+const orange = new THREE.MeshStandardMaterial({ color: 0xf4a261, roughness: 0.4, metalness: 0.2 });
+const steel = new THREE.MeshStandardMaterial({ color: 0x9aa4b1, roughness: 0.3, metalness: 0.8 });
+const pitchCol = 0x2a6f97, rollCol = 0xc0392b, yawCol = 0x2e8b57;
+
+function box(w, h, d, mat, parent, x = 0, y = 0, z = 0) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
+}
+function cyl(rt, rb, h, mat, parent, x = 0, y = 0, z = 0, rx = 0, rz = 0, seg = 32) {
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), mat);
+  m.position.set(x, y, z); m.rotation.set(rx, 0, rz); m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
+}
+function label(text, parent, x, y, z, cls = 'lbl') {
+  const div = document.createElement('div'); div.className = cls; div.textContent = text;
+  const o = new CSS2DObject(div); o.position.set(x, y, z); parent.add(o); return o;
+}
+// axis ring: a torus showing the rotation axis with a color per joint type
+function axisRing(radius, color, parent, axis) {
+  const m = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.025, 8, 48), new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.35, roughness: 0.4 }));
+  if (axis === 'y') m.rotation.x = Math.PI / 2;
+  if (axis === 'x') m.rotation.y = Math.PI / 2;
+  parent.add(m); return m;
+}
+
+// ---------- kinematic chain ----------
+// Each joint is a Group; the next link is a child of the joint so rotations propagate down the chain.
+const base = new THREE.Group(); base.scale.setScalar(0.62); scene.add(base);
+cyl(1.3, 1.45, 0.25, dark, base, 0, 0.125);
+cyl(0.9, 1.0, 0.45, white, base, 0, 0.47);
+for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; cyl(0.07, 0.07, 0.06, steel, base, Math.cos(a) * 1.2, 0.28, Math.sin(a) * 1.2, 0, 0, 12); }
+label('Base', base, 1.5, 0.15, 0);
+
+// J1: yaw about vertical axis
+const J1 = new THREE.Group(); J1.position.set(0, 0.7, 0); base.add(J1);
+cyl(0.75, 0.75, 0.8, white, J1, 0, 0.4);
+axisRing(0.85, yawCol, J1, 'y').position.y = 0.05;
+box(0.9, 0.9, 1.1, white, J1, 0, 1.2, 0.05);
+label('J1', J1, 1.0, 0.3, 0.9);
+
+// J2: shoulder pitch (about X)
+const J2 = new THREE.Group(); J2.position.set(0, 1.5, 0); J1.add(J2);
+cyl(0.5, 0.5, 1.1, orange, J2, 0, 0, 0, 0, Math.PI / 2);  // joint housing along X
+axisRing(0.6, pitchCol, J2, 'x');
+const link2 = box(0.62, 2.4, 0.62, white, J2, 0, 1.2, 0);
+link2.geometry = new THREE.BoxGeometry(0.62, 2.4, 0.62); // upper arm
+label('J2', J2, 0.75, 0, 0.4);
+
+// J3: upper-arm roll (about the link's own Y axis)
+const J3 = new THREE.Group(); J3.position.set(0, 2.4, 0); J2.add(J3);
+cyl(0.42, 0.42, 0.5, orange, J3, 0, 0.25);
+axisRing(0.52, rollCol, J3, 'y').position.y = 0.25;
+box(0.55, 0.9, 0.55, white, J3, 0, 0.95, 0);
+label('J3', J3, 0.7, 0.25, 0.3);
+
+// J4: elbow pitch (about X)
+const J4 = new THREE.Group(); J4.position.set(0, 1.4, 0); J3.add(J4);
+cyl(0.42, 0.42, 0.95, orange, J4, 0, 0, 0, 0, Math.PI / 2);
+axisRing(0.52, pitchCol, J4, 'x');
+box(0.5, 2.0, 0.5, white, J4, 0, 1.0, 0);
+label('J4', J4, 0.65, 0, 0.35);
+
+// J5: forearm roll (about Y)
+const J5 = new THREE.Group(); J5.position.set(0, 2.0, 0); J4.add(J5);
+cyl(0.34, 0.34, 0.4, orange, J5, 0, 0.2);
+axisRing(0.44, rollCol, J5, 'y').position.y = 0.2;
+box(0.42, 0.7, 0.42, white, J5, 0, 0.75, 0);
+label('J5', J5, 0.55, 0.2, 0.3);
+
+// J6: wrist pitch (about X)
+const J6 = new THREE.Group(); J6.position.set(0, 1.1, 0); J5.add(J6);
+cyl(0.3, 0.3, 0.7, orange, J6, 0, 0, 0, 0, Math.PI / 2);
+axisRing(0.4, pitchCol, J6, 'x');
+box(0.34, 0.6, 0.34, white, J6, 0, 0.3, 0);
+label('J6', J6, 0.5, 0, 0.3);
+
+// J7: tool flange roll (about Y)
+const J7 = new THREE.Group(); J7.position.set(0, 0.6, 0); J6.add(J7);
+cyl(0.3, 0.3, 0.16, steel, J7, 0, 0.08);
+axisRing(0.4, rollCol, J7, 'y').position.y = 0.08;
+label('J7', J7, 0.5, 0.1, 0.25);
+
+// gripper: palm + two fingers that slide along X
+const gripper = new THREE.Group(); gripper.position.set(0, 0.16, 0); J7.add(gripper);
+box(0.7, 0.28, 0.4, dark, gripper, 0, 0.14, 0);
+const fingerL = new THREE.Group(); fingerL.position.set(-0.2, 0.28, 0); gripper.add(fingerL);
+const fingerR = new THREE.Group(); fingerR.position.set(0.2, 0.28, 0); gripper.add(fingerR);
+for (const [f, s] of [[fingerL, 1], [fingerR, -1]]) {
+  box(0.1, 0.5, 0.26, steel, f, 0, 0.25, 0);
+  box(0.06, 0.2, 0.22, dark, f, s * 0.05, 0.45, 0); // rubber pad facing inward
+}
+const tcp = new THREE.Object3D(); tcp.position.set(0, 0.8, 0); gripper.add(tcp);
+label('TCP', tcp, 0, 0.12, 0, 'lbl tcp');
+const tcpDot = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 8), new THREE.MeshBasicMaterial({ color: 0xc0392b })); tcp.add(tcpDot);
+
+// small workpiece on a pedestal so there is something to reach for
+const pedestal = cyl(0.3, 0.35, 0.7, dark, scene, 2.6, 0.35, 1.0);
+box(0.4, 0.4, 0.4, new THREE.MeshStandardMaterial({ color: 0x2a6f97, roughness: 0.5 }), scene, 2.6, 0.9, 1.0);
+
+// ---------- joint definitions & UI ----------
+const joints = [
+  { name: 'J1', type: 'Yaw',   group: J1, axis: 'y', min: -170, max: 170, home: 20 },
+  { name: 'J2', type: 'Pitch', group: J2, axis: 'x', min: -120, max: 120, home: -35 },
+  { name: 'J3', type: 'Roll',  group: J3, axis: 'y', min: -170, max: 170, home: 15 },
+  { name: 'J4', type: 'Pitch', group: J4, axis: 'x', min: -140, max: 140, home: 70 },
+  { name: 'J5', type: 'Roll',  group: J5, axis: 'y', min: -170, max: 170, home: -20 },
+  { name: 'J6', type: 'Pitch', group: J6, axis: 'x', min: -120, max: 120, home: 45 },
+  { name: 'J7', type: 'Roll',  group: J7, axis: 'y', min: -180, max: 180, home: 0 },
+];
+const slidersEl = document.getElementById('sliders');
+for (const j of joints) {
+  const row = document.createElement('div'); row.className = 'row';
+  row.innerHTML = `<label>${j.name}<span class="type">${j.type}</span></label><input type="range" min="${j.min}" max="${j.max}" value="${j.home}" step="1"><output>${j.home}°</output>`;
+  slidersEl.appendChild(row);
+  j.input = row.querySelector('input'); j.output = row.querySelector('output');
+  j.input.addEventListener('input', () => { j.value = +j.input.value; j.output.value = `${j.value}°`; demo = false; demoBtn.classList.remove('active'); });
+  j.value = j.home;
+}
+const gripInput = document.getElementById('grip'), gripOut = document.getElementById('grip-out');
+let grip = 0.35;
+gripInput.addEventListener('input', () => { grip = +gripInput.value / 100; gripOut.value = `${gripInput.value}%`; });
+
+let demo = false; let demoT = 0;
+const demoBtn = document.getElementById('demo');
+demoBtn.addEventListener('click', () => { demo = !demo; demoBtn.classList.toggle('active', demo); });
+document.getElementById('home').addEventListener('click', () => {
+  demo = false; demoBtn.classList.remove('active');
+  for (const j of joints) { j.value = j.home; j.input.value = j.home; j.output.value = `${j.home}°`; }
+});
+
+function applyJoints() {
+  for (const j of joints) {
+    const r = THREE.MathUtils.degToRad(j.value);
+    if (j.axis === 'y') j.group.rotation.set(0, r, 0); else j.group.rotation.set(r, 0, 0);
+  }
+  fingerL.position.x = -0.08 - 0.22 * (1 - grip);
+  fingerR.position.x = 0.08 + 0.22 * (1 - grip);
+}
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = clock.getDelta();
+  if (demo) {
+    demoT += dt;
+    const w = [0.35, 0.5, 0.42, 0.55, 0.6, 0.7, 0.9];
+    const amp = [60, 30, 60, 35, 70, 40, 120];
+    joints.forEach((j, i) => { j.value = Math.round(j.home + Math.sin(demoT * w[i] + i) * amp[i]); j.input.value = j.value; j.output.value = `${j.value}°`; });
+    grip = 0.5 + Math.sin(demoT * 1.3) * 0.45; gripInput.value = Math.round(grip * 100); gripOut.value = `${Math.round(grip * 100)}%`;
+  }
+  applyJoints();
+  controls.update();
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+}
+applyJoints();
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight); labelRenderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

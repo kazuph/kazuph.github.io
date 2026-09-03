@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Mechanical Watch Movement - Gemini 3.6 Flash</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0f111a;
+            font-family: sans-serif;
+            color: #e2e8f0;
+            user-select: none;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        .ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(20, 24, 38, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 { margin: 0 0 10px; font-size: 18px; color: #d69e2e; }
+        button {
+            background: #d69e2e;
+            color: #111;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background: #b7791f; color: white; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="ui">
+        <h1>Mechanical Watch Movement</h1>
+        <button id="btnToggle" onclick="toggleAnimation()">Pause</button>
+    </div>
+
+    <script>
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0f111a);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 4, 4);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.target.set(0, 0, 0);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xfffaed, 0.9);
+        dirLight.position.set(5, 8, 5);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        const dirLight2 = new THREE.DirectionalLight(0xa0aec0, 0.4);
+        dirLight2.position.set(-5, 4, -5);
+        scene.add(dirLight2);
+
+        // Materials
+        const brassMat = new THREE.MeshStandardMaterial({ color: 0xd69e2e, metalness: 0.8, roughness: 0.3 }); // Brass wheels
+        const steelMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.9, roughness: 0.2 }); // Steel pinions & balance
+        const rubyMat = new THREE.MeshPhysicalMaterial({ color: 0xe53e3e, transparent: true, opacity: 0.8, roughness: 0.1 }); // Ruby jewels
+        const plateMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e0, metalness: 0.7, roughness: 0.4 }); // Mainplate
+
+        // Mainplate (Base)
+        const plateGeo = new THREE.CylinderGeometry(2.2, 2.2, 0.15, 64);
+        const mainplate = new THREE.Mesh(plateGeo, plateMat);
+        mainplate.position.y = -0.1;
+        scene.add(mainplate);
+
+        // Helper: Create Toothed Gear Geometry
+        function createToothedGear(radius, numTeeth, thickness) {
+            const shape = new THREE.Shape();
+            const toothDepth = radius * 0.12;
+
+            for (let i = 0; i < numTeeth; i++) {
+                const a1 = (i / numTeeth) * Math.PI * 2;
+                const a2 = ((i + 0.3) / numTeeth) * Math.PI * 2;
+                const a3 = ((i + 0.6) / numTeeth) * Math.PI * 2;
+                const a4 = ((i + 0.9) / numTeeth) * Math.PI * 2;
+
+                const rIn = radius - toothDepth;
+                const rOut = radius;
+
+                if (i === 0) shape.moveTo(Math.cos(a1) * rIn, Math.sin(a1) * rIn);
+                shape.lineTo(Math.cos(a2) * rOut, Math.sin(a2) * rOut);
+                shape.lineTo(Math.cos(a3) * rOut, Math.sin(a3) * rOut);
+                shape.lineTo(Math.cos(a4) * rIn, Math.sin(a4) * rIn);
+            }
+
+            const extrudeSettings = { depth: thickness, bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.01 };
+            const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+            geo.rotateX(Math.PI / 2);
+            return geo;
+        }
+
+        // Helper: Add Jewel Pivot
+        function addJewel(x, z, y = 0.1) {
+            const jewel = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.06, 16), rubyMat);
+            jewel.position.set(x, y, z);
+            scene.add(jewel);
+        }
+
+        // 1. Mainspring Barrel (Left: x = -1.0, z = 0.6)
+        const barrelGroup = new THREE.Group();
+        barrelGroup.position.set(-1.0, 0.1, 0.6);
+        scene.add(barrelGroup);
+
+        const barrelMesh = new THREE.Mesh(createToothedGear(0.7, 36, 0.12), brassMat);
+        barrelGroup.add(barrelMesh);
+        addJewel(-1.0, 0.6);
+
+        // 2. Center Wheel / 2nd Wheel (Center: x = -0.1, z = 0.2)
+        const centerWheelGroup = new THREE.Group();
+        centerWheelGroup.position.set(-0.1, 0.15, 0.2);
+        scene.add(centerWheelGroup);
+
+        const centerMesh = new THREE.Mesh(createToothedGear(0.5, 28, 0.08), brassMat);
+        centerWheelGroup.add(centerMesh);
+        addJewel(-0.1, 0.2);
+
+        // 3. Third Wheel (x = 0.5, z = -0.3)
+        const thirdWheelGroup = new THREE.Group();
+        thirdWheelGroup.position.set(0.5, 0.2, -0.3);
+        scene.add(thirdWheelGroup);
+
+        const thirdMesh = new THREE.Mesh(createToothedGear(0.4, 24, 0.08), brassMat);
+        thirdWheelGroup.add(thirdMesh);
+        addJewel(0.5, -0.3);
+
+        // 4. Fourth Wheel / Seconds Wheel (x = 1.0, z = -0.8)
+        const fourthWheelGroup = new THREE.Group();
+        fourthWheelGroup.position.set(1.0, 0.25, -0.8);
+        scene.add(fourthWheelGroup);
+
+        const fourthMesh = new THREE.Mesh(createToothedGear(0.3, 20, 0.06), brassMat);
+        fourthWheelGroup.add(fourthMesh);
+        addJewel(1.0, -0.8);
+
+        // 5. Escape Wheel (x = 1.3, z = -1.2)
+        const escapeWheelGroup = new THREE.Group();
+        escapeWheelGroup.position.set(1.3, 0.28, -1.2);
+        scene.add(escapeWheelGroup);
+
+        const escapeMesh = new THREE.Mesh(createToothedGear(0.2, 15, 0.05), steelMat);
+        escapeWheelGroup.add(escapeMesh);
+        addJewel(1.3, -1.2);
+
+        // 6. Pallet Fork (x = 1.1, z = -1.45)
+        const palletGroup = new THREE.Group();
+        palletGroup.position.set(1.1, 0.3, -1.45);
+        scene.add(palletGroup);
+
+        const palletMesh = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.04, 0.3), steelMat);
+        palletGroup.add(palletMesh);
+        addJewel(1.1, -1.45, 0.35);
+
+        // 7. Balance Wheel & Hairspring (x = 0.7, z = -1.6)
+        const balanceGroup = new THREE.Group();
+        balanceGroup.position.set(0.7, 0.35, -1.6);
+        scene.add(balanceGroup);
+
+        const balanceRim = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.03, 16, 32), steelMat);
+        balanceRim.rotation.x = Math.PI / 2;
+        balanceGroup.add(balanceRim);
+
+        const balanceSpoke = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.7, 16), steelMat);
+        balanceSpoke.rotation.z = Math.PI / 2;
+        balanceGroup.add(balanceSpoke);
+        addJewel(0.7, -1.6, 0.4);
+
+        // Animation State
+        let isRunning = true;
+        window.toggleAnimation = function() {
+            isRunning = !isRunning;
+            document.getElementById('btnToggle').innerText = isRunning ? 'Pause' : 'Play';
+        };
+
+        // Animation Loop
+        let clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (isRunning) {
+                const dt = clock.getDelta();
+                const speed = 1.5;
+
+                // Wheel Rotations with Gear Ratios
+                barrelGroup.rotation.y += dt * 0.2 * speed;
+                centerWheelGroup.rotation.y -= dt * 0.6 * speed;
+                thirdWheelGroup.rotation.y += dt * 1.2 * speed;
+                fourthWheelGroup.rotation.y -= dt * 2.5 * speed;
+                escapeWheelGroup.rotation.y += dt * 5.0 * speed;
+
+                // Escapement Oscillations (Pallet Fork & Balance Wheel)
+                const t = clock.getElapsedTime() * 15;
+                palletGroup.rotation.y = Math.sin(t) * 0.15;
+                balanceGroup.rotation.y = Math.sin(t) * 1.2;
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

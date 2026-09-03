@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mechanical Watch Movement Calibre 3D</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 100vw; height: 100vh; overflow: hidden; background: radial-gradient(circle at center, #1e293b, #0f172a, #020617); font-family: 'Segoe UI', system-ui, sans-serif; }
+    #canvas-container { width: 100%; height: 100%; }
+    #ui-panel {
+      position: absolute; top: 20px; left: 20px;
+      background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(10px);
+      border: 1px solid #d97706; border-radius: 12px; padding: 16px 20px;
+      color: #f8fafc; z-index: 10; box-shadow: 0 0 25px rgba(217, 119, 6, 0.2);
+      max-width: 320px;
+    }
+    h1 { font-size: 16px; font-weight: 700; color: #fbbf24; margin-bottom: 4px; }
+    p { font-size: 11px; color: #94a3b8; line-height: 1.4; margin-bottom: 12px; }
+    .gear-list { font-size: 11px; color: #cbd5e1; margin-bottom: 12px; }
+    .gear-item { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .btn-row { display: flex; gap: 8px; }
+    button {
+      flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid #d97706;
+      background: #78350f; color: #fef3c7; font-size: 12px; font-weight: bold;
+      cursor: pointer; transition: all 0.2s;
+    }
+    button:hover { background: #b45309; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+  <div id="canvas-container"></div>
+
+  <div id="ui-panel">
+    <h1>Manual Wind Calibre</h1>
+    <p>Mechanical Escapement, Gear Train &amp; Oscillating Balance Wheel</p>
+
+    <div class="gear-list">
+      <div class="gear-item"><span class="dot" style="background:#fbbf24;"></span> 1. 香箱車 (Mainspring Barrel)</div>
+      <div class="gear-item"><span class="dot" style="background:#f59e0b;"></span> 2. 二番車 (Center Wheel, 1 RPM)</div>
+      <div class="gear-item"><span class="dot" style="background:#f59e0b;"></span> 3. 三番車 (Third Wheel)</div>
+      <div class="gear-item"><span class="dot" style="background:#f59e0b;"></span> 4. 四番車 (Fourth Wheel, 1 RPS)</div>
+      <div class="gear-item"><span class="dot" style="background:#e2e8f0;"></span> 5. ガンギ車 (Escape Wheel)</div>
+      <div class="gear-item"><span class="dot" style="background:#94a3b8;"></span> 6. アンクル (Pallet Fork)</div>
+      <div class="gear-item"><span class="dot" style="background:#fbbf24;"></span> 7. テンプ (Balance Wheel &amp; Spring)</div>
+      <div class="gear-item"><span class="dot" style="background:#f43f5e;"></span> 8. ルビー軸受 (Synthetic Ruby Jewels)</div>
+    </div>
+
+    <div class="btn-row">
+      <button id="btn-play" onclick="togglePlay()">一時停止 / 再生</button>
+    </div>
+  </div>
+
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 4.5, 4.0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.target.set(0, 0.2, 0);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xfffbeb, 0.8);
+    scene.add(ambientLight);
+
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    topLight.position.set(4, 8, 4);
+    topLight.castShadow = true;
+    topLight.shadow.mapSize.width = 1024;
+    topLight.shadow.mapSize.height = 1024;
+    scene.add(topLight);
+
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.6);
+    rimLight.position.set(-5, 3, -4);
+    scene.add(rimLight);
+
+    // Materials
+    const goldMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, metalness: 0.9, roughness: 0.15 }); // Brass / 18k Gilded Gears
+    const steelMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.95, roughness: 0.1 }); // Polished Steel Pinions
+    const plateMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.8, roughness: 0.3 }); // Rhodium-plated Mainplate & Bridges
+    const rubyMat = new THREE.MeshPhysicalMaterial({ color: 0xf43f5e, metalness: 0.1, roughness: 0.05, transmission: 0.8, ior: 1.76 }); // Synthetic Corundum Jewel
+    const bluedScrewMat = new THREE.MeshStandardMaterial({ color: 0x1d4ed8, metalness: 0.85, roughness: 0.15 }); // Blued Steel Screws
+    const springMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, metalness: 0.9, roughness: 0.2 });
+
+    // MOVEMENT ROOT
+    const calibre = new THREE.Group();
+    scene.add(calibre);
+
+    // 1. MAINPLATE (Bottom Brass Foundation)
+    const mainplateGeo = new THREE.CylinderGeometry(2.4, 2.4, 0.1, 48);
+    const mainplate = new THREE.Mesh(mainplateGeo, plateMat);
+    mainplate.position.y = -0.05;
+    mainplate.receiveShadow = true;
+    calibre.add(mainplate);
+
+    // HELPER: CREATE REAL TOOTHED GEAR
+    function createToothedGear(radius, thickness, numTeeth, toothHeight, spokeCount = 4, mat = goldMat) {
+      const gearGroup = new THREE.Group();
+
+      // Rim cylinder
+      const rim = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, thickness, 32), mat);
+      rim.castShadow = true;
+      gearGroup.add(rim);
+
+      // Teeth around circumference
+      const toothWidth = (2 * Math.PI * radius / numTeeth) * 0.55;
+      const toothGeo = new THREE.BoxGeometry(toothHeight, thickness, toothWidth);
+
+      for (let i = 0; i < numTeeth; i++) {
+        const angle = (i / numTeeth) * 2 * Math.PI;
+        const tooth = new THREE.Mesh(toothGeo, mat);
+        tooth.position.set(
+          (radius + toothHeight * 0.45) * Math.cos(angle),
+          0,
+          (radius + toothHeight * 0.45) * Math.sin(angle)
+        );
+        tooth.rotation.y = -angle;
+        tooth.castShadow = true;
+        gearGroup.add(tooth);
+      }
+
+      // Center Hub
+      const hub = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.25, radius * 0.25, thickness * 1.2, 16), mat);
+      gearGroup.add(hub);
+
+      // Inner Steel Pinion
+      const pinion = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.15, radius * 0.15, thickness * 2.2, 12), steelMat);
+      gearGroup.add(pinion);
+
+      return gearGroup;
+    }
+
+    // HELPER: CREATE RUBY JEWEL BEARING
+    function createJewel(x, z, y = 0.25) {
+      const jGroup = new THREE.Group();
+      jGroup.position.set(x, y, z);
+      // Gold Chatton setting
+      const chatton = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.05, 16), goldMat);
+      jGroup.add(chatton);
+      // Ruby jewel
+      const jewel = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.06, 16), rubyMat);
+      jGroup.add(jewel);
+      calibre.add(jGroup);
+    }
+
+    // HELPER: CREATE BLUED SCREW
+    function createScrew(x, z, y = 0.28) {
+      const s = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.04, 16), bluedScrewMat);
+      s.position.set(x, y, z);
+      // Screw slot line
+      const slot = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.05, 0.02), plateMat);
+      s.add(slot);
+      calibre.add(s);
+    }
+
+    // 2. MAINSPRING BARREL (香箱) - Pos: (-1.1, 0, -0.6)
+    const barrelPos = new THREE.Vector3(-1.0, 0.12, -0.6);
+    const barrel = createToothedGear(0.85, 0.2, 36, 0.08, 0, goldMat);
+    barrel.position.copy(barrelPos);
+    calibre.add(barrel);
+    createJewel(barrelPos.x, barrelPos.z);
+    createScrew(barrelPos.x - 0.4, barrelPos.z - 0.4);
+
+    // 3. CENTER WHEEL (二番車) - Pos: (0, 0.18, 0)
+    const centerPos = new THREE.Vector3(0, 0.18, 0);
+    const centerWheel = createToothedGear(0.65, 0.08, 28, 0.07, 4, goldMat);
+    centerWheel.position.copy(centerPos);
+    calibre.add(centerWheel);
+    createJewel(centerPos.x, centerPos.z);
+
+    // 4. THIRD WHEEL (三番車) - Pos: (0.7, 0.15, -0.5)
+    const thirdPos = new THREE.Vector3(0.65, 0.15, -0.5);
+    const thirdWheel = createToothedGear(0.55, 0.07, 24, 0.06, 4, goldMat);
+    thirdWheel.position.copy(thirdPos);
+    calibre.add(thirdWheel);
+    createJewel(thirdPos.x, thirdPos.z);
+
+    // 5. FOURTH WHEEL (四番車 / Seconds) - Pos: (0.55, 0.2, 0.45)
+    const fourthPos = new THREE.Vector3(0.55, 0.2, 0.45);
+    const fourthWheel = createToothedGear(0.48, 0.06, 20, 0.05, 4, goldMat);
+    fourthWheel.position.copy(fourthPos);
+    calibre.add(fourthWheel);
+    createJewel(fourthPos.x, fourthPos.z);
+
+    // 6. ESCAPE WHEEL (ガンギ車 - Steel special club teeth) - Pos: (-0.15, 0.22, 0.95)
+    const escapePos = new THREE.Vector3(-0.15, 0.22, 0.95);
+    const escapeWheel = createToothedGear(0.35, 0.05, 15, 0.06, 3, steelMat);
+    escapeWheel.position.copy(escapePos);
+    calibre.add(escapeWheel);
+    createJewel(escapePos.x, escapePos.z);
+
+    // 7. PALLET FORK / ANCHOR (アンクル) - Pos: (-0.6, 0.24, 1.25)
+    const anchorGroup = new THREE.Group();
+    anchorGroup.position.set(-0.6, 0.24, 1.25);
+
+    // Anchor Body (Steel Lever)
+    const lever = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.04, 0.08), steelMat);
+    anchorGroup.add(lever);
+
+    // Synthetic Ruby Pallet Stones (Entry & Exit stones)
+    const rubyStone1 = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.05, 0.04), rubyMat);
+    rubyStone1.position.set(0.18, 0, -0.06);
+    anchorGroup.add(rubyStone1);
+
+    const rubyStone2 = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.05, 0.04), rubyMat);
+    rubyStone2.position.set(-0.18, 0, -0.06);
+    anchorGroup.add(rubyStone2);
+
+    calibre.add(anchorGroup);
+    createJewel(anchorGroup.position.x, anchorGroup.position.z);
+
+    // 8. BALANCE WHEEL & SPIRAL HAIRSPRING (テンプ & ヒゲゼンマイ) - Pos: (-1.1, 0.32, 0.85)
+    const balancePos = new THREE.Vector3(-1.1, 0.32, 0.85);
+    const balanceGroup = new THREE.Group();
+    balanceGroup.position.copy(balancePos);
+
+    // Glucydur Balance Rim (Gold with regulation screws)
+    const balanceRim = new THREE.Mesh(new THREE.TorusGeometry(0.65, 0.04, 16, 32), goldMat);
+    balanceRim.rotation.x = Math.PI / 2;
+    balanceGroup.add(balanceRim);
+
+    // Cross Arms
+    const balanceArm = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.03, 0.06), goldMat);
+    balanceGroup.add(balanceArm);
+
+    // Regulation Screws on Rim
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * 2 * Math.PI;
+      const rScrew = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.08, 8), goldMat);
+      rScrew.position.set(0.65 * Math.cos(a), 0, 0.65 * Math.sin(a));
+      balanceGroup.add(rScrew);
+    }
+
+    // Archimedean Spiral Hairspring (ヒゲゼンマイ)
+    const springPoints = [];
+    for (let theta = 0; theta < 6 * Math.PI; theta += 0.1) {
+      const r = 0.06 + 0.02 * theta;
+      springPoints.push(new THREE.Vector3(r * Math.cos(theta), 0.06, r * Math.sin(theta)));
+    }
+    const springCurve = new THREE.CatmullRomCurve3(springPoints);
+    const springMesh = new THREE.Mesh(new THREE.TubeGeometry(springCurve, 64, 0.008, 6, false), springMat);
+    balanceGroup.add(springMesh);
+
+    calibre.add(balanceGroup);
+    createJewel(balancePos.x, balancePos.z, 0.42);
+
+    // 9. BRIDGES (Geneva Striped Decorative Top Plates)
+    // Barrel Bridge
+    const barrelBridge = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.08, 1.2), plateMat);
+    barrelBridge.position.set(-0.9, 0.26, -0.6);
+    barrelBridge.castShadow = true;
+    calibre.add(barrelBridge);
+    createScrew(-1.4, -0.2);
+    createScrew(-0.3, -1.0);
+
+    // Gear Train Bridge
+    const trainBridge = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.08, 1.4), plateMat);
+    trainBridge.position.set(0.6, 0.28, -0.1);
+    trainBridge.castShadow = true;
+    calibre.add(trainBridge);
+    createScrew(1.1, 0.4);
+    createScrew(1.1, -0.6);
+
+    // Balance Cock (Cantilevered bridge over balance wheel)
+    const balanceCock = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.08, 0.5), plateMat);
+    balanceCock.position.set(-1.1, 0.4, 0.85);
+    balanceCock.castShadow = true;
+    calibre.add(balanceCock);
+    createScrew(-1.4, 1.0, 0.45);
+
+    // PLAY / PAUSE LOGIC
+    let isPlaying = true;
+    window.togglePlay = function() {
+      isPlaying = !isPlaying;
+    };
+
+    // Animation Loop
+    let clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta();
+
+      if (isPlaying) {
+        // Gear meshing kinematic rotations
+        const baseSpeed = 1.2;
+        barrel.rotation.y += baseSpeed * 0.1 * delta;
+        centerWheel.rotation.y -= baseSpeed * 0.4 * delta;
+        thirdWheel.rotation.y += baseSpeed * 0.9 * delta;
+        fourthWheel.rotation.y -= baseSpeed * 2.2 * delta;
+        escapeWheel.rotation.y += baseSpeed * 5.5 * delta;
+
+        // Escapement High-Frequency Oscillations (28,800 vph / 4 Hz simulation)
+        const t = clock.getElapsedTime() * 18;
+        balanceGroup.rotation.y = Math.sin(t) * 1.4; // 280-degree balance amplitude
+        anchorGroup.rotation.y = Math.sin(t) > 0 ? 0.18 : -0.18; // Pallet fork locking/unlocking tick
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

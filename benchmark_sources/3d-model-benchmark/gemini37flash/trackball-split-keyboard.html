@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ergonomic Trackball Split Keyboard 3D</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 100vw; height: 100vh; overflow: hidden; background: radial-gradient(circle at center, #0f172a, #020617, #000000); font-family: 'Segoe UI', system-ui, sans-serif; }
+    #canvas-container { width: 100%; height: 100%; }
+    #ui-panel {
+      position: absolute; top: 20px; left: 20px;
+      background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px);
+      border: 1px solid #06b6d4; border-radius: 12px; padding: 16px 20px;
+      color: #f8fafc; z-index: 10; box-shadow: 0 0 25px rgba(6, 182, 212, 0.25);
+      max-width: 320px;
+    }
+    h1 { font-size: 16px; font-weight: 700; color: #38bdf8; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    p { font-size: 11px; color: #94a3b8; line-height: 1.4; margin-bottom: 12px; }
+    .badge { display: inline-block; background: #083344; color: #22d3ee; border: 1px solid #06b6d4; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-bottom: 8px; }
+    .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; color: #cbd5e1; margin-bottom: 12px; }
+    .spec-item { background: #1e293b; padding: 6px 8px; border-radius: 6px; border-left: 2px solid #38bdf8; }
+    .btn-row { display: flex; gap: 8px; }
+    button {
+      flex: 1; padding: 7px 10px; border-radius: 6px; border: 1px solid #0891b2;
+      background: #0f172a; color: #38bdf8; font-size: 11px; font-weight: bold;
+      cursor: pointer; transition: all 0.2s;
+    }
+    button:hover { background: #0891b2; color: #fff; box-shadow: 0 0 10px rgba(6,182,212,0.4); }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+  <div id="canvas-container"></div>
+
+  <div id="ui-panel">
+    <div class="badge">CUSTOM ERGO MECH</div>
+    <h1>Corne-Ball Trackball Split</h1>
+    <p>Column-Staggered Split Keyboard with 34mm Optical Trackball, Rotary Encoder &amp; OLED Screen</p>
+
+    <div class="specs-grid">
+      <div class="spec-item"><b style="color:#38bdf8;">Layout:</b> 42-Key Ortho</div>
+      <div class="spec-item"><b style="color:#f43f5e;">Trackball:</b> 34mm PMW3360</div>
+      <div class="spec-item"><b style="color:#a855f7;">Encoder:</b> EC11 Rotary</div>
+      <div class="spec-item"><b style="color:#22c55e;">Firmware:</b> QMK / Vial</div>
+    </div>
+
+    <div class="btn-row">
+      <button onclick="toggleUnderglow()">RGB Underglow</button>
+      <button onclick="spinTrackball()">Spin Trackball</button>
+    </div>
+  </div>
+
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 4.5, 4.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.target.set(0, 0.2, 0);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    topLight.position.set(5, 10, 5);
+    topLight.castShadow = true;
+    scene.add(topLight);
+
+    const sideLight = new THREE.DirectionalLight(0x06b6d4, 0.8);
+    sideLight.position.set(-5, 4, -4);
+    scene.add(sideLight);
+
+    // Desk Mat (Large Black Stitched Cloth Mat)
+    const deskMat = new THREE.Mesh(
+      new THREE.BoxGeometry(6.5, 0.04, 3.8),
+      new THREE.MeshStandardMaterial({ color: 0x090d16, roughness: 0.9 })
+    );
+    deskMat.position.y = 0.02;
+    deskMat.receiveShadow = true;
+    scene.add(deskMat);
+
+    // Materials
+    const caseMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8, roughness: 0.25 }); // Anodized Dark Slate Case
+    const plateMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9, roughness: 0.2 }); // Brass Switch Plate
+    const alphaCapMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 }); // Dark Slate Keycaps
+    const modCapMat = new THREE.MeshStandardMaterial({ color: 0x0891b2, roughness: 0.4 }); // Cyan Modifiers
+    const accentCapMat = new THREE.MeshStandardMaterial({ color: 0xf43f5e, roughness: 0.4 }); // Ruby Accent Keys
+    const trackballMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, metalness: 0.9, roughness: 0.05 }); // High-gloss Metallic Red Ball
+    const encoderMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.95, roughness: 0.1 });
+    const oledMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4 });
+
+    // Underglow point lights
+    const rgbLights = [];
+    function addRgbLight(parent, x, z) {
+      const pl = new THREE.PointLight(0x00f2fe, 1.2, 1.5);
+      pl.position.set(x, 0.05, z);
+      parent.add(pl);
+      rgbLights.push(pl);
+    }
+
+    // CREATE KEYBOARD HALF (Procedural Generator)
+    function createKeyboardHalf(isRight = false) {
+      const halfGroup = new THREE.Group();
+      const mirror = isRight ? 1 : -1;
+
+      // Position and ergonomic tenting angle
+      halfGroup.position.set(mirror * 1.5, 0.15, 0.1);
+      halfGroup.rotation.y = -mirror * 0.15; // Inward angle
+      halfGroup.rotation.z = mirror * 0.08;  // Ergonomic tenting
+
+      // 1. CNC Aluminum Case Bottom
+      const caseBase = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.18, 1.6), caseMat);
+      caseBase.position.set(0, 0.09, 0);
+      caseBase.castShadow = true;
+      halfGroup.add(caseBase);
+
+      // Brass Switch Plate top layer
+      const plate = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.04, 1.5), plateMat);
+      plate.position.set(0, 0.19, 0);
+      halfGroup.add(plate);
+
+      // OLED Display (0.91 inch SSD1306 representation)
+      const oledScreen = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.02, 0.5), oledMat);
+      oledScreen.position.set(-mirror * 0.75, 0.22, -0.3);
+      halfGroup.add(oledScreen);
+
+      // 2. COLUMN-STAGGERED KEYCAP MATRIX (5 columns x 3 rows)
+      const colOffsets = [-0.08, 0.0, 0.06, -0.02, -0.06]; // Column stagger height offset
+      const keyGeo = new THREE.BoxGeometry(0.25, 0.16, 0.25);
+
+      for (let c = 0; c < 5; c++) {
+        const cx = (c - 2) * 0.32 * mirror;
+        const cyOffset = colOffsets[c];
+
+        for (let r = 0; r < 3; r++) {
+          const cz = (r - 1) * 0.32 + cyOffset;
+          let kMat = alphaCapMat;
+          if (c === 0 && r === 0) kMat = accentCapMat; // Esc / Q
+          else if (c === 4) kMat = modCapMat; // Enter / Tab
+
+          const keyMesh = new THREE.Mesh(keyGeo, kMat);
+          keyMesh.position.set(cx, 0.28, cz);
+          keyMesh.castShadow = true;
+          halfGroup.add(keyMesh);
+        }
+      }
+
+      // 3. THUMB CLUSTER & SPECIAL PERIPHERALS
+      if (!isRight) {
+        // Left Half: 3 Thumb Keys + Rotary Encoder Knob
+        const thumbZ = 0.65;
+        for (let t = 0; t < 3; t++) {
+          const keyMesh = new THREE.Mesh(keyGeo, modCapMat);
+          keyMesh.position.set(-0.2 + t * 0.3, 0.28, thumbZ + t * 0.06);
+          keyMesh.rotation.y = -0.2;
+          keyMesh.castShadow = true;
+          halfGroup.add(keyMesh);
+        }
+
+        // Rotary Encoder Knob (Knurled Metal)
+        const encoderKnob = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.2, 24), encoderMat);
+        encoderKnob.position.set(0.7, 0.3, 0.6);
+        encoderKnob.castShadow = true;
+        halfGroup.add(encoderKnob);
+
+      } else {
+        // Right Half: 34mm Optical Trackball Mount & Housing
+        const trackballMount = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.38, 0.44, 0.26, 24),
+          caseMat
+        );
+        trackballMount.position.set(-0.35, 0.25, 0.65);
+        trackballMount.castShadow = true;
+        halfGroup.add(trackballMount);
+
+        // 34mm High Gloss Trackball
+        const trackball = new THREE.Mesh(new THREE.SphereGeometry(0.28, 32, 32), trackballMat);
+        trackball.position.set(-0.35, 0.42, 0.65);
+        trackball.castShadow = true;
+        halfGroup.add(trackball);
+        halfGroup.userData.trackball = trackball;
+
+        // 2 Thumb Keys next to trackball
+        for (let t = 0; t < 2; t++) {
+          const keyMesh = new THREE.Mesh(keyGeo, modCapMat);
+          keyMesh.position.set(0.2 + t * 0.3, 0.28, 0.68);
+          keyMesh.castShadow = true;
+          halfGroup.add(keyMesh);
+        }
+      }
+
+      // RGB Underglow
+      addRgbLight(halfGroup, -0.6, 0);
+      addRgbLight(halfGroup, 0.6, 0);
+      addRgbLight(halfGroup, 0, 0.5);
+
+      return halfGroup;
+    }
+
+    const leftHalf = createKeyboardHalf(false);
+    const rightHalf = createKeyboardHalf(true);
+    scene.add(leftHalf);
+    scene.add(rightHalf);
+
+    // 4. COILED TRRS AVIATOR CABLE CONNECTING SPLIT HALVES
+    const cableCurvePoints = [];
+    const numCoils = 16;
+    const coilRadius = 0.08;
+    const startX = -0.5;
+    const endX = 0.5;
+
+    for (let i = 0; i <= numCoils * 12; i++) {
+      const t = i / (numCoils * 12);
+      const x = startX + t * (endX - startX);
+      const angle = t * numCoils * 2 * Math.PI;
+      const y = 0.12 + Math.sin(angle) * coilRadius;
+      const z = -0.4 + Math.cos(angle) * coilRadius;
+      cableCurvePoints.push(new THREE.Vector3(x, y, z));
+    }
+    const cableCurve = new THREE.CatmullRomCurve3(cableCurvePoints);
+    const cableMesh = new THREE.Mesh(
+      new THREE.TubeGeometry(cableCurve, 120, 0.02, 8, false),
+      new THREE.MeshStandardMaterial({ color: 0x06b6d4, roughness: 0.5 }) // Teal Braided Sleeving
+    );
+    scene.add(cableMesh);
+
+    // Aviator Connector (Silver Metal Barrel in Middle)
+    const aviatorMesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.06, 0.06, 0.22, 16),
+      encoderMat
+    );
+    aviatorMesh.rotation.z = Math.PI / 2;
+    aviatorMesh.position.set(0, 0.12, -0.4);
+    scene.add(aviatorMesh);
+
+    // INTERACTIVE FUNCTIONS
+    let underglowOn = true;
+    window.toggleUnderglow = function() {
+      underglowOn = !underglowOn;
+      rgbLights.forEach(l => l.intensity = underglowOn ? 1.2 : 0);
+    };
+
+    let trackballSpinSpeed = 0.05;
+    window.spinTrackball = function() {
+      trackballSpinSpeed = 0.4;
+    };
+
+    // Animation Loop
+    let clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+
+      // Trackball continuous / decaying spin
+      if (rightHalf.userData.trackball) {
+        rightHalf.userData.trackball.rotation.x += trackballSpinSpeed;
+        rightHalf.userData.trackball.rotation.z += trackballSpinSpeed * 0.7;
+        if (trackballSpinSpeed > 0.02) {
+          trackballSpinSpeed *= 0.98;
+        }
+      }
+
+      // Breathing RGB hue wave
+      if (underglowOn) {
+        const hue = (time * 0.2) % 1.0;
+        const color = new THREE.Color().setHSL(hue, 1.0, 0.5);
+        rgbLights.forEach((l, idx) => {
+          l.color.setHSL((hue + idx * 0.1) % 1.0, 1.0, 0.5);
+        });
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

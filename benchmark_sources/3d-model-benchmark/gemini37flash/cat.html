@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute 3D Cat</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 100vw; height: 100vh; overflow: hidden; background: radial-gradient(circle at center, #fef3c7, #fed7aa, #fcd34d); }
+    #canvas-container { width: 100%; height: 100%; }
+    #ui {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px);
+      padding: 10px 24px; border-radius: 30px; font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px; font-weight: bold; color: #78350f; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      pointer-events: none; text-align: center;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+  <div id="canvas-container"></div>
+  <div id="ui">🐱 ドラッグで回転 / ホイールでズーム</div>
+
+  <script>
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xfef9c3);
+    scene.fog = new THREE.FogExp2(0xfef9c3, 0.04);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 2.5, 6.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.minDistance = 2;
+    controls.maxDistance = 15;
+    controls.maxPolarAngle = Math.PI / 2 + 0.05;
+    controls.target.set(0, 1.2, 0);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.8);
+    scene.add(ambientLight);
+
+    const mainLight = new THREE.DirectionalLight(0xffedd5, 1.2);
+    mainLight.position.set(5, 8, 5);
+    mainLight.castShadow = true;
+    mainLight.shadow.mapSize.width = 1024;
+    mainLight.shadow.mapSize.height = 1024;
+    scene.add(mainLight);
+
+    const fillLight = new THREE.PointLight(0xf472b6, 0.6, 10);
+    fillLight.position.set(-4, 3, 2);
+    scene.add(fillLight);
+
+    const backLight = new THREE.DirectionalLight(0x38bdf8, 0.5);
+    backLight.position.set(0, 4, -5);
+    scene.add(backLight);
+
+    // Materials
+    const catBodyMat = new THREE.MeshStandardMaterial({ color: 0xfb923c, roughness: 0.6, metalness: 0.05 }); // Ginger Tabby
+    const whiteFurMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
+    const earInnerMat = new THREE.MeshStandardMaterial({ color: 0xfda4af, roughness: 0.7 });
+    const eyeMat = new THREE.MeshStandardMaterial({ color: 0x10b981, roughness: 0.1, metalness: 0.8 }); // Emerald Eyes
+    const pupilMat = new THREE.MeshBasicMaterial({ color: 0x0f172a });
+    const noseMat = new THREE.MeshStandardMaterial({ color: 0xf43f5e, roughness: 0.4 });
+    const whiskerMat = new THREE.MeshBasicMaterial({ color: 0x475569 });
+    const collarMat = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3 });
+    const bellMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.85, roughness: 0.2 });
+
+    // Ground Rug
+    const rugGeo = new THREE.CylinderGeometry(2.4, 2.5, 0.08, 32);
+    const rugMat = new THREE.MeshStandardMaterial({ color: 0xffedd5, roughness: 0.9 });
+    const rug = new THREE.Mesh(rugGeo, rugMat);
+    rug.position.y = 0.04;
+    rug.receiveShadow = true;
+    scene.add(rug);
+
+    // CAT HIERARCHY ROOT
+    const cat = new THREE.Group();
+    scene.add(cat);
+
+    // 1. TORSO & CHEST
+    const bodyGroup = new THREE.Group();
+    bodyGroup.position.set(0, 0.9, 0);
+    cat.add(bodyGroup);
+
+    // Main Torso (Seated pear shape)
+    const bodyGeo = new THREE.SphereGeometry(0.75, 32, 24);
+    bodyGeo.scale(0.9, 1.15, 0.9);
+    const body = new THREE.Mesh(bodyGeo, catBodyMat);
+    body.castShadow = true;
+    bodyGroup.add(body);
+
+    // White Chest Bib
+    const bibGeo = new THREE.SphereGeometry(0.7, 24, 16);
+    bibGeo.scale(0.75, 1.0, 0.6);
+    const bib = new THREE.Mesh(bibGeo, whiteFurMat);
+    bib.position.set(0, -0.05, 0.35);
+    bodyGroup.add(bib);
+
+    // Collar & Bell
+    const collarGeo = new THREE.TorusGeometry(0.55, 0.06, 16, 32);
+    collarGeo.rotateX(Math.PI / 2);
+    const collar = new THREE.Mesh(collarGeo, collarMat);
+    collar.position.set(0, 0.62, 0.05);
+    bodyGroup.add(collar);
+
+    const bell = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), bellMat);
+    bell.position.set(0, 0.55, 0.6);
+    bell.castShadow = true;
+    bodyGroup.add(bell);
+
+    // 2. HEAD
+    const headGroup = new THREE.Group();
+    headGroup.position.set(0, 1.8, 0.15);
+    cat.add(headGroup);
+
+    // Head Sphere (cute chubby cheeks)
+    const headGeo = new THREE.SphereGeometry(0.68, 32, 24);
+    headGeo.scale(1.1, 0.95, 1.0);
+    const head = new THREE.Mesh(headGeo, catBodyMat);
+    head.castShadow = true;
+    headGroup.add(head);
+
+    // Ears (Left & Right)
+    const earGeo = new THREE.ConeGeometry(0.25, 0.45, 16);
+    earGeo.scale(1.0, 1.0, 0.4);
+
+    const leftEarGroup = new THREE.Group();
+    leftEarGroup.position.set(-0.45, 0.6, 0);
+    leftEarGroup.rotation.set(0, 0, 0.35);
+    const leftEar = new THREE.Mesh(earGeo, catBodyMat);
+    leftEar.castShadow = true;
+    leftEarGroup.add(leftEar);
+    const leftEarIn = new THREE.Mesh(earGeo, earInnerMat);
+    leftEarIn.scale.set(0.7, 0.7, 0.7);
+    leftEarIn.position.set(0, -0.02, 0.06);
+    leftEarGroup.add(leftEarIn);
+    headGroup.add(leftEarGroup);
+
+    const rightEarGroup = new THREE.Group();
+    rightEarGroup.position.set(0.45, 0.6, 0);
+    rightEarGroup.rotation.set(0, 0, -0.35);
+    const rightEar = new THREE.Mesh(earGeo, catBodyMat);
+    rightEar.castShadow = true;
+    rightEarGroup.add(rightEar);
+    const rightEarIn = new THREE.Mesh(earGeo, earInnerMat);
+    rightEarIn.scale.set(0.7, 0.7, 0.7);
+    rightEarIn.position.set(0, -0.02, 0.06);
+    rightEarGroup.add(rightEarIn);
+    headGroup.add(rightEarGroup);
+
+    // Muzzle (Chubby white cheeks)
+    const muzzleLeft = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), whiteFurMat);
+    muzzleLeft.position.set(-0.14, -0.15, 0.58);
+    headGroup.add(muzzleLeft);
+
+    const muzzleRight = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), whiteFurMat);
+    muzzleRight.position.set(0.14, -0.15, 0.58);
+    headGroup.add(muzzleRight);
+
+    // Nose (Pink triangle / sphere)
+    const nose = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), noseMat);
+    nose.position.set(0, -0.08, 0.68);
+    headGroup.add(nose);
+
+    // Big Cute Eyes
+    const eyeGeo = new THREE.SphereGeometry(0.14, 24, 24);
+    const pupilGeo = new THREE.SphereGeometry(0.09, 16, 16);
+    pupilGeo.scale(0.6, 1.1, 0.5);
+
+    const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
+    leftEye.position.set(-0.26, 0.08, 0.55);
+    const leftPupil = new THREE.Mesh(pupilGeo, pupilMat);
+    leftPupil.position.set(0, 0, 0.1);
+    leftEye.add(leftPupil);
+    headGroup.add(leftEye);
+
+    const rightEye = new THREE.Mesh(eyeGeo, eyeMat);
+    rightEye.position.set(0.26, 0.08, 0.55);
+    const rightPupil = new THREE.Mesh(pupilGeo, pupilMat);
+    rightPupil.position.set(0, 0, 0.1);
+    rightEye.add(rightPupil);
+    headGroup.add(rightEye);
+
+    // Whiskers (Cylinders)
+    const whiskerGeo = new THREE.CylinderGeometry(0.008, 0.008, 0.4, 8);
+    whiskerGeo.rotateZ(Math.PI / 2);
+
+    for (let i = -1; i <= 1; i++) {
+      const wL = new THREE.Mesh(whiskerGeo, whiskerMat);
+      wL.position.set(-0.45, -0.14 + i * 0.06, 0.58);
+      wL.rotation.set(0, -0.2, i * 0.12);
+      headGroup.add(wL);
+
+      const wR = new THREE.Mesh(whiskerGeo, whiskerMat);
+      wR.position.set(0.45, -0.14 + i * 0.06, 0.58);
+      wR.rotation.set(0, 0.2, -i * 0.12);
+      headGroup.add(wR);
+    }
+
+    // 3. FRONT LEGS & PAWS
+    function createLeg(x) {
+      const legGroup = new THREE.Group();
+      legGroup.position.set(x, 0.45, 0.45);
+
+      const legGeo = new THREE.CylinderGeometry(0.12, 0.14, 0.8, 16);
+      const leg = new THREE.Mesh(legGeo, catBodyMat);
+      leg.castShadow = true;
+      legGroup.add(leg);
+
+      const pawGeo = new THREE.SphereGeometry(0.16, 16, 16);
+      pawGeo.scale(1.0, 0.6, 1.2);
+      const paw = new THREE.Mesh(pawGeo, whiteFurMat);
+      paw.position.set(0, -0.38, 0.08);
+      paw.castShadow = true;
+      legGroup.add(paw);
+
+      return legGroup;
+    }
+    cat.add(createLeg(-0.3));
+    cat.add(createLeg(0.3));
+
+    // 4. HIND LEGS (Seated rounded thighs on floor)
+    const thighGeo = new THREE.SphereGeometry(0.38, 24, 24);
+    thighGeo.scale(0.8, 0.9, 1.1);
+
+    const leftThigh = new THREE.Mesh(thighGeo, catBodyMat);
+    leftThigh.position.set(-0.58, 0.35, -0.1);
+    leftThigh.rotation.set(0.3, 0.2, -0.2);
+    leftThigh.castShadow = true;
+    cat.add(leftThigh);
+
+    const rightThigh = new THREE.Mesh(thighGeo, catBodyMat);
+    rightThigh.position.set(0.58, 0.35, -0.1);
+    rightThigh.rotation.set(0.3, -0.2, 0.2);
+    rightThigh.castShadow = true;
+    cat.add(rightThigh);
+
+    // 5. TAIL WITH DYNAMIC SWAY
+    const tailGroup = new THREE.Group();
+    tailGroup.position.set(0, 0.3, -0.65);
+    cat.add(tailGroup);
+
+    // Construct curved segmented tail
+    const tailJoints = [];
+    let currentParent = tailGroup;
+    const numSegments = 7;
+    const segmentLength = 0.22;
+
+    for (let i = 0; i < numSegments; i++) {
+      const joint = new THREE.Group();
+      joint.position.set(0, (i === 0 ? 0 : segmentLength), (i === 0 ? 0 : -0.04));
+      currentParent.add(joint);
+      tailJoints.push(joint);
+
+      const rad = 0.12 * (1.0 - (i / (numSegments + 2)));
+      const segMesh = new THREE.Mesh(
+        new THREE.CylinderGeometry(rad * 0.9, rad, segmentLength, 12),
+        (i >= numSegments - 2 ? whiteFurMat : catBodyMat)
+      );
+      segMesh.position.set(0, segmentLength / 2, 0);
+      segMesh.castShadow = true;
+      joint.add(segMesh);
+
+      currentParent = joint;
+    }
+
+    // Animation Loop
+    let clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+
+      // Tail graceful swaying
+      tailJoints.forEach((joint, idx) => {
+        joint.rotation.z = Math.sin(time * 2.2 + idx * 0.4) * 0.18;
+        joint.rotation.x = Math.cos(time * 1.5 + idx * 0.3) * 0.12 - 0.1;
+      });
+
+      // Subtle breathing animation
+      bodyGroup.scale.y = 1.0 + Math.sin(time * 2.0) * 0.02;
+      bodyGroup.scale.x = 1.0 - Math.sin(time * 2.0) * 0.01;
+
+      // Head cute tilting
+      headGroup.rotation.z = Math.sin(time * 1.0) * 0.06;
+      headGroup.rotation.y = Math.sin(time * 0.7) * 0.12;
+
+      // Ear twitches
+      leftEarGroup.rotation.z = 0.35 + (Math.sin(time * 4) > 0.92 ? 0.1 : 0);
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

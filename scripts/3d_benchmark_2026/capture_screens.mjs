@@ -7,7 +7,8 @@ import { dirname, join } from 'node:path';
 
 const BASE = process.argv[2] || 'http://127.0.0.1:8765';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const MODELS = ['fable5', 'gemini35flash', 'gpt55'];
+const requestedModels = process.argv.slice(3);
+const MODELS = requestedModels.length ? requestedModels : ['fable5', 'gemini35flash', 'gpt55'];
 const SLUGS = ['trackball-split-keyboard', 'watch-movement', 'cat', 'robot-arm-7axis', 'espresso-machine'];
 
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });

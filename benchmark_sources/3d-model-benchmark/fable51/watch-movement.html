@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mechanical watch movement – interactive 3D</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #14161c; font-family: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; }
+  #panel { position: fixed; left: 16px; top: 16px; width: 290px; background: rgba(24,27,34,.82); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 14px 16px 12px; color: #e8e2d6; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+  #panel h1 { font-size: 15px; margin: 0 0 4px; color: #f2c14e; letter-spacing: .02em; }
+  #panel p { margin: 0 0 10px; color: #b9b2a6; font-size: 12px; line-height: 1.55; }
+  .btns { display: flex; gap: 8px; }
+  button { flex: 1; border: 0; border-radius: 8px; padding: 8px; background: #f2c14e; color: #2a220c; font-weight: 700; cursor: pointer; font-size: 13px; }
+  button.secondary { background: rgba(255,255,255,.12); color: #e8e2d6; }
+  .row { display: grid; grid-template-columns: 70px 1fr 40px; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; }
+  .row input { accent-color: #f2c14e; }
+  .row output { text-align: right; color: #f2c14e; font-variant-numeric: tabular-nums; }
+  .legend { margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 10px; font-size: 11px; color: #b9b2a6; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+  .lbl { color: #f6efe2; background: rgba(20,22,28,.78); border: 1px solid rgba(242,193,78,.45); padding: 2px 7px; border-radius: 6px; font-size: 11px; white-space: nowrap; pointer-events: none; }
+  .hint { position: fixed; right: 16px; bottom: 14px; color: #b9b2a6; font-size: 12px; background: rgba(24,27,34,.7); padding: 6px 10px; border-radius: 8px; pointer-events: none; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="app"></div>
+<div id="panel">
+  <h1>Manual-wind movement</h1>
+  <p>香箱 → 二番車 → 三番車 → 四番車 → ガンギ車 → アンクル → テンプ。歯車は実際の歯形で噛み合い、比率どおりに回転します。</p>
+  <div class="btns"><button id="play">⏸ Pause</button><button id="labels" class="secondary">Labels: on</button></div>
+  <div class="row"><label>Speed</label><input id="speed" type="range" min="0.1" max="8" step="0.1" value="1"><output id="speed-out">1.0×</output></div>
+  <div class="legend">
+    <span><i style="background:#d9a441"></i>真鍮（受け・歯車）</span><span><i style="background:#c9ced6"></i>スチール（軸・アンクル）</span>
+    <span><i style="background:#c8102e"></i>ルビー軸受・爪石</span><span><i style="background:#5f6b7a"></i>ヒゲゼンマイ / 地板</span>
+  </div>
+</div>
+<div class="hint">ドラッグで回転 / ホイールでズーム</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const app = document.getElementById('app');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+app.appendChild(renderer.domElement);
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+Object.assign(labelRenderer.domElement.style, { position: 'fixed', inset: '0', pointerEvents: 'none' });
+app.appendChild(labelRenderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x14161c);
+const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0.5, 9.5, 8.0);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(-0.6, 0, 0.9);
+controls.enableDamping = true;
+controls.minDistance = 2.5; controls.maxDistance = 20;
+
+scene.add(new THREE.HemisphereLight(0xfff2dc, 0x2a2d36, 0.55));
+const key = new THREE.DirectionalLight(0xfff4e0, 1.9); key.position.set(4, 9, 5); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.camera.left = -6; key.shadow.camera.right = 6; key.shadow.camera.top = 6; key.shadow.camera.bottom = -6;
+scene.add(key);
+const rim = new THREE.SpotLight(0x9fc5ff, 40, 30, Math.PI / 5, 0.5); rim.position.set(-6, 5, -4); scene.add(rim);
+const pt = new THREE.PointLight(0xffd28a, 6, 12); pt.position.set(0, 3, 0); scene.add(pt);
+
+// ---------- materials ----------
+const brass = new THREE.MeshStandardMaterial({ color: 0xd9a441, metalness: 0.9, roughness: 0.28 });
+const brassDark = new THREE.MeshStandardMaterial({ color: 0xb8862f, metalness: 0.9, roughness: 0.4 });
+const steel = new THREE.MeshStandardMaterial({ color: 0xc9ced6, metalness: 0.95, roughness: 0.22 });
+const blued = new THREE.MeshStandardMaterial({ color: 0x3a5fa8, metalness: 0.9, roughness: 0.3 });
+const ruby = new THREE.MeshPhysicalMaterial({ color: 0xc8102e, metalness: 0.1, roughness: 0.15, clearcoat: 1, transmission: 0.2, thickness: 0.2 });
+const plate = new THREE.MeshStandardMaterial({ color: 0x5f6b7a, metalness: 0.7, roughness: 0.55 });
+const plateStripe = new THREE.MeshStandardMaterial({ color: 0x6d7a8a, metalness: 0.7, roughness: 0.5 });
+
+// ---------- gear geometry with real involute-ish teeth ----------
+function gearShape(teeth, pitchR, addendum, dedendum, fillet = 0.35) {
+  const s = new THREE.Shape();
+  const N = teeth, ro = pitchR + addendum, ri = pitchR - dedendum;
+  const step = (Math.PI * 2) / N;
+  for (let i = 0; i < N; i++) {
+    const a0 = i * step;
+    // profile within one pitch: root -> flank -> tip -> flank -> root
+    const pts = [
+      [ri, a0 + step * 0.00], [ri, a0 + step * 0.18], [pitchR, a0 + step * 0.27], [ro, a0 + step * 0.36],
+      [ro, a0 + step * 0.56], [pitchR, a0 + step * 0.65], [ri, a0 + step * 0.74], [ri, a0 + step * 1.0],
+    ];
+    for (const [r, a] of pts) { const x = r * Math.cos(a), y = r * Math.sin(a); if (i === 0 && r === ri && a === a0) s.moveTo(x, y); else s.lineTo(x, y); }
+  }
+  s.closePath();
+  return s;
+}
+function makeGear({ teeth, module: m, thickness, mat, spokes = 0, hubR = 0.18, rimW = 0.22 }) {
+  const pitchR = (m * teeth) / 2;
+  const shape = gearShape(teeth, pitchR, m * 0.95, m * 1.1);
+  // cut spokes (holes) for larger wheels
+  if (spokes > 0) {
+    const innerR = hubR + 0.12, outerR = pitchR - m * 1.1 - rimW;
+    for (let i = 0; i < spokes; i++) {
+      const a0 = (i / spokes) * Math.PI * 2 + 0.16, a1 = ((i + 1) / spokes) * Math.PI * 2 - 0.16;
+      const h = new THREE.Path();
+      h.absarc(0, 0, innerR, a0, a1, false);
+      h.absarc(0, 0, outerR, a1, a0, true);
+      h.closePath();
+      shape.holes.push(h);
+    }
+  }
+  const geo = new THREE.ExtrudeGeometry(shape, { depth: thickness, bevelEnabled: true, bevelThickness: 0.008, bevelSize: 0.008, bevelSegments: 1, curveSegments: 6 });
+  geo.rotateX(-Math.PI / 2); geo.translate(0, thickness / 2, 0);
+  const mesh = new THREE.Mesh(geo, mat); mesh.castShadow = true; mesh.receiveShadow = true;
+  return { mesh, pitchR, teeth };
+}
+function pinion(teeth, m, thickness, mat) { return makeGear({ teeth, module: m, thickness, mat }); }
+function axle(r, h, y, mat = steel) { const a = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 20), mat); a.position.y = y; a.castShadow = true; return a; }
+function jewel(x, y, z, r = 0.12) {
+  const g = new THREE.Group(); g.position.set(x, y, z);
+  const chaton = new THREE.Mesh(new THREE.CylinderGeometry(r + 0.06, r + 0.06, 0.05, 24), brass); g.add(chaton);
+  const stone = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 0.8, 0.06, 24), ruby); stone.position.y = 0.03; g.add(stone);
+  scene.add(g); return g;
+}
+function label(text, parent, x, y, z) {
+  const div = document.createElement('div'); div.className = 'lbl'; div.textContent = text;
+  const o = new CSS2DObject(div); o.position.set(x, y, z); parent.add(o); labels.push(o); return o;
+}
+const labels = [];
+
+// ---------- main plate & bridges ----------
+const mainPlate = new THREE.Mesh(new THREE.CylinderGeometry(5.0, 5.0, 0.25, 96), plate);
+mainPlate.position.y = -0.45; mainPlate.receiveShadow = true; scene.add(mainPlate);
+// Geneva stripes on the plate
+for (let i = -4; i <= 4; i++) {
+  const strip = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.012, 9.2), plateStripe);
+  strip.position.set(i * 0.95 + 0.4, -0.32, 0); strip.rotation.y = -0.25; strip.geometry = new THREE.BoxGeometry(0.42, 0.012, 9.6); scene.add(strip);
+}
+const bezel = new THREE.Mesh(new THREE.TorusGeometry(5.0, 0.14, 16, 96), brassDark); bezel.rotation.x = Math.PI / 2; bezel.position.y = -0.34; scene.add(bezel);
+
+// ---------- gear train layout (positions on the plate) ----------
+// module 0.045: wheel pitch radius = module * teeth / 2. Mating parts share a module, so the centre distance
+// between a wheel and the next pinion is the sum of their pitch radii.
+const M = 0.045;
+const pr = (teeth) => M * teeth / 2;
+const parts = {};
+function wheelAssembly(name, x, z, y, wheelDef, pinionDef, labelText, labelDy = 0.5) {
+  const g = new THREE.Group(); g.position.set(x, y, z); scene.add(g);
+  const w = makeGear(wheelDef); g.add(w.mesh);
+  let p = null;
+  if (pinionDef) { p = makeGear(pinionDef); p.mesh.position.y = pinionDef.dy || 0; g.add(p.mesh); }
+  g.add(axle(0.045, 1.2, 0.1));
+  parts[name] = { group: g, wheel: w, pinion: p, angle: 0 };
+  label(labelText, g, 0, labelDy, 0);
+  return parts[name];
+}
+// positions chosen so that each wheel/pinion pair sits exactly at its centre distance
+const P = {
+  barrel: [-2.35, -0.6],           // barrel(78) -> centre pinion(10): 1.755 + 0.225 = 1.98
+  centre: [-0.37, -0.6],
+  third:  [1.05, 0.18],            // centre wheel(64) -> third pinion(8): 1.44 + 0.18 = 1.62
+  fourth: [0.32, 1.52],            // third wheel(60) -> fourth pinion(8): 1.35 + 0.18 = 1.53
+  escape: [-1.12, 2.0],            // fourth wheel(60) -> escape pinion(8): 1.53
+  balance: [-2.3, 2.9],
+};
+// mainspring barrel: big drum with teeth on the rim
+const barrel = wheelAssembly('barrel', P.barrel[0], P.barrel[1], 0.0, { teeth: 78, module: M, thickness: 0.34, mat: brass }, null, '香箱（主ゼンマイ）', 0.75);
+const drum = new THREE.Mesh(new THREE.CylinderGeometry(pr(78) - 0.1, pr(78) - 0.1, 0.42, 64), brassDark); drum.position.y = 0.22; drum.castShadow = true; barrel.group.add(drum);
+// spiral mainspring visible on top of the barrel
+{
+  const pts = []; for (let i = 0; i <= 400; i++) { const t = i / 400; const a = t * Math.PI * 2 * 7; const r = 0.12 + t * 1.45; pts.push(new THREE.Vector3(Math.cos(a) * r, 0.45, Math.sin(a) * r)); }
+  const spring = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 500, 0.022, 6, false), blued); barrel.group.add(spring);
+}
+// centre wheel (二番車) + its pinion driven by the barrel
+const centre = wheelAssembly('centre', P.centre[0], P.centre[1], 0.0, { teeth: 64, module: M, thickness: 0.09, mat: brass, spokes: 5, hubR: 0.22, rimW: 0.24 }, { teeth: 10, module: M, thickness: 0.22, mat: steel, dy: 0.18 }, '二番車', 0.55);
+// third wheel (三番車)
+const third = wheelAssembly('third', P.third[0], P.third[1], 0.32, { teeth: 60, module: M, thickness: 0.08, mat: brass, spokes: 5, hubR: 0.2, rimW: 0.2 }, { teeth: 8, module: M, thickness: 0.2, mat: steel, dy: -0.3 }, '三番車', 0.5);
+// fourth wheel (四番車, seconds)
+const fourth = wheelAssembly('fourth', P.fourth[0], P.fourth[1], 0.02, { teeth: 60, module: M, thickness: 0.08, mat: brass, spokes: 5, hubR: 0.2, rimW: 0.2 }, { teeth: 8, module: M, thickness: 0.2, mat: steel, dy: 0.3 }, '四番車（秒）', 0.5);
+// escape wheel (ガンギ車): 15 asymmetric teeth
+function escapeWheel() {
+  const s = new THREE.Shape(); const N = 15, R = 0.78, ri = 0.62;
+  for (let i = 0; i < N; i++) {
+    const a = (i / N) * Math.PI * 2, a2 = ((i + 0.62) / N) * Math.PI * 2, a3 = ((i + 0.72) / N) * Math.PI * 2;
+    const p = [[ri, a], [R, a2], [ri, a3]];
+    for (const [r, ang] of p) { const x = r * Math.cos(ang), y = r * Math.sin(ang); if (i === 0 && r === ri && ang === a) s.moveTo(x, y); else s.lineTo(x, y); }
+  }
+  s.closePath();
+  const h = new THREE.Path(); h.absarc(0, 0, 0.3, 0, Math.PI * 2, true); s.holes.push(h);
+  const geo = new THREE.ExtrudeGeometry(s, { depth: 0.06, bevelEnabled: false }); geo.rotateX(-Math.PI / 2); geo.translate(0, 0.03, 0);
+  const m = new THREE.Mesh(geo, steel); m.castShadow = true; return m;
+}
+const escG = new THREE.Group(); escG.position.set(P.escape[0], 0.3, P.escape[1]); scene.add(escG);
+const escWheel = escapeWheel(); escG.add(escWheel);
+const escPinion = makeGear({ teeth: 8, module: M, thickness: 0.2, mat: steel }); escPinion.mesh.position.y = -0.28; escG.add(escPinion.mesh);
+escG.add(axle(0.04, 1.0, 0.05));
+parts.escape = { group: escG, angle: 0 };
+label('ガンギ車', escG, 0, 0.55, 0);
+
+// pallet fork (アンクル): pivot between the escape wheel and the balance; pallets (+z) face the escape wheel, horn (-z) faces the balance roller
+const forkPos = [(P.escape[0] + P.balance[0]) / 2 + 0.05, (P.escape[1] + P.balance[1]) / 2 - 0.05];
+const forkG = new THREE.Group(); forkG.position.set(forkPos[0], 0.42, forkPos[1]); scene.add(forkG);
+const forkBase = Math.atan2(P.escape[0] - forkPos[0], P.escape[1] - forkPos[1]);
+{
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.06, 1.15), steel); body.position.z = 0.05; forkG.add(body);
+  const arms = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.06, 0.09), steel); arms.position.z = 0.45; forkG.add(arms);
+  for (const sx of [-1, 1]) { const stone = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.09, 0.2), ruby); stone.position.set(sx * 0.45, 0, 0.55); stone.rotation.y = sx * 0.5; forkG.add(stone); }
+  const horn = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.06, 0.2), steel); horn.position.z = -0.6; forkG.add(horn);
+  const notch = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.07, 0.1), plate); notch.position.z = -0.68; forkG.add(notch);
+  forkG.add(axle(0.035, 0.7, 0.05));
+}
+label('アンクル', forkG, 0.3, 0.45, 0.2);
+
+// balance wheel (テンプ) with hairspring
+const balG = new THREE.Group(); balG.position.set(P.balance[0], 0.62, P.balance[1]); scene.add(balG);
+{
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.07, 12, 72), brass); rim.rotation.x = Math.PI / 2; rim.castShadow = true; balG.add(rim);
+  for (let i = 0; i < 2; i++) { const spoke = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.05, 0.09), brass); spoke.rotation.y = i * Math.PI / 2 + 0.4; balG.add(spoke); }
+  for (let i = 0; i < 16; i++) { const a = i / 16 * Math.PI * 2; const screw = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.1, 10), steel); screw.position.set(Math.cos(a) * 1.05, 0, Math.sin(a) * 1.05); screw.rotation.z = Math.PI / 2; screw.rotation.y = -a; balG.add(screw); }
+  const pts = []; for (let i = 0; i <= 600; i++) { const t = i / 600; const a = t * Math.PI * 2 * 9; const r = 0.1 + t * 0.7; pts.push(new THREE.Vector3(Math.cos(a) * r, 0.16, Math.sin(a) * r)); }
+  const hair = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 700, 0.012, 6, false), blued); hair.name = 'hairspring'; balG.add(hair);
+  const roller = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.08, 24), steel); roller.position.y = -0.14; balG.add(roller);
+  const impulse = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.1, 0.1), ruby); impulse.position.set(0, -0.14, 0.24); balG.add(impulse);
+  balG.add(axle(0.035, 1.0, 0.1));
+}
+label('テンプ（振動子）', balG, 0, 0.8, 0);
+// balance cock (bridge) over the balance wheel
+{
+  const foot = [-3.7, 1.55];
+  const len = Math.hypot(P.balance[0] - foot[0], P.balance[1] - foot[1]) + 0.5;
+  const cock = new THREE.Mesh(new THREE.BoxGeometry(len, 0.08, 0.5), brass);
+  cock.position.set((P.balance[0] + foot[0]) / 2, 1.12, (P.balance[1] + foot[1]) / 2); cock.rotation.y = -Math.atan2(P.balance[1] - foot[1], P.balance[0] - foot[0]); cock.castShadow = true; scene.add(cock);
+  const cockFoot = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 1.45, 24), brassDark); cockFoot.position.set(foot[0], 0.4, foot[1]); scene.add(cockFoot);
+  jewel(P.balance[0], 1.17, P.balance[1], 0.11);
+}
+// bridges (受け) over the train wheels
+function bridge(a, b, width, y = 0.9) {
+  const len = Math.hypot(b[0] - a[0], b[1] - a[1]) + 0.7;
+  const m = new THREE.Mesh(new THREE.BoxGeometry(len, 0.1, width), brass);
+  m.position.set((a[0] + b[0]) / 2, y, (a[1] + b[1]) / 2); m.rotation.y = -Math.atan2(b[1] - a[1], b[0] - a[0]); m.castShadow = true; scene.add(m);
+}
+{
+  bridge(P.third, P.escape, 0.5);            // train bridge over third / fourth / escape
+  bridge(P.barrel, P.centre, 0.55, 0.95);     // barrel bridge over barrel / centre
+  for (const [x, z] of [[P.third[0] + 0.5, P.third[1] - 0.3], [P.escape[0] - 0.5, P.escape[1] + 0.35], [P.barrel[0] - 0.55, P.barrel[1] - 0.9], [P.centre[0] + 0.55, P.centre[1] - 0.9]]) {
+    const f = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 1.3, 16), brassDark); f.position.set(x, 0.25, z); scene.add(f);
+  }
+  jewel(P.barrel[0], 1.0, P.barrel[1], 0.12); jewel(P.centre[0], 1.0, P.centre[1], 0.11); jewel(P.third[0], 0.95, P.third[1], 0.1); jewel(P.fourth[0], 0.95, P.fourth[1], 0.1); jewel(P.escape[0], 0.95, P.escape[1], 0.09);
+}
+// crown / winding stem at the plate edge
+{
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.1, 12), steel); stem.rotation.z = Math.PI / 2; stem.position.set(-4.75, -0.2, -0.6); scene.add(stem);
+  const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.3, 24), brass); crown.rotation.z = Math.PI / 2; crown.position.set(-5.4, -0.2, -0.6); scene.add(crown);
+  for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; const k = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.06, 0.06), brassDark); k.position.set(-5.4, -0.2 + Math.cos(a) * 0.28, -0.6 + Math.sin(a) * 0.28); k.rotation.x = -a; scene.add(k); }
+}
+
+// ---------- kinematics ----------
+// Gear ratios: barrel(78) -> centre pinion(10); centre wheel(64) -> third pinion(8); third wheel(60) -> fourth pinion(8); fourth wheel(60) -> escape pinion(8)
+// Escape wheel 15 teeth, balance 2.5 Hz (18,000 bph): one tooth per 2 beats -> escape rotates 24 deg per second.
+const BEAT_HZ = 2.5;
+const escDegPerSec = 360 / 15 / 2 * BEAT_HZ; // 30 deg/s
+const escRadPerSec = THREE.MathUtils.degToRad(escDegPerSec);
+const fourthRad = escRadPerSec * 8 / 60;      // = 2π/60 -> one turn per minute (seconds wheel)
+const thirdRad = fourthRad * 8 / 60;
+const centreRad = thirdRad * 8 / 64;
+const barrelRad = centreRad * 10 / 78;
+let running = true, speed = 1, showLabels = true, simT = 0;
+
+const playBtn = document.getElementById('play');
+playBtn.addEventListener('click', () => { running = !running; playBtn.textContent = running ? '⏸ Pause' : '▶ Play'; });
+const labelsBtn = document.getElementById('labels');
+labelsBtn.addEventListener('click', () => { showLabels = !showLabels; labelsBtn.textContent = `Labels: ${showLabels ? 'on' : 'off'}`; for (const l of labels) l.visible = showLabels; });
+const speedIn = document.getElementById('speed'), speedOut = document.getElementById('speed-out');
+speedIn.addEventListener('input', () => { speed = +speedIn.value; speedOut.value = `${speed.toFixed(1)}×`; });
+
+// tooth-phase offsets so that meshing pairs interleave visually
+const toothPhase = (teeth) => Math.PI / teeth;
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  if (running) simT += dt * speed;
+  const t = simT;
+
+  // train: adjacent wheels rotate in opposite directions with the tooth ratio
+  barrel.group.rotation.y = -barrelRad * t;
+  centre.group.rotation.y = centreRad * t + toothPhase(10);
+  third.group.rotation.y = -thirdRad * t + toothPhase(8);
+  fourth.group.rotation.y = fourthRad * t + toothPhase(8);
+  // escapement: the escape wheel advances one tooth per 2 beats in discrete steps (lock -> impulse)
+  const beat = t * BEAT_HZ;                 // beats elapsed
+  const step = Math.floor(beat);            // completed half-swings
+  const frac = beat - step;                 // within the beat
+  const impulse = THREE.MathUtils.smoothstep(frac, 0.35, 0.55); // quick unlock/impulse window
+  escG.rotation.y = -(step + impulse) * (Math.PI * 2 / 15 / 2);
+  // pallet fork flips side each beat
+  const forkDir = (step % 2 === 0 ? 1 : -1);
+  const forkSwing = THREE.MathUtils.lerp(-forkDir, forkDir, impulse) * 0.14;
+  forkG.rotation.y = forkBase + forkSwing;
+  // balance: sinusoidal oscillation, ±270 deg amplitude, 2.5 Hz
+  balG.rotation.y = Math.sin(t * Math.PI * 2 * BEAT_HZ / 2) * THREE.MathUtils.degToRad(270);
+  // hairspring "breathing": subtle scale with the balance phase
+  const hs = balG.getObjectByName('hairspring'); if (hs) hs.scale.setScalar(1 + Math.sin(t * Math.PI * BEAT_HZ) * 0.06);
+
+  controls.update();
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight); labelRenderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

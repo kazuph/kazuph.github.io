@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espresso machine – cutaway / exploded 3D</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f3efe9; font-family: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; }
+  #panel { position: fixed; left: 16px; top: 16px; width: 300px; background: rgba(255,255,255,.88); backdrop-filter: blur(8px); border-radius: 14px; padding: 14px 16px 12px; box-shadow: 0 8px 24px rgba(60,40,20,.14); color: #3a2c22; font-size: 13px; }
+  #panel h1 { font-size: 15px; margin: 0 0 4px; }
+  #panel p { margin: 0 0 10px; color: #7a6656; font-size: 12px; line-height: 1.5; }
+  .seg { display: flex; background: #eee7df; border-radius: 10px; padding: 3px; gap: 3px; }
+  .seg button { flex: 1; border: 0; border-radius: 8px; padding: 7px 6px; background: transparent; color: #5a4636; font-weight: 700; cursor: pointer; font-size: 12px; }
+  .seg button.active { background: #8b5a2b; color: #fff; }
+  .row { display: grid; grid-template-columns: 78px 1fr 40px; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; }
+  .row input { accent-color: #8b5a2b; }
+  .row output { text-align: right; color: #8b5a2b; font-variant-numeric: tabular-nums; }
+  .path { margin-top: 10px; font-size: 12px; line-height: 1.6; color: #5a4636; }
+  .path b { color: #2a6f97; }
+  .toggle { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; }
+  .lbl { color: #fff; background: rgba(58,44,34,.85); padding: 2px 8px; border-radius: 6px; font-size: 11px; white-space: nowrap; pointer-events: none; border-left: 3px solid #f2c14e; }
+  .hint { position: fixed; right: 16px; bottom: 14px; color: #7a6656; font-size: 12px; background: rgba(255,255,255,.7); padding: 6px 10px; border-radius: 8px; pointer-events: none; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="app"></div>
+<div id="panel">
+  <h1>Semi-automatic espresso machine</h1>
+  <p>外装・ボイラー・グループヘッド・ポルタフィルター・給水タンク・配管を部品として構成。表示モードを切り替えて内部を確認できます。</p>
+  <div class="seg">
+    <button data-mode="full">Full</button>
+    <button data-mode="cutaway" class="active">Cutaway</button>
+    <button data-mode="exploded">Exploded</button>
+  </div>
+  <div class="row"><label>Explode</label><input id="explode" type="range" min="0" max="100" value="0"><output id="explode-out">0%</output></div>
+  <div class="toggle"><input id="flow" type="checkbox" checked><label for="flow">抽出経路アニメーション（水 → ボイラー → グループヘッド → カップ）</label></div>
+  <div class="toggle"><input id="labels" type="checkbox" checked><label for="labels">部品ラベル</label></div>
+  <div class="path">経路: <b>給水タンク</b> → ポンプ → <b>ボイラー</b>（加熱・加圧 9 bar）→ <b>グループヘッド</b> → ポルタフィルター（粉）→ <b>カップ</b></div>
+</div>
+<div class="hint">ドラッグで回転 / ホイールでズーム</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const app = document.getElementById('app');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.localClippingEnabled = true;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+app.appendChild(renderer.domElement);
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+Object.assign(labelRenderer.domElement.style, { position: 'fixed', inset: '0', pointerEvents: 'none' });
+app.appendChild(labelRenderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf3efe9);
+const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(7.5, 5.5, 8.5);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 2.2, 0);
+controls.enableDamping = true;
+controls.minDistance = 4; controls.maxDistance = 25;
+controls.maxPolarAngle = Math.PI * 0.49;
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0xcdbfae, 0.7));
+const key = new THREE.DirectionalLight(0xfff5e6, 1.6); key.position.set(6, 10, 6); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.camera.left = -8; key.shadow.camera.right = 8; key.shadow.camera.top = 8; key.shadow.camera.bottom = -8;
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xdfe9ff, 0.5); fill.position.set(-6, 4, -5); scene.add(fill);
+
+const counter = new THREE.Mesh(new THREE.BoxGeometry(14, 0.3, 10), new THREE.MeshStandardMaterial({ color: 0xd9cbb8, roughness: 0.9 }));
+counter.position.y = -0.15; counter.receiveShadow = true; scene.add(counter);
+
+// ---------- cutaway clipping plane (removes the front-right quarter of the shell) ----------
+const clipX = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0.0);  // keeps x < 0
+const clipZ = new THREE.Plane(new THREE.Vector3(0, 0, -1), 0.0);  // keeps z < 0
+// A part is cut only where BOTH planes would remove it (front-right quarter): we approximate with two half-shells.
+const shellMat = (color) => new THREE.MeshStandardMaterial({ color, metalness: 0.45, roughness: 0.35, side: THREE.DoubleSide });
+
+const steel = new THREE.MeshStandardMaterial({ color: 0xd4d8dd, metalness: 0.9, roughness: 0.25 });
+const steelDark = new THREE.MeshStandardMaterial({ color: 0x6b7280, metalness: 0.8, roughness: 0.4 });
+const copper = new THREE.MeshStandardMaterial({ color: 0xc27a3a, metalness: 0.9, roughness: 0.3 });
+const brass = new THREE.MeshStandardMaterial({ color: 0xd9a441, metalness: 0.9, roughness: 0.3 });
+const black = new THREE.MeshStandardMaterial({ color: 0x1f2226, roughness: 0.6 });
+const rubber = new THREE.MeshStandardMaterial({ color: 0x2a2d31, roughness: 0.9 });
+const water = new THREE.MeshPhysicalMaterial({ color: 0x8fd3f4, transmission: 0.7, roughness: 0.1, thickness: 0.5, transparent: true, opacity: 0.85 });
+const tankGlass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.9, roughness: 0.05, thickness: 0.2, transparent: true, opacity: 0.35 });
+const ceramic = new THREE.MeshStandardMaterial({ color: 0xfaf6ef, roughness: 0.35 });
+const coffee = new THREE.MeshStandardMaterial({ color: 0x4a2c1a, roughness: 0.8 });
+const heater = new THREE.MeshStandardMaterial({ color: 0xff6a2a, emissive: 0xff3300, emissiveIntensity: 0.6, roughness: 0.5 });
+
+// ---------- parts registry: each part knows its rest position and its "exploded" offset ----------
+const parts = [];
+function part(name, group, explodeOffset, labelPos, opts = {}) {
+  group.userData.rest = group.position.clone();
+  group.userData.explode = new THREE.Vector3(...explodeOffset);
+  group.userData.shell = !!opts.shell;
+  const div = document.createElement('div'); div.className = 'lbl'; div.textContent = name;
+  const lab = new CSS2DObject(div); lab.position.set(...labelPos); group.add(lab);
+  group.userData.label = lab;
+  parts.push(group); scene.add(group); return group;
+}
+function mesh(geo, mat, parent, x = 0, y = 0, z = 0) { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; parent.add(m); return m; }
+function tube(points, r, mat, parent) {
+  const curve = new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(...p)), false, 'catmullrom', 0.1);
+  const m = new THREE.Mesh(new THREE.TubeGeometry(curve, 64, r, 12, false), mat); m.castShadow = true; parent.add(m); return { mesh: m, curve };
+}
+
+// body frame (chassis, always visible)
+const chassis = part('シャーシ / ドリップトレイ', new THREE.Group(), [0, -1.4, 0], [1.6, 0.25, 1.3]);
+mesh(new THREE.BoxGeometry(4.2, 0.35, 3.2), black, chassis, 0, 0.175, 0);
+mesh(new THREE.BoxGeometry(2.6, 0.06, 1.4), steelDark, chassis, 0.3, 0.38, 1.0);
+for (let i = 0; i < 9; i++) mesh(new THREE.BoxGeometry(0.06, 0.03, 1.3), black, chassis, -0.9 + i * 0.3, 0.42, 1.0);
+mesh(new THREE.BoxGeometry(3.4, 0.5, 2.5), steelDark, chassis, -0.1, 0.6, -0.2);
+// add a soft environment so metals do not read as black
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new THREE.Scene().add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 3)), 0.04).texture;
+
+// outer shell: split in two halves so the cutaway can hide the front-right quarter
+const shell = part('外装（ステンレス筐体）', new THREE.Group(), [0, 2.6, 0], [-1.6, 4.55, -0.2], { shell: true });
+const shellGeoL = new THREE.BoxGeometry(2.0, 3.4, 3.0);
+const shellL = mesh(shellGeoL, shellMat(0xdfe3e8), shell, -1.1, 2.55, -0.2);
+const shellR = mesh(new THREE.BoxGeometry(2.0, 3.4, 3.0), shellMat(0xdfe3e8), shell, 0.9, 2.55, -0.2);
+const shellTop = mesh(new THREE.BoxGeometry(4.2, 0.12, 3.2), shellMat(0xc9ced4), shell, -0.1, 4.3, -0.2);
+mesh(new THREE.BoxGeometry(1.6, 0.06, 1.2), steelDark, shell, -0.8, 4.38, -0.3); // cup warmer grill
+// front panel details (on the shell, front face z = 1.3)
+mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.18, 24), black, shell, -1.35, 3.4, 1.35).rotation.x = Math.PI / 2; // power knob
+mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.1, 24), steel, shell, 0.6, 3.5, 1.32).rotation.x = Math.PI / 2;  // pressure gauge
+mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.12, 24), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 }), shell, 0.6, 3.5, 1.36).rotation.x = Math.PI / 2;
+const needle = mesh(new THREE.BoxGeometry(0.02, 0.2, 0.02), new THREE.MeshStandardMaterial({ color: 0xc0392b }), shell, 0.6, 3.58, 1.43); needle.rotation.z = -0.6;
+mesh(new THREE.BoxGeometry(0.4, 0.14, 0.08), new THREE.MeshStandardMaterial({ color: 0xc0392b, emissive: 0x600000 }), shell, -0.6, 3.5, 1.34); // brew switch
+mesh(new THREE.BoxGeometry(0.4, 0.14, 0.08), new THREE.MeshStandardMaterial({ color: 0x2e7d4f, emissive: 0x004d20 }), shell, -0.05, 3.5, 1.34); // steam switch
+shell.userData.halves = { shellL, shellR, shellTop };
+
+// water tank (rear, translucent) with water level
+const tank = part('給水タンク', new THREE.Group(), [0, 1.2, -2.6], [0, 2.4, -0.6]);
+mesh(new THREE.BoxGeometry(3.6, 3.0, 0.9), tankGlass, tank, -0.1, 2.5, -1.85);
+const tankWater = mesh(new THREE.BoxGeometry(3.45, 2.1, 0.78), water, tank, -0.1, 2.05, -1.85);
+mesh(new THREE.BoxGeometry(3.7, 0.1, 1.0), steelDark, tank, -0.1, 4.05, -1.85);
+mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.5, 12), steelDark, tank, -1.5, 1.2, -1.85); // outlet fitting
+
+// pump (vibration pump) sitting on the chassis
+const pump = part('振動ポンプ', new THREE.Group(), [-2.2, 0, 1.2], [-0.5, 0.35, 0.4]);
+mesh(new THREE.CylinderGeometry(0.28, 0.28, 1.2, 24), copper, pump, -1.3, 1.15, 0.6).rotation.z = Math.PI / 2;
+mesh(new THREE.BoxGeometry(0.5, 0.4, 0.5), black, pump, -0.55, 1.15, 0.6);
+
+// boiler (copper cylinder) with heating element and thermostat
+const boiler = part('ボイラー（加熱・加圧）', new THREE.Group(), [0, 2.0, 0], [0.7, 0.85, 0]);
+const boilerBody = mesh(new THREE.CylinderGeometry(0.8, 0.8, 1.6, 40), copper, boiler, 0.3, 2.55, -0.4);
+boilerBody.material = new THREE.MeshStandardMaterial({ color: 0xc27a3a, metalness: 0.9, roughness: 0.3, clippingPlanes: [clipX, clipZ], clipIntersection: true, side: THREE.DoubleSide });
+const boilerWater = mesh(new THREE.CylinderGeometry(0.72, 0.72, 1.3, 40), water, boiler, 0.3, 2.45, -0.4);
+boilerWater.material = new THREE.MeshPhysicalMaterial({ color: 0x8fd3f4, transmission: 0.6, roughness: 0.1, transparent: true, opacity: 0.8, clippingPlanes: [clipX, clipZ], clipIntersection: true, side: THREE.DoubleSide });
+const element = mesh(new THREE.TorusGeometry(0.5, 0.06, 10, 48), heater, boiler, 0.3, 1.95, -0.4); element.rotation.x = Math.PI / 2;
+mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.3, 16), brass, boiler, 0.3, 3.5, -0.4);      // top fitting
+mesh(new THREE.BoxGeometry(0.35, 0.2, 0.25), black, boiler, 1.0, 3.2, -0.4);              // thermostat
+mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.9, 12), steel, boiler, 0.3, 4.0, -0.4);      // steam valve stem
+mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.12, 20), black, boiler, 0.3, 4.45, -0.4);    // steam knob
+boiler.userData.cutMeshes = [boilerBody, boilerWater];
+
+// group head (brass block under the shell front) + shower screen
+const group = part('グループヘッド', new THREE.Group(), [1.6, 0.6, 1.2], [0.75, 0.15, 0.55]);
+mesh(new THREE.BoxGeometry(1.0, 0.7, 1.0), brass, group, 0.3, 1.55, 0.95);
+mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.22, 32), brass, group, 0.3, 1.1, 1.05);
+mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.03, 32), steel, group, 0.3, 0.98, 1.05); // shower screen
+for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.04, 6), black, group, 0.3 + Math.cos(a) * 0.22, 0.965, 1.05 + Math.sin(a) * 0.22); }
+mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.5, 12), steelDark, group, 0.3, 2.1, 0.95); // solenoid valve
+mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3), black, group, 0.3, 2.4, 0.95);
+
+// portafilter (basket + handle) locked into the group head
+const porta = part('ポルタフィルター', new THREE.Group(), [1.0, -1.4, 1.6], [0.9, -0.35, 1.2]);
+mesh(new THREE.CylinderGeometry(0.42, 0.36, 0.28, 32), steel, porta, 0.3, 0.82, 1.05);
+mesh(new THREE.CylinderGeometry(0.33, 0.3, 0.2, 32), coffee, porta, 0.3, 0.85, 1.05); // coffee puck
+for (const dx of [-0.12, 0.12]) mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.25, 8), steel, porta, 0.3 + dx, 0.62, 1.05).rotation.x = 0.25; // spouts
+const handle = mesh(new THREE.CylinderGeometry(0.09, 0.11, 1.4, 16), black, porta, 0.3, 0.82, 2.05); handle.rotation.x = Math.PI / 2;
+const earL = mesh(new THREE.BoxGeometry(0.2, 0.12, 0.3), steel, porta, -0.15, 0.9, 1.05);
+const earR = mesh(new THREE.BoxGeometry(0.2, 0.12, 0.3), steel, porta, 0.75, 0.9, 1.05);
+
+// cup on the tray under the spouts
+const cup = part('カップ', new THREE.Group(), [0, -0.8, 1.6], [0.9, 0.2, 0.3]);
+const cupBody = mesh(new THREE.CylinderGeometry(0.3, 0.22, 0.38, 32, 1, true), ceramic, cup, 0.3, 0.6, 1.05);
+mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.02, 32), ceramic, cup, 0.3, 0.42, 1.05);
+const crema = mesh(new THREE.CylinderGeometry(0.27, 0.27, 0.02, 32), new THREE.MeshStandardMaterial({ color: 0xa26a3a, roughness: 0.6 }), cup, 0.3, 0.66, 1.05); crema.scale.y = 0.001;
+const cupHandle = mesh(new THREE.TorusGeometry(0.12, 0.035, 8, 24, Math.PI), ceramic, cup, 0.62, 0.6, 1.05); cupHandle.rotation.z = -Math.PI / 2; cupHandle.rotation.y = Math.PI / 2;
+
+// steam wand
+const wand = part('スチームワンド', new THREE.Group(), [2.2, 0.3, 0.5], [1.9, 3.2, 0.9]);
+const wandTube = tube([[1.9, 4.2, 0.6], [2.2, 3.6, 1.0], [2.2, 2.4, 1.4], [2.1, 1.3, 1.5]], 0.05, steel, wand);
+mesh(new THREE.CylinderGeometry(0.07, 0.05, 0.25, 12), rubber, wand, 2.1, 1.25, 1.5);
+mesh(new THREE.SphereGeometry(0.12, 16, 12), black, wand, 1.9, 4.2, 0.6);
+
+// plumbing: tank -> pump -> boiler -> group head (copper tubes); water flow particles follow these curves
+const pipes = part('配管（銅管）', new THREE.Group(), [-1.2, 0.8, -1.0], [-1.0, 1.5, -0.2]);
+const seg1 = tube([[-1.5, 1.0, -1.85], [-1.5, 0.75, -1.2], [-1.6, 0.75, 0.3], [-1.9, 1.15, 0.6]], 0.045, copper, pipes);          // tank -> pump
+const seg2 = tube([[-0.7, 1.15, 0.6], [-0.3, 1.2, 0.4], [-0.1, 1.6, -0.2], [0.3, 1.75, -0.4]], 0.045, copper, pipes);            // pump -> boiler bottom
+const seg3 = tube([[0.3, 3.35, -0.4], [0.3, 3.7, 0.0], [0.3, 3.2, 0.6], [0.3, 2.65, 0.95]], 0.045, copper, pipes);              // boiler top -> solenoid -> group
+const seg4 = { curve: new THREE.CatmullRomCurve3([new THREE.Vector3(0.3, 1.9, 0.95), new THREE.Vector3(0.3, 1.0, 1.05), new THREE.Vector3(0.3, 0.55, 1.05)]) }; // group -> puck -> cup (inside)
+const flowPath = [seg1.curve, seg2.curve, seg3.curve, seg4.curve];
+// flow particles
+const NP = 90;
+const dropGeo = new THREE.SphereGeometry(0.05, 8, 6);
+const dropMat = new THREE.MeshStandardMaterial({ color: 0x35a7e6, emissive: 0x1a6fb0, emissiveIntensity: 0.6 });
+const drops = new THREE.InstancedMesh(dropGeo, dropMat, NP); drops.frustumCulled = false; scene.add(drops);
+const dummy = new THREE.Object3D();
+const totalLen = flowPath.reduce((s, c) => s + c.getLength(), 0);
+
+// ---------- modes ----------
+let mode = 'cutaway', explode = 0, explodeTarget = 0, showFlow = true, showLabels = true;
+const modeBtns = [...document.querySelectorAll('.seg button')];
+function setMode(m) {
+  mode = m; modeBtns.forEach((b) => b.classList.toggle('active', b.dataset.mode === m));
+  explodeTarget = m === 'exploded' ? 1 : 0;
+  explodeIn.value = Math.round(explodeTarget * 100); explodeOut.value = `${explodeIn.value}%`;
+}
+modeBtns.forEach((b) => b.addEventListener('click', () => setMode(b.dataset.mode)));
+const explodeIn = document.getElementById('explode'), explodeOut = document.getElementById('explode-out');
+explodeIn.addEventListener('input', () => { explodeTarget = +explodeIn.value / 100; explodeOut.value = `${explodeIn.value}%`; if (explodeTarget > 0 && mode !== 'exploded') { mode = 'exploded'; modeBtns.forEach((b) => b.classList.toggle('active', b.dataset.mode === 'exploded')); } });
+document.getElementById('flow').addEventListener('change', (e) => { showFlow = e.target.checked; });
+document.getElementById('labels').addEventListener('change', (e) => { showLabels = e.target.checked; });
+
+function applyMode() {
+  const cut = mode === 'cutaway';
+  // shell halves: in cutaway hide the right half + top so the interior is exposed; in full show everything
+  shellR.visible = !cut; shellTop.visible = !cut;
+  for (const m of boiler.userData.cutMeshes) m.material.clippingPlanes = cut ? [clipX, clipZ] : [];
+  boilerWater.visible = cut || mode === 'exploded';
+  for (const p of parts) {
+    p.position.copy(p.userData.rest).addScaledVector(p.userData.explode, explode);
+    p.userData.label.visible = showLabels && (cut || mode === 'exploded' || !p.userData.shell || true);
+  }
+  // in full mode the interior labels would float inside the shell, so only show outer ones
+  if (mode === 'full') for (const p of [boiler, pump, pipes]) p.userData.label.visible = false;
+  drops.visible = showFlow && mode !== 'full';
+}
+
+const clock = new THREE.Clock();
+let flowT = 0;
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  explode += (explodeTarget - explode) * Math.min(1, dt * 6);
+  applyMode();
+  // flow particles along the plumbing (only meaningful when not exploded)
+  if (drops.visible) {
+    flowT += dt * 0.55;
+    for (let i = 0; i < NP; i++) {
+      let d = ((i / NP) + flowT) % 1 * totalLen;
+      let pos = null;
+      for (let c = 0; c < flowPath.length; c++) {
+        const L = flowPath[c].getLength();
+        if (d <= L) { pos = flowPath[c].getPointAt(Math.min(1, d / L)); break; }
+        d -= L;
+      }
+      if (!pos) pos = flowPath[3].getPointAt(1);
+      // follow the exploded offset of the pipes part so drops stay on the tubes
+      dummy.position.copy(pos).addScaledVector(pipes.userData.explode, explode);
+      dummy.scale.setScalar(1 - explode * 0.6);
+      dummy.updateMatrix(); drops.setMatrixAt(i, dummy.matrix);
+    }
+    drops.instanceMatrix.needsUpdate = true;
+    // crema slowly fills the cup while flowing
+    crema.scale.y = Math.min(1, crema.scale.y + dt * 0.15);
+  }
+  needle.rotation.z = -0.6 + Math.sin(clock.elapsedTime * 2) * 0.05;
+  element.material.emissiveIntensity = 0.5 + Math.sin(clock.elapsedTime * 3) * 0.25;
+  controls.update();
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+}
+setMode('cutaway');
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight); labelRenderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackball Split Keyboard 3D - Gemini 3.8</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+            color: #f8fafc;
+            user-select: none;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        .ui-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 16px 22px;
+            border-radius: 14px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 320px;
+        }
+        .ui-header h1 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            color: #38bdf8;
+            font-family: monospace;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ui-header p {
+            margin: 0 0 12px 0;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        button {
+            flex: 1;
+            background: #1e293b;
+            color: #38bdf8;
+            border: 1px solid #334155;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover {
+            background: #334155;
+            border-color: #38bdf8;
+        }
+        .status-badge {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="ui-header">
+        <h1>⌨️ KEYBALL-68 PRO</h1>
+        <p>Columnar Ergonomic Split Mechanical Keyboard with 34mm Optical Trackball</p>
+        <div class="btn-group">
+            <button onclick="toggleRGB()">RGB MODE: CYBER</button>
+            <button onclick="spinTrackball()">SPIN BALL</button>
+        </div>
+        <div class="status-badge">⚡ Layer: [BASE_QWERTY] • WPM: 132 • TRRS: OK</div>
+    </div>
+    <div id="canvas-container"></div>
+
+    <script>
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 4.5, 4.5);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.target.set(0, 0.2, 0);
+
+        // LIGHTING
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        keyLight.position.set(5, 8, 5);
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.width = 1024;
+        keyLight.shadow.mapSize.height = 1024;
+        scene.add(keyLight);
+
+        const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.4);
+        fillLight.position.set(-5, 4, -4);
+        scene.add(fillLight);
+
+        // DESK MAT
+        const matGeo = new THREE.BoxGeometry(7.5, 0.04, 3.8);
+        const matMat = new THREE.MeshStandardMaterial({ color: 0x090d16, roughness: 0.85, metalness: 0.1 });
+        const deskMat = new THREE.Mesh(matGeo, matMat);
+        deskMat.position.y = -0.02;
+        deskMat.receiveShadow = true;
+        scene.add(deskMat);
+
+        // DESK MAT STITCHED EDGE (Cyan Neon Trim)
+        const trimGeo = new THREE.BoxGeometry(7.55, 0.03, 3.85);
+        const trimMat = new THREE.MeshBasicMaterial({ color: 0x0284c7 });
+        const trim = new THREE.Mesh(trimGeo, trimMat);
+        trim.position.y = -0.025;
+        scene.add(trim);
+
+        // MATERIALS
+        const caseMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.4, metalness: 0.2 });
+        const plateMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.3, metalness: 0.5 });
+        const keyMatDark = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 });
+        const keyMatAccent = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.4 });
+        const keyMatOrange = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: 0.4 });
+        const ballMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, metalness: 0.85, roughness: 0.1 }); // Glossy red ball
+        const knobMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.9, roughness: 0.2 });
+        const oledMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+
+        // OLED DISPLAY TEXTURE GENERATOR
+        function createOledTexture(text) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 32;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, 128, 32);
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 13px monospace';
+            ctx.fillText(text, 6, 20);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        // CREATE SINGLE KEYCAP (Cherry/DSA profile chamfered box)
+        function createKeycap(width = 0.26, depth = 0.26, height = 0.16, mat = keyMatDark) {
+            const keyGeo = new THREE.CylinderGeometry(width * 0.42, width * 0.52, height, 4);
+            keyGeo.rotateY(Math.PI / 4);
+            const key = new THREE.Mesh(keyGeo, mat);
+            key.castShadow = true;
+            return key;
+        }
+
+        // KEYBOARD HALF BUILDER
+        function createKeyboardHalf(isRight = false) {
+            const half = new THREE.Group();
+            const sign = isRight ? 1 : -1;
+
+            // 1. CNC ALUMINUM / ACRYLIC CASE (Chamfered ergonomic shape)
+            const caseGeo = new THREE.BoxGeometry(2.3, 0.24, 2.0);
+            const caseMesh = new THREE.Mesh(caseGeo, caseMat);
+            caseMesh.position.set(0, 0.12, 0);
+            caseMesh.castShadow = true;
+            caseMesh.receiveShadow = true;
+            half.add(caseMesh);
+
+            // Integrated wrist wrest / thumb wing
+            const thumbWingGeo = new THREE.BoxGeometry(1.1, 0.24, 0.9);
+            const thumbWing = new THREE.Mesh(thumbWingGeo, caseMat);
+            thumbWing.position.set(-sign * 0.7, 0.12, 0.9);
+            thumbWing.rotation.y = sign * 0.35;
+            thumbWing.castShadow = true;
+            half.add(thumbWing);
+
+            // 2. COLUMNAR MATRIX KEYCAPS
+            const cols = 6;
+            const rows = 4;
+            const colStagger = [0, 0.08, 0.16, 0.06, -0.04, -0.08];
+
+            for (let c = 0; c < cols; c++) {
+                const cx = (c - 2.5) * 0.32;
+                const stagger = colStagger[c];
+                for (let r = 0; r < rows; r++) {
+                    const rz = (r - 1.5) * 0.32 + stagger;
+                    let kMat = keyMatDark;
+                    if (c === 0 || c === cols - 1 || r === 0) kMat = keyMatAccent;
+                    if (c === 3 && r === 2) kMat = keyMatOrange; // Home key
+
+                    const key = createKeycap(0.28, 0.28, 0.15, kMat);
+                    key.position.set(cx, 0.28, rz);
+                    half.add(key);
+                }
+            }
+
+            // 3. THUMB CLUSTER KEYS / TRACKBALL
+            if (!isRight) {
+                // Left thumb cluster: 3 angled thumb keys + Rotary Encoder
+                for (let t = 0; t < 3; t++) {
+                    const tk = createKeycap(0.32, 0.28, 0.16, t === 1 ? keyMatOrange : keyMatAccent);
+                    tk.position.set(0.45 + t * 0.32, 0.28, 0.9 + t * 0.1);
+                    tk.rotation.y = -0.3;
+                    half.add(tk);
+                }
+                // Rotary Encoder Knob
+                const knobGeo = new THREE.CylinderGeometry(0.16, 0.16, 0.22, 24);
+                const knob = new THREE.Mesh(knobGeo, knobMat);
+                knob.position.set(0.1, 0.32, 0.85);
+                knob.castShadow = true;
+                half.add(knob);
+            } else {
+                // Right thumb cluster: Integrated 34mm Trackball in spherical cup
+                const trackballGroup = new THREE.Group();
+                trackballGroup.position.set(-0.55, 0.35, 0.85);
+
+                // Sensor socket ring
+                const cupGeo = new THREE.CylinderGeometry(0.35, 0.28, 0.22, 32);
+                const cup = new THREE.Mesh(cupGeo, plateMat);
+                trackballGroup.add(cup);
+
+                // 34mm Glossy Metallic Trackball Sphere
+                const ballGeo = new THREE.SphereGeometry(0.32, 32, 32);
+                const ball = new THREE.Mesh(ballGeo, ballMat);
+                ball.position.y = 0.18;
+                ball.castShadow = true;
+                trackballGroup.add(ball);
+                half.userData.trackball = ball;
+
+                // 2 side thumb keys next to trackball
+                for (let t = 0; t < 2; t++) {
+                    const tk = createKeycap(0.32, 0.28, 0.16, keyMatAccent);
+                    tk.position.set(-0.15 + t * 0.32, 0.28, 1.15 + t * 0.08);
+                    half.add(tk);
+                }
+                half.add(trackballGroup);
+            }
+
+            // 4. OLED DISPLAY SCREEN (Top inner corner)
+            const oledBox = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.06, 0.22), plateMat);
+            oledBox.position.set(-sign * 0.65, 0.26, -0.85);
+            half.add(oledBox);
+
+            const oledScreen = new THREE.Mesh(
+                new THREE.PlaneGeometry(0.58, 0.18),
+                new THREE.MeshBasicMaterial({ map: createOledTexture(isRight ? "BALL: 1200DPI" : "WPM: 132 QMK") })
+            );
+            oledScreen.rotation.x = -Math.PI / 2;
+            oledScreen.position.set(-sign * 0.65, 0.295, -0.85);
+            half.add(oledScreen);
+
+            // 5. PER-KEY RGB UNDERGLOW LED LAYER
+            const underglowGeo = new THREE.BoxGeometry(2.2, 0.04, 1.9);
+            const underglowMat = new THREE.MeshBasicMaterial({ color: isRight ? 0x0284c7 : 0xea580c, transparent: true, opacity: 0.6 });
+            const underglow = new THREE.Mesh(underglowGeo, underglowMat);
+            underglow.position.set(0, 0.02, 0);
+            half.add(underglow);
+            half.userData.underglow = underglow;
+
+            return half;
+        }
+
+        // ADD LEFT & RIGHT HALVES (Tented & Angled)
+        const leftHalf = createKeyboardHalf(false);
+        leftHalf.position.set(-1.6, 0.08, 0.1);
+        leftHalf.rotation.y = 0.15; // Natural ergonomic splay
+        leftHalf.rotation.z = 0.08; // 5 deg tenting
+        scene.add(leftHalf);
+
+        const rightHalf = createKeyboardHalf(true);
+        rightHalf.position.set(1.6, 0.08, 0.1);
+        rightHalf.rotation.y = -0.15;
+        rightHalf.rotation.z = -0.08;
+        scene.add(rightHalf);
+
+        // 6. COILED TRRS CABLE LINKING BOTH HALVES
+        const coilPoints = [];
+        const numCoils = 14;
+        for (let i = 0; i <= numCoils * 16; i++) {
+            const t = i / (numCoils * 16);
+            const x = -0.9 + t * 1.8;
+            const angle = t * numCoils * Math.PI * 2;
+            const y = 0.15 + Math.sin(angle) * 0.07;
+            const z = -0.9 + Math.cos(angle) * 0.07;
+            coilPoints.push(new THREE.Vector3(x, y, z));
+        }
+        const cableCurve = new THREE.CatmullRomCurve3(coilPoints);
+        const cableGeo = new THREE.TubeGeometry(cableCurve, 128, 0.02, 8, false);
+        const cableMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.4 });
+        const cable = new THREE.Mesh(cableGeo, cableMat);
+        scene.add(cable);
+
+        // INTERACTIVE FUNCTIONS
+        let trackballSpinSpeed = 0;
+        window.spinTrackball = function() {
+            trackballSpinSpeed = 0.25;
+        };
+
+        const rgbColors = [0x0284c7, 0x10b981, 0xec4899, 0xf59e0b, 0x8b5cf6];
+        let rgbIdx = 0;
+        window.toggleRGB = function() {
+            rgbIdx = (rgbIdx + 1) % rgbColors.length;
+            leftHalf.userData.underglow.material.color.setHex(rgbColors[rgbIdx]);
+            rightHalf.userData.underglow.material.color.setHex(rgbColors[(rgbIdx + 1) % rgbColors.length]);
+        };
+
+        // ANIMATION LOOP
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // Trackball rotation with smooth deceleration
+            if (rightHalf.userData.trackball) {
+                if (trackballSpinSpeed > 0.001) {
+                    rightHalf.userData.trackball.rotation.x += trackballSpinSpeed;
+                    rightHalf.userData.trackball.rotation.y += trackballSpinSpeed * 0.7;
+                    trackballSpinSpeed *= 0.96;
+                } else {
+                    // Subtle idle spin
+                    rightHalf.userData.trackball.rotation.x += 0.005;
+                    rightHalf.userData.trackball.rotation.y += 0.003;
+                }
+            }
+
+            // Gentle pulsing RGB breathing
+            const pulse = 0.5 + 0.3 * Math.sin(time * 3);
+            leftHalf.userData.underglow.material.opacity = pulse;
+            rightHalf.userData.underglow.material.opacity = pulse;
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // RESIZE
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

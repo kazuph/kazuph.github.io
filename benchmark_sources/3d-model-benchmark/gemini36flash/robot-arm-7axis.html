@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D 7-Axis Robot Arm - Gemini 3.6 Flash</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #111827;
+            font-family: sans-serif;
+            color: #f3f4f6;
+            user-select: none;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        .ui {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 240px;
+        }
+        h1 { margin: 0 0 10px; font-size: 18px; color: #3b82f6; }
+        .control-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        input[type=range] { width: 130px; cursor: pointer; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="ui">
+        <h1>7-Axis Robot Arm</h1>
+        <div id="sliders"></div>
+    </div>
+
+    <script>
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x111827);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(4, 3, 5);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.target.set(0, 1.2, 0);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(5, 8, 5);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        // Materials
+        const baseMat = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, metalness: 0.6, roughness: 0.3 }); // Dark blue
+        const jointMat = new THREE.MeshStandardMaterial({ color: 0xeab308, metalness: 0.7, roughness: 0.2 }); // Gold/Yellow
+        const linkMat = new THREE.MeshStandardMaterial({ color: 0x9ca3af, metalness: 0.8, roughness: 0.3 }); // Silver
+        const gripperMat = new THREE.MeshStandardMaterial({ color: 0xef4444, metalness: 0.5, roughness: 0.3 }); // Red
+
+        // Ground Grid
+        const grid = new THREE.GridHelper(10, 20, 0x3b82f6, 0x374151);
+        scene.add(grid);
+
+        // --- Build Hierarchical 7-Axis Robot Kinematic Chain ---
+        // Base
+        const base = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.9, 0.3, 32), baseMat);
+        base.position.y = 0.15;
+        scene.add(base);
+
+        // Joint 1 Group (Base Yaw)
+        const j1 = new THREE.Group();
+        j1.position.y = 0.15;
+        base.add(j1);
+        const j1Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.4, 32), jointMat);
+        j1Mesh.position.y = 0.2;
+        j1.add(j1Mesh);
+
+        // Joint 2 Group (Shoulder Pitch)
+        const j2 = new THREE.Group();
+        j2.position.y = 0.4;
+        j1.add(j2);
+        const j2Mesh = new THREE.Mesh(new THREE.SphereGeometry(0.35, 32, 32), jointMat);
+        j2.add(j2Mesh);
+        // Link 1 (Upper Arm)
+        const link1 = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 1.2, 32), linkMat);
+        link1.position.y = 0.6;
+        j2.add(link1);
+
+        // Joint 3 Group (Shoulder Roll)
+        const j3 = new THREE.Group();
+        j3.position.y = 1.2;
+        j2.add(j3);
+        const j3Mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 32, 32), jointMat);
+        j3.add(j3Mesh);
+
+        // Joint 4 Group (Elbow Pitch)
+        const j4 = new THREE.Group();
+        j4.position.y = 0.1;
+        j3.add(j4);
+        const j4Mesh = new THREE.Mesh(new THREE.SphereGeometry(0.28, 32, 32), jointMat);
+        j4.add(j4Mesh);
+        // Link 2 (Forearm)
+        const link2 = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 1.0, 32), linkMat);
+        link2.position.y = 0.5;
+        j4.add(link2);
+
+        // Joint 5 Group (Wrist Roll)
+        const j5 = new THREE.Group();
+        j5.position.y = 1.0;
+        j4.add(j5);
+        const j5Mesh = new THREE.Mesh(new THREE.SphereGeometry(0.22, 32, 32), jointMat);
+        j5.add(j5Mesh);
+
+        // Joint 6 Group (Wrist Pitch)
+        const j6 = new THREE.Group();
+        j6.position.y = 0.1;
+        j5.add(j6);
+        const j6Mesh = new THREE.Mesh(new THREE.SphereGeometry(0.2, 32, 32), jointMat);
+        j6.add(j6Mesh);
+
+        // Joint 7 Group (Wrist Twist & Gripper)
+        const j7 = new THREE.Group();
+        j7.position.y = 0.1;
+        j6.add(j7);
+        const j7Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.2, 32), jointMat);
+        j7Mesh.position.y = 0.1;
+        j7.add(j7Mesh);
+
+        // Gripper
+        const gripperBase = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.1, 0.2), gripperMat);
+        gripperBase.position.y = 0.25;
+        j7.add(gripperBase);
+        const finger1 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.3, 0.08), gripperMat);
+        finger1.position.set(-0.12, 0.4, 0);
+        j7.add(finger1);
+        const finger2 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.3, 0.08), gripperMat);
+        finger2.position.set(0.12, 0.4, 0);
+        j7.add(finger2);
+
+        // Joint List for UI & Controls
+        const joints = [
+            { name: 'J1 (Yaw)', node: j1, axis: 'y', min: -180, max: 180, val: 0 },
+            { name: 'J2 (Pitch)', node: j2, axis: 'z', min: -90, max: 90, val: 20 },
+            { name: 'J3 (Roll)', node: j3, axis: 'y', min: -180, max: 180, val: 0 },
+            { name: 'J4 (Pitch)', node: j4, axis: 'z', min: -120, max: 120, val: -40 },
+            { name: 'J5 (Roll)', node: j5, axis: 'y', min: -180, max: 180, val: 0 },
+            { name: 'J6 (Pitch)', node: j6, axis: 'z', min: -90, max: 90, val: 30 },
+            { name: 'J7 (Twist)', node: j7, axis: 'y', min: -180, max: 180, val: 0 }
+        ];
+
+        // Build UI Sliders
+        const sliderContainer = document.getElementById('sliders');
+        joints.forEach((j, idx) => {
+            const div = document.createElement('div');
+            div.className = 'control-group';
+            div.innerHTML = `
+                <label>${j.name}:</label>
+                <input type="range" min="${j.min}" max="${j.max}" value="${j.val}" id="slider_${idx}">
+            `;
+            sliderContainer.appendChild(div);
+
+            const input = div.querySelector('input');
+            input.addEventListener('input', (e) => {
+                const rad = THREE.MathUtils.degToRad(parseFloat(e.target.value));
+                j.node.rotation[j.axis] = rad;
+            });
+
+            // Set initial rotation
+            j.node.rotation[j.axis] = THREE.MathUtils.degToRad(j.val);
+        });
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

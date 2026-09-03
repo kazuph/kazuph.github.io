@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cozy Cat – interactive 3D</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f6efe6; font-family: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; }
+  .hud { position: fixed; left: 16px; top: 14px; color: #5a4636; background: rgba(255,255,255,.72); backdrop-filter: blur(6px); border-radius: 12px; padding: 10px 14px; font-size: 13px; line-height: 1.6; box-shadow: 0 4px 16px rgba(90,70,54,.12); pointer-events: none; }
+  .hud b { font-size: 15px; display: block; margin-bottom: 2px; }
+  .hint { position: fixed; right: 16px; bottom: 14px; color: #8a7462; font-size: 12px; background: rgba(255,255,255,.6); padding: 6px 10px; border-radius: 8px; pointer-events: none; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="app"></div>
+<div class="hud"><b>Mochi the cat</b>三毛のような茶白猫。しっぽを揺らし、まばたきし、ときどき耳をぴくっと動かします。</div>
+<div class="hint">ドラッグで回転 / ホイールでズーム</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const app = document.getElementById('app');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+app.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf6efe6);
+scene.fog = new THREE.Fog(0xf6efe6, 14, 30);
+
+const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(5.2, 3.6, 6.8);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.35, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 3;
+controls.maxDistance = 16;
+controls.maxPolarAngle = Math.PI * 0.52;
+
+// ---------- lights ----------
+scene.add(new THREE.HemisphereLight(0xfff4e6, 0xd9c2a8, 0.75));
+const sun = new THREE.DirectionalLight(0xfff1dc, 1.6);
+sun.position.set(5, 8, 4);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -6; sun.shadow.camera.right = 6;
+sun.shadow.camera.top = 6; sun.shadow.camera.bottom = -6;
+sun.shadow.bias = -0.0004;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xdfe9ff, 0.45);
+fill.position.set(-5, 3, -4);
+scene.add(fill);
+
+// ---------- floor (a round rug) ----------
+const floor = new THREE.Mesh(new THREE.CircleGeometry(6, 64), new THREE.MeshStandardMaterial({ color: 0xe9dccb, roughness: 0.95 }));
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+const rug = new THREE.Mesh(new THREE.CircleGeometry(2.6, 64), new THREE.MeshStandardMaterial({ color: 0xd98c6b, roughness: 1 }));
+rug.rotation.x = -Math.PI / 2; rug.position.y = 0.005; rug.receiveShadow = true; scene.add(rug);
+const rugRing = new THREE.Mesh(new THREE.RingGeometry(2.1, 2.3, 64), new THREE.MeshStandardMaterial({ color: 0xf3c7a8, roughness: 1 }));
+rugRing.rotation.x = -Math.PI / 2; rugRing.position.y = 0.01; scene.add(rugRing);
+
+// ---------- materials ----------
+const furMain = new THREE.MeshStandardMaterial({ color: 0xe6a55d, roughness: 0.85 });
+const furLight = new THREE.MeshStandardMaterial({ color: 0xfdf3e4, roughness: 0.9 });
+const furDark = new THREE.MeshStandardMaterial({ color: 0xc8823f, roughness: 0.85 });
+const pinkMat = new THREE.MeshStandardMaterial({ color: 0xf19a9a, roughness: 0.7 });
+const eyeMat = new THREE.MeshStandardMaterial({ color: 0x7fc47c, roughness: 0.25, metalness: 0.1 });
+const pupilMat = new THREE.MeshStandardMaterial({ color: 0x1c1a1a, roughness: 0.3 });
+const whiteMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+const whiskerMat = new THREE.MeshStandardMaterial({ color: 0xfffaf2, roughness: 0.6 });
+const collarMat = new THREE.MeshStandardMaterial({ color: 0xd94f5c, roughness: 0.5 });
+const bellMat = new THREE.MeshStandardMaterial({ color: 0xf2c14e, roughness: 0.25, metalness: 0.7 });
+
+function mesh(geo, mat, parent, x = 0, y = 0, z = 0) {
+  const m = new THREE.Mesh(geo, mat);
+  m.position.set(x, y, z);
+  m.castShadow = true; m.receiveShadow = true;
+  (parent || scene).add(m);
+  return m;
+}
+
+// ---------- cat root ----------
+const cat = new THREE.Group();
+scene.add(cat);
+
+// body: sitting pose = egg-shaped torso leaning slightly back
+const body = mesh(new THREE.SphereGeometry(1, 48, 32), furMain, cat, 0, 1.15, -0.1);
+body.scale.set(0.95, 1.25, 1.05);
+// chest bib (lighter fur)
+const bib = mesh(new THREE.SphereGeometry(0.62, 32, 24), furLight, cat, 0, 1.0, 0.62);
+bib.scale.set(0.85, 1.1, 0.55);
+// back stripes (darker patches)
+for (let i = 0; i < 4; i++) {
+  const s = mesh(new THREE.TorusGeometry(0.72 - i * 0.06, 0.06, 10, 40, Math.PI * 0.9), furDark, cat, 0, 1.55 - i * 0.28, -0.12);
+  s.rotation.set(Math.PI / 2, 0, Math.PI * 1.05);
+  s.scale.set(1, 1.05, 1);
+}
+// haunches (rear legs folded, sitting)
+for (const side of [-1, 1]) {
+  const h = mesh(new THREE.SphereGeometry(0.62, 32, 24), furMain, cat, side * 0.72, 0.6, 0.15);
+  h.scale.set(0.9, 0.85, 1.15);
+  // hind paw peeking out
+  const p = mesh(new THREE.SphereGeometry(0.22, 24, 16), furLight, cat, side * 0.68, 0.22, 0.85);
+  p.scale.set(1, 0.7, 1.3);
+}
+// front legs (straight, cat sitting up)
+for (const side of [-1, 1]) {
+  const leg = mesh(new THREE.CapsuleGeometry(0.19, 0.9, 8, 18), furMain, cat, side * 0.36, 0.7, 0.78);
+  leg.rotation.x = -0.08;
+  const paw = mesh(new THREE.SphereGeometry(0.24, 24, 16), furLight, cat, side * 0.37, 0.22, 0.95);
+  paw.scale.set(1, 0.7, 1.25);
+  // toe bumps
+  for (let t = -1; t <= 1; t++) mesh(new THREE.SphereGeometry(0.07, 12, 10), furLight, cat, side * 0.37 + t * 0.11, 0.2, 1.2);
+}
+
+// ---------- head group (for subtle head tilt) ----------
+const head = new THREE.Group();
+head.position.set(0, 2.45, 0.35);
+cat.add(head);
+const skull = mesh(new THREE.SphereGeometry(0.78, 48, 32), furMain, head, 0, 0, 0);
+skull.scale.set(1.05, 0.95, 0.95);
+// cheeks
+for (const side of [-1, 1]) {
+  const c = mesh(new THREE.SphereGeometry(0.34, 24, 18), furLight, head, side * 0.33, -0.22, 0.55);
+  c.scale.set(1.1, 0.8, 0.9);
+}
+// forehead blaze
+const blaze = mesh(new THREE.SphereGeometry(0.28, 24, 16), furLight, head, 0, 0.22, 0.66);
+blaze.scale.set(0.6, 1.0, 0.5);
+// muzzle
+const muzzle = mesh(new THREE.SphereGeometry(0.3, 24, 18), furLight, head, 0, -0.22, 0.68);
+muzzle.scale.set(1.2, 0.75, 0.8);
+// nose (small rounded triangle)
+const noseGeo = new THREE.ConeGeometry(0.075, 0.09, 3);
+const nose = mesh(noseGeo, pinkMat, head, 0, -0.1, 0.95);
+nose.rotation.x = Math.PI; nose.rotation.y = Math.PI;
+// mouth: two tiny arcs
+for (const side of [-1, 1]) {
+  const m = mesh(new THREE.TorusGeometry(0.07, 0.012, 8, 20, Math.PI), pupilMat, head, side * 0.07, -0.22, 0.95);
+  m.rotation.set(0, 0, Math.PI);
+}
+// eyes: white -> iris -> pupil -> highlight, plus eyelids for blinking
+const eyes = [];
+for (const side of [-1, 1]) {
+  const eye = new THREE.Group();
+  eye.position.set(side * 0.3, 0.1, 0.62);
+  head.add(eye);
+  const ball = mesh(new THREE.SphereGeometry(0.15, 24, 18), whiteMat, eye, 0, 0, 0);
+  const iris = mesh(new THREE.SphereGeometry(0.105, 24, 18), eyeMat, eye, 0, 0, 0.075);
+  const pupil = mesh(new THREE.SphereGeometry(0.05, 16, 12), pupilMat, eye, 0, 0, 0.16);
+  pupil.scale.set(0.55, 1.3, 0.5);
+  const hl = mesh(new THREE.SphereGeometry(0.03, 10, 8), whiteMat, eye, -0.05 * side, 0.06, 0.19);
+  // eyelid: fur-colored sphere slightly larger, revealed by scaling in y
+  const lid = mesh(new THREE.SphereGeometry(0.165, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.5), furMain, eye, 0, 0, -0.005);
+  lid.scale.set(1, 0.02, 1);
+  eyes.push({ group: eye, lid });
+}
+// ears (cones with inner pink)
+const ears = [];
+for (const side of [-1, 1]) {
+  const ear = new THREE.Group();
+  ear.position.set(side * 0.46, 0.55, -0.05);
+  ear.rotation.z = -side * 0.35;
+  head.add(ear);
+  const outer = mesh(new THREE.ConeGeometry(0.24, 0.5, 4), furMain, ear, 0, 0.2, 0);
+  outer.rotation.y = Math.PI / 4;
+  outer.scale.set(1, 1, 0.6);
+  const inner = mesh(new THREE.ConeGeometry(0.15, 0.36, 4), pinkMat, ear, 0, 0.17, 0.06);
+  inner.rotation.y = Math.PI / 4;
+  inner.scale.set(1, 1, 0.5);
+  ears.push({ group: ear, side });
+}
+// whiskers (thin cylinders)
+for (const side of [-1, 1]) {
+  for (let i = 0; i < 3; i++) {
+    const w = mesh(new THREE.CylinderGeometry(0.006, 0.004, 0.75, 6), whiskerMat, head, side * 0.55, -0.2 + (i - 1) * 0.05, 0.75);
+    w.rotation.z = side * (Math.PI / 2 - 0.1 + (i - 1) * 0.18);
+    w.rotation.y = -side * 0.25;
+    w.castShadow = false;
+  }
+}
+// collar + bell
+const collar = mesh(new THREE.TorusGeometry(0.62, 0.06, 12, 48), collarMat, cat, 0, 1.95, 0.25);
+collar.rotation.x = Math.PI / 2 + 0.25;
+const bell = mesh(new THREE.SphereGeometry(0.12, 20, 14), bellMat, cat, 0, 1.72, 0.85);
+
+// ---------- tail: chain of segments (animated) ----------
+const tailSegments = [];
+const tailRoot = new THREE.Group();
+tailRoot.position.set(0.35, 0.55, -0.85);
+cat.add(tailRoot);
+let parent = tailRoot;
+const N = 12;
+for (let i = 0; i < N; i++) {
+  const seg = new THREE.Group();
+  const r = 0.13 - i * 0.006;
+  const len = 0.24;
+  const m = mesh(new THREE.CapsuleGeometry(r, len, 6, 14), i < N - 3 ? furMain : furLight, seg, 0, len / 2, 0);
+  m.rotation.x = 0;
+  seg.position.y = i === 0 ? 0 : 0.24;
+  parent.add(seg);
+  parent = seg;
+  tailSegments.push(seg);
+}
+tailRoot.rotation.set(-0.3, 0, -0.9); // leaves the body sideways, curling up
+
+// ---------- animation ----------
+const clock = new THREE.Clock();
+let blinkTimer = 2.5, blinkPhase = -1;
+let earTimer = 3.2, earPhase = -1, earSide = 0;
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+
+  // breathing
+  const breath = 1 + Math.sin(t * 1.6) * 0.012;
+  body.scale.set(0.95 * breath, 1.25, 1.05 * breath);
+
+  // tail wave: each segment bends with a travelling sine
+  for (let i = 0; i < tailSegments.length; i++) {
+    const k = i / tailSegments.length;
+    tailSegments[i].rotation.x = Math.sin(t * 2.2 - i * 0.55) * 0.16 * (0.35 + k);
+    tailSegments[i].rotation.z = 0.12 + Math.cos(t * 1.4 - i * 0.5) * 0.09 * (0.3 + k);
+  }
+
+  // head: slow curious look-around
+  head.rotation.y = Math.sin(t * 0.5) * 0.28;
+  head.rotation.z = Math.sin(t * 0.37) * 0.06;
+  head.rotation.x = Math.sin(t * 0.7) * 0.05;
+
+  // blink
+  blinkTimer -= dt;
+  if (blinkTimer <= 0 && blinkPhase < 0) { blinkPhase = 0; blinkTimer = 2.4 + Math.random() * 3.5; }
+  if (blinkPhase >= 0) {
+    blinkPhase += dt * 9;
+    const s = blinkPhase < 1 ? blinkPhase : Math.max(0, 2 - blinkPhase);
+    for (const e of eyes) e.lid.scale.y = 0.02 + s * 1.05;
+    if (blinkPhase >= 2) blinkPhase = -1;
+  }
+
+  // ear twitch
+  earTimer -= dt;
+  if (earTimer <= 0 && earPhase < 0) { earPhase = 0; earSide = Math.random() < 0.5 ? 0 : 1; earTimer = 2 + Math.random() * 4; }
+  if (earPhase >= 0) {
+    earPhase += dt * 7;
+    const s = Math.sin(Math.min(earPhase, Math.PI));
+    const ear = ears[earSide];
+    ear.group.rotation.z = -ear.side * 0.35 - ear.side * s * 0.35;
+    ear.group.rotation.x = -s * 0.25;
+    if (earPhase >= Math.PI) { earPhase = -1; ear.group.rotation.set(0, 0, -ear.side * 0.35); }
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7-Axis Robot Arm 3D - Gemini 3.8</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #f8fafc;
+            user-select: none;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        .ui-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 18px 24px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            width: 280px;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        .ui-panel h1 {
+            margin: 0 0 6px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #f97316;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ui-panel p {
+            margin: 0 0 14px 0;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .joint-row {
+            margin-bottom: 10px;
+        }
+        .joint-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .joint-label span.val {
+            color: #38bdf8;
+            font-family: monospace;
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: #f97316;
+            cursor: pointer;
+        }
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        button {
+            flex: 1;
+            background: #334155;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover {
+            background: #475569;
+            border-color: #f97316;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="ui-panel">
+        <h1>🤖 7-DOF Robot Arm</h1>
+        <p>垂直多関節ロボット（J1〜J7 階層リンク機構）</p>
+
+        <div id="controls-list"></div>
+
+        <div class="joint-row">
+            <div class="joint-label">
+                <span>Gripper (開閉)</span>
+                <span id="grip-val" class="val">20 mm</span>
+            </div>
+            <input type="range" id="grip-slider" min="0" max="40" value="20" oninput="updateGripper(this.value)">
+        </div>
+
+        <div class="btn-group">
+            <button onclick="setPose([0, 0, 0, 0, 0, 0, 0])">ホーム姿勢</button>
+            <button onclick="setPose([30, -45, 20, 60, -25, 40, 15])">作業姿勢</button>
+            <button onclick="setPose([0, -60, 0, 90, 0, -30, 0])">リーチ</button>
+        </div>
+    </div>
+    <div id="canvas-container"></div>
+
+    <script>
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(3.5, 3.5, 4.5);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.target.set(0, 1.4, 0);
+
+        // LIGHTING
+        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.85);
+        dirLight.position.set(5, 8, 5);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 1024;
+        dirLight.shadow.mapSize.height = 1024;
+        scene.add(dirLight);
+
+        const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.4);
+        fillLight.position.set(-5, 4, -4);
+        scene.add(fillLight);
+
+        // FLOOR & GRID
+        const floorGeo = new THREE.CylinderGeometry(4.5, 4.5, 0.2, 48);
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.8 });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.position.y = -0.1;
+        floor.receiveShadow = true;
+        scene.add(floor);
+
+        const grid = new THREE.GridHelper(8, 24, 0xf97316, 0x334155);
+        grid.position.y = 0.01;
+        scene.add(grid);
+
+        // MATERIALS
+        const whiteMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3, metalness: 0.1 });
+        const orangeMat = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: 0.4, metalness: 0.1 });
+        const darkMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5, metalness: 0.5 });
+        const metalMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.2, metalness: 0.8 });
+
+        // HELPER TO CREATE TEXT SPRITE LABELS
+        function createTextSprite(text) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+            ctx.roundRect(4, 4, 120, 56, 12);
+            ctx.fill();
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 4;
+            ctx.roundRect(4, 4, 120, 56, 12);
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 32px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, 64, 32);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({ map: texture, depthTest: false });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(0.35, 0.18, 1);
+            return sprite;
+        }
+
+        // ROBOT BASE
+        const robotBase = new THREE.Group();
+        scene.add(robotBase);
+
+        const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 0.3, 32), darkMat);
+        pedestal.position.y = 0.15;
+        pedestal.castShadow = true;
+        pedestal.receiveShadow = true;
+        robotBase.add(pedestal);
+
+        // HIERARCHICAL 7-AXIS CHAIN
+        // J1: Base Yaw (about Y axis)
+        const j1 = new THREE.Group();
+        j1.position.y = 0.3;
+        robotBase.add(j1);
+
+        const j1Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.42, 0.25, 32), orangeMat);
+        j1Mesh.position.y = 0.12;
+        j1Mesh.castShadow = true;
+        j1.add(j1Mesh);
+
+        const j1Label = createTextSprite("J1");
+        j1Label.position.set(0.5, 0.2, 0);
+        j1.add(j1Label);
+
+        // Link 1 (Shoulder mount)
+        const link1 = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.35, 0.35, 24), whiteMat);
+        link1.position.y = 0.4;
+        link1.castShadow = true;
+        j1.add(link1);
+
+        // J2: Shoulder Pitch (about Z axis)
+        const j2 = new THREE.Group();
+        j2.position.set(0, 0.55, 0);
+        j1.add(j2);
+
+        const j2Drum = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.45, 24), orangeMat);
+        j2Drum.rotation.x = Math.PI / 2;
+        j2Drum.castShadow = true;
+        j2.add(j2Drum);
+
+        const j2Label = createTextSprite("J2");
+        j2Label.position.set(0.45, 0, 0);
+        j2.add(j2Label);
+
+        // Link 2 (Upper arm)
+        const link2 = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.24, 0.65, 24), whiteMat);
+        link2.position.y = 0.4;
+        link2.castShadow = true;
+        j2.add(link2);
+
+        // J3: Upper Arm Roll (about Y axis)
+        const j3 = new THREE.Group();
+        j3.position.set(0, 0.75, 0);
+        j2.add(j3);
+
+        const j3Collar = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.22, 24), darkMat);
+        j3Collar.position.y = 0.1;
+        j3Collar.castShadow = true;
+        j3.add(j3Collar);
+
+        const j3Label = createTextSprite("J3");
+        j3Label.position.set(0.4, 0.1, 0);
+        j3.add(j3Label);
+
+        // Link 3
+        const link3 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 0.35, 24), whiteMat);
+        link3.position.y = 0.35;
+        link3.castShadow = true;
+        j3.add(link3);
+
+        // J4: Elbow Pitch (about Z axis)
+        const j4 = new THREE.Group();
+        j4.position.set(0, 0.55, 0);
+        j3.add(j4);
+
+        const j4Drum = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.4, 24), orangeMat);
+        j4Drum.rotation.x = Math.PI / 2;
+        j4Drum.castShadow = true;
+        j4.add(j4Drum);
+
+        const j4Label = createTextSprite("J4");
+        j4Label.position.set(0.4, 0, 0);
+        j4.add(j4Label);
+
+        // Link 4 (Forearm)
+        const link4 = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.19, 0.6, 24), whiteMat);
+        link4.position.y = 0.38;
+        link4.castShadow = true;
+        j4.add(link4);
+
+        // J5: Forearm Roll (about Y axis)
+        const j5 = new THREE.Group();
+        j5.position.set(0, 0.7, 0);
+        j4.add(j5);
+
+        const j5Collar = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.18, 24), darkMat);
+        j5Collar.position.y = 0.09;
+        j5Collar.castShadow = true;
+        j5.add(j5Collar);
+
+        const j5Label = createTextSprite("J5");
+        j5Label.position.set(0.35, 0.09, 0);
+        j5.add(j5Label);
+
+        // Link 5
+        const link5 = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.17, 0.3, 24), whiteMat);
+        link5.position.y = 0.28;
+        link5.castShadow = true;
+        j5.add(link5);
+
+        // J6: Wrist Pitch (about Z axis)
+        const j6 = new THREE.Group();
+        j6.position.set(0, 0.45, 0);
+        j5.add(j6);
+
+        const j6Drum = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.32, 24), orangeMat);
+        j6Drum.rotation.x = Math.PI / 2;
+        j6Drum.castShadow = true;
+        j6.add(j6Drum);
+
+        const j6Label = createTextSprite("J6");
+        j6Label.position.set(0.35, 0, 0);
+        j6.add(j6Label);
+
+        // Link 6
+        const link6 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.22, 24), whiteMat);
+        link6.position.y = 0.2;
+        link6.castShadow = true;
+        j6.add(link6);
+
+        // J7: Tool Flange Roll (about Y axis)
+        const j7 = new THREE.Group();
+        j7.position.set(0, 0.32, 0);
+        j6.add(j7);
+
+        const j7Flange = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.1, 24), metalMat);
+        j7Flange.position.y = 0.05;
+        j7Flange.castShadow = true;
+        j7.add(j7Flange);
+
+        const j7Label = createTextSprite("J7");
+        j7Label.position.set(0.35, 0.05, 0);
+        j7.add(j7Label);
+
+        // 8. END EFFECTOR (Parallel Gripper)
+        const gripperBase = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.08, 0.16), darkMat);
+        gripperBase.position.y = 0.14;
+        j7.add(gripperBase);
+
+        // Left Finger
+        const fingerL = new THREE.Group();
+        fingerL.position.set(-0.08, 0.22, 0);
+        const fMeshL = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.16, 0.08), metalMat);
+        fingerL.add(fMeshL);
+        j7.add(fingerL);
+
+        // Right Finger
+        const fingerR = new THREE.Group();
+        fingerR.position.set(0.08, 0.22, 0);
+        const fMeshR = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.16, 0.08), metalMat);
+        fingerR.add(fMeshR);
+        j7.add(fingerR);
+
+        // JOINT DATA & UI GENERATION
+        const joints = [
+            { id: 'j1', name: 'J1: Base Yaw', group: j1, axis: 'y', min: -170, max: 170, default: 0 },
+            { id: 'j2', name: 'J2: Shoulder Pitch', group: j2, axis: 'z', min: -120, max: 120, default: -20 },
+            { id: 'j3', name: 'J3: Arm Roll', group: j3, axis: 'y', min: -170, max: 170, default: 0 },
+            { id: 'j4', name: 'J4: Elbow Pitch', group: j4, axis: 'z', min: -120, max: 120, default: 45 },
+            { id: 'j5', name: 'J5: Forearm Roll', group: j5, axis: 'y', min: -170, max: 170, default: 0 },
+            { id: 'j6', name: 'J6: Wrist Pitch', group: j6, axis: 'z', min: -120, max: 120, default: -25 },
+            { id: 'j7', name: 'J7: Tool Roll', group: j7, axis: 'y', min: -175, max: 175, default: 0 }
+        ];
+
+        const controlsContainer = document.getElementById('controls-list');
+        joints.forEach(j => {
+            const row = document.createElement('div');
+            row.className = 'joint-row';
+            row.innerHTML = `
+                <div class="joint-label">
+                    <span>${j.name}</span>
+                    <span id="${j.id}-val" class="val">${j.default}°</span>
+                </div>
+                <input type="range" id="${j.id}-slider" min="${j.min}" max="${j.max}" value="${j.default}"
+                    oninput="updateJoint('${j.id}', this.value)">
+            `;
+            controlsContainer.appendChild(row);
+
+            // Set initial rotation
+            j.group.rotation[j.axis] = THREE.MathUtils.degToRad(j.default);
+        });
+
+        window.updateJoint = function(id, val) {
+            const j = joints.find(x => x.id === id);
+            if (j) {
+                j.group.rotation[j.axis] = THREE.MathUtils.degToRad(val);
+                document.getElementById(`${id}-val`).textContent = `${val}°`;
+            }
+        };
+
+        window.updateGripper = function(val) {
+            const offset = (val / 1000); // mm to units
+            fingerL.position.x = -0.04 - offset;
+            fingerR.position.x = 0.04 + offset;
+            document.getElementById('grip-val').textContent = `${val} mm`;
+        };
+
+        window.setPose = function(pose) {
+            joints.forEach((j, idx) => {
+                const val = pose[idx];
+                document.getElementById(`${j.id}-slider`).value = val;
+                updateJoint(j.id, val);
+            });
+        };
+
+        // ANIMATION LOOP
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // RESIZE
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

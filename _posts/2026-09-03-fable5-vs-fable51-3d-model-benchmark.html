@@ -1,0 +1,154 @@
+---
+layout: post
+title: "Claude Fable 5 vs Fable 5.1 インタラクティブ3D生成ベンチマーク"
+date: 2026-09-03
+description: "Claude Fable 5とFable 5.1を、同じ5題材のインタラクティブ3Dモデル10件で比較します。"
+image: /images/posts/3d-model-benchmark/fable5/trackball-split-keyboard.webp
+social_image: /images/posts/3d-model-benchmark/fable5/trackball-split-keyboard.webp
+full_ai: true
+full_ai_model: gpt-5.6-sol
+---
+
+<style>
+.site-main > .inner:has(.v3d-wide) { max-width: 1800px; padding-inline: 12px; }
+.content-layout:has(.v3d-wide) { grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; }
+.v3d-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 1.2rem 0 2rem; }
+.v3d { min-width: 0; border: 1px solid #d9d2c4; border-radius: 10px; overflow: hidden; background: #11141b; display: flex; flex-direction: column; }
+.v3d.active { grid-column: 1 / -1; }
+.v3d-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 10px; background: #1b2029; color: #e8edf5; font: 0.78rem/1.35 ui-monospace, "SF Mono", Menlo, monospace; }
+.v3d-head > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.v3d-links { display: flex; gap: 10px; white-space: nowrap; }
+.v3d-head a { color: #62d6e8; text-decoration: underline; text-underline-offset: 0.16em; }
+.v3d-stage { position: relative; aspect-ratio: 4 / 3; background: #11141b; }
+.v3d-stage img { box-sizing: border-box; width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; }
+.v3d-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.v3d-play { position: absolute; inset: 0; width: 100%; height: 100%; background: rgba(8,10,14,.35); border: 0; color: #fff; font: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.v3d-play span { background: rgba(12,16,24,.85); border: 1px solid #62d6e8; border-radius: 999px; padding: 8px 18px; }
+.v3d.active .v3d-play { display: none; }
+.v3d-close { background: transparent; border: 1px solid #62d6e8; border-radius: 6px; color: #62d6e8; font: inherit; padding: 2px 8px; cursor: pointer; white-space: nowrap; }
+.bench-note { background: #fff8d7; border: 1px solid #e7d27a; border-radius: 8px; padding: 12px 16px; line-height: 1.75; margin: 1.2rem 0; }
+.bench-table { box-sizing: border-box; width: 100%; max-width: 100%; table-layout: fixed; }
+.bench-table th, .bench-table td { vertical-align: top; overflow-wrap: anywhere; }
+@media (max-width: 1100px) { .v3d-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) {
+  .site-main > .inner:has(.v3d-wide) { padding-inline: 4px; }
+  .content-layout:has(.v3d-wide) { grid-template-columns: 1fr; gap: 8px; }
+  .v3d-grid { grid-template-columns: 1fr; }
+}
+</style>
+<div class="v3d-wide"></div>
+
+<h2>はじめに</h2>
+<p>Fable 5とFable 5.1の差を、3D生成でも確かめます。バージョン番号は0.1の差ですが、部品数、初期構図、説明UI、操作機能は同じままとは限りません。</p>
+<p>同じ5題材を単一HTMLのThree.jsシーンとして生成し、完成したページをそのまま埋め込みました。静止画だけで判断せず、「3Dを起動」から回転、ズーム、各モデルが追加した操作UIを試せます。</p>
+<p>この記事は、各モデルによる既存成果物の生成と機械検証、gpt-5.6-solによる記事化までをAIで進めるFull AI方式で作成しています。</p>
+
+<div class="bench-note"><strong>操作方法：</strong>各カードの「▶ 3Dを起動」を押すと埋め込みが起動します。ドラッグで回転、ホイールまたはピンチでズームできます。WebGLコンテキストを使いすぎないよう、同時起動は3件までです。</div>
+
+<h2>比較条件</h2>
+<ul>
+  <li><strong>モデル：</strong>Claude Fable 5、Claude Fable 5.1</li>
+  <li><strong>題材：</strong>5題材</li>
+  <li><strong>掲載3D：</strong>5題材 × 2モデル = 10件</li>
+  <li><strong>形式：</strong>Three.jsを使う単一HTML。外部の画像、glTFなどのモデルアセットは不使用</li>
+  <li><strong>必須操作：</strong>ドラッグ回転、ホイールズーム</li>
+  <li><strong>確認日：</strong>2026年9月3日 JST</li>
+</ul>
+
+<h2>機械検証</h2>
+<p>全10件を実ブラウザで開き、WebGL描画、ページエラー、ドラッグ回転、ホイールズームを確認しました。各モデルの5件はすべてレンダリングに成功しています。</p>
+<table class="bench-table"><thead><tr><th>モデル</th><th>HTML合計</th><th>行数</th><th>生成物</th></tr></thead><tbody><tr><td>Claude Fable 5</td><td>65,871 bytes</td><td>1,603行</td><td>2026年6月10日の既存生成物を再利用</td></tr>
+<tr><td>Claude Fable 5.1</td><td>89,514 bytes</td><td>1,464行</td><td>共通プロンプトだけを入力して新規生成</td></tr></tbody></table>
+
+<h2>操作UIの数</h2>
+<p>自動ドッグフーディングで検出したボタンとレンジスライダーの数です。数が多いほど優れているという指標ではありませんが、共通プロンプトから各モデルがどこまで操作機能を追加したかを確認できます。</p>
+<table class="bench-table"><thead><tr><th>題材</th><th>Claude Fable 5</th><th>Claude Fable 5.1</th></tr></thead><tbody><tr><td>トラックボール付き分割キーボード</td><td>ボタン8</td><td>ボタン5、スライダー2</td></tr><tr><td>機械式時計のムーブメント</td><td>ボタン2</td><td>ボタン2、スライダー1</td></tr><tr><td>猫</td><td>ボタン1</td><td>ボタン0</td></tr><tr><td>7軸ロボットアーム</td><td>ボタン3、スライダー7</td><td>ボタン2、スライダー8</td></tr><tr><td>エスプレッソマシン断面図</td><td>ボタン4</td><td>ボタン3、スライダー1</td></tr></tbody></table>
+
+<h2>1. トラックボール付き分割キーボード</h2>
+<p>形状、キー配置、トラックボール、追加UIをどこまで作り込むかを比べます。</p>
+<div class="v3d-grid"><div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/trackball-split-keyboard.html">
+  <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/trackball-split-keyboard.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/trackball-split-keyboard.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/trackball-split-keyboard.webp" alt="Claude Fable 5が生成したトラックボール付き分割キーボードの3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div>
+<div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable51/trackball-split-keyboard.html">
+  <div class="v3d-head"><span>Claude Fable 5.1</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable51/trackball-split-keyboard.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable51/trackball-split-keyboard.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable51/trackball-split-keyboard.webp" alt="Claude Fable 5.1が生成したトラックボール付き分割キーボードの3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div></div><h2>2. 機械式時計のムーブメント</h2>
+<p>歯車、脱進機、テンプの構成と動きをどう表現するかを比べます。</p>
+<div class="v3d-grid"><div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/watch-movement.html">
+  <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/watch-movement.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/watch-movement.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/watch-movement.webp" alt="Claude Fable 5が生成した機械式時計のムーブメントの3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div>
+<div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable51/watch-movement.html">
+  <div class="v3d-head"><span>Claude Fable 5.1</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable51/watch-movement.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable51/watch-movement.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable51/watch-movement.webp" alt="Claude Fable 5.1が生成した機械式時計のムーブメントの3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div></div><h2>3. 猫</h2>
+<p>プリミティブの組み合わせで有機形状と生き物らしい動きを作れるかを比べます。</p>
+<div class="v3d-grid"><div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/cat.html">
+  <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/cat.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/cat.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/cat.webp" alt="Claude Fable 5が生成した猫の3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div>
+<div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable51/cat.html">
+  <div class="v3d-head"><span>Claude Fable 5.1</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable51/cat.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable51/cat.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable51/cat.webp" alt="Claude Fable 5.1が生成した猫の3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div></div><h2>4. 7軸ロボットアーム</h2>
+<p>J1からJ7の階層構造、関節操作、グリッパを実装できるかを比べます。</p>
+<div class="v3d-grid"><div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/robot-arm-7axis.html">
+  <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/robot-arm-7axis.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/robot-arm-7axis.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/robot-arm-7axis.webp" alt="Claude Fable 5が生成した7軸ロボットアームの3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div>
+<div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable51/robot-arm-7axis.html">
+  <div class="v3d-head"><span>Claude Fable 5.1</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable51/robot-arm-7axis.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable51/robot-arm-7axis.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable51/robot-arm-7axis.webp" alt="Claude Fable 5.1が生成した7軸ロボットアームの3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div></div><h2>5. エスプレッソマシン断面図</h2>
+<p>外装と内部部品、断面・分解表示、抽出経路を説明できるかを比べます。</p>
+<div class="v3d-grid"><div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable5/espresso-machine.html">
+  <div class="v3d-head"><span>Claude Fable 5</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable5/espresso-machine.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable5/espresso-machine.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable5/espresso-machine.webp" alt="Claude Fable 5が生成したエスプレッソマシン断面図の3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div>
+<div class="v3d" data-src="/benchmark_sources/3d-model-benchmark/fable51/espresso-machine.html">
+  <div class="v3d-head"><span>Claude Fable 5.1</span><span class="v3d-links"><a href="/benchmark_sources/3d-model-benchmark/fable51/espresso-machine.html" target="_blank" rel="noopener">別タブ</a><a href="https://github.com/kazuph/kazuph.github.io/blob/master/benchmark_sources/3d-model-benchmark/fable51/espresso-machine.html" target="_blank" rel="noopener">source</a></span></div>
+  <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/fable51/espresso-machine.webp" alt="Claude Fable 5.1が生成したエスプレッソマシン断面図の3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
+</div></div>
+
+<h2>再現方法</h2>
+<p>共通プロンプトと検証スクリプトは、<a href="https://github.com/kazuph/kazuph.github.io/tree/master/scripts/3d_benchmark_2026" target="_blank" rel="noopener">scripts/3d_benchmark_2026/</a>にあります。</p>
+<pre><code class="language-bash">node scripts/3d_benchmark_2026/dogfood_check.mjs http://127.0.0.1:4000 fable5 fable51
+</code></pre>
+
+<h2>おわりに</h2>
+<p>Claude Fable 5、Claude Fable 5.1が同じ5題材から作った10件を、記事内で直接操作できる形にしました。初期画面だけでなく、視点を回し、各ボタンやスライダーを触ると、モデルごとの作り込みの差を確認できます。</p>
+<p>Enjoy, spinning the models!</p>
+
+<script>
+(function () {
+  var actives = [];
+  function deactivate(card) {
+    var iframe = card.querySelector('iframe');
+    if (iframe) iframe.remove();
+    var close = card.querySelector('.v3d-close');
+    if (close) close.remove();
+    card.classList.remove('active');
+    actives = actives.filter(function (item) { return item !== card; });
+  }
+  document.querySelectorAll('.v3d-play').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var card = button.closest('.v3d');
+      while (actives.length >= 3) deactivate(actives[0]);
+      var iframe = document.createElement('iframe');
+      iframe.src = card.dataset.src;
+      iframe.title = card.querySelector('.v3d-head > span').textContent + ' の3Dモデル';
+      card.querySelector('.v3d-stage').appendChild(iframe);
+      var close = document.createElement('button');
+      close.type = 'button';
+      close.className = 'v3d-close';
+      close.textContent = '✕ 閉じる';
+      close.addEventListener('click', function () { deactivate(card); });
+      card.querySelector('.v3d-head').appendChild(close);
+      card.classList.add('active');
+      actives.push(card);
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+})();
+</script>

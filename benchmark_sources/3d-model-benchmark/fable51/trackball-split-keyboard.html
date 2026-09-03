@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trackball split keyboard – interactive 3D</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0e1117; font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace; }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; }
+  #panel { position: fixed; left: 16px; top: 16px; width: 300px; background: rgba(14,17,23,.82); backdrop-filter: blur(10px); border: 1px solid rgba(110,231,249,.25); border-radius: 12px; padding: 14px 16px 12px; color: #d7dde6; font-size: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+  #panel h1 { font-size: 14px; margin: 0 0 4px; color: #6ee7f9; letter-spacing: .04em; }
+  #panel h1 small { color: #8b94a3; font-size: 11px; margin-left: 6px; }
+  #panel p { margin: 0 0 10px; color: #98a2b3; line-height: 1.55; }
+  .kv { display: grid; grid-template-columns: 96px 1fr; gap: 3px 8px; margin-bottom: 10px; }
+  .kv span:first-child { color: #6ee7f9; }
+  .row { display: grid; grid-template-columns: 78px 1fr 44px; align-items: center; gap: 8px; margin-top: 6px; }
+  .row input { accent-color: #6ee7f9; }
+  .row output { text-align: right; color: #6ee7f9; font-variant-numeric: tabular-nums; }
+  .btns { display: flex; gap: 6px; margin-top: 10px; }
+  button { flex: 1; border: 1px solid rgba(110,231,249,.4); border-radius: 8px; padding: 7px 6px; background: rgba(110,231,249,.08); color: #d7dde6; cursor: pointer; font-family: inherit; font-size: 11px; }
+  button.active { background: #6ee7f9; color: #0e1117; font-weight: 700; }
+  #typed { margin-top: 10px; padding: 8px 10px; background: #05070a; border: 1px solid #263041; border-radius: 8px; color: #7ce38b; min-height: 18px; white-space: pre; overflow: hidden; }
+  #typed::after { content: '▍'; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hint { position: fixed; right: 16px; bottom: 14px; color: #8b94a3; font-size: 12px; background: rgba(14,17,23,.7); padding: 6px 10px; border-radius: 8px; pointer-events: none; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="app"></div>
+<div id="panel">
+  <h1>KAGERO-42 <small>split · 3×6+3 · trackball</small></h1>
+  <p>Column-staggered 分割キーボード。右手側に 34mm トラックボール、両側テンティング、RGB アンダーグロー、ロータリーエンコーダ付き。</p>
+  <div class="kv">
+    <span>layout</span><span>3 rows × 6 cols + 3 thumb keys, per half</span>
+    <span>switches</span><span>Choc v1 low-profile, hot-swap</span>
+    <span>mcu</span><span>RP2040 ×2, TRRS link</span>
+    <span>trackball</span><span>34mm, PMW3360 sensor</span>
+  </div>
+  <div class="row"><label>Tent</label><input id="tent" type="range" min="0" max="35" value="12"><output id="tent-out">12°</output></div>
+  <div class="row"><label>Split gap</label><input id="gap" type="range" min="0" max="12" value="4" step="0.5"><output id="gap-out">4.0</output></div>
+  <div class="btns">
+    <button id="layer0" class="active">L0 base</button><button id="layer1">L1 nav</button><button id="layer2">L2 sym</button>
+  </div>
+  <div class="btns"><button id="type">▶ typing demo</button><button id="glow" class="active">RGB on</button></div>
+  <div id="typed"></div>
+</div>
+<div class="hint">ドラッグで回転 / ホイールでズーム</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const app = document.getElementById('app');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+app.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0e1117);
+scene.fog = new THREE.Fog(0x0e1117, 30, 60);
+const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(2.5, 19, 20);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(1.6, 0.3, 0.6);
+controls.enableDamping = true;
+controls.minDistance = 5; controls.maxDistance = 40;
+controls.maxPolarAngle = Math.PI * 0.49;
+
+scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x1a1e26, 0.55));
+const key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(6, 12, 8); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.camera.left = -14; key.shadow.camera.right = 14; key.shadow.camera.top = 14; key.shadow.camera.bottom = -14;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0x6ee7f9, 0.5); rim.position.set(-8, 6, -6); scene.add(rim);
+
+// desk mat
+const desk = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshStandardMaterial({ color: 0x161b24, roughness: 0.95 }));
+desk.rotation.x = -Math.PI / 2; desk.receiveShadow = true; scene.add(desk);
+const mat = new THREE.Mesh(new THREE.BoxGeometry(30, 0.08, 14), new THREE.MeshStandardMaterial({ color: 0x1d2430, roughness: 0.9 }));
+mat.position.set(0, 0.04, 0.5); mat.receiveShadow = true; scene.add(mat);
+{ // stitched border on the mat
+  const border = new THREE.Mesh(new THREE.BoxGeometry(29.4, 0.09, 13.4), new THREE.MeshStandardMaterial({ color: 0x232b39, roughness: 0.9 }));
+  border.position.set(0, 0.045, 0.5); scene.add(border);
+}
+
+// ---------- materials ----------
+const caseMat = new THREE.MeshStandardMaterial({ color: 0x2b313c, roughness: 0.5, metalness: 0.35 });
+const plateMat = new THREE.MeshStandardMaterial({ color: 0x1a1f28, roughness: 0.6, metalness: 0.5 });
+const capDark = new THREE.MeshStandardMaterial({ color: 0x3b4250, roughness: 0.55 });
+const capLight = new THREE.MeshStandardMaterial({ color: 0xe6e9ef, roughness: 0.5 });
+const capAccent = new THREE.MeshStandardMaterial({ color: 0x6ee7f9, roughness: 0.45 });
+const capHome = new THREE.MeshStandardMaterial({ color: 0xf2c14e, roughness: 0.5 });
+const legendMat = new THREE.MeshBasicMaterial({ color: 0x0e1117 });
+const ballMat = new THREE.MeshPhysicalMaterial({ color: 0xb0203a, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.08 });
+const bearingMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.05, metalness: 0.1 });
+const pcbMat = new THREE.MeshStandardMaterial({ color: 0x0f3d2e, roughness: 0.6 });
+const glowAlpha = (() => {
+  // soft rectangular halo: transparent in the middle (under the case), bright band at the edge, fading outwards
+  const c = document.createElement('canvas'); c.width = c.height = 256; const ctx = c.getContext('2d');
+  const img = ctx.createImageData(256, 256);
+  for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) {
+    const dx = Math.abs(x - 128) / 128, dy = Math.abs(y - 128) / 128; const d = Math.max(dx, dy);
+    const a = d < 0.78 ? 0 : d < 0.86 ? (d - 0.78) / 0.08 : Math.max(0, 1 - (d - 0.86) / 0.14);
+    const i = (y * 256 + x) * 4; const v = Math.round(a * 255); img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; // alphaMap reads the green channel
+  }
+  ctx.putImageData(img, 0, 0); const t = new THREE.CanvasTexture(c); return t;
+})();
+const glowMat = new THREE.MeshBasicMaterial({ color: 0x6ee7f9, transparent: true, opacity: 0.9, alphaMap: glowAlpha, side: THREE.DoubleSide, depthWrite: false });
+
+// ---------- keycap with an engraved (raised) legend ----------
+const capGeo = (() => {
+  // low-profile chiclet keycap: box with a shallow dish
+  const s = new THREE.Shape(); const w = 0.86, h = 0.8, r = 0.1;
+  s.moveTo(-w / 2 + r, -h / 2); s.lineTo(w / 2 - r, -h / 2); s.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r);
+  s.lineTo(w / 2, h / 2 - r); s.quadraticCurveTo(w / 2, h / 2, w / 2 - r, h / 2); s.lineTo(-w / 2 + r, h / 2);
+  s.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - r); s.lineTo(-w / 2, -h / 2 + r); s.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2);
+  const g = new THREE.ExtrudeGeometry(s, { depth: 0.22, bevelEnabled: true, bevelThickness: 0.03, bevelSize: 0.03, bevelSegments: 2 });
+  g.rotateX(-Math.PI / 2); return g;
+})();
+const switchGeo = new THREE.BoxGeometry(0.6, 0.22, 0.6);
+const stemGeo = new THREE.BoxGeometry(0.2, 0.15, 0.2);
+const legendCanvas = (text, color = '#e6e9ef') => {
+  const c = document.createElement('canvas'); c.width = 128; c.height = 128; const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, 128, 128); ctx.fillStyle = color; ctx.font = `bold ${text.length > 2 ? 40 : 64}px "JetBrains Mono", Menlo, monospace`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, 64, 66);
+  const t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t;
+};
+const legendGeo = new THREE.PlaneGeometry(0.62, 0.58);
+
+// ---------- layouts (legends per layer) ----------
+const LAYERS = [
+  { L: [['Q', 'W', 'E', 'R', 'T', 'Tab'], ['A', 'S', 'D', 'F', 'G', 'Esc'], ['Z', 'X', 'C', 'V', 'B', '⇧']], R: [['Y', 'U', 'I', 'O', 'P', '⌫'], ['H', 'J', 'K', 'L', ';', '\''], ['N', 'M', ',', '.', '/', '⏎']], TL: ['⌘', 'L1', '␣'], TR: ['⏎', 'L2', '⌥'] },
+  { L: [['1', '2', '3', '4', '5', 'Tab'], ['F1', 'F2', 'F3', 'F4', 'F5', 'Esc'], ['F6', 'F7', 'F8', 'F9', 'F10', '⇧']], R: [['6', '7', '8', '9', '0', '⌫'], ['←', '↓', '↑', '→', 'Hm', 'End'], ['PgD', 'PgU', 'Ins', 'Del', 'Prt', '⏎']], TL: ['⌘', 'L1', '␣'], TR: ['⏎', 'L2', '⌥'] },
+  { L: [['!', '@', '#', '$', '%', 'Tab'], ['`', '~', '(', ')', '_', 'Esc'], ['|', '\\', '[', ']', '-', '⇧']], R: [['^', '&', '*', '{', '}', '⌫'], ['=', '+', '<', '>', ':', '"'], ['€', '¥', '£', '§', '?', '⏎']], TL: ['⌘', 'L1', '␣'], TR: ['⏎', 'L2', '⌥'] },
+];
+// column stagger (in key units, per column from index finger outward) and the pinky splay
+const stagger = [0.0, 0.15, 0.35, 0.25, 0.05, -0.1];   // innermost -> pinky (index, index-outer... we index columns from the middle)
+const pitch = 1.0;
+
+const keys = []; // { mesh, legend, side, row, col, rest }
+function buildHalf(side) {
+  const half = new THREE.Group();
+  const sgn = side === 'L' ? -1 : 1;
+  // pcb + plate + case as a unibody rounded slab
+  const cols = 6, rows = 3;
+  const w = cols * pitch + 1.2, d = rows * pitch + (side === 'R' ? 3.4 : 2.6);
+  const body = new THREE.Mesh(new THREE.BoxGeometry(w, 0.55, d), caseMat); body.position.set(0, 0.34, 0.3); body.castShadow = true; body.receiveShadow = true; half.add(body);
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(w - 0.3, 0.06, d - 0.3), plateMat); plate.position.set(0, 0.6, 0.3); half.add(plate);
+  const pcb = new THREE.Mesh(new THREE.BoxGeometry(w - 0.5, 0.04, d - 0.5), pcbMat); pcb.position.set(0, 0.5, 0.3); half.add(pcb);
+  // underglow strip (an emissive ring under the case)
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(w + 1.4, d + 1.4), glowMat.clone()); glow.rotation.x = -Math.PI / 2; glow.position.set(0, 0.035, 0.3); half.add(glow);
+  half.userData.glow = glow;
+  // keys: columns from the inner edge (index finger) outwards
+  for (let c = 0; c < cols; c++) {
+    // column index from the middle of the board: c=0 is the innermost (index) column
+    const x = sgn * (-(cols - 1) / 2 * pitch + c * pitch);
+    const dz = -stagger[Math.min(c, 5)];
+    for (let r = 0; r < rows; r++) {
+      const z = (r - 1) * pitch + dz - 0.2;
+      const k = new THREE.Group(); k.position.set(x, 0.62, z); half.add(k);
+      const sw = new THREE.Mesh(switchGeo, capDark); sw.position.y = 0.11; k.add(sw);
+      const stem = new THREE.Mesh(stemGeo, capLight); stem.position.y = 0.27; k.add(stem);
+      const cap = new THREE.Mesh(capGeo, r === 1 && c <= 3 ? capLight : capDark); cap.position.y = 0.3; cap.castShadow = true; k.add(cap);
+      const legend = new THREE.Mesh(legendGeo, new THREE.MeshBasicMaterial({ map: legendCanvas('?'), transparent: true }));
+      legend.rotation.x = -Math.PI / 2; legend.position.y = 0.3 + 0.22 + 0.031; k.add(legend);
+      // home row bumps on F and J (index finger, home row)
+      if (r === 1 && c === 1) { const bump = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.02, 0.03), legendMat); bump.position.set(0, 0.3 + 0.22 + 0.035, 0.28); k.add(bump); cap.material = capHome; }
+      keys.push({ group: k, cap, legend, side, row: r, col: c, rest: k.position.clone(), pressed: 0 });
+    }
+  }
+  // thumb cluster: 3 keys on an arc near the inner-front corner
+  const thumbs = [];
+  for (let i = 0; i < 3; i++) {
+    const a = sgn * (0.12 + i * 0.2);
+    const x = sgn * (-(cols - 1) / 2 * pitch + 0.15 - i * 1.08);
+    const z = 1.7 + i * 0.18;
+    const k = new THREE.Group(); k.position.set(x, 0.62, z); k.rotation.y = -a; half.add(k);
+    const sw = new THREE.Mesh(switchGeo, capDark); sw.position.y = 0.11; k.add(sw);
+    const cap = new THREE.Mesh(capGeo, i === 2 ? capAccent : capDark); cap.position.y = 0.3; cap.castShadow = true; if (i === 2) cap.scale.x = 1.3; k.add(cap);
+    const legend = new THREE.Mesh(legendGeo, new THREE.MeshBasicMaterial({ map: legendCanvas('?'), transparent: true })); legend.rotation.x = -Math.PI / 2; legend.position.y = 0.551; k.add(legend);
+    keys.push({ group: k, cap, legend, side, row: 3, col: i, rest: k.position.clone(), pressed: 0, thumb: true });
+  }
+  // rotary encoder on the outer-back corner
+  const enc = new THREE.Group(); enc.position.set(sgn * (w / 2 - 0.9), 0.62, -1.75); half.add(enc);
+  const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.5, 32), new THREE.MeshStandardMaterial({ color: 0x8b94a3, metalness: 0.9, roughness: 0.25 })); knob.position.y = 0.3; knob.castShadow = true; enc.add(knob);
+  for (let i = 0; i < 24; i++) { const a = i / 24 * Math.PI * 2; const ridge = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.5, 0.06), plateMat); ridge.position.set(Math.cos(a) * 0.42, 0.3, Math.sin(a) * 0.42); ridge.rotation.y = -a; enc.add(ridge); }
+  half.userData.knob = knob;
+  // OLED display next to the encoder
+  const oled = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.06, 0.55), new THREE.MeshStandardMaterial({ color: 0x05070a, emissive: 0x6ee7f9, emissiveIntensity: 0.35 })); oled.position.set(sgn * (w / 2 - 2.3), 0.66, -1.85); half.add(oled);
+  // TRRS jack + USB-C on the back edge
+  const jack = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.3, 0.3), plateMat); jack.position.set(sgn * -(w / 2 - 0.6), 0.35, -(d / 2) + 0.2); half.add(jack);
+  const usb = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.2, 0.25), new THREE.MeshStandardMaterial({ color: 0x9aa4b1, metalness: 0.8, roughness: 0.3 })); usb.position.set(sgn * -(w / 2 - 1.4), 0.35, -(d / 2) + 0.2); half.add(usb);
+  // tenting leg pivot: rotate the whole half around its inner bottom edge
+  const pivot = new THREE.Group(); pivot.add(half);
+  half.position.x = sgn * (w / 2);          // inner edge sits on the pivot
+  half.userData.width = w;
+  return { pivot, half, sgn, w, d };
+}
+const left = buildHalf('L'), right = buildHalf('R');
+scene.add(left.pivot, right.pivot);
+
+// trackball module on the right half (outer-front corner, next to the thumb cluster)
+const tb = new THREE.Group();
+tb.position.set(2.45, 0.62, 2.25);
+right.half.add(tb);
+const cupMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.85, 0.6, 48), caseMat); cupMesh.position.y = 0.2; cupMesh.castShadow = true; tb.add(cupMesh);
+const socket = new THREE.Mesh(new THREE.SphereGeometry(0.9, 32, 24, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), plateMat); socket.position.y = 0.95; socket.scale.y = 0.5; tb.add(socket);
+const ball = new THREE.Mesh(new THREE.SphereGeometry(0.78, 48, 32), ballMat); ball.position.y = 0.95; ball.castShadow = true; tb.add(ball);
+// sparkle flecks on the ball (small light dots) so rotation is visible
+{
+  const fleck = new THREE.InstancedMesh(new THREE.SphereGeometry(0.03, 6, 4), new THREE.MeshStandardMaterial({ color: 0xffd7de, roughness: 0.3 }), 140);
+  const d = new THREE.Object3D();
+  for (let i = 0; i < 140; i++) { const u = Math.random(), v = Math.random(); const th = Math.acos(2 * u - 1), ph = 2 * Math.PI * v; d.position.set(0.78 * Math.sin(th) * Math.cos(ph), 0.78 * Math.cos(th), 0.78 * Math.sin(th) * Math.sin(ph)); d.updateMatrix(); fleck.setMatrixAt(i, d.matrix); }
+  ball.add(fleck);
+}
+for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI * 2 + 0.5; const b = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 8), bearingMat); b.position.set(Math.cos(a) * 0.62, 0.42, Math.sin(a) * 0.62); tb.add(b); }
+const sensor = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.15, 0.4), pcbMat); sensor.position.y = 0.05; tb.add(sensor);
+
+// TRRS cable between the halves (a sagging tube, rebuilt when the gap changes)
+let cable = null;
+function buildCable() {
+  if (cable) { scene.remove(cable); cable.geometry.dispose(); }
+  const a = new THREE.Vector3(), b = new THREE.Vector3();
+  left.half.children[0].getWorldPosition(a); right.half.children[0].getWorldPosition(b);
+  a.x -= left.w / 2 - 0.6; a.y = 0.3; a.z = -(left.d / 2) + 0.2 + 0.3;
+  b.x += right.w / 2 - 0.6; b.y = 0.3; b.z = a.z;
+  const pts = [a.clone(), new THREE.Vector3(a.x, 0.25, a.z - 1.2), new THREE.Vector3((a.x + b.x) / 2, 0.1, a.z - 1.6), new THREE.Vector3(b.x, 0.25, b.z - 1.2), b.clone()];
+  cable = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 48, 0.06, 8, false), new THREE.MeshStandardMaterial({ color: 0x6ee7f9, roughness: 0.5 }));
+  scene.add(cable);
+}
+
+// ---------- state / UI ----------
+let tent = 12, gap = 4, layer = 0, glowOn = true, typing = false;
+const tentIn = document.getElementById('tent'), tentOut = document.getElementById('tent-out');
+const gapIn = document.getElementById('gap'), gapOut = document.getElementById('gap-out');
+tentIn.addEventListener('input', () => { tent = +tentIn.value; tentOut.value = `${tent}°`; });
+gapIn.addEventListener('input', () => { gap = +gapIn.value; gapOut.value = gap.toFixed(1); });
+const layerBtns = [0, 1, 2].map((i) => document.getElementById(`layer${i}`));
+layerBtns.forEach((b, i) => b.addEventListener('click', () => setLayer(i)));
+function setLayer(i) {
+  layer = i; layerBtns.forEach((b, j) => b.classList.toggle('active', j === i));
+  const L = LAYERS[i];
+  for (const k of keys) {
+    let text;
+    if (k.thumb) text = (k.side === 'L' ? L.TL : L.TR)[k.col];
+    else { const rows = k.side === 'L' ? L.L : L.R; const row = rows[k.row]; text = k.side === 'L' ? row[5 - k.col] : row[k.col]; }
+    const light = k.cap.material === capLight || k.cap.material === capHome || k.cap.material === capAccent;
+    k.legend.material.map.dispose(); k.legend.material.map = legendCanvas(text, light ? '#0e1117' : '#e6e9ef'); k.legend.material.needsUpdate = true; k.text = text;
+  }
+  for (const h of [left, right]) h.half.userData.glow.material.color.set([0x6ee7f9, 0xf2c14e, 0xff5e7e][i]);
+}
+setLayer(0);
+const typeBtn = document.getElementById('type'), typedEl = document.getElementById('typed');
+typeBtn.addEventListener('click', () => { typing = !typing; typeBtn.classList.toggle('active', typing); if (!typing) typedEl.textContent = ''; });
+const glowBtn = document.getElementById('glow');
+glowBtn.addEventListener('click', () => { glowOn = !glowOn; glowBtn.classList.toggle('active', glowOn); glowBtn.textContent = glowOn ? 'RGB on' : 'RGB off'; });
+
+// typing demo: press keys of a phrase one by one
+const PHRASE = 'git commit -m "ship it"';
+let typeIdx = 0, typeTimer = 0;
+function pressKeyFor(ch) {
+  const up = ch.toUpperCase();
+  let k = keys.find((x) => !x.thumb && x.text === up) || (ch === ' ' ? keys.find((x) => x.thumb && x.text === '␣') : null);
+  if (!k) k = keys[Math.floor(Math.random() * keys.length)];
+  k.pressed = 1;
+}
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+  // tenting: rotate each half about its inner edge; split gap moves the pivots apart
+  const rad = THREE.MathUtils.degToRad(tent);
+  left.pivot.position.x = -gap / 2; right.pivot.position.x = gap / 2;
+  left.pivot.rotation.z = -rad; right.pivot.rotation.z = rad;
+  left.pivot.rotation.y = 0.12; right.pivot.rotation.y = -0.12; // slight inward splay like real ergo setups
+  // key press spring-back
+  for (const k of keys) {
+    if (k.pressed > 0) { k.pressed = Math.max(0, k.pressed - dt * 6); }
+    const depth = Math.sin(Math.min(1, k.pressed) * Math.PI) * 0.14;
+    k.cap.position.y = 0.3 - depth; k.legend.position.y = (k.thumb ? 0.551 : 0.551) - depth;
+  }
+  if (typing) {
+    typeTimer -= dt;
+    if (typeTimer <= 0) {
+      const ch = PHRASE[typeIdx % PHRASE.length];
+      pressKeyFor(ch);
+      typedEl.textContent = (typedEl.textContent + ch).slice(-28);
+      typeIdx++; typeTimer = 0.11 + Math.random() * 0.12;
+      if (typeIdx % PHRASE.length === 0) { typeTimer = 1.2; setTimeout(() => { if (typing) typedEl.textContent = ''; }, 1100); }
+    }
+  }
+  // trackball idle spin + encoder rotation
+  ball.rotation.y += dt * 0.6; ball.rotation.x = Math.sin(t * 0.7) * 0.4;
+  left.half.userData.knob.rotation.y += dt * 0.5; right.half.userData.knob.rotation.y -= dt * 0.35;
+  // underglow breathing
+  for (const h of [left, right]) { h.half.userData.glow.visible = glowOn; h.half.userData.glow.material.opacity = 0.7 + Math.sin(t * 1.5) * 0.25; }
+  buildCable();
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

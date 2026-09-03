@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7-Axis Robot Arm 3D Model</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 100vw; height: 100vh; overflow: hidden; background: radial-gradient(circle at center, #1e293b, #0f172a, #020617); font-family: 'Segoe UI', system-ui, sans-serif; }
+    #canvas-container { width: 100%; height: 100%; }
+    #ui-panel {
+      position: absolute; top: 20px; left: 20px;
+      background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(10px);
+      border: 1px solid #334155; border-radius: 12px; padding: 16px 20px;
+      color: #f8fafc; z-index: 10; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      width: 320px; max-height: calc(100vh - 40px); overflow-y: auto;
+    }
+    h1 { font-size: 16px; font-weight: 700; color: #38bdf8; margin-bottom: 4px; }
+    p { font-size: 11px; color: #94a3b8; margin-bottom: 12px; }
+    .slider-row { margin-bottom: 10px; }
+    .slider-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+    .slider-header span.val { color: #facc15; font-family: monospace; }
+    input[type="range"] {
+      width: 100%; height: 6px; border-radius: 3px; background: #334155;
+      outline: none; -webkit-appearance: none; accent-color: #38bdf8;
+    }
+    .btn-row { display: flex; gap: 8px; margin-top: 14px; }
+    button {
+      flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid #475569;
+      background: #1e293b; color: #f8fafc; font-size: 11px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    button:hover { background: #334155; border-color: #38bdf8; }
+    #labels-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    .joint-badge {
+      position: absolute; transform: translate(-50%, -50%);
+      background: rgba(15, 23, 42, 0.85); border: 1.5px solid #facc15; border-radius: 20px;
+      padding: 2px 8px; font-size: 10px; font-weight: 800; color: #facc15;
+      white-space: nowrap; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+  <div id="canvas-container"></div>
+
+  <div id="ui-panel">
+    <h1>7-DOF Articulated Robot</h1>
+    <p>Forward Kinematics & Joint Angle Control</p>
+
+    <div class="slider-row">
+      <div class="slider-header"><span style="color:#facc15;">J1: Base Yaw (Waist)</span><span id="v1" class="val">0°</span></div>
+      <input type="range" id="j1" min="-170" max="170" value="0" oninput="updateJoints()">
+    </div>
+    <div class="slider-row">
+      <div class="slider-header"><span style="color:#38bdf8;">J2: Shoulder Pitch</span><span id="v2" class="val">25°</span></div>
+      <input type="range" id="j2" min="-120" max="120" value="25" oninput="updateJoints()">
+    </div>
+    <div class="slider-row">
+      <div class="slider-header"><span style="color:#facc15;">J3: Upper Arm Roll</span><span id="v3" class="val">0°</span></div>
+      <input type="range" id="j3" min="-170" max="170" value="0" oninput="updateJoints()">
+    </div>
+    <div class="slider-row">
+      <div class="slider-header"><span style="color:#38bdf8;">J4: Elbow Pitch</span><span id="v4" class="val">-50°</span></div>
+      <input type="range" id="j4" min="-135" max="135" value="-50" oninput="updateJoints()">
+    </div>
+    <div class="slider-row">
+      <div class="slider-header"><span style="color:#facc15;">J5: Forearm Roll</span><span id="v5" class="val">0°</span></div>
+      <input type="range" id="j5" min="-170" max="170" value="0" oninput="updateJoints()">
+    </div>
+    <div class="slider-row">
+      <div class="slider-header"><span style="color:#38bdf8;">J6: Wrist Pitch</span><span id="v6" class="val">25°</span></div>
+      <input type="range" id="j6" min="-120" max="120" value="25" oninput="updateJoints()">
+    </div>
+    <div class="slider-row">
+      <div class="slider-header"><span style="color:#facc15;">J7: Tool Flange Roll</span><span id="v7" class="val">0°</span></div>
+      <input type="range" id="j7" min="-180" max="180" value="0" oninput="updateJoints()">
+    </div>
+    <div class="slider-row">
+      <div class="slider-header"><span style="color:#4ade80;">Gripper Stroke</span><span id="vg" class="val">50%</span></div>
+      <input type="range" id="jg" min="0" max="100" value="50" oninput="updateJoints()">
+    </div>
+
+    <div class="btn-row">
+      <button onclick="resetPose()">ホーム位置 (Home)</button>
+      <button onclick="toggleDemo()" id="btn-demo">デモ動作 (Auto)</button>
+    </div>
+  </div>
+
+  <div id="labels-container"></div>
+
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(4.5, 3.5, 5.0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.target.set(0, 1.6, 0);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    keyLight.position.set(6, 10, 6);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 1024;
+    keyLight.shadow.mapSize.height = 1024;
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.6);
+    fillLight.position.set(-6, 4, -4);
+    scene.add(fillLight);
+
+    // Floor Grid
+    const grid = new THREE.GridHelper(10, 20, 0x334155, 0x1e293b);
+    grid.position.y = 0;
+    scene.add(grid);
+
+    // Materials
+    const baseMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5, metalness: 0.8 });
+    const armMat = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: 0.35, metalness: 0.15 }); // Industrial Orange
+    const jointMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, roughness: 0.25, metalness: 0.85 }); // Silver Metal
+    const accentMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.4, metalness: 0.5 });
+    const padMat = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.8 });
+
+    // HIERARCHICAL KINEMATIC TREE BUILDER
+    const robotRoot = new THREE.Group();
+    scene.add(robotRoot);
+
+    // Base Pedestal (Fixed)
+    const baseGeo = new THREE.CylinderGeometry(0.55, 0.65, 0.25, 32);
+    const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+    baseMesh.position.y = 0.125;
+    baseMesh.castShadow = true;
+    robotRoot.add(baseMesh);
+
+    // Joint 1: Base Yaw (Around Y-axis)
+    const j1Group = new THREE.Group();
+    j1Group.position.set(0, 0.25, 0);
+    robotRoot.add(j1Group);
+
+    const j1Housing = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.45, 0.35, 24), jointMat);
+    j1Housing.position.y = 0.175;
+    j1Housing.castShadow = true;
+    j1Group.add(j1Housing);
+
+    // Joint 2: Shoulder Pitch (Around X-axis)
+    const j2Group = new THREE.Group();
+    j2Group.position.set(0, 0.35, 0);
+    j1Group.add(j2Group);
+
+    const j2Pivot = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 0.6, 24), jointMat);
+    j2Pivot.rotation.z = Math.PI / 2;
+    j2Pivot.castShadow = true;
+    j2Group.add(j2Pivot);
+
+    // Link 1 (Lower section of upper arm)
+    const link1 = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.28, 0.5, 20), armMat);
+    link1.position.set(0, 0.35, 0);
+    link1.castShadow = true;
+    j2Group.add(link1);
+
+    // Joint 3: Upper Arm Roll (Around Y-axis)
+    const j3Group = new THREE.Group();
+    j3Group.position.set(0, 0.6, 0);
+    j2Group.add(j3Group);
+
+    const j3Housing = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.25, 20), jointMat);
+    j3Housing.position.y = 0.125;
+    j3Housing.castShadow = true;
+    j3Group.add(j3Housing);
+
+    // Link 2 (Upper section to elbow)
+    const link2 = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.24, 0.55, 20), armMat);
+    link2.position.set(0, 0.525, 0);
+    link2.castShadow = true;
+    j3Group.add(link2);
+
+    // Joint 4: Elbow Pitch (Around X-axis)
+    const j4Group = new THREE.Group();
+    j4Group.position.set(0, 0.8, 0);
+    j3Group.add(j4Group);
+
+    const j4Pivot = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.5, 24), jointMat);
+    j4Pivot.rotation.z = Math.PI / 2;
+    j4Pivot.castShadow = true;
+    j4Group.add(j4Pivot);
+
+    // Link 3 (Forearm lower)
+    const link3 = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.22, 0.45, 18), armMat);
+    link3.position.set(0, 0.325, 0);
+    link3.castShadow = true;
+    j4Group.add(link3);
+
+    // Joint 5: Forearm Roll (Around Y-axis)
+    const j5Group = new THREE.Group();
+    j5Group.position.set(0, 0.55, 0);
+    j4Group.add(j5Group);
+
+    const j5Housing = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.22, 18), jointMat);
+    j5Housing.position.y = 0.11;
+    j5Housing.castShadow = true;
+    j5Group.add(j5Housing);
+
+    // Link 4 (Forearm upper to wrist)
+    const link4 = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.18, 0.4, 18), armMat);
+    link4.position.set(0, 0.41, 0);
+    link4.castShadow = true;
+    j5Group.add(link4);
+
+    // Joint 6: Wrist Pitch (Around X-axis)
+    const j6Group = new THREE.Group();
+    j6Group.position.set(0, 0.61, 0);
+    j5Group.add(j6Group);
+
+    const j6Pivot = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.38, 20), jointMat);
+    j6Pivot.rotation.z = Math.PI / 2;
+    j6Pivot.castShadow = true;
+    j6Group.add(j6Pivot);
+
+    // Joint 7: Tool Flange Roll (Around Y-axis)
+    const j7Group = new THREE.Group();
+    j7Group.position.set(0, 0.22, 0);
+    j6Group.add(j7Group);
+
+    const j7Flange = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.17, 0.15, 20), jointMat);
+    j7Flange.position.y = 0.075;
+    j7Flange.castShadow = true;
+    j7Group.add(j7Flange);
+
+    // END EFFECTOR: PARALLEL GRIPPER
+    const gripperBase = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.12, 0.22), baseMat);
+    gripperBase.position.set(0, 0.21, 0);
+    gripperBase.castShadow = true;
+    j7Group.add(gripperBase);
+
+    // Left Finger
+    const fingerL = new THREE.Group();
+    fingerL.position.set(-0.08, 0.27, 0);
+    const fMeshL = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.25, 0.08), jointMat);
+    fMeshL.position.y = 0.125;
+    fingerL.add(fMeshL);
+    const padL = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.1, 0.07), padMat);
+    padL.position.set(0.025, 0.14, 0);
+    fingerL.add(padL);
+    j7Group.add(fingerL);
+
+    // Right Finger
+    const fingerR = new THREE.Group();
+    fingerR.position.set(0.08, 0.27, 0);
+    const fMeshR = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.25, 0.08), jointMat);
+    fMeshR.position.y = 0.125;
+    fingerR.add(fMeshR);
+    const padR = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.1, 0.07), padMat);
+    padR.position.set(-0.025, 0.14, 0);
+    fingerR.add(padR);
+    j7Group.add(fingerR);
+
+    // Target object to hold
+    const targetObj = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), accentMat);
+    targetObj.position.set(0, 0.42, 0);
+    j7Group.add(targetObj);
+
+    // 3D LABELS ON JOINTS (J1 - J7)
+    const jointTargets = [
+      { name: 'J1 (Yaw)', obj: j1Group },
+      { name: 'J2 (Pitch)', obj: j2Group },
+      { name: 'J3 (Roll)', obj: j3Group },
+      { name: 'J4 (Pitch)', obj: j4Group },
+      { name: 'J5 (Roll)', obj: j5Group },
+      { name: 'J6 (Pitch)', obj: j6Group },
+      { name: 'J7 (Flange)', obj: j7Group }
+    ];
+
+    const labelsContainer = document.getElementById('labels-container');
+    const labelElements = jointTargets.map(jt => {
+      const div = document.createElement('div');
+      div.className = 'joint-badge';
+      div.textContent = jt.name;
+      labelsContainer.appendChild(div);
+      return { div, obj: jt.obj };
+    });
+
+    // KINEMATICS UPDATE FUNCTION
+    window.updateJoints = function() {
+      const rad = Math.PI / 180;
+      const a1 = parseFloat(document.getElementById('j1').value);
+      const a2 = parseFloat(document.getElementById('j2').value);
+      const a3 = parseFloat(document.getElementById('j3').value);
+      const a4 = parseFloat(document.getElementById('j4').value);
+      const a5 = parseFloat(document.getElementById('j5').value);
+      const a6 = parseFloat(document.getElementById('j6').value);
+      const a7 = parseFloat(document.getElementById('j7').value);
+      const g = parseFloat(document.getElementById('jg').value);
+
+      document.getElementById('v1').textContent = `${a1}°`;
+      document.getElementById('v2').textContent = `${a2}°`;
+      document.getElementById('v3').textContent = `${a3}°`;
+      document.getElementById('v4').textContent = `${a4}°`;
+      document.getElementById('v5').textContent = `${a5}°`;
+      document.getElementById('v6').textContent = `${a6}°`;
+      document.getElementById('v7').textContent = `${a7}°`;
+      document.getElementById('vg').textContent = `${g}%`;
+
+      j1Group.rotation.y = a1 * rad;
+      j2Group.rotation.x = a2 * rad;
+      j3Group.rotation.y = a3 * rad;
+      j4Group.rotation.x = a4 * rad;
+      j5Group.rotation.y = a5 * rad;
+      j6Group.rotation.x = a6 * rad;
+      j7Group.rotation.y = a7 * rad;
+
+      // Gripper stroke
+      const stroke = 0.04 + (1.0 - g / 100.0) * 0.08;
+      fingerL.position.x = -stroke;
+      fingerR.position.x = stroke;
+    };
+
+    window.resetPose = function() {
+      document.getElementById('j1').value = 0;
+      document.getElementById('j2').value = 25;
+      document.getElementById('j3').value = 0;
+      document.getElementById('j4').value = -50;
+      document.getElementById('j5').value = 0;
+      document.getElementById('j6').value = 25;
+      document.getElementById('j7').value = 0;
+      document.getElementById('jg').value = 50;
+      autoDemo = false;
+      document.getElementById('btn-demo').textContent = 'デモ動作 (Auto)';
+      updateJoints();
+    };
+
+    let autoDemo = false;
+    window.toggleDemo = function() {
+      autoDemo = !autoDemo;
+      document.getElementById('btn-demo').textContent = autoDemo ? 'デモ停止' : 'デモ動作 (Auto)';
+    };
+
+    updateJoints();
+
+    // Animation Loop
+    let clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+
+      if (autoDemo) {
+        document.getElementById('j1').value = Math.sin(time * 0.8) * 80;
+        document.getElementById('j2').value = 20 + Math.sin(time * 1.1) * 35;
+        document.getElementById('j3').value = Math.cos(time * 0.9) * 60;
+        document.getElementById('j4').value = -45 + Math.sin(time * 1.3) * 40;
+        document.getElementById('j5').value = Math.cos(time * 1.2) * 70;
+        document.getElementById('j6').value = 20 + Math.sin(time * 1.5) * 40;
+        document.getElementById('j7').value = (time * 60) % 360 - 180;
+        document.getElementById('jg').value = 50 + Math.sin(time * 3.0) * 40;
+        updateJoints();
+      }
+
+      // Update 3D Joint Labels in screen projection
+      const tempV = new THREE.Vector3();
+      labelElements.forEach(item => {
+        item.obj.getWorldPosition(tempV);
+        tempV.project(camera);
+        const isBehind = tempV.z > 1;
+        if (isBehind) {
+          item.div.style.opacity = '0';
+        } else {
+          item.div.style.opacity = '1';
+          const x = (tempV.x * 0.5 + 0.5) * window.innerWidth;
+          const y = (-(tempV.y * 0.5) + 0.5) * window.innerHeight;
+          item.div.style.left = `${x}px`;
+          item.div.style.top = `${y}px`;
+        }
+      });
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
