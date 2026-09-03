@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background & Glass Gradients -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+
+    <linearGradient id="laserGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="50%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <linearGradient id="splitterGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#bae6fd" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <linearGradient id="mirrorGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="30%" stop-color="#f8fafc"/>
+      <stop offset="70%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Arrow Markers for Light Beams -->
+    <marker id="beamArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ef4444"/>
+    </marker>
+    <marker id="beamArrowDown" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowMove" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 2 L 7 5 L 0 8 z" fill="#2563eb"/>
+    </marker>
+
+    <!-- Laser Beam Glow Filter -->
+    <filter id="laserGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="900" fill="url(#bgGrad)"/>
+  <rect x="40" y="30" width="1120" height="840" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="600" y="75" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">マイケルソン干渉計 (Michelson Interferometer)</text>
+  <text x="600" y="105" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">Amplitude-Splitting Optical Interferometry with Variable Path Difference</text>
+
+  <!-- OPTICAL BENCH / GRID BASE -->
+  <!-- Center Beam Splitter position: (550, 420) -->
+
+  <!-- OPTICAL AXIS GUIDELINES (Dotted gray) -->
+  <line x1="160" y1="420" x2="980" y2="420" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,6"/>
+  <line x1="550" y1="120" x2="550" y2="760" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,6"/>
+
+  <!-- ==================== 1. LASER LIGHT SOURCE (Left) ==================== -->
+  <g id="laser-source" transform="translate(140, 370)" filter="url(#shadow)">
+    <!-- Laser Body -->
+    <rect x="0" y="10" width="140" height="80" rx="8" fill="url(#laserGrad)" stroke="#0f172a" stroke-width="2"/>
+    <rect x="135" y="35" width="20" height="30" rx="3" fill="#475569" stroke="#0f172a" stroke-width="1.5"/>
+    <circle cx="155" cy="50" r="8" fill="#ef4444"/>
+    <!-- Laser Warning Badge -->
+    <polygon points="40,25 20,60 60,60" fill="#facc15" stroke="#854d0e" stroke-width="1.2"/>
+    <text x="40" y="55" font-family="sans-serif" font-size="14" font-weight="bold" fill="#000" text-anchor="middle">▲</text>
+    <text x="70" y="55" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#f8fafc">LASER</text>
+    <text x="70" y="70" font-family="sans-serif" font-size="10" fill="#94a3b8">λ = 632.8 nm</text>
+    <!-- Label -->
+    <text x="70" y="115" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">レーザー光源 (Laser)</text>
+  </g>
+
+  <!-- ==================== 2. BEAM SPLITTER (Center: 550, 420) ==================== -->
+  <g id="beam-splitter" filter="url(#shadow)">
+    <!-- Rotated 45 degrees -->
+    <g transform="translate(550, 420) rotate(45)">
+      <!-- Glass Substrate Plate -->
+      <rect x="-8" y="-70" width="16" height="140" rx="3" fill="url(#splitterGrad)" stroke="#38bdf8" stroke-width="2"/>
+      <!-- Semi-reflective Coating Layer (Left face) -->
+      <line x1="-8" y1="-70" x2="-8" y2="70" stroke="#0284c7" stroke-width="3"/>
+    </g>
+    <!-- Mount Base -->
+    <circle cx="550" cy="420" r="8" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>
+    <!-- Splitter Label -->
+    <g transform="translate(480, 470)">
+      <rect x="-10" y="-18" width="150" height="42" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.2"/>
+      <text x="65" y="0" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#0369a1" text-anchor="middle">ビームスプリッタ (BS)</text>
+      <text x="65" y="16" font-family="sans-serif" font-size="10" fill="#64748b" text-anchor="middle">50% Transmit / 50% Reflect</text>
+    </g>
+  </g>
+
+  <!-- ==================== 3. REFERENCE MIRROR A (Top: 550, 190) ==================== -->
+  <g id="mirror-a" filter="url(#shadow)">
+    <!-- Mirror Glass & Reflective Surface -->
+    <rect x="470" y="180" width="160" height="18" rx="2" fill="url(#mirrorGrad)" stroke="#334155" stroke-width="2"/>
+    <!-- Silver coated bottom reflective edge -->
+    <line x1="470" y1="198" x2="630" y2="198" stroke="#0284c7" stroke-width="3.5"/>
+    <!-- Mirror rigid mounting backplate -->
+    <rect x="490" y="160" width="120" height="20" fill="#475569" stroke="#1e293b" stroke-width="1.5"/>
+    <!-- Label -->
+    <text x="550" y="145" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">固定鏡 (Mirror A / Reference)</text>
+    <text x="550" y="245" font-family="sans-serif" font-size="12" font-style="italic" fill="#64748b" text-anchor="middle">Reflected Path (光路長 L₁)</text>
+  </g>
+
+  <!-- ==================== 4. MOVABLE MIRROR B (Right: 920, 420) ==================== -->
+  <g id="mirror-b" filter="url(#shadow)">
+    <!-- Vertical Mirror -->
+    <rect x="910" y="340" width="18" height="160" rx="2" fill="url(#mirrorGrad)" stroke="#334155" stroke-width="2"/>
+    <!-- Reflective front face (left edge) -->
+    <line x1="910" y1="340" x2="910" y2="500" stroke="#0284c7" stroke-width="3.5"/>
+    <!-- Movable Stage & Micrometer Mount -->
+    <rect x="928" y="360" width="30" height="120" fill="#475569" stroke="#1e293b" stroke-width="1.5"/>
+    <!-- Micrometer Adjustment Screw -->
+    <rect x="958" y="405" width="45" height="30" rx="4" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="970" y1="405" x2="970" y2="435" stroke="#334155" stroke-width="1.5"/>
+    <line x1="985" y1="405" x2="985" y2="435" stroke="#334155" stroke-width="1.5"/>
+    <!-- Displacement Motion Indicator ΔL -->
+    <line x1="885" y1="495" x2="940" y2="495" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrowMove)" marker-start="url(#arrowMove)"/>
+    <text x="912" y="520" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#2563eb" text-anchor="middle">±ΔL</text>
+    <!-- Label -->
+    <text x="940" y="325" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">可動鏡 (Mirror B / Movable)</text>
+    <text x="760" y="445" font-family="sans-serif" font-size="12" font-style="italic" fill="#64748b" text-anchor="middle">Transmitted Path (光路長 L₂)</text>
+  </g>
+
+  <!-- ==================== 5. OBSERVATION SCREEN & FRINGES (Bottom: 550, 710) ==================== -->
+  <g id="screen" filter="url(#shadow)">
+    <!-- Detector Screen Frame -->
+    <rect x="450" y="690" width="200" height="24" rx="4" fill="#334155" stroke="#0f172a" stroke-width="2"/>
+    <!-- Concentric Circular Interference Fringes Display Area -->
+    <g transform="translate(550, 785)">
+      <circle cx="0" cy="0" r="55" fill="#1e293b" stroke="#475569" stroke-width="3"/>
+      <!-- Concentric rings -->
+      <circle cx="0" cy="0" r="48" fill="none" stroke="#ef4444" stroke-width="3" opacity="0.9"/>
+      <circle cx="0" cy="0" r="40" fill="none" stroke="#fee2e2" stroke-width="3" opacity="0.4"/>
+      <circle cx="0" cy="0" r="32" fill="none" stroke="#ef4444" stroke-width="3.5" opacity="0.95"/>
+      <circle cx="0" cy="0" r="23" fill="none" stroke="#fee2e2" stroke-width="3" opacity="0.4"/>
+      <circle cx="0" cy="0" r="14" fill="none" stroke="#ef4444" stroke-width="4"/>
+      <circle cx="0" cy="0" r="5" fill="#ffffff"/>
+    </g>
+    <!-- Screen Label -->
+    <text x="550" y="675" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">観測スクリーン (Detection Screen)</text>
+    <text x="640" y="790" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#b91c1c">干渉縞 (Fringes)</text>
+  </g>
+
+  <!-- ==================== 6. LASER LIGHT BEAMS & DIRECTION ARROWS ==================== -->
+  <g id="laser-beams" filter="url(#laserGlow)">
+    <!-- 1. Incident Beam (Laser -> Beam Splitter) -->
+    <!-- Center Y = 420 -->
+    <line x1="295" y1="420" x2="550" y2="420" stroke="#ef4444" stroke-width="4"/>
+    <line x1="390" y1="420" x2="440" y2="420" stroke="#ef4444" stroke-width="4" marker-end="url(#beamArrow)"/>
+
+    <!-- 2. Transmitted Path (BS -> Mirror B -> BS) -->
+    <!-- Outgoing (BS -> Mirror B) -->
+    <line x1="550" y1="416" x2="910" y2="416" stroke="#ef4444" stroke-width="3"/>
+    <line x1="690" y1="416" x2="740" y2="416" stroke="#ef4444" stroke-width="3" marker-end="url(#beamArrow)"/>
+    <!-- Returning (Mirror B -> BS) -->
+    <line x1="910" y1="424" x2="550" y2="424" stroke="#f87171" stroke-width="3" stroke-dasharray="8,4"/>
+    <line x1="750" y1="424" x2="700" y2="424" stroke="#f87171" stroke-width="3" marker-end="url(#beamArrow)"/>
+
+    <!-- 3. Reflected Path (BS -> Mirror A -> BS) -->
+    <!-- Upward (BS -> Mirror A) -->
+    <line x1="546" y1="420" x2="546" y2="198" stroke="#ef4444" stroke-width="3"/>
+    <line x1="546" y1="340" x2="546" y2="290" stroke="#ef4444" stroke-width="3" marker-end="url(#beamArrow)"/>
+    <!-- Downward return (Mirror A -> BS) -->
+    <line x1="554" y1="198" x2="554" y2="420" stroke="#f87171" stroke-width="3" stroke-dasharray="8,4"/>
+    <line x1="554" y1="280" x2="554" y2="330" stroke="#f87171" stroke-width="3" marker-end="url(#beamArrowDown)"/>
+
+    <!-- 4. Recombined Beams (BS -> Screen) -->
+    <!-- Superposed Beam showing interference -->
+    <line x1="550" y1="420" x2="550" y2="690" stroke="#dc2626" stroke-width="5"/>
+    <line x1="550" y1="530" x2="550" y2="590" stroke="#dc2626" stroke-width="5" marker-end="url(#beamArrowDown)"/>
+  </g>
+
+  <!-- ==================== 7. FORMULA & PHYSICS EXPLANATION CARD ==================== -->
+  <g id="formula-card" transform="translate(100, 560)">
+    <rect x="0" y="0" width="310" height="150" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="155" y="28" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">光路差と干渉条件</text>
+    <text x="20" y="58" font-family="Georgia, serif" font-size="15" fill="#334155">Optical Path Diff: <tspan font-weight="bold" fill="#0284c7">Δ = 2|L₁ - L₂|</tspan></text>
+    <text x="20" y="88" font-family="Georgia, serif" font-size="14" fill="#15803d">明線 (Constructive): <tspan font-weight="bold">Δ = m·λ</tspan></text>
+    <text x="20" y="116" font-family="Georgia, serif" font-size="14" fill="#b91c1c">暗線 (Destructive): <tspan font-weight="bold">Δ = (m + ½)·λ</tspan></text>
+    <text x="20" y="138" font-family="sans-serif" font-size="11" fill="#64748b">(m = 0, ±1, ±2, ...)</text>
+  </g>
+</svg>

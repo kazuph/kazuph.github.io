@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2D3748"/>
+    </marker>
+    <marker id="arrBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2B6CB0"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+
+  <!-- Step Boxes -->
+  <!-- 1. Predict Step Box (Left) -->
+  <rect x="60" y="100" width="460" height="680" fill="#EBF8FF" stroke="#3182CE" stroke-width="3" stroke-dasharray="10,10" rx="15"/>
+  <text x="90" y="150" font-family="sans-serif" font-size="28" font-weight="bold" fill="#3182CE">1. Predict (Time Update)</text>
+
+  <!-- 2. Update Step Box (Right) -->
+  <rect x="560" y="100" width="580" height="680" fill="#F0FFF4" stroke="#38A169" stroke-width="3" stroke-dasharray="10,10" rx="15"/>
+  <text x="590" y="150" font-family="sans-serif" font-size="28" font-weight="bold" fill="#38A169">2. Update (Measurement Update)</text>
+
+  <!-- Component Blocks -->
+  <!-- State Predict Block -->
+  <rect x="120" y="200" width="340" height="140" fill="#FFFFFF" stroke="#3182CE" stroke-width="4" rx="12"/>
+  <text x="290" y="250" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1A202C" text-anchor="middle">State Predict</text>
+  <text x="290" y="300" font-family="sans-serif" font-size="22" fill="#2D3748" text-anchor="middle">x̂⁻_k = A x̂_{k-1} + B u_k</text>
+
+  <!-- Covariance Predict Block -->
+  <rect x="120" y="440" width="340" height="140" fill="#FFFFFF" stroke="#3182CE" stroke-width="4" rx="12"/>
+  <text x="290" y="490" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1A202C" text-anchor="middle">Covariance Predict</text>
+  <text x="290" y="540" font-family="sans-serif" font-size="22" fill="#2D3748" text-anchor="middle">P⁻_k = A P_{k-1} Aᵀ + Q</text>
+
+  <!-- Summing Junction Circle -->
+  <circle cx="700" cy="270" r="35" fill="#FFFFFF" stroke="#2D3748" stroke-width="4"/>
+  <text x="700" y="278" font-family="sans-serif" font-size="32" font-weight="bold" fill="#1A202C" text-anchor="middle">+</text>
+
+  <!-- Kalman Gain Block -->
+  <rect x="800" y="380" width="300" height="140" fill="#FFFFFF" stroke="#38A169" stroke-width="4" rx="12"/>
+  <text x="950" y="430" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1A202C" text-anchor="middle">Kalman Gain</text>
+  <text x="950" y="480" font-family="sans-serif" font-size="20" fill="#2D3748" text-anchor="middle">K_k = P⁻_k Hᵀ (H P⁻_k Hᵀ + R)⁻¹</text>
+
+  <!-- State Update Block -->
+  <rect x="800" y="200" width="300" height="140" fill="#FFFFFF" stroke="#38A169" stroke-width="4" rx="12"/>
+  <text x="950" y="250" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1A202C" text-anchor="middle">State Update</text>
+  <text x="950" y="300" font-family="sans-serif" font-size="22" fill="#2D3748" text-anchor="middle">x̂_k = x̂⁻_k + K_k y_k</text>
+
+  <!-- Covariance Update Block -->
+  <rect x="800" y="600" width="300" height="140" fill="#FFFFFF" stroke="#38A169" stroke-width="4" rx="12"/>
+  <text x="950" y="650" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1A202C" text-anchor="middle">Covariance Update</text>
+  <text x="950" y="700" font-family="sans-serif" font-size="22" fill="#2D3748" text-anchor="middle">P_k = (I - K_k H) P⁻_k</text>
+
+  <!-- Measurement Block -->
+  <rect x="580" y="600" width="180" height="140" fill="#FFFFFF" stroke="#DD6B20" stroke-width="4" rx="12"/>
+  <text x="670" y="650" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Measurement</text>
+  <text x="670" y="700" font-family="sans-serif" font-size="20" fill="#2D3748" text-anchor="middle">z_k = H x_k + v_k</text>
+
+  <!-- Flow Lines & Arrows -->
+  <!-- Control Input -->
+  <line x1="290" y1="40" x2="290" y2="200" stroke="#2D3748" stroke-width="4" marker-end="url(#arr)"/>
+  <text x="290" y="30" font-family="sans-serif" font-size="22" font-weight="bold" fill="#2D3748" text-anchor="middle">Control Input u_k</text>
+
+  <!-- State Predict to Sum -->
+  <line x1="460" y1="270" x2="665" y2="270" stroke="#2D3748" stroke-width="4" marker-end="url(#arr)"/>
+  <text x="560" y="250" font-family="sans-serif" font-size="22" font-weight="bold" fill="#2D3748" text-anchor="middle">x̂⁻_k</text>
+
+  <!-- Sum to State Update -->
+  <line x1="735" y1="270" x2="800" y2="270" stroke="#2D3748" stroke-width="4" marker-end="url(#arr)"/>
+  <text x="765" y="250" font-family="sans-serif" font-size="20" font-weight="bold" fill="#C53030">Residual y_k</text>
+
+  <!-- Measurement to Sum -->
+  <line x1="670" y1="600" x2="670" y2="305" stroke="#2D3748" stroke-width="4" marker-end="url(#arr)"/>
+  <text x="690" y="450" font-family="sans-serif" font-size="22" font-weight="bold" fill="#2D3748">Measurement z_k</text>
+  <text x="640" y="325" font-family="sans-serif" font-size="28" font-weight="bold" fill="#2D3748">-</text>
+
+  <!-- Covariance Predict to Gain -->
+  <path d="M 460,510 L 520,510 L 520,450 L 800,450" fill="none" stroke="#2D3748" stroke-width="4" marker-end="url(#arr)"/>
+  <text x="540" y="440" font-family="sans-serif" font-size="22" font-weight="bold" fill="#2D3748">P⁻_k</text>
+
+  <!-- Gain to State Update & Covariance Update -->
+  <line x1="950" y1="380" x2="950" y2="340" stroke="#2D3748" stroke-width="4" marker-end="url(#arr)"/>
+  <line x1="950" y1="520" x2="950" y2="600" stroke="#2D3748" stroke-width="4" marker-end="url(#arr)"/>
+
+  <!-- Feedback Loop for k+1 -->
+  <path d="M 1100,270 L 1160,270 L 1160,830 L 20,830 L 20,270 L 120,270" fill="none" stroke="#2B6CB0" stroke-width="4" marker-end="url(#arrBlue)"/>
+  <text x="600" y="865" font-family="sans-serif" font-size="24" font-weight="bold" fill="#2B6CB0" text-anchor="middle">State Estimate Feedback x̂_k for Next Step (k+1)</text>
+
+</svg>

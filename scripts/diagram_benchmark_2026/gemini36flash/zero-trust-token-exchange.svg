@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <marker id="arrRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#DD6B20"/>
+    </marker>
+    <marker id="arrBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3182CE"/>
+    </marker>
+    <marker id="arrTeal" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#319795"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+
+  <!-- Zone Boundaries -->
+  <!-- 1. Untrusted Client Zone (Left) -->
+  <rect x="50" y="80" width="320" height="740" fill="#FFF5F5" stroke="#E53E3E" stroke-width="3" stroke-dasharray="8,8" rx="15"/>
+  <text x="80" y="125" font-family="sans-serif" font-size="24" font-weight="bold" fill="#E53E3E">Untrusted Client Zone</text>
+
+  <!-- 2. IdP Zone (Top Right) -->
+  <rect x="420" y="80" width="730" height="220" fill="#FAF5FF" stroke="#805AD5" stroke-width="3" stroke-dasharray="8,8" rx="15"/>
+  <text x="450" y="125" font-family="sans-serif" font-size="24" font-weight="bold" fill="#805AD5">Identity Provider (IdP) Zone</text>
+
+  <!-- 3. Zero Trust Mesh Zone (Bottom Right) -->
+  <rect x="420" y="340" width="730" height="480" fill="#F0FFF4" stroke="#38A169" stroke-width="3" stroke-dasharray="8,8" rx="15"/>
+  <text x="450" y="385" font-family="sans-serif" font-size="24" font-weight="bold" fill="#38A169">Zero Trust Internal Mesh</text>
+
+  <!-- Component Nodes -->
+  <!-- User -->
+  <rect x="100" y="180" width="220" height="100" fill="#FFFFFF" stroke="#E53E3E" stroke-width="3" rx="10"/>
+  <text x="210" y="225" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">User</text>
+  <text x="210" y="255" font-family="sans-serif" font-size="16" fill="#718096" text-anchor="middle">Credentials</text>
+
+  <!-- Browser / App -->
+  <rect x="100" y="550" width="220" height="100" fill="#FFFFFF" stroke="#E53E3E" stroke-width="3" rx="10"/>
+  <text x="210" y="595" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Browser / App</text>
+  <text x="210" y="625" font-family="sans-serif" font-size="16" fill="#718096" text-anchor="middle">Public Client</text>
+
+  <!-- IdP -->
+  <rect x="700" y="160" width="260" height="100" fill="#FFFFFF" stroke="#805AD5" stroke-width="3" rx="10"/>
+  <text x="830" y="205" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Identity Provider</text>
+  <text x="830" y="235" font-family="sans-serif" font-size="16" fill="#718096" text-anchor="middle">OIDC / Token Issuer</text>
+
+  <!-- API Gateway -->
+  <rect x="460" y="550" width="200" height="100" fill="#FFFFFF" stroke="#38A169" stroke-width="3" rx="10"/>
+  <text x="560" y="595" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">API Gateway</text>
+  <text x="560" y="625" font-family="sans-serif" font-size="16" fill="#718096" text-anchor="middle">Token Verification</text>
+
+  <!-- Service A -->
+  <rect x="730" y="550" width="200" height="100" fill="#FFFFFF" stroke="#38A169" stroke-width="3" rx="10"/>
+  <text x="830" y="595" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Service A</text>
+  <text x="830" y="625" font-family="sans-serif" font-size="16" fill="#718096" text-anchor="middle">OAuth Token Exch.</text>
+
+  <!-- Service B -->
+  <rect x="920" y="680" width="200" height="100" fill="#FFFFFF" stroke="#38A169" stroke-width="3" rx="10"/>
+  <text x="1020" y="725" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Service B</text>
+  <text x="1020" y="755" font-family="sans-serif" font-size="16" fill="#718096" text-anchor="middle">Backend Service</text>
+
+  <!-- Flow Connections & Labels -->
+  <!-- User to Browser -->
+  <line x1="210" y1="280" x2="210" y2="550" stroke="#DD6B20" stroke-width="4" marker-end="url(#arrRed)"/>
+
+  <!-- Auth Request to IdP -->
+  <path d="M 210,550 L 210,210 L 700,210" fill="none" stroke="#DD6B20" stroke-width="4" marker-end="url(#arrRed)"/>
+  <text x="450" y="195" font-family="sans-serif" font-size="18" font-weight="bold" fill="#DD6B20" text-anchor="middle">1. Authenticate</text>
+
+  <!-- Tokens Return from IdP -->
+  <path d="M 700,230 L 230,230 L 230,550" fill="none" stroke="#DD6B20" stroke-width="3" stroke-dasharray="6,6" marker-end="url(#arrRed)"/>
+  <text x="450" y="255" font-family="sans-serif" font-size="16" font-weight="bold" fill="#DD6B20" text-anchor="middle">2. ID Token + Access Token</text>
+
+  <!-- Browser to Gateway -->
+  <line x1="320" y1="600" x2="460" y2="600" stroke="#3182CE" stroke-width="4" marker-end="url(#arrBlue)"/>
+  <text x="390" y="580" font-family="sans-serif" font-size="16" font-weight="bold" fill="#3182CE" text-anchor="middle">3. Access Token</text>
+
+  <!-- Gateway to Service A -->
+  <line x1="660" y1="600" x2="730" y2="600" stroke="#3182CE" stroke-width="4" marker-end="url(#arrBlue)"/>
+  <text x="695" y="580" font-family="sans-serif" font-size="16" font-weight="bold" fill="#3182CE" text-anchor="middle">4. Forward</text>
+
+  <!-- Token Exchange (Service A to IdP) -->
+  <line x1="830" y1="550" x2="830" y2="260" stroke="#319795" stroke-width="3" stroke-dasharray="6,6" marker-end="url(#arrTeal)"/>
+  <text x="845" y="410" font-family="sans-serif" font-size="16" font-weight="bold" fill="#319795" transform="rotate(-90 845 410)">5. Token Exch. (RFC 8693)</text>
+
+  <!-- Service A to Service B (S2S Token) -->
+  <path d="M 830,650 L 830,730 L 920,730" fill="none" stroke="#319795" stroke-width="4" marker-end="url(#arrTeal)"/>
+  <text x="875" y="715" font-family="sans-serif" font-size="16" font-weight="bold" fill="#319795" text-anchor="middle">6. S2S Token</text>
+
+  <!-- Legend Box (Bottom Left) -->
+  <rect x="80" y="690" width="260" height="110" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="2" rx="8"/>
+  <text x="95" y="715" font-family="sans-serif" font-size="16" font-weight="bold">Legend:</text>
+  <line x1="95" y1="735" x2="145" y2="735" stroke="#DD6B20" stroke-width="4"/>
+  <text x="155" y="740" font-family="sans-serif" font-size="14">ID Token</text>
+
+  <line x1="95" y1="760" x2="145" y2="760" stroke="#3182CE" stroke-width="4"/>
+  <text x="155" y="765" font-family="sans-serif" font-size="14">Access Token</text>
+
+  <line x1="95" y1="785" x2="145" y2="785" stroke="#319795" stroke-width="4"/>
+  <text x="155" y="790" font-family="sans-serif" font-size="14">S2S Token</text>
+
+</svg>

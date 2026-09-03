@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3182CE"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E53E3E"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#F7FAFC"/>
+
+  <g transform="translate(100, 100)">
+    <!-- Outer Cylinder Body -->
+    <rect x="100" y="200" width="700" height="400" fill="#CBD5E0" stroke="#4A5568" stroke-width="6" rx="10"/>
+
+    <!-- Inner Cylinder Chamber -->
+    <rect x="150" y="240" width="600" height="320" fill="#FFFFFF" stroke="#4A5568" stroke-width="4"/>
+
+    <!-- High Pressure Fluid (Left Chamber) -->
+    <rect x="150" y="240" width="300" height="320" fill="#3182CE" opacity="0.4"/>
+
+    <!-- Low Pressure Fluid (Right Chamber) -->
+    <rect x="490" y="240" width="260" height="320" fill="#90CDF4" opacity="0.25"/>
+
+    <!-- Piston Head -->
+    <rect x="430" y="242" width="60" height="316" fill="#E53E3E" stroke="#000000" stroke-width="4"/>
+    <!-- Piston Seals -->
+    <rect x="430" y="242" width="60" height="25" fill="#000000"/>
+    <rect x="430" y="533" width="60" height="25" fill="#000000"/>
+
+    <!-- Piston Rod -->
+    <rect x="490" y="350" width="480" height="100" fill="#708090" stroke="#000000" stroke-width="4"/>
+
+    <!-- Rod Guides / Seals (Right Wall) -->
+    <rect x="750" y="240" width="50" height="110" fill="#4A5568" stroke="#000000" stroke-width="3"/>
+    <rect x="750" y="450" width="50" height="110" fill="#4A5568" stroke="#000000" stroke-width="3"/>
+
+    <!-- Fluid Ports (Top) -->
+    <!-- Inflow Port Left -->
+    <rect x="230" y="100" width="90" height="100" fill="#FFFFFF" stroke="#4A5568" stroke-width="4"/>
+    <rect x="235" y="100" width="80" height="100" fill="#3182CE" opacity="0.4"/>
+    <!-- Outflow Port Right -->
+    <rect x="610" y="100" width="90" height="100" fill="#FFFFFF" stroke="#4A5568" stroke-width="4"/>
+    <rect x="615" y="100" width="80" height="100" fill="#90CDF4" opacity="0.25"/>
+
+    <!-- Flow Arrows -->
+    <!-- Inflow -->
+    <line x1="275" y1="20" x2="275" y2="160" stroke="#3182CE" stroke-width="8" marker-end="url(#arrowBlue)"/>
+    <line x1="275" y1="220" x2="200" y2="300" stroke="#3182CE" stroke-width="5" marker-end="url(#arrowBlue)"/>
+    <line x1="275" y1="220" x2="350" y2="300" stroke="#3182CE" stroke-width="5" marker-end="url(#arrowBlue)"/>
+
+    <!-- Outflow -->
+    <line x1="655" y1="160" x2="655" y2="20" stroke="#2B6CB0" stroke-width="8" marker-end="url(#arrowBlue)"/>
+
+    <!-- Movement Arrow -->
+    <line x1="520" y1="400" x2="680" y2="400" stroke="#E53E3E" stroke-width="10" marker-end="url(#arrowRed)"/>
+    <text x="600" y="385" font-family="sans-serif" font-size="24" font-weight="bold" fill="#E53E3E" text-anchor="middle">Movement</text>
+
+    <!-- Labels -->
+    <text x="275" y="-10" font-family="sans-serif" font-size="26" font-weight="bold" fill="#3182CE" text-anchor="middle">Fluid Inflow (P1)</text>
+    <text x="655" y="-10" font-family="sans-serif" font-size="26" font-weight="bold" fill="#2B6CB0" text-anchor="middle">Fluid Outflow (P2)</text>
+
+    <text x="290" y="440" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1A365D" text-anchor="middle">High Pressure Chamber</text>
+    <text x="620" y="470" font-family="sans-serif" font-size="24" font-weight="bold" fill="#4A5568" text-anchor="middle">Low Pressure</text>
+
+    <text x="460" y="160" font-family="sans-serif" font-size="24" font-weight="bold" fill="#E53E3E" text-anchor="middle">Piston Head</text>
+    <text x="870" y="330" font-family="sans-serif" font-size="24" font-weight="bold" fill="#4A5568" text-anchor="middle">Piston Rod</text>
+    <text x="450" y="650" font-family="sans-serif" font-size="28" font-weight="bold" fill="#4A5568" text-anchor="middle">Cylinder Body</text>
+  </g>
+</svg>

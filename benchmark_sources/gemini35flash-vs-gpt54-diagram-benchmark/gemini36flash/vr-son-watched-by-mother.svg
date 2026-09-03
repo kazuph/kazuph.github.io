@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <!-- Room Background Wall & Floor -->
+  <rect width="1200" height="650" fill="#E2E8F0"/>
+  <rect y="650" width="1200" height="250" fill="#CBD5E0"/>
+  <line x1="0" y1="650" x2="1200" y2="650" stroke="#718096" stroke-width="6"/>
+
+  <!-- Doorway (Left) -->
+  <rect x="20" y="100" width="180" height="550" fill="#4A5568" stroke="#000000" stroke-width="6"/>
+  <rect x="50" y="100" width="120" height="550" fill="#FFFFFF"/>
+
+  <!-- Bedroom Furniture -->
+  <!-- Bed (Right) -->
+  <rect x="850" y="480" width="300" height="170" fill="#63B3ED" stroke="#000000" stroke-width="5" rx="10"/>
+  <rect x="870" y="520" width="100" height="50" fill="#FFFFFF" stroke="#000000" stroke-width="3" rx="5"/>
+  <rect x="850" y="570" width="300" height="80" fill="#3182CE"/>
+
+  <!-- Desk & Computer (Center) -->
+  <rect x="520" y="450" width="220" height="120" fill="#A0AEC0" stroke="#000000" stroke-width="4"/>
+  <line x1="540" y1="570" x2="540" y2="720" stroke="#718096" stroke-width="8"/>
+  <line x1="720" y1="570" x2="720" y2="720" stroke="#718096" stroke-width="8"/>
+  <!-- Monitor -->
+  <rect x="570" y="340" width="120" height="90" fill="#1A202C" stroke="#000000" stroke-width="4" rx="5"/>
+  <rect x="615" y="430" width="30" height="20" fill="#1A202C"/>
+
+  <!-- Game Poster on Wall -->
+  <rect x="620" y="140" width="140" height="160" fill="#E9D8FD" stroke="#805AD5" stroke-width="4"/>
+  <text x="690" y="230" font-family="sans-serif" font-size="24" font-weight="bold" fill="#6B46C1" text-anchor="middle">GAME</text>
+
+  <!-- Mother (Standing at doorway entrance on left) -->
+  <!-- Skirt / Body -->
+  <polygon points="90,620 120,480 160,480 180,620" fill="#9F7AEA" stroke="#000000" stroke-width="4"/>
+  <rect x="110" y="380" width="60" height="100" fill="#9F7AEA" stroke="#000000" stroke-width="4"/>
+  <!-- Head -->
+  <circle cx="140" cy="320" r="40" fill="#FBD38D" stroke="#000000" stroke-width="4"/>
+  <circle cx="155" cy="310" r="42" fill="#4A2511" stroke="#000000" stroke-width="4"/> <!-- Hair -->
+
+  <!-- Sightline / Gaze -->
+  <line x1="180" y1="320" x2="420" y2="320" stroke="#805AD5" stroke-width="4" stroke-dasharray="8,8"/>
+  <text x="300" y="305" font-family="sans-serif" font-size="20" font-weight="bold" fill="#6B46C1" text-anchor="middle">Watching Gaze</text>
+
+  <!-- Son (Center, active pose playing VR) -->
+  <!-- Legs -->
+  <polygon points="400,680 420,540 460,540 440,680" fill="#2B6CB0" stroke="#000000" stroke-width="4"/>
+  <polygon points="460,540 520,570 540,610 500,620" fill="#2B6CB0" stroke="#000000" stroke-width="4"/>
+
+  <!-- Torso -->
+  <polygon points="390,540 470,540 480,400 400,400" fill="#ED8936" stroke="#000000" stroke-width="4"/>
+
+  <!-- Head & VR Headset -->
+  <circle cx="440" cy="340" r="45" fill="#FBD38D" stroke="#000000" stroke-width="4"/>
+  <circle cx="435" cy="320" r="48" fill="#1A202C" stroke="#000000" stroke-width="4"/> <!-- Hair -->
+  <!-- VR Headset -->
+  <rect x="390" y="320" width="75" height="40" fill="#1A202C" stroke="#00B5D8" stroke-width="4" rx="5"/>
+  <line x1="400" y1="340" x2="455" y2="340" stroke="#00B5D8" stroke-width="4"/> <!-- Cyan LED strip -->
+
+  <!-- Left Arm (extended forward with controller) -->
+  <path d="M 400,420 Q 320,400 300,430" fill="none" stroke="#ED8936" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="280" cy="435" r="20" fill="#1A202C" stroke="#000000" stroke-width="3"/>
+
+  <!-- Right Arm (raised up with controller) -->
+  <path d="M 470,420 Q 530,370 560,320" fill="none" stroke="#ED8936" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="575" cy="305" r="20" fill="#1A202C" stroke="#000000" stroke-width="3"/>
+
+  <!-- VR Motion Effect Lines -->
+  <path d="M 260,420 A 30 30 0 0 1 260,450" fill="none" stroke="#00B5D8" stroke-width="4"/>
+  <path d="M 590,290 A 30 30 0 0 1 600,320" fill="none" stroke="#00B5D8" stroke-width="4"/>
+</svg>

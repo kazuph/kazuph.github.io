@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+
+    <!-- Node Card Gradients -->
+    <linearGradient id="client-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+
+    <linearGradient id="pep-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#075985"/>
+    </linearGradient>
+
+    <linearGradient id="sts-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6b21a8"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+
+    <linearGradient id="pdp-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="100%" stop-color="#78350f"/>
+    </linearGradient>
+
+    <linearGradient id="resource-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+
+    <!-- Arrowhead Markers -->
+    <marker id="arr-cyan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arr-purple" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#c084fc"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arr-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#34d399"/>
+    </marker>
+
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bg-grad)"/>
+
+  <!-- Title Header -->
+  <g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
+    <text x="600" y="55" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="1">Zero Trust OAuth 2.0 / RFC 8693 Token Exchange</text>
+    <text x="600" y="85" font-size="15" fill="#94a3b8">Workload Identity Propagation, Policy Decision (PDP/PEP) &amp; Least-Privilege Scoping</text>
+  </g>
+
+  <!-- ARCHITECTURE ACTOR COLUMNS (Top Node Headers) -->
+
+  <!-- 1. Workload / Client (x=120) -->
+  <g transform="translate(40, 110)" filter="url(#shadow)">
+    <rect width="200" height="100" rx="10" fill="url(#client-grad)" stroke="#38bdf8" stroke-width="2"/>
+    <text x="100" y="38" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#7dd3fc" text-anchor="middle">Client Workload</text>
+    <text x="100" y="62" font-family="system-ui, sans-serif" font-size="12" fill="#e0f2fe" text-anchor="middle">Caller / Frontend Service</text>
+    <rect x="25" y="72" width="150" height="18" rx="3" fill="#0f172a" fill-opacity="0.8"/>
+    <text x="100" y="85" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">SPIFFE ID: spiffe://cluster/frontend</text>
+  </g>
+
+  <!-- 2. Policy Enforcement Point (PEP / API Gateway) (x=360) -->
+  <g transform="translate(280, 110)" filter="url(#shadow)">
+    <rect width="200" height="100" rx="10" fill="url(#pep-grad)" stroke="#0ea5e9" stroke-width="2"/>
+    <text x="100" y="38" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#e0f2fe" text-anchor="middle">Gateway (PEP)</text>
+    <text x="100" y="62" font-family="system-ui, sans-serif" font-size="12" fill="#bae6fd" text-anchor="middle">Policy Enforcement Point</text>
+    <rect x="25" y="72" width="150" height="18" rx="3" fill="#0f172a" fill-opacity="0.8"/>
+    <text x="100" y="85" font-family="system-ui, sans-serif" font-size="10" fill="#38bdf8" text-anchor="middle">mTLS &amp; Token Inspector</text>
+  </g>
+
+  <!-- 3. Security Token Service (STS / IdP) (x=600) -->
+  <g transform="translate(520, 110)" filter="url(#shadow)">
+    <rect width="200" height="100" rx="10" fill="url(#sts-grad)" stroke="#c084fc" stroke-width="2"/>
+    <text x="100" y="38" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#f3e8ff" text-anchor="middle">STS / IdP Server</text>
+    <text x="100" y="62" font-family="system-ui, sans-serif" font-size="12" fill="#e9d5ff" text-anchor="middle">RFC 8693 Token Exchange</text>
+    <rect x="25" y="72" width="150" height="18" rx="3" fill="#0f172a" fill-opacity="0.8"/>
+    <text x="100" y="85" font-family="system-ui, sans-serif" font-size="10" fill="#c084fc" text-anchor="middle">Cryptographic Signer</text>
+  </g>
+
+  <!-- 4. Policy Decision Point (PDP / OPA Engine) (x=840) -->
+  <g transform="translate(760, 110)" filter="url(#shadow)">
+    <rect width="180" height="100" rx="10" fill="url(#pdp-grad)" stroke="#fbbf24" stroke-width="2"/>
+    <text x="90" y="38" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#fef3c7" text-anchor="middle">Engine (PDP)</text>
+    <text x="90" y="62" font-family="system-ui, sans-serif" font-size="12" fill="#fde68a" text-anchor="middle">Policy Decision Point</text>
+    <rect x="20" y="72" width="140" height="18" rx="3" fill="#0f172a" fill-opacity="0.8"/>
+    <text x="90" y="85" font-family="system-ui, sans-serif" font-size="10" fill="#facc15" text-anchor="middle">Open Policy Agent (OPA)</text>
+  </g>
+
+  <!-- 5. Downstream Target Resource (x=1040) -->
+  <g transform="translate(980, 110)" filter="url(#shadow)">
+    <rect width="180" height="100" rx="10" fill="url(#resource-grad)" stroke="#34d399" stroke-width="2"/>
+    <text x="90" y="38" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ecfdf5" text-anchor="middle">Target Resource</text>
+    <text x="90" y="62" font-family="system-ui, sans-serif" font-size="12" fill="#a7f3d0" text-anchor="middle">Downstream Microservice</text>
+    <rect x="20" y="72" width="140" height="18" rx="3" fill="#0f172a" fill-opacity="0.8"/>
+    <text x="90" y="85" font-family="system-ui, sans-serif" font-size="10" fill="#6ee7b7" text-anchor="middle">Audience: api://payments</text>
+  </g>
+
+  <!-- Vertical Lifeline Coordinates:
+       L1: x=140 (Client)
+       L2: x=380 (PEP Gateway)
+       L3: x=620 (STS IdP)
+       L4: x=850 (PDP OPA)
+       L5: x=1070 (Target Resource)
+  -->
+  <g stroke="#334155" stroke-width="2" stroke-dasharray="6,6">
+    <line x1="140" y1="210" x2="140" y2="760"/>
+    <line x1="380" y1="210" x2="380" y2="760"/>
+    <line x1="620" y1="210" x2="620" y2="760"/>
+    <line x1="850" y1="210" x2="850" y2="760"/>
+    <line x1="1070" y1="210" x2="1070" y2="760"/>
+  </g>
+
+  <!-- SEQUENCE MESSAGES & DATA FLOW STEPS -->
+  <g font-family="system-ui, -apple-system, sans-serif">
+
+    <!-- STEP 1: Client -> PEP: Initial Request with Subject Token (y=260) -->
+    <line x1="140" y1="260" x2="375" y2="260" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arr-cyan)"/>
+    <rect x="155" y="235" width="210" height="22" rx="4" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+    <text x="260" y="250" font-size="11" font-weight="700" fill="#7dd3fc" text-anchor="middle">1. Request + Subject Token (User JWT)</text>
+
+    <!-- STEP 2: PEP -> STS: RFC 8693 Token Exchange Request (y=340) -->
+    <line x1="380" y1="340" x2="615" y2="340" stroke="#c084fc" stroke-width="2.5" marker-end="url(#arr-purple)"/>
+    <rect x="395" y="315" width="210" height="22" rx="4" fill="#0f172a" stroke="#c084fc" stroke-width="1"/>
+    <text x="500" y="330" font-size="11" font-weight="700" fill="#f3e8ff" text-anchor="middle">2. POST /token (grant_type=token-exchange)</text>
+    <text x="500" y="375" font-size="10" fill="#94a3b8" text-anchor="middle">subject_token=JWT, audience=api://payments</text>
+
+    <!-- STEP 3: STS -> PDP: Check Access Policy & Scopes (y=430) -->
+    <line x1="620" y1="430" x2="845" y2="430" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arr-amber)"/>
+    <rect x="635" y="405" width="200" height="22" rx="4" fill="#0f172a" stroke="#fbbf24" stroke-width="1"/>
+    <text x="735" y="420" font-size="11" font-weight="700" fill="#fef3c7" text-anchor="middle">3. Evaluate AuthZ Policy (OPA Query)</text>
+
+    <!-- STEP 4: PDP -> STS: Policy Decision & Minted Claims (y=490) -->
+    <line x1="850" y1="490" x2="625" y2="490" stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arr-amber)"/>
+    <rect x="645" y="465" width="190" height="22" rx="4" fill="#0f172a" stroke="#fbbf24" stroke-width="1"/>
+    <text x="740" y="480" font-size="11" font-weight="700" fill="#fef3c7" text-anchor="middle">4. Decision: Permit [scope: read,pay]</text>
+
+    <!-- STEP 5: STS -> PEP: Downstream Scoped Target Token (y=560) -->
+    <line x1="620" y1="560" x2="385" y2="560" stroke="#c084fc" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arr-purple)"/>
+    <rect x="400" y="535" width="205" height="22" rx="4" fill="#0f172a" stroke="#c084fc" stroke-width="1"/>
+    <text x="502" y="550" font-size="11" font-weight="700" fill="#f3e8ff" text-anchor="middle">5. 200 OK: Issued Target Token (aud=payments)</text>
+
+    <!-- STEP 6: PEP -> Downstream Target Resource via mTLS (y=640) -->
+    <line x1="380" y1="640" x2="1065" y2="640" stroke="#34d399" stroke-width="3" marker-end="url(#arr-green)"/>
+    <rect x="630" y="615" width="220" height="22" rx="4" fill="#0f172a" stroke="#34d399" stroke-width="1"/>
+    <text x="740" y="630" font-size="11" font-weight="700" fill="#a7f3d0" text-anchor="middle">6. mTLS Forward + Downstream Scoped Token</text>
+
+    <!-- STEP 7: Target Resource -> PEP -> Client: 200 OK Authorized Response (y=720) -->
+    <line x1="1070" y1="720" x2="385" y2="720" stroke="#34d399" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arr-green)"/>
+    <line x1="380" y1="720" x2="145" y2="720" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arr-cyan)"/>
+    <rect x="520" y="695" width="180" height="22" rx="4" fill="#0f172a" stroke="#34d399" stroke-width="1"/>
+    <text x="610" y="710" font-size="11" font-weight="700" fill="#34d399" text-anchor="middle">7. Authorized Data Response (JSON)</text>
+
+  </g>
+
+  <!-- ZERO TRUST SUMMARY FOOTER CARD (Bottom) -->
+  <g transform="translate(60, 785)" font-family="system-ui, sans-serif" filter="url(#shadow)">
+    <rect width="1080" height="85" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <text x="30" y="28" font-size="14" font-weight="700" fill="#f8fafc">Zero Trust Architecture Principles Applied:</text>
+    <text x="30" y="52" font-size="12" fill="#38bdf8"><tspan font-weight="700">1. Cryptographic Workload Identity:</tspan> SPIFFE / X.509 SVID mTLS ensures authenticated endpoints without shared secrets.</text>
+    <text x="30" y="72" font-size="12" fill="#c084fc"><tspan font-weight="700">2. RFC 8693 Token Exchange:</tspan> Replaces coarse client credentials with dynamically scoped downstream audience tokens.</text>
+    <text x="660" y="52" font-size="12" fill="#fbbf24"><tspan font-weight="700">3. Decoupled PDP / PEP:</tspan> OPA policy decisions enforce ABAC least privilege.</text>
+    <text x="660" y="72" font-size="12" fill="#34d399"><tspan font-weight="700">4. Microsegmentation:</tspan> Downstream service only accepts tokens minted for its explicit audience.</text>
+  </g>
+
+</svg>

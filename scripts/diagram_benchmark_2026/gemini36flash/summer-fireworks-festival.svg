@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0B132B"/>
+      <stop offset="60%" stop-color="#1C2541"/>
+      <stop offset="100%" stop-color="#3A506B"/>
+    </linearGradient>
+
+    <radialGradient id="lanternGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB703" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#E63946" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Night Sky -->
+  <rect width="1200" height="900" fill="url(#skyGrad)"/>
+
+  <!-- Stars -->
+  <g fill="#FFFFFF" opacity="0.8">
+    <circle cx="150" cy="100" r="2"/>
+    <circle cx="320" cy="180" r="3"/>
+    <circle cx="480" cy="80" r="2.5"/>
+    <circle cx="650" cy="140" r="2"/>
+    <circle cx="820" cy="90" r="3"/>
+    <circle cx="1020" cy="160" r="2"/>
+    <circle cx="220" cy="280" r="2"/>
+    <circle cx="910" cy="270" r="2.5"/>
+  </g>
+
+  <!-- Firework 1: Gold / Red (Center-Left) -->
+  <g transform="translate(400, 260)">
+    <circle cx="0" cy="0" r="15" fill="#FFFFFF"/>
+    <!-- Radial Rays -->
+    <path d="M 0,0 L 0,-180 M 0,0 L 0,180 M 0,0 L -180,0 M 0,0 L 180,0
+             M 0,0 L -127,-127 M 0,0 L 127,-127 M 0,0 L -127,127 M 0,0 L 127,127
+             M 0,0 L -68,-166 M 0,0 L 68,-166 M 0,0 L -166,-68 M 0,0 L 166,-68
+             M 0,0 L -68,166 M 0,0 L 68,166 M 0,0 L -166,68 M 0,0 L 166,68"
+          stroke="#FFD166" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="-127" cy="-127" r="6" fill="#EF476F"/>
+    <circle cx="127" cy="-127" r="6" fill="#EF476F"/>
+    <circle cx="-127" cy="127" r="6" fill="#EF476F"/>
+    <circle cx="127" cy="127" r="6" fill="#EF476F"/>
+    <circle cx="0" cy="-180" r="6" fill="#FFD166"/>
+    <circle cx="0" cy="180" r="6" fill="#FFD166"/>
+    <circle cx="-180" cy="0" r="6" fill="#FFD166"/>
+    <circle cx="180" cy="0" r="6" fill="#FFD166"/>
+  </g>
+
+  <!-- Firework 2: Pink / Cyan (Center-Right) -->
+  <g transform="translate(800, 220)">
+    <circle cx="0" cy="0" r="12" fill="#FFFFFF"/>
+    <path d="M 0,0 L 0,-140 M 0,0 L 0,140 M 0,0 L -140,0 M 0,0 L 140,0
+             M 0,0 L -99,-99 M 0,0 L 99,-99 M 0,0 L -99,99 M 0,0 L 99,99
+             M 0,0 L -53,-129 M 0,0 L 53,-129 M 0,0 L -129,-53 M 0,0 L 129,-53"
+          stroke="#EF476F" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="0" cy="-140" r="5" fill="#118AB2"/>
+    <circle cx="0" cy="140" r="5" fill="#118AB2"/>
+    <circle cx="-140" cy="0" r="5" fill="#118AB2"/>
+    <circle cx="140" cy="0" r="5" fill="#118AB2"/>
+  </g>
+
+  <!-- Distant Hills Silhouette -->
+  <path d="M 0,650 Q 300,600 600,640 Q 900,610 1200,650 L 1200,900 L 0,900 Z" fill="#080E1E"/>
+
+  <!-- Festival Stalls -->
+  <!-- Stall Left -->
+  <rect x="100" y="660" width="280" height="150" fill="#4A2810" stroke="#000000" stroke-width="4"/>
+  <polygon points="80,660 400,660 370,610 110,610" fill="#E63946"/>
+
+  <!-- Stall Right -->
+  <rect x="800" y="660" width="280" height="150" fill="#4A2810" stroke="#000000" stroke-width="4"/>
+  <polygon points="780,660 1100,660 1070,610 810,610" fill="#FFB703"/>
+
+  <!-- Hanging Chochin Lanterns -->
+  <line x1="0" y1="600" x2="1200" y2="600" stroke="#FFFFFF" stroke-width="2" opacity="0.6"/>
+
+  <g fill="#E63946" stroke="#000000" stroke-width="2">
+    <circle cx="150" cy="630" r="30" fill="url(#lanternGlow)" stroke="none"/>
+    <rect x="135" y="615" width="30" height="30" rx="6"/>
+
+    <circle cx="350" cy="630" r="30" fill="url(#lanternGlow)" stroke="none"/>
+    <rect x="335" y="615" width="30" height="30" rx="6"/>
+
+    <circle cx="600" cy="630" r="30" fill="url(#lanternGlow)" stroke="none"/>
+    <rect x="585" y="615" width="30" height="30" rx="6"/>
+
+    <circle cx="850" cy="630" r="30" fill="url(#lanternGlow)" stroke="none"/>
+    <rect x="835" y="615" width="30" height="30" rx="6"/>
+
+    <circle cx="1050" cy="630" r="30" fill="url(#lanternGlow)" stroke="none"/>
+    <rect x="1035" y="615" width="30" height="30" rx="6"/>
+  </g>
+
+  <!-- Crowd Silhouettes (Yukata & People at riverbank) -->
+  <g fill="#030712">
+    <!-- People shapes -->
+    <circle cx="150" cy="720" r="20"/>
+    <polygon points="120,900 135,740 165,740 180,900"/>
+
+    <circle cx="280" cy="730" r="22"/>
+    <polygon points="250,900 265,750 295,750 310,900"/>
+
+    <circle cx="450" cy="710" r="25"/>
+    <polygon points="415,900 435,735 465,735 485,900"/>
+
+    <circle cx="600" cy="725" r="20"/>
+    <polygon points="570,900 585,745 615,745 630,900"/>
+
+    <circle cx="750" cy="715" r="23"/>
+    <polygon points="715,900 735,738 765,738 785,900"/>
+
+    <circle cx="920" cy="730" r="22"/>
+    <polygon points="890,900 905,750 935,750 950,900"/>
+
+    <circle cx="1060" cy="720" r="20"/>
+    <polygon points="1030,900 1045,740 1075,740 1090,900"/>
+  </g>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <!-- Background Wall & Floor -->
+  <rect width="1200" height="650" fill="#F9F3EA"/>
+  <rect y="650" width="1200" height="250" fill="#DDB892"/>
+  <line x1="0" y1="650" x2="1200" y2="650" stroke="#7F5539" stroke-width="6"/>
+
+  <!-- Rug -->
+  <ellipse cx="400" cy="780" rx="350" ry="80" fill="#E6C280" stroke="#7F5539" stroke-width="3"/>
+
+  <!-- Window & Curtains (Right) -->
+  <rect x="850" y="150" width="260" height="350" fill="#FFFFFF" stroke="#7F5539" stroke-width="6"/>
+  <line x1="850" y1="325" x2="1110" y2="325" stroke="#CBD5E0" stroke-width="4"/>
+  <line x1="980" y1="150" x2="980" y2="500" stroke="#CBD5E0" stroke-width="4"/>
+  <rect x="800" y="120" width="60" height="400" fill="#E07A5F"/>
+  <rect x="1100" y="120" width="60" height="400" fill="#E07A5F"/>
+  <line x1="780" y1="120" x2="1180" y2="120" stroke="#7F5539" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Floor Lamp (Far left) -->
+  <line x1="120" y1="750" x2="120" y2="200" stroke="#7F5539" stroke-width="8"/>
+  <polygon points="70,200 170,200 200,100 40,100" fill="#F2CC8F" stroke="#7F5539" stroke-width="4"/>
+  <!-- Light Glow Beam -->
+  <polygon points="40,100 200,100 320,650 0,650" fill="#F2CC8F" opacity="0.35"/>
+
+  <!-- TV Console & TV (Left facing right) -->
+  <rect x="70" y="520" width="280" height="150" fill="#7F5539" stroke="#000000" stroke-width="4"/>
+  <rect x="100" y="300" width="220" height="220" fill="#333333" stroke="#000000" stroke-width="6" rx="10"/>
+  <rect x="120" y="320" width="180" height="180" fill="#E8F1F5" stroke="#333333" stroke-width="2"/>
+  <!-- TV Screen Glow -->
+  <polygon points="300,320 300,500 650,550 650,300" fill="#E8F1F5" opacity="0.4"/>
+
+  <!-- Small Table with Tea Cup -->
+  <rect x="420" y="580" width="140" height="100" fill="#7F5539" stroke="#000000" stroke-width="4"/>
+  <line x1="440" y1="680" x2="440" y2="760" stroke="#7F5539" stroke-width="8"/>
+  <line x1="540" y1="680" x2="540" y2="760" stroke="#7F5539" stroke-width="8"/>
+  <!-- Tea Cup -->
+  <rect x="470" y="540" width="40" height="40" fill="#FFFFFF" stroke="#000000" stroke-width="3" rx="5"/>
+
+  <!-- Armchair / Sofa (Center-Right facing left) -->
+  <rect x="620" y="520" width="300" height="180" fill="#B5838D" stroke="#000000" stroke-width="5" rx="20"/>
+  <rect x="780" y="300" width="140" height="260" fill="#9A6B75" stroke="#000000" stroke-width="5" rx="20"/>
+
+  <!-- Grandma -->
+  <!-- Pants / Legs -->
+  <rect x="650" y="560" width="160" height="90" fill="#4A5568" stroke="#000000" stroke-width="4" rx="10"/>
+  <!-- Upper Body (Green Sweater) -->
+  <polygon points="680,560 780,560 790,400 690,400" fill="#81B29A" stroke="#000000" stroke-width="4"/>
+  <!-- Arm resting on armrest -->
+  <rect x="650" y="460" width="90" height="40" fill="#81B29A" stroke="#000000" stroke-width="4" rx="10"/>
+  <!-- Head -->
+  <circle cx="710" cy="340" r="50" fill="#FFDAB9" stroke="#000000" stroke-width="4"/>
+  <!-- Hair (White/Grey bun) -->
+  <circle cx="720" cy="310" r="55" fill="#E0E0E0" stroke="#000000" stroke-width="4"/>
+  <circle cx="775" cy="320" r="25" fill="#E0E0E0" stroke="#000000" stroke-width="4"/>
+  <!-- Glasses -->
+  <circle cx="680" cy="340" r="14" fill="none" stroke="#000000" stroke-width="4"/>
+  <line x1="666" y1="340" x2="694" y2="340" stroke="#000000" stroke-width="4"/>
+
+  <!-- Sightline to TV -->
+  <line x1="660" y1="340" x2="300" y2="410" stroke="#E53E3E" stroke-width="4" stroke-dasharray="10,10" opacity="0.8"/>
+</svg>

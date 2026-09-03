@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Wall & Floor Gradients -->
+    <linearGradient id="roomWall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+
+    <linearGradient id="hallWall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+
+    <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="100%" stop-color="#78350f"/>
+    </linearGradient>
+
+    <radialGradient id="vrAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#818cf8" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- ==================== ROOM BACKGROUND ==================== -->
+  <!-- Main Bedroom Wall -->
+  <rect x="0" y="0" width="1200" height="600" fill="url(#roomWall)"/>
+  <!-- Baseboard -->
+  <rect x="0" y="590" width="1200" height="20" fill="#475569"/>
+  <!-- Hardwood Floor -->
+  <rect x="0" y="610" width="1200" height="290" fill="url(#floorGrad)"/>
+  <!-- Floor perspective lines -->
+  <line x1="0" y1="680" x2="1200" y2="680" stroke="#5c2707" stroke-width="1.5" opacity="0.4"/>
+  <line x1="0" y1="760" x2="1200" y2="760" stroke="#5c2707" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- ==================== BEDROOM FURNITURE (BACKGROUND) ==================== -->
+  <!-- 1. Wall Poster (Gaming / Mecha) -->
+  <g id="poster" transform="translate(480, 80)">
+    <rect x="0" y="0" width="160" height="210" rx="4" fill="#0f172a" stroke="#ffffff" stroke-width="6" filter="url(#shadow)"/>
+    <rect x="10" y="10" width="140" height="190" fill="#312e81"/>
+    <!-- Abstract robot graphic -->
+    <polygon points="80,30 50,90 110,90" fill="#38bdf8"/>
+    <rect x="65" y="90" width="30" height="60" fill="#818cf8"/>
+    <line x1="80" y1="30" x2="80" y2="150" stroke="#f43f5e" stroke-width="2"/>
+    <text x="80" y="180" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">CYBER 2026</text>
+  </g>
+
+  <!-- 2. Bookshelf with Manga & Figures (Right-Center: 720, 140) -->
+  <g id="bookshelf" transform="translate(710, 140)" filter="url(#shadow)">
+    <!-- Wooden Shelf Frame -->
+    <rect x="0" y="0" width="180" height="460" rx="4" fill="#854d0e" stroke="#451a03" stroke-width="2.5"/>
+    <rect x="10" y="10" width="160" height="135" fill="#a16207"/>
+    <rect x="10" y="155" width="160" height="140" fill="#a16207"/>
+    <rect x="10" y="305" width="160" height="145" fill="#a16207"/>
+    <!-- Shelf 1 items (Manga volumes) -->
+    <rect x="20" y="45" width="12" height="100" fill="#ef4444" rx="1"/>
+    <rect x="33" y="45" width="12" height="100" fill="#3b82f6" rx="1"/>
+    <rect x="46" y="45" width="12" height="100" fill="#10b981" rx="1"/>
+    <rect x="59" y="45" width="12" height="100" fill="#f59e0b" rx="1"/>
+    <rect x="72" y="45" width="12" height="100" fill="#8b5cf6" rx="1"/>
+    <rect x="85" y="45" width="12" height="100" fill="#ec4899" rx="1"/>
+    <!-- Action figure on shelf 1 -->
+    <circle cx="140" cy="90" r="10" fill="#f59e0b"/>
+    <rect x="135" y="100" width="10" height="25" fill="#3b82f6"/>
+    <!-- Shelf 2 items (Books & trophies) -->
+    <rect x="25" y="195" width="50" height="100" fill="#1e293b" rx="2"/>
+    <polygon points="120,240 140,240 145,260 115,260" fill="#eab308"/>
+    <polygon points="130,210 135,225 125,225" fill="#eab308"/>
+  </g>
+
+  <!-- 3. Teen Bed (Far Right: 930, 420) -->
+  <g id="bed" transform="translate(930, 420)" filter="url(#shadow)">
+    <!-- Headboard -->
+    <rect x="15" y="-50" width="220" height="140" rx="6" fill="#475569" stroke="#1e293b" stroke-width="2"/>
+    <!-- Mattress & Frame -->
+    <rect x="0" y="70" width="240" height="120" rx="8" fill="#1e293b"/>
+    <!-- Blue Comforter / Blanket -->
+    <path d="M 0,90 C 20,85 100,85 240,90 L 240,220 L 0,220 Z" fill="#2563eb"/>
+    <!-- Pillow -->
+    <ellipse cx="60" cy="80" rx="35" ry="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  </g>
+
+  <!-- Circular Play Area Rug -->
+  <ellipse cx="620" cy="740" rx="280" ry="85" fill="#e0e7ff" stroke="#c7d2fe" stroke-width="2.5"/>
+
+  <!-- Holographic VR Play Grid around Son -->
+  <ellipse cx="600" cy="720" rx="220" ry="70" fill="url(#vrAura)"/>
+  <ellipse cx="600" cy="720" rx="200" ry="60" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.7"/>
+
+  <!-- ==================== SON PLAYING VR (Center Foreground: 600, 520) ==================== -->
+  <g id="son-vr" filter="url(#shadow)">
+    <!-- Floor Shadow -->
+    <ellipse cx="600" cy="755" rx="95" ry="18" fill="#1e293b" opacity="0.3"/>
+
+    <!-- Legs & Shoes (Athletic bent dynamic gaming stance) -->
+    <!-- Left Leg -->
+    <path d="M 570,550 L 535,660 L 530,730" fill="none" stroke="#1e293b" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+    <ellipse cx="525" cy="745" rx="24" ry="12" fill="#ef4444"/> <!-- Sneaker -->
+
+    <!-- Right Leg -->
+    <path d="M 625,550 L 665,650 L 675,730" fill="none" stroke="#1e293b" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+    <ellipse cx="685" cy="745" rx="24" ry="12" fill="#ef4444"/>
+
+    <!-- Torso (Yellow Graphic T-shirt) -->
+    <path d="M 560,420 L 640,420 L 635,560 L 565,560 Z" fill="#eab308" stroke="#ca8a04" stroke-width="2"/>
+    <!-- Graphic on shirt -->
+    <polygon points="600,450 585,480 615,480" fill="#0f172a"/>
+
+    <!-- Left Arm & VR Controller (Stretching forward-left) -->
+    <path d="M 565,430 L 480,450 L 430,420" fill="none" stroke="#eab308" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Left Hand -->
+    <circle cx="425" cy="415" r="12" fill="#fcd5ce"/>
+    <!-- VR Controller Left (with tracking ring) -->
+    <rect x="405" y="400" width="14" height="35" rx="4" fill="#0f172a" transform="rotate(25 405 400)"/>
+    <ellipse cx="400" cy="390" rx="16" ry="10" fill="none" stroke="#0284c7" stroke-width="3" transform="rotate(25 400 390)"/>
+
+    <!-- Right Arm & VR Controller (Reaching high right) -->
+    <path d="M 635,430 L 710,400 L 765,360" fill="none" stroke="#eab308" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Right Hand -->
+    <circle cx="770" cy="355" r="12" fill="#fcd5ce"/>
+    <!-- VR Controller Right -->
+    <rect x="765" y="335" width="14" height="35" rx="4" fill="#0f172a" transform="rotate(-30 765 335)"/>
+    <ellipse cx="780" cy="330" rx="16" ry="10" fill="none" stroke="#0284c7" stroke-width="3" transform="rotate(-30 780 330)"/>
+
+    <!-- Head & Neck -->
+    <rect x="590" y="380" width="20" height="30" fill="#fcd5ce"/>
+    <circle cx="600" cy="350" r="32" fill="#fcd5ce"/>
+    <!-- Hair (Spiky teen brown hair) -->
+    <path d="M 565,350 Q 560,305 600,300 Q 640,305 635,350 Z" fill="#451a03"/>
+
+    <!-- Excited Open Mouth Smile -->
+    <path d="M 590,365 Q 600,380 610,365 Z" fill="#991b1b"/>
+    <polygon points="593,365 607,365 600,370" fill="#ffffff"/>
+
+    <!-- VR GOGGLES / HEADSET (Sleek white & dark visor) -->
+    <rect x="568" y="325" width="64" height="30" rx="6" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
+    <!-- Glowing Cyan Status LED bar -->
+    <rect x="576" y="337" width="48" height="6" rx="3" fill="#38bdf8"/>
+    <!-- Headband / Strap -->
+    <path d="M 568,340 C 555,340 550,355 570,365" fill="none" stroke="#334155" stroke-width="6"/>
+    <path d="M 632,340 C 645,340 650,355 630,365" fill="none" stroke="#334155" stroke-width="6"/>
+  </g>
+
+  <!-- ==================== MOTHER AT DOORWAY (Left: 180, 500) ==================== -->
+  <g id="mother-doorway" filter="url(#shadow)">
+    <!-- Door Frame & Wall Opening -->
+    <rect x="0" y="80" width="200" height="680" fill="url(#hallWall)"/> <!-- Hallway inside -->
+    <!-- Door Frame Moulding -->
+    <rect x="180" y="80" width="25" height="680" fill="#475569" stroke="#1e293b" stroke-width="2"/>
+    <!-- Open Door leaf (swung inward) -->
+    <polygon points="60,110 180,80 180,760 60,730" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="90" cy="440" r="6" fill="#ca8a04"/> <!-- Door handle -->
+
+    <!-- MOTHER (Standing in doorway, leaning gently against frame) -->
+    <!-- Floor Shadow -->
+    <ellipse cx="235" cy="740" rx="40" ry="14" fill="#1e293b" opacity="0.3"/>
+
+    <!-- Long Cozy Skirt (Teal/Navy) -->
+    <path d="M 215,530 C 210,560 205,650 210,720 L 260,720 C 265,650 260,560 255,530 Z" fill="#0f766e" stroke="#115e59" stroke-width="1.5"/>
+    <!-- Slippers -->
+    <ellipse cx="225" cy="725" rx="14" ry="7" fill="#fde047"/>
+    <ellipse cx="248" cy="725" rx="14" ry="7" fill="#fde047"/>
+
+    <!-- Blouse / Cardigan (Warm Coral Knit) -->
+    <path d="M 215,410 C 205,440 205,490 215,535 L 255,535 C 265,490 265,440 255,410 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+
+    <!-- Arms: Left arm resting on door frame, right hand on chest -->
+    <!-- Left arm leaning on frame -->
+    <path d="M 215,420 L 190,440 L 195,490" fill="none" stroke="#f472b6" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="195" cy="495" r="9" fill="#fcd5ce"/> <!-- Hand on door frame -->
+
+    <!-- Right hand resting gently over heart/chest in fond amusement -->
+    <path d="M 255,420 L 250,470 L 235,465" fill="none" stroke="#f472b6" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="235" cy="465" r="8" fill="#fcd5ce"/>
+
+    <!-- Neck & Head (Turned right, watching son) -->
+    <rect x="230" y="380" width="12" height="25" fill="#fcd5ce"/>
+    <circle cx="236" cy="350" r="22" fill="#fcd5ce"/>
+    <!-- Mother's Soft Hairstyle (Dark brown bob / tied back) -->
+    <path d="M 214,355 C 214,320 258,320 258,355 C 258,370 252,380 248,380 C 248,360 240,345 230,345 C 220,345 214,360 214,355 Z" fill="#291e17"/>
+
+    <!-- Face details: Looking right towards son with loving gentle smile -->
+    <ellipse cx="242" cy="348" rx="3.5" ry="4.5" fill="#1e293b"/> <!-- Eye looking right -->
+    <circle cx="243" cy="346" r="1" fill="#ffffff"/>
+    <path d="M 238,340 Q 244,336 248,341" fill="none" stroke="#5c4033" stroke-width="1.5"/> <!-- Eyebrow -->
+    <path d="M 240,362 Q 245,368 250,363" fill="none" stroke="#be123c" stroke-width="2" stroke-linecap="round"/> <!-- Warm smile -->
+    <circle cx="244" cy="356" r="4" fill="#fb7185" opacity="0.4"/> <!-- Rosy cheek -->
+
+    <!-- Sightline Dotted Arrow from Mother to Son -->
+    <path d="M 255,348 Q 420,340 560,345" fill="none" stroke="#f43f5e" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.6"/>
+  </g>
+
+  <!-- Title / Scenario Label at Top Left -->
+  <g transform="translate(420, 35)">
+    <rect x="0" y="0" width="360" height="34" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="180" y="22" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">VRで遊ぶ息子を温かく見守るお母さん</text>
+  </g>
+</svg>

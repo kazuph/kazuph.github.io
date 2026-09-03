@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <!-- Sphere Shading -->
+    <radialGradient id="sphere-grad" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3"/>
+      <stop offset="60%" stop-color="#0284c7" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#0369a1" stop-opacity="0.04"/>
+    </radialGradient>
+
+    <!-- State Vector Glow Filter -->
+    <filter id="vector-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Arrowhead Markers -->
+    <marker id="arrow-axis" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrow-vector" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#f43f5e"/>
+    </marker>
+    <marker id="arrow-angle" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 2 L 7 5 L 0 8 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrow-angle-phi" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 2 L 7 5 L 0 8 z" fill="#fbbf24"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bg-grad)"/>
+
+  <!-- Diagram Title & Equation Header -->
+  <g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
+    <text x="600" y="70" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="1">Bloch Sphere Representation</text>
+    <text x="600" y="105" font-size="18" fill="#94a3b8" font-style="italic">|ψ⟩ = cos(θ/2)|0⟩ + e^(iφ) sin(θ/2)|1⟩</text>
+  </g>
+
+  <!-- Center of Bloch Sphere at (600, 480), Radius R = 260 -->
+  <g id="bloch-sphere-system">
+
+    <!-- Outer Sphere Rim -->
+    <circle cx="600" cy="480" r="260" fill="url(#sphere-grad)" stroke="#38bdf8" stroke-width="2.5" stroke-opacity="0.7"/>
+
+    <!-- Latitude / Equator Grid Back (Dashed) -->
+    <path d="M 340 480 A 260 85 0 0 1 860 480" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="6,6" stroke-opacity="0.6"/>
+    <!-- Prime Meridian Back (Dashed) -->
+    <path d="M 600 220 A 90 260 0 0 0 600 740" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,5" stroke-opacity="0.4"/>
+
+    <!-- NEGATIVE AXES (Back) -->
+    <!-- -z axis (pointing down) -->
+    <line x1="600" y1="480" x2="600" y2="790" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5"/>
+    <!-- -y axis (pointing left-up behind) -->
+    <line x1="600" y1="480" x2="270" y2="480" stroke="#64748b" stroke-width="1.8" stroke-dasharray="5,5"/>
+    <!-- -x axis (pointing back right) -->
+    <line x1="600" y1="480" x2="775" y2="385" stroke="#64748b" stroke-width="1.8" stroke-dasharray="5,5"/>
+
+    <!-- PROJECTION ON EQUATORIAL PLANE (xy-plane) -->
+    <!-- Projection Point on xy-plane: say phi = 55 deg, r_proj = 260 * sin(42 deg) ~ 174 -->
+    <!-- (x_proj, y_proj) on 2D projected plane: x along (-cos 30, sin 30), y along (1, 0) -->
+    <!-- Target psi coords: cx=600, cy=480, let psi = (745, 310), proj = (745, 530) -->
+    <line x1="600" y1="480" x2="735" y2="532" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,4"/>
+    <line x1="735" y1="532" x2="735" y2="315" stroke="#f43f5e" stroke-width="2" stroke-dasharray="4,4"/>
+    <!-- Projection Foot Dot -->
+    <circle cx="735" cy="532" r="4" fill="#fbbf24"/>
+
+    <!-- Angle phi arc on xy-plane -->
+    <!-- from x-axis direction (475, 550) to projection line (735, 532) -->
+    <path d="M 525 522 A 130 50 0 0 0 680 510" fill="none" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arrow-angle-phi)"/>
+    <text x="590" y="555" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#fbbf24" font-style="italic">φ</text>
+
+    <!-- POSITIVE AXES (Front) -->
+    <!-- +x axis (pointing forward-left at ~ 210 deg in 3D, projected down-left) -->
+    <line x1="600" y1="480" x2="430" y2="575" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow-axis)"/>
+    <text x="410" y="605" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#cbd5e1">x</text>
+
+    <!-- +y axis (pointing right along equator) -->
+    <line x1="600" y1="480" x2="930" y2="480" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow-axis)"/>
+    <text x="955" y="488" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#cbd5e1">y</text>
+
+    <!-- +z axis (pointing straight up) -->
+    <line x1="600" y1="480" x2="600" y2="155" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow-axis)"/>
+    <text x="600" y="140" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#cbd5e1" text-anchor="middle">z</text>
+
+    <!-- Equator Front (Solid) -->
+    <path d="M 340 480 A 260 85 0 0 0 860 480" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-opacity="0.85"/>
+    <!-- Prime Meridian Front (Solid) -->
+    <path d="M 600 220 A 90 260 0 0 1 600 740" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-opacity="0.5"/>
+
+    <!-- Angle theta arc (from +z axis to state vector |psi>) -->
+    <path d="M 600 375 A 105 105 0 0 1 658 395" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow-angle)"/>
+    <text x="640" y="365" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#38bdf8" font-style="italic">θ</text>
+
+    <!-- STATE VECTOR |psi> -->
+    <g filter="url(#vector-glow)">
+      <line x1="600" y1="480" x2="733" y2="317" stroke="#f43f5e" stroke-width="4.5" marker-end="url(#arrow-vector)"/>
+      <circle cx="735" cy="315" r="6" fill="#f43f5e" stroke="#fff" stroke-width="2"/>
+    </g>
+    <!-- Label |psi> -->
+    <g font-family="system-ui, sans-serif">
+      <rect x="748" y="275" width="70" height="36" rx="6" fill="#1e293b" stroke="#f43f5e" stroke-width="1.5"/>
+      <text x="783" y="300" font-size="20" font-weight="700" fill="#f43f5e" text-anchor="middle">|ψ⟩</text>
+    </g>
+
+    <!-- STANDARD BASIS STATES LABELS -->
+    <!-- North Pole: |0> -->
+    <circle cx="600" cy="220" r="5" fill="#38bdf8"/>
+    <rect x="615" y="200" width="48" height="30" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="639" y="222" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#38bdf8" text-anchor="middle">|0⟩</text>
+
+    <!-- South Pole: |1> -->
+    <circle cx="600" cy="740" r="5" fill="#38bdf8"/>
+    <rect x="615" y="730" width="48" height="30" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="639" y="752" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#38bdf8" text-anchor="middle">|1⟩</text>
+
+    <!-- Equatorial States: |+> along +x, |-> along -x, |+i> along +y, |-i> along -y -->
+    <!-- |+> (forward left) -->
+    <circle cx="475" cy="550" r="4.5" fill="#a5b4fc"/>
+    <text x="460" y="580" font-family="system-ui, sans-serif" font-size="17" font-weight="600" fill="#a5b4fc">|+⟩</text>
+
+    <!-- |+i> (right) -->
+    <circle cx="860" cy="480" r="4.5" fill="#a5b4fc"/>
+    <text x="872" y="472" font-family="system-ui, sans-serif" font-size="17" font-weight="600" fill="#a5b4fc">|+i⟩</text>
+
+    <!-- Origin O Dot -->
+    <circle cx="600" cy="480" r="4" fill="#94a3b8"/>
+
+  </g>
+
+  <!-- Legend Box (Bottom Left) -->
+  <g transform="translate(80, 710)" font-family="system-ui, sans-serif">
+    <rect width="250" height="130" rx="10" fill="#1e293b" fill-opacity="0.9" stroke="#334155" stroke-width="1.5"/>
+    <text x="18" y="28" font-size="15" font-weight="700" fill="#f8fafc">Coordinates:</text>
+    <text x="18" y="55" font-size="14" fill="#94a3b8">θ ∈ [0, π] (polar angle)</text>
+    <text x="18" y="80" font-size="14" fill="#94a3b8">φ ∈ [0, 2π) (azimuth angle)</text>
+    <text x="18" y="106" font-size="14" fill="#38bdf8">Radius: r = 1 (pure states)</text>
+  </g>
+</svg>

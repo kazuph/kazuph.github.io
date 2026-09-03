@@ -1,0 +1,270 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background & Metallic Gradients -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#edf2f7"/>
+    </linearGradient>
+
+    <linearGradient id="baseMetal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="50%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <linearGradient id="linkWhite" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+
+    <linearGradient id="jointOrange" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="50%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+
+    <linearGradient id="jointDark" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="50%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Arrow Markers -->
+    <marker id="rotArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ea580c"/>
+    </marker>
+    <marker id="rotArrowBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#2563eb"/>
+    </marker>
+
+    <!-- Drop Shadow -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <filter id="floorShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bgGrad)"/>
+  <rect x="40" y="30" width="1120" height="840" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="600" y="75" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">7軸ロボットアームとその軸の説明 (7-DOF Articulated Robotic Arm)</text>
+  <text x="600" y="105" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15" fill="#64748b" text-anchor="middle">Kinematic Chain: J1 to J7 Joint Axes, Degrees of Freedom &amp; Motion Directions</text>
+
+  <!-- Floor Grid & Pedestal Shadow -->
+  <ellipse cx="420" cy="780" rx="220" ry="45" fill="#64748b" opacity="0.25" filter="url(#floorShadow)"/>
+  <ellipse cx="420" cy="780" rx="140" ry="25" fill="#334155" opacity="0.35" filter="url(#floorShadow)"/>
+
+  <!-- MAIN ROBOT ARM ASSEMBLY -->
+  <g id="robot-assembly" filter="url(#shadow)">
+
+    <!-- ==================== BASE (Stationary Mounting Base) ==================== -->
+    <g id="base-pedestal">
+      <!-- Lower Flange Mount -->
+      <ellipse cx="420" cy="760" rx="130" ry="32" fill="url(#baseMetal)" stroke="#0f172a" stroke-width="2"/>
+      <path d="M 290,760 L 290,720 A 130,32 0 0,1 550,720 L 550,760 A 130,32 0 0,0 290,760 Z" fill="url(#baseMetal)" stroke="#0f172a" stroke-width="2"/>
+      <ellipse cx="420" cy="720" rx="130" ry="32" fill="#475569" stroke="#0f172a" stroke-width="2"/>
+      <!-- Bolt holes on base flange -->
+      <circle cx="320" cy="725" r="5" fill="#1e293b"/>
+      <circle cx="365" cy="742" r="5" fill="#1e293b"/>
+      <circle cx="475" cy="742" r="5" fill="#1e293b"/>
+      <circle cx="520" cy="725" r="5" fill="#1e293b"/>
+    </g>
+
+    <!-- ==================== J1: BASE YAW (Rotation about Z) ==================== -->
+    <g id="joint-1">
+      <!-- Joint 1 Cylindrical Turntable -->
+      <path d="M 345,710 L 345,630 A 75,22 0 0,1 495,630 L 495,710 A 75,22 0 0,0 345,710 Z" fill="url(#jointDark)" stroke="#0f172a" stroke-width="2"/>
+      <ellipse cx="420" cy="630" rx="75" ry="22" fill="#64748b" stroke="#0f172a" stroke-width="2"/>
+      <!-- J1 Rotation Arrow (Yaw around Z) -->
+      <path d="M 330,660 A 90,26 0 0,0 510,660" fill="none" stroke="#ea580c" stroke-width="3.5" marker-end="url(#rotArrow)"/>
+    </g>
+
+    <!-- ==================== LINK 1 & J2: SHOULDER PITCH ==================== -->
+    <g id="joint-2">
+      <!-- Shoulder Housing -->
+      <path d="M 370,625 L 350,510 L 450,510 L 470,625 Z" fill="url(#linkWhite)" stroke="#334155" stroke-width="2"/>
+      <!-- J2 Horizontal Joint Drum (Pitch Axis at X=400, Y=510) -->
+      <g transform="translate(400, 510)">
+        <ellipse cx="0" cy="0" rx="42" ry="42" fill="url(#jointOrange)" stroke="#0f172a" stroke-width="2.5"/>
+        <circle cx="0" cy="0" r="16" fill="#1e293b"/>
+        <circle cx="0" cy="0" r="6" fill="#f8fafc"/>
+        <!-- J2 Pitch Rotation Arrow -->
+        <path d="M -28,-30 A 45,45 0 0,1 35,-20" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#rotArrow)"/>
+      </g>
+    </g>
+
+    <!-- ==================== LINK 2 & J3: UPPER ARM ROLL ==================== -->
+    <!-- Link 2 extending from Shoulder (400, 510) to Elbow (580, 340) -->
+    <g id="joint-3">
+      <!-- Upper Arm Link -->
+      <path d="M 390,490 L 530,360 L 565,395 L 425,525 Z" fill="url(#linkWhite)" stroke="#334155" stroke-width="2"/>
+      <!-- J3 Roll Joint Swivel Collar (at center of Link 2: 475, 425) -->
+      <g transform="translate(475, 425) rotate(-38)">
+        <rect x="-18" y="-30" width="36" height="60" rx="6" fill="url(#jointDark)" stroke="#0f172a" stroke-width="2"/>
+        <!-- Roll Rotation Arrow around link axis -->
+        <path d="M -15,-38 A 20,40 0 0,1 -15,38" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#rotArrow)"/>
+      </g>
+    </g>
+
+    <!-- ==================== J4: ELBOW PITCH ==================== -->
+    <!-- Elbow Joint position: (570, 350) -->
+    <g id="joint-4">
+      <!-- Elbow Housing Drum -->
+      <ellipse cx="570" cy="350" rx="38" ry="38" fill="url(#jointOrange)" stroke="#0f172a" stroke-width="2.5"/>
+      <circle cx="570" cy="350" r="15" fill="#1e293b"/>
+      <circle cx="570" cy="350" r="6" fill="#f8fafc"/>
+      <!-- J4 Pitch Rotation Arrow -->
+      <path d="M 545,315 A 40,40 0 0,1 605,325" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#rotArrow)"/>
+    </g>
+
+    <!-- ==================== LINK 3 & J5: FOREARM ROLL ==================== -->
+    <!-- Forearm extending from Elbow (570, 350) down-right to Wrist (760, 430) -->
+    <g id="joint-5">
+      <!-- Forearm Link Tube -->
+      <path d="M 585,335 L 750,405 L 735,445 L 565,375 Z" fill="url(#linkWhite)" stroke="#334155" stroke-width="2"/>
+      <!-- J5 Roll Joint Ring (at center of Forearm: 660, 390) -->
+      <g transform="translate(655, 390) rotate(22)">
+        <rect x="-16" y="-26" width="32" height="52" rx="5" fill="url(#jointDark)" stroke="#0f172a" stroke-width="2"/>
+        <!-- Roll Rotation Arrow -->
+        <path d="M -12,-34 A 18,36 0 0,1 -12,34" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#rotArrow)"/>
+      </g>
+    </g>
+
+    <!-- ==================== J6: WRIST PITCH ==================== -->
+    <!-- Wrist Joint position: (760, 430) -->
+    <g id="joint-6">
+      <ellipse cx="760" cy="430" rx="32" ry="32" fill="url(#jointOrange)" stroke="#0f172a" stroke-width="2.5"/>
+      <circle cx="760" cy="430" r="12" fill="#1e293b"/>
+      <circle cx="760" cy="430" r="5" fill="#f8fafc"/>
+      <!-- J6 Pitch Rotation Arrow -->
+      <path d="M 735,405 A 34,34 0 0,1 785,410" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#rotArrow)"/>
+    </g>
+
+    <!-- ==================== LINK 4 & J7: TOOL FLANGE ROLL ==================== -->
+    <g id="joint-7">
+      <!-- Short Tool Wrist Extension extending down-right (830, 465) -->
+      <path d="M 780,415 L 840,445 L 825,480 L 765,450 Z" fill="url(#linkWhite)" stroke="#334155" stroke-width="2"/>
+      <!-- J7 Roll Collar (810, 450) -->
+      <g transform="translate(805, 450) rotate(26)">
+        <rect x="-12" y="-22" width="24" height="44" rx="4" fill="url(#jointDark)" stroke="#0f172a" stroke-width="2"/>
+        <!-- Roll Rotation Arrow -->
+        <path d="M -10,-28 A 15,30 0 0,1 -10,28" fill="none" stroke="#ea580c" stroke-width="2.8" marker-end="url(#rotArrow)"/>
+      </g>
+    </g>
+
+    <!-- ==================== END EFFECTOR (2-Finger Gripper & Workpiece) ==================== -->
+    <g id="end-effector" transform="translate(840, 465) rotate(26)">
+      <!-- Gripper Base Plate -->
+      <rect x="0" y="-25" width="25" height="50" rx="4" fill="#334155" stroke="#0f172a" stroke-width="2"/>
+      <!-- Left Finger -->
+      <path d="M 25,-20 L 55,-20 L 65,-12 L 65,-6 L 35,-6 L 25,-12 Z" fill="#64748b" stroke="#0f172a" stroke-width="1.5"/>
+      <!-- Right Finger -->
+      <path d="M 25,20 L 55,20 L 65,12 L 65,6 L 35,6 L 25,12 Z" fill="#64748b" stroke="#0f172a" stroke-width="1.5"/>
+      <!-- Rubber Grip Pads -->
+      <rect x="52" y="-12" width="12" height="6" fill="#0284c7"/>
+      <rect x="52" y="6" width="12" height="6" fill="#0284c7"/>
+      <!-- Gripped Cylindrical Workpiece -->
+      <rect x="55" y="-6" width="30" height="12" rx="3" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/>
+    </g>
+  </g>
+
+  <!-- ==================== CALLOUT BADGES & LEADER LINES (J1 - J7) ==================== -->
+  <!-- J1: Base Yaw -->
+  <line x1="420" y1="630" x2="230" y2="670" stroke="#0284c7" stroke-width="1.8"/>
+  <circle cx="420" cy="630" r="4" fill="#0284c7"/>
+  <g transform="translate(110, 650)">
+    <rect x="0" y="0" width="160" height="42" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="8" y="8" width="32" height="26" rx="4" fill="#0284c7"/>
+    <text x="24" y="26" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">J1</text>
+    <text x="50" y="20" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Base Yaw (旋回)</text>
+    <text x="50" y="34" font-family="sans-serif" font-size="10" fill="#64748b">Z-axis rotation: ±170°</text>
+  </g>
+
+  <!-- J2: Shoulder Pitch -->
+  <line x1="400" y1="510" x2="230" y2="490" stroke="#0284c7" stroke-width="1.8"/>
+  <circle cx="400" cy="510" r="4" fill="#0284c7"/>
+  <g transform="translate(110, 470)">
+    <rect x="0" y="0" width="160" height="42" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="8" y="8" width="32" height="26" rx="4" fill="#0284c7"/>
+    <text x="24" y="26" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">J2</text>
+    <text x="50" y="20" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Shoulder Pitch</text>
+    <text x="50" y="34" font-family="sans-serif" font-size="10" fill="#64748b">肩部前後屈伸: ±120°</text>
+  </g>
+
+  <!-- J3: Upper Arm Roll -->
+  <line x1="475" y1="425" x2="290" y2="340" stroke="#0284c7" stroke-width="1.8"/>
+  <circle cx="475" cy="425" r="4" fill="#0284c7"/>
+  <g transform="translate(160, 320)">
+    <rect x="0" y="0" width="165" height="42" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="8" y="8" width="32" height="26" rx="4" fill="#0284c7"/>
+    <text x="24" y="26" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">J3</text>
+    <text x="50" y="20" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Arm Roll (上腕ロール)</text>
+    <text x="50" y="34" font-family="sans-serif" font-size="10" fill="#64748b">軸回転 (冗長軸): ±170°</text>
+  </g>
+
+  <!-- J4: Elbow Pitch -->
+  <line x1="570" y1="350" x2="570" y2="210" stroke="#0284c7" stroke-width="1.8"/>
+  <circle cx="570" cy="350" r="4" fill="#0284c7"/>
+  <g transform="translate(490, 190)">
+    <rect x="0" y="0" width="160" height="42" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="8" y="8" width="32" height="26" rx="4" fill="#0284c7"/>
+    <text x="24" y="26" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">J4</text>
+    <text x="50" y="20" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Elbow Pitch (肘屈伸)</text>
+    <text x="50" y="34" font-family="sans-serif" font-size="10" fill="#64748b">肘部ピッチ曲げ: ±120°</text>
+  </g>
+
+  <!-- J5: Forearm Roll -->
+  <line x1="655" y1="390" x2="770" y2="290" stroke="#0284c7" stroke-width="1.8"/>
+  <circle cx="655" cy="390" r="4" fill="#0284c7"/>
+  <g transform="translate(740, 270)">
+    <rect x="0" y="0" width="165" height="42" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="8" y="8" width="32" height="26" rx="4" fill="#0284c7"/>
+    <text x="24" y="26" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">J5</text>
+    <text x="50" y="20" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Forearm Roll (前腕)</text>
+    <text x="50" y="34" font-family="sans-serif" font-size="10" fill="#64748b">前腕軸ねじり回転: ±170°</text>
+  </g>
+
+  <!-- J6: Wrist Pitch -->
+  <line x1="760" y1="430" x2="920" y2="390" stroke="#0284c7" stroke-width="1.8"/>
+  <circle cx="760" cy="430" r="4" fill="#0284c7"/>
+  <g transform="translate(900, 370)">
+    <rect x="0" y="0" width="160" height="42" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="8" y="8" width="32" height="26" rx="4" fill="#0284c7"/>
+    <text x="24" y="26" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">J6</text>
+    <text x="50" y="20" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Wrist Pitch (手首)</text>
+    <text x="50" y="34" font-family="sans-serif" font-size="10" fill="#64748b">手首チルト屈伸: ±120°</text>
+  </g>
+
+  <!-- J7: Tool Flange Roll -->
+  <line x1="805" y1="450" x2="940" y2="475" stroke="#0284c7" stroke-width="1.8"/>
+  <circle cx="805" cy="450" r="4" fill="#0284c7"/>
+  <g transform="translate(920, 455)">
+    <rect x="0" y="0" width="160" height="42" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)"/>
+    <rect x="8" y="8" width="32" height="26" rx="4" fill="#0284c7"/>
+    <text x="24" y="26" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">J7</text>
+    <text x="50" y="20" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Tool Roll (手先回転)</text>
+    <text x="50" y="34" font-family="sans-serif" font-size="10" fill="#64748b">フランジ無限回転/±175°</text>
+  </g>
+
+  <!-- End Effector Callout -->
+  <line x1="910" y1="500" x2="960" y2="570" stroke="#16a34a" stroke-width="1.8"/>
+  <circle cx="910" cy="500" r="4" fill="#16a34a"/>
+  <g transform="translate(940, 560)">
+    <rect x="0" y="0" width="170" height="42" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="15" y="20" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#15803d">End Effector (Gripper)</text>
+    <text x="15" y="34" font-family="sans-serif" font-size="10" fill="#166534">ワーク保持用2爪グリッパ</text>
+  </g>
+
+  <!-- KINEMATICS EXPLANATION TABLE (Bottom) -->
+  <g transform="translate(100, 730)">
+    <rect x="0" y="0" width="1000" height="85" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="500" y="25" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">7軸（7-DOF）マニピュレータの特長：冗長自由度（Kinematic Redundancy）</text>
+    <text x="40" y="52" font-family="-apple-system, sans-serif" font-size="12" fill="#334155">• 人間の腕と同じ自由度構成（肩3軸 + 肘1軸 + 手首3軸）を持ち、手先位置・姿勢（6自由度）を維持したまま肘の高さや向きを変更可能</text>
+    <text x="40" y="72" font-family="-apple-system, sans-serif" font-size="12" fill="#334155">• 障害物回避、特異点回避、狭所進入作業などの高度な制御が容易に行える</text>
+  </g>
+</svg>

@@ -1,0 +1,247 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background & Block Gradients -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+
+    <!-- Attention Block (Orange) -->
+    <linearGradient id="mhaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="100%" stop-color="#fdba74"/>
+    </linearGradient>
+
+    <!-- Feed Forward Block (Sky Blue) -->
+    <linearGradient id="ffnGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bae6fd"/>
+      <stop offset="100%" stop-color="#7dd3fc"/>
+    </linearGradient>
+
+    <!-- Add & Norm Block (Yellow/Amber) -->
+    <linearGradient id="normGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#fde047"/>
+    </linearGradient>
+
+    <!-- Embedding Block (Rose/Pink) -->
+    <linearGradient id="embedGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fbcfe8"/>
+      <stop offset="100%" stop-color="#f472b6"/>
+    </linearGradient>
+
+    <!-- Softmax / Linear (Green) -->
+    <linearGradient id="linearGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bbf7d0"/>
+      <stop offset="100%" stop-color="#86efac"/>
+    </linearGradient>
+
+    <!-- Arrow Markers -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155"/>
+    </marker>
+    <marker id="arrowResidual" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowCross" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ea580c"/>
+    </marker>
+
+    <!-- Shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="900" fill="url(#bgGrad)"/>
+  <rect x="40" y="25" width="1120" height="850" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="600" y="65" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="26" font-weight="700" fill="#0f172a" text-anchor="middle">Transformer アーキテクチャ図 (Attention Is All You Need)</text>
+  <text x="600" y="92" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="14" fill="#64748b" text-anchor="middle">Canonical Encoder-Decoder Architecture with Residual Connections &amp; Multi-Head Attention</text>
+
+  <!-- ==================== LEFT: ENCODER STACK ==================== -->
+  <!-- Encoder Outer Dashed Bounding Box -->
+  <g id="encoder-stack">
+    <rect x="180" y="220" width="340" height="470" rx="16" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8,6"/>
+    <!-- Stack N× Badge -->
+    <rect x="145" y="435" width="55" height="40" rx="8" fill="#334155"/>
+    <text x="172" y="460" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">N×</text>
+
+    <text x="350" y="205" font-family="-apple-system, sans-serif" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">Encoder (エンコーダ)</text>
+
+    <!-- Inputs & Embedding (Below Stack) -->
+    <text x="350" y="855" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#334155" text-anchor="middle">Inputs (入力系列)</text>
+    <line x1="350" y1="835" x2="350" y2="795" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Input Embedding -->
+    <rect x="230" y="750" width="240" height="45" rx="8" fill="url(#embedGrad)" stroke="#db2777" stroke-width="1.8" filter="url(#shadow)"/>
+    <text x="350" y="778" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#831843" text-anchor="middle">Input Embedding</text>
+    <line x1="350" y1="750" x2="350" y2="725" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Positional Encoding Addition Circle -->
+    <circle cx="350" cy="710" r="14" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="350" y="715" font-family="sans-serif" font-size="18" font-weight="700" fill="#334155" text-anchor="middle">+</text>
+
+    <!-- Positional Encoding Label & Wave -->
+    <circle cx="210" cy="710" r="24" fill="#ffffff" stroke="#9333ea" stroke-width="1.5" filter="url(#shadow)"/>
+    <path d="M 196,710 Q 203,700 210,710 T 224,710" fill="none" stroke="#9333ea" stroke-width="2.5"/>
+    <text x="210" y="748" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#7e22ce" text-anchor="middle">Positional Encoding</text>
+    <line x1="234" y1="710" x2="336" y2="710" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Arrow from + to Encoder stack -->
+    <line x1="350" y1="696" x2="350" y2="640" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- 1. Multi-Head Attention (Encoder) -->
+    <!-- Residual Branch Point below MHA -->
+    <circle cx="350" cy="655" r="4" fill="#334155"/>
+    <rect x="230" y="580" width="240" height="50" rx="8" fill="url(#mhaGrad)" stroke="#ea580c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="350" y="610" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#9a3412" text-anchor="middle">Multi-Head Attention</text>
+
+    <line x1="350" y1="580" x2="350" y2="545" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Add & Norm 1 -->
+    <rect x="230" y="495" width="240" height="50" rx="8" fill="url(#normGrad)" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+    <text x="350" y="525" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#854d0e" text-anchor="middle">Add &amp; Norm</text>
+
+    <!-- Residual Connection 1 (Curving left around MHA) -->
+    <path d="M 350,655 L 205,655 L 205,520 L 230,520" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowResidual)"/>
+
+    <line x1="350" y1="495" x2="350" y2="455" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- 2. Feed Forward -->
+    <!-- Residual Branch Point below FFN -->
+    <circle cx="350" cy="465" r="4" fill="#334155"/>
+    <rect x="230" y="390" width="240" height="50" rx="8" fill="url(#ffnGrad)" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+    <text x="350" y="420" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#075985" text-anchor="middle">Feed Forward</text>
+
+    <line x1="350" y1="390" x2="350" y2="355" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Add & Norm 2 -->
+    <rect x="230" y="305" width="240" height="50" rx="8" fill="url(#normGrad)" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+    <text x="350" y="335" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#854d0e" text-anchor="middle">Add &amp; Norm</text>
+
+    <!-- Residual Connection 2 (Curving left around FFN) -->
+    <path d="M 350,465 L 205,465 L 205,330 L 230,330" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowResidual)"/>
+  </g>
+
+  <!-- ==================== CROSS-ATTENTION LINK (ENCODER -> DECODER) ==================== -->
+  <!-- Encoder Output Line going up and right into Decoder Cross-Attention -->
+  <path d="M 350,305 L 350,255 L 610,255 L 610,430 L 720,430" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#arrowCross)"/>
+  <rect x="525" y="240" width="160" height="24" rx="4" fill="#fff7ed" stroke="#fdba74" stroke-width="1.2"/>
+  <text x="605" y="257" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ea580c" text-anchor="middle">Key (K), Value (V)</text>
+
+  <!-- ==================== RIGHT: DECODER STACK ==================== -->
+  <!-- Decoder Outer Dashed Bounding Box -->
+  <g id="decoder-stack">
+    <rect x="680" y="220" width="340" height="550" rx="16" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8,6"/>
+    <!-- Stack N× Badge -->
+    <rect x="1005" y="475" width="55" height="40" rx="8" fill="#334155"/>
+    <text x="1032" y="500" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">N×</text>
+
+    <text x="850" y="205" font-family="-apple-system, sans-serif" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">Decoder (デコーダ)</text>
+
+    <!-- Outputs & Embedding (Below Stack) -->
+    <text x="850" y="855" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#334155" text-anchor="middle">Outputs (shifted right)</text>
+    <line x1="850" y1="835" x2="850" y2="815" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Output Embedding -->
+    <rect x="730" y="770" width="240" height="45" rx="8" fill="url(#embedGrad)" stroke="#db2777" stroke-width="1.8" filter="url(#shadow)"/>
+    <text x="850" y="798" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#831843" text-anchor="middle">Output Embedding</text>
+    <line x1="850" y1="770" x2="850" y2="745" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Positional Encoding Addition Circle -->
+    <circle cx="850" cy="730" r="14" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="850" y="735" font-family="sans-serif" font-size="18" font-weight="700" fill="#334155" text-anchor="middle">+</text>
+
+    <!-- Positional Encoding Label & Wave -->
+    <circle cx="990" cy="730" r="24" fill="#ffffff" stroke="#9333ea" stroke-width="1.5" filter="url(#shadow)"/>
+    <path d="M 976,730 Q 983,720 990,730 T 1004,730" fill="none" stroke="#9333ea" stroke-width="2.5"/>
+    <text x="990" y="768" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#7e22ce" text-anchor="middle">Positional Encoding</text>
+    <line x1="966" y1="730" x2="864" y2="730" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Arrow from + to Decoder stack -->
+    <line x1="850" y1="716" x2="850" y2="685" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- 1. Masked Multi-Head Attention (Self-Attention) -->
+    <circle cx="850" cy="700" r="4" fill="#334155"/>
+    <rect x="730" y="635" width="240" height="50" rx="8" fill="url(#mhaGrad)" stroke="#ea580c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="850" y="665" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#9a3412" text-anchor="middle">Masked Multi-Head Attention</text>
+
+    <line x1="850" y1="635" x2="850" y2="600" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Add & Norm 1 (Decoder) -->
+    <rect x="730" y="550" width="240" height="50" rx="8" fill="url(#normGrad)" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+    <text x="850" y="580" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#854d0e" text-anchor="middle">Add &amp; Norm</text>
+
+    <!-- Residual 1 (Curving right) -->
+    <path d="M 850,700 L 995,700 L 995,575 L 970,575" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowResidual)"/>
+
+    <line x1="850" y1="550" x2="850" y2="475" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- 2. Multi-Head Attention (Cross-Attention) -->
+    <circle cx="850" cy="495" r="4" fill="#334155"/>
+    <rect x="730" y="415" width="240" height="50" rx="8" fill="url(#mhaGrad)" stroke="#ea580c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="850" y="445" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#9a3412" text-anchor="middle">Multi-Head (Cross) Attention</text>
+    <text x="760" y="480" font-family="sans-serif" font-size="10" font-weight="600" fill="#ea580c">Query (Q)</text>
+
+    <line x1="850" y1="415" x2="850" y2="380" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Add & Norm 2 (Decoder) -->
+    <rect x="730" y="330" width="240" height="50" rx="8" fill="url(#normGrad)" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+    <text x="850" y="360" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#854d0e" text-anchor="middle">Add &amp; Norm</text>
+
+    <!-- Residual 2 (Curving right) -->
+    <path d="M 850,495 L 995,495 L 995,355 L 970,355" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowResidual)"/>
+
+    <line x1="850" y1="330" x2="850" y2="295" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- 3. Feed Forward (Decoder) -->
+    <circle cx="850" cy="308" r="4" fill="#334155"/>
+    <rect x="730" y="245" width="240" height="50" rx="8" fill="url(#ffnGrad)" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+    <text x="850" y="275" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#075985" text-anchor="middle">Feed Forward</text>
+
+    <line x1="850" y1="245" x2="850" y2="210" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Add & Norm 3 (Decoder) -->
+    <rect x="730" y="160" width="240" height="50" rx="8" fill="url(#normGrad)" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+    <text x="850" y="190" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#854d0e" text-anchor="middle">Add &amp; Norm</text>
+
+    <!-- Residual 3 (Curving right) -->
+    <path d="M 850,308 L 995,308 L 995,185 L 970,185" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowResidual)"/>
+  </g>
+
+  <!-- ==================== TOP: LINEAR, SOFTMAX & PROBABILITIES ==================== -->
+  <g id="output-stage">
+    <line x1="850" y1="160" x2="850" y2="120" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Linear Layer -->
+    <rect x="750" y="80" width="200" height="40" rx="8" fill="url(#linearGrad)" stroke="#16a34a" stroke-width="1.8" filter="url(#shadow)"/>
+    <text x="850" y="105" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#15803d" text-anchor="middle">Linear</text>
+
+    <line x1="850" y1="80" x2="850" y2="55" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Softmax Layer -->
+    <rect x="750" y="20" width="200" height="35" rx="8" fill="url(#linearGrad)" stroke="#16a34a" stroke-width="1.8" filter="url(#shadow)"/>
+    <text x="850" y="43" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#15803d" text-anchor="middle">Softmax</text>
+
+    <text x="850" y="5" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#0f172a" text-anchor="middle">Output Probabilities</text>
+  </g>
+
+  <!-- ==================== LEGEND / PAPER STYLE NOTE (Bottom Left) ==================== -->
+  <g transform="translate(70, 830)">
+    <rect x="0" y="0" width="460" height="40" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <circle cx="20" cy="20" r="7" fill="#fdba74"/>
+    <text x="35" y="24" font-family="sans-serif" font-size="11" font-weight="600" fill="#334155">Attention</text>
+
+    <circle cx="115" cy="20" r="7" fill="#7dd3fc"/>
+    <text x="130" y="24" font-family="sans-serif" font-size="11" font-weight="600" fill="#334155">Feed Forward</text>
+
+    <circle cx="230" cy="20" r="7" fill="#fde047"/>
+    <text x="245" y="24" font-family="sans-serif" font-size="11" font-weight="600" fill="#334155">Add &amp; Norm</text>
+
+    <circle cx="340" cy="20" r="7" fill="#f472b6"/>
+    <text x="355" y="24" font-family="sans-serif" font-size="11" font-weight="600" fill="#334155">Embedding</text>
+  </g>
+</svg>

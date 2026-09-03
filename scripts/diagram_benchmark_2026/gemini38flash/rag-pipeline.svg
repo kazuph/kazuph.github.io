@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background & Gradients -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+
+    <linearGradient id="ingestGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3e8ff"/>
+      <stop offset="100%" stop-color="#e9d5ff"/>
+    </linearGradient>
+
+    <linearGradient id="queryGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+
+    <linearGradient id="dbGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+
+    <linearGradient id="llmGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dcfce7"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </linearGradient>
+
+    <!-- Arrow Markers -->
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#9333ea"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#d97706"/>
+    </marker>
+
+    <!-- Drop Shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="900" fill="url(#bgGrad)"/>
+  <rect x="40" y="30" width="1120" height="840" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="600" y="75" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle">RAG パイプライン構成図 (Retrieval-Augmented Generation)</text>
+  <text x="600" y="105" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15" fill="#64748b" text-anchor="middle">Offline Document Ingestion &amp; Indexing vs. Online Retrieval &amp; Generation</text>
+
+  <!-- ==================== LANE 1: OFFLINE DOCUMENT INGESTION (Top) ==================== -->
+  <g id="lane-offline">
+    <rect x="70" y="140" width="1060" height="230" rx="14" fill="#faf5ff" stroke="#c084fc" stroke-width="1.8" stroke-dasharray="8,5"/>
+    <rect x="90" y="125" width="260" height="30" rx="6" fill="#9333ea"/>
+    <text x="220" y="145" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">事前処理 (Offline Document Indexing)</text>
+
+    <!-- 1. Raw Knowledge Documents -->
+    <g transform="translate(100, 185)" filter="url(#shadow)">
+      <rect x="0" y="0" width="140" height="120" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="15" y="15" width="30" height="38" rx="3" fill="#e2e8f0"/>
+      <rect x="25" y="25" width="30" height="38" rx="3" fill="#cbd5e1"/>
+      <text x="70" y="80" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">Raw Documents</text>
+      <text x="70" y="100" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">PDF, Docs, Web, DB</text>
+    </g>
+
+    <!-- Arrow 1 -> 2 -->
+    <line x1="240" y1="245" x2="285" y2="245" stroke="#9333ea" stroke-width="2.5" marker-end="url(#arrowPurple)"/>
+
+    <!-- 2. Chunking & Preprocessing -->
+    <g transform="translate(290, 185)" filter="url(#shadow)">
+      <rect x="0" y="0" width="150" height="120" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="25" y="20" width="100" height="18" rx="3" fill="#f3e8ff" stroke="#c084fc"/>
+      <rect x="25" y="44" width="100" height="18" rx="3" fill="#f3e8ff" stroke="#c084fc"/>
+      <text x="75" y="88" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">Chunking</text>
+      <text x="75" y="105" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">文書分割・メタデータ付与</text>
+    </g>
+
+    <!-- Arrow 2 -> 3 -->
+    <line x1="440" y1="245" x2="485" y2="245" stroke="#9333ea" stroke-width="2.5" marker-end="url(#arrowPurple)"/>
+
+    <!-- 3. Embedding Model (Offline) -->
+    <g transform="translate(490, 185)" filter="url(#shadow)">
+      <rect x="0" y="0" width="170" height="120" rx="10" fill="url(#ingestGrad)" stroke="#9333ea" stroke-width="2"/>
+      <text x="85" y="45" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#6b21a8" text-anchor="middle">Embedding Model</text>
+      <text x="85" y="70" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#581c87" text-anchor="middle">Text → Vectors</text>
+      <text x="85" y="95" font-family="-apple-system, sans-serif" font-size="11" fill="#7e22ce" text-anchor="middle">ベクトル埋め込み変換</text>
+    </g>
+
+    <!-- Arrow 3 -> Vector DB -->
+    <line x1="660" y1="245" x2="725" y2="245" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowPurple)"/>
+    <text x="692" y="235" font-family="sans-serif" font-size="11" font-weight="600" fill="#9333ea" text-anchor="middle">Index</text>
+
+    <!-- 4. Vector Database (Central Hub in Ingestion & Online) -->
+    <g transform="translate(735, 185)" filter="url(#shadow)">
+      <!-- Cylinder Body -->
+      <path d="M 10,30 L 10,130 A 80,25 0 0,0 170,130 L 170,30 Z" fill="url(#dbGrad)" stroke="#d97706" stroke-width="2"/>
+      <ellipse cx="90" cy="30" rx="80" ry="25" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <!-- Internal disks -->
+      <path d="M 10,65 A 80,25 0 0,0 170,65" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <path d="M 10,98 A 80,25 0 0,0 170,98" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- Database Label -->
+      <text x="90" y="80" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#92400e" text-anchor="middle">Vector DB</text>
+      <text x="90" y="100" font-family="sans-serif" font-size="11" fill="#b45309" text-anchor="middle">ANN Index / Vectors</text>
+    </g>
+  </g>
+
+  <!-- ==================== LANE 2: ONLINE QUERY & GENERATION (Bottom) ==================== -->
+  <g id="lane-online">
+    <rect x="70" y="400" width="1060" height="420" rx="14" fill="#f0fdf4" stroke="#86efac" stroke-width="1.8" stroke-dasharray="8,5"/>
+    <rect x="90" y="385" width="260" height="30" rx="6" fill="#16a34a"/>
+    <text x="220" y="405" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">オンライン検索・生成 (Online Query Flow)</text>
+
+    <!-- 1. User Query (Bottom Left) -->
+    <g transform="translate(100, 480)" filter="url(#shadow)">
+      <rect x="0" y="0" width="140" height="110" rx="10" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+      <circle cx="70" cy="35" r="18" fill="#e0f2fe"/>
+      <text x="70" y="41" font-family="sans-serif" font-size="18" text-anchor="middle">💬</text>
+      <text x="70" y="75" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#0369a1" text-anchor="middle">User Query</text>
+      <text x="70" y="95" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">ユーザーの質問</text>
+    </g>
+
+    <!-- Arrow User -> Query Embedding -->
+    <line x1="240" y1="535" x2="285" y2="535" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+
+    <!-- 2. Query Embedding -->
+    <g transform="translate(290, 480)" filter="url(#shadow)">
+      <rect x="0" y="0" width="160" height="110" rx="10" fill="url(#queryGrad)" stroke="#0284c7" stroke-width="2"/>
+      <text x="80" y="45" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#0369a1" text-anchor="middle">Query Embed</text>
+      <text x="80" y="70" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#0284c7" text-anchor="middle">Query Vector [q]</text>
+      <text x="80" y="92" font-family="-apple-system, sans-serif" font-size="11" fill="#0369a1" text-anchor="middle">質問のベクトル化</text>
+    </g>
+
+    <!-- Query Vector -> Vector DB (Search Arrow going up & right) -->
+    <path d="M 450,535 L 750,535 L 750,350" fill="none" stroke="#0284c7" stroke-width="3" marker-end="url(#arrowBlue)"/>
+    <rect x="520" y="520" width="160" height="26" rx="4" fill="#ffffff" stroke="#bae6fd" stroke-width="1.2"/>
+    <text x="600" y="538" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#0284c7" text-anchor="middle">Similarity Search (Top-K)</text>
+
+    <!-- Vector DB -> Retrieved Context Chunks (Arrow going down) -->
+    <path d="M 880,350 L 880,480" fill="none" stroke="#d97706" stroke-width="3" marker-end="url(#arrowAmber)"/>
+
+    <!-- 3. Retrieved Context Chunks Block -->
+    <g transform="translate(790, 485)" filter="url(#shadow)">
+      <rect x="0" y="0" width="180" height="100" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="90" y="32" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#92400e" text-anchor="middle">Retrieved Context</text>
+      <text x="90" y="55" font-family="-apple-system, sans-serif" font-size="12" fill="#78350f" text-anchor="middle">上位関連チャンク群</text>
+      <text x="90" y="80" font-family="sans-serif" font-size="11" fill="#b45309" text-anchor="middle">[Chunk 1, Chunk 2, ...]</text>
+    </g>
+
+    <!-- 4. Prompt Synthesis / Augmented Prompt -->
+    <!-- Direct link from User Query to Prompt Synthesis -->
+    <path d="M 170,590 L 170,710 L 450,710" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrowBlue)"/>
+    <text x="260" y="700" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#0284c7">Original User Query</text>
+
+    <!-- Context arrow to Prompt Synthesis -->
+    <path d="M 880,585 L 880,710 L 675,710" fill="none" stroke="#d97706" stroke-width="2.5" marker-end="url(#arrowAmber)"/>
+    <text x="770" y="700" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#d97706">Retrieved Knowledge</text>
+
+    <g transform="translate(460, 660)" filter="url(#shadow)">
+      <rect x="0" y="0" width="200" height="100" rx="10" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="100" y="32" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">Prompt Synthesis</text>
+      <text x="100" y="55" font-family="-apple-system, sans-serif" font-size="12" fill="#475569" text-anchor="middle">System + Context + Query</text>
+      <text x="100" y="80" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">拡張プロンプト構築</text>
+    </g>
+
+    <!-- Prompt -> LLM -->
+    <line x1="660" y1="710" x2="715" y2="710" stroke="#16a34a" stroke-width="3" marker-end="url(#arrowGreen)"/>
+
+    <!-- 5. Foundation LLM Generation -->
+    <g transform="translate(720, 650)" filter="url(#shadow)">
+      <rect x="0" y="0" width="160" height="120" rx="12" fill="url(#llmGrad)" stroke="#16a34a" stroke-width="2.5"/>
+      <circle cx="80" cy="38" r="16" fill="#ffffff"/>
+      <text x="80" y="44" font-family="sans-serif" font-size="16" text-anchor="middle">⚡</text>
+      <text x="80" y="78" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#15803d" text-anchor="middle">Foundation LLM</text>
+      <text x="80" y="98" font-family="-apple-system, sans-serif" font-size="11" fill="#166534" text-anchor="middle">大規模言語モデル</text>
+    </g>
+
+    <!-- LLM -> Grounded Answer -->
+    <line x1="880" y1="710" x2="940" y2="710" stroke="#16a34a" stroke-width="3.5" marker-end="url(#arrowGreen)"/>
+
+    <!-- 6. Grounded Answer Output -->
+    <g transform="translate(945, 655)" filter="url(#shadow)">
+      <rect x="0" y="0" width="160" height="110" rx="10" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+      <circle cx="80" cy="35" r="16" fill="#dcfce7"/>
+      <text x="80" y="42" font-family="sans-serif" font-size="16" text-anchor="middle">✅</text>
+      <text x="80" y="74" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#15803d" text-anchor="middle">Grounded Answer</text>
+      <text x="80" y="94" font-family="-apple-system, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">正確・根拠付き回答</text>
+    </g>
+  </g>
+
+  <!-- BOTTOM LEGEND BADGES -->
+  <g transform="translate(100, 835)">
+    <circle cx="30" cy="12" r="7" fill="#9333ea"/>
+    <text x="45" y="16" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">インジェスチョン (Offline)</text>
+
+    <circle cx="280" cy="12" r="7" fill="#0284c7"/>
+    <text x="295" y="16" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">リトリーバル (Search)</text>
+
+    <circle cx="530" cy="12" r="7" fill="#d97706"/>
+    <text x="545" y="16" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">ベクターDB (Index)</text>
+
+    <circle cx="780" cy="12" r="7" fill="#16a34a"/>
+    <text x="795" y="16" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">コンテキスト生成 (LLM)</text>
+  </g>
+</svg>

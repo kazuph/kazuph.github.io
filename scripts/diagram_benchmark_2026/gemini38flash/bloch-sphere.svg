@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background & Sphere Gradients -->
+    <radialGradient id="sphereGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#edf4fc" stop-opacity="0.8"/>
+      <stop offset="80%" stop-color="#cbe0f8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#9fc4ef" stop-opacity="0.45"/>
+    </radialGradient>
+
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#fcfdfd"/>
+      <stop offset="100%" stop-color="#f0f4f9"/>
+    </radialGradient>
+
+    <!-- Arrow Markers -->
+    <marker id="arrow-axis" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#2c3e50"/>
+    </marker>
+    <marker id="arrow-psi" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#d32f2f"/>
+    </marker>
+    <marker id="arrow-angle" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 2 L 7 5 L 0 8 z" fill="#0077b6"/>
+    </marker>
+
+    <!-- Drop Shadow -->
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="15" flood-color="#1e3a5f" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1200" height="900" fill="url(#bgGrad)"/>
+
+  <!-- Main Card Container -->
+  <rect x="50" y="40" width="1100" height="820" rx="24" fill="#ffffff" stroke="#e1e8f0" stroke-width="1.5" filter="url(#cardShadow)"/>
+
+  <!-- Header Title -->
+  <text x="600" y="95" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#1e293b" text-anchor="middle" letter-spacing="1">Bloch Sphere (ブロッホ球)</text>
+  <text x="600" y="125" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">Geometric representation of a two-level quantum state (qubit)</text>
+
+  <!-- MAIN BLOCH SPHERE PROJECTION -->
+  <!-- Center: (600, 480), Radius: 250 -->
+  <g id="bloch-sphere" transform="translate(0, 0)">
+
+    <!-- Sphere Fill & Boundary -->
+    <circle cx="600" cy="480" r="250" fill="url(#sphereGrad)" stroke="#334155" stroke-width="2.5"/>
+
+    <!-- Great Circles: Equator (XY Plane) -->
+    <!-- Back half (dashed) -->
+    <path d="M 350,480 A 250,75 0 0,1 850,480" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="6,5"/>
+    <!-- Front half (solid) -->
+    <path d="M 350,480 A 250,75 0 0,0 850,480" fill="none" stroke="#64748b" stroke-width="2"/>
+
+    <!-- Great Circles: Prime Meridian (XZ / YZ planes) -->
+    <!-- YZ Meridian (dashed back, solid front) -->
+    <path d="M 600,230 A 75,250 0 0,1 600,730" fill="none" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <path d="M 600,230 A 75,250 0 0,0 600,730" fill="none" stroke="#94a3b8" stroke-width="1.2"/>
+
+    <!-- AXES -->
+    <!-- Negative Z-Axis (-z, down) -->
+    <line x1="600" y1="480" x2="600" y2="790" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow-axis)"/>
+    <text x="600" y="825" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="20" font-weight="600" fill="#1e293b" text-anchor="middle">-z</text>
+    <text x="600" y="760" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="22" font-weight="700" fill="#2563eb" text-anchor="middle">|1⟩</text>
+
+    <!-- Negative X-Axis (-x, dashed into screen) -->
+    <line x1="600" y1="480" x2="740" y2="400" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5,4"/>
+
+    <!-- Negative Y-Axis (-y, left dashed) -->
+    <line x1="600" y1="480" x2="280" y2="480" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5,4"/>
+
+    <!-- Positive X-Axis (front-left) -->
+    <line x1="600" y1="480" x2="430" y2="580" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow-axis)"/>
+    <text x="410" y="605" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="22" font-weight="600" fill="#1e293b">x</text>
+    <text x="400" y="555" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="18" font-weight="600" fill="#475569">|+⟩</text>
+
+    <!-- Positive Y-Axis (right) -->
+    <line x1="600" y1="480" x2="920" y2="480" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow-axis)"/>
+    <text x="940" y="487" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="22" font-weight="600" fill="#1e293b">y</text>
+    <text x="880" y="465" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="18" font-weight="600" fill="#475569">|+i⟩</text>
+
+    <!-- Positive Z-Axis (+z, up) -->
+    <line x1="600" y1="480" x2="600" y2="160" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow-axis)"/>
+    <text x="600" y="145" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="22" font-weight="600" fill="#1e293b" text-anchor="middle">z</text>
+    <text x="600" y="215" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="22" font-weight="700" fill="#2563eb" text-anchor="middle">|0⟩</text>
+
+    <!-- QUANTUM STATE VECTOR |psi> -->
+    <!-- Vector coordinates: theta ≈ 48°, phi ≈ 35° -->
+    <!-- Surface point: P = (740, 310) -->
+    <!-- Projection in XY plane: P_xy = (740, 520) -->
+
+    <!-- XY Projection triangle / helper lines -->
+    <!-- Origin to Projection Point in XY plane -->
+    <line x1="600" y1="480" x2="725" y2="528" stroke="#0284c7" stroke-width="2" stroke-dasharray="5,4"/>
+    <!-- Vertical line from |psi> down to XY projection -->
+    <line x1="745" y1="305" x2="725" y2="528" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="4,4"/>
+    <!-- Small right angle square at projection -->
+    <path d="M 725,518 L 733,515 L 733,525" fill="none" stroke="#64748b" stroke-width="1.2"/>
+
+    <!-- Projection Point Node -->
+    <circle cx="725" cy="528" r="4.5" fill="#0284c7"/>
+
+    <!-- Angle Phi (φ) in XY plane (between x-axis and projection line) -->
+    <path d="M 535,518 A 85,25 0 0,0 655,502" fill="none" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-angle)"/>
+    <text x="590" y="540" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="20" font-weight="700" fill="#0284c7">φ</text>
+
+    <!-- Angle Theta (θ) between z-axis and |psi> -->
+    <path d="M 600,370 A 110,110 0 0,1 668,395" fill="none" stroke="#d32f2f" stroke-width="2.5" marker-end="url(#arrow-angle)"/>
+    <text x="645" y="365" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="20" font-weight="700" fill="#d32f2f">θ</text>
+
+    <!-- State Vector Line |psi> -->
+    <line x1="600" y1="480" x2="745" y2="305" stroke="#d32f2f" stroke-width="3.5" marker-end="url(#arrow-psi)"/>
+    <circle cx="600" cy="480" r="5" fill="#1e293b"/>
+    <circle cx="745" cy="305" r="5" fill="#d32f2f"/>
+
+    <!-- State Vector Label |psi> -->
+    <g transform="translate(760, 290)">
+      <rect x="-8" y="-22" width="60" height="32" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="22" y="0" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="22" font-weight="700" fill="#b91c1c" text-anchor="middle">|ψ⟩</text>
+    </g>
+
+    <!-- Center Origin Label -->
+    <text x="585" y="500" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="16" fill="#64748b" text-anchor="end">O</text>
+  </g>
+
+  <!-- INFO FORMULA BOX -->
+  <g id="formula-box" transform="translate(100, 720)">
+    <rect x="0" y="0" width="480" height="90" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="24" y="34" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="15" font-weight="600" fill="#475569">General Pure State Representation:</text>
+    <text x="24" y="66" font-family="Georgia, Cambria, Times, serif" font-size="20" font-style="italic" fill="#0f172a">|ψ⟩ = cos(θ/2)|0⟩ + e<tspan dy="-8" font-size="14">iφ</tspan><tspan dy="8"> sin(θ/2)|1⟩</tspan></text>
+  </g>
+
+  <!-- PARAMETER RANGES BOX -->
+  <g id="param-box" transform="translate(680, 720)">
+    <rect x="0" y="0" width="420" height="90" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="24" y="34" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="15" font-weight="600" fill="#475569">Parameter Domains:</text>
+    <text x="24" y="65" font-family="Georgia, Cambria, Times, serif" font-size="18" fill="#0f172a">0 ≤ θ ≤ π (colatitude),  0 ≤ φ &lt; 2π (longitude)</text>
+  </g>
+</svg>

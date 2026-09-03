@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <marker id="arrBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3182CE"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#718096"/>
+    </marker>
+    <marker id="arrOrange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#DD6B20"/>
+    </marker>
+    <marker id="arrPurple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#805AD5"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+
+  <!-- Containers -->
+  <!-- Offline Indexing Box -->
+  <rect x="50" y="80" width="1100" height="260" fill="#F7FAFC" stroke="#CBD5E0" stroke-width="3" stroke-dasharray="8,8" rx="15"/>
+  <text x="80" y="125" font-family="sans-serif" font-size="26" font-weight="bold" fill="#4A5568">Offline Indexing Pipeline</text>
+
+  <!-- Online Retrieval & Generation Box -->
+  <rect x="50" y="380" width="1100" height="460" fill="#EBF8FF" stroke="#3182CE" stroke-width="3" stroke-dasharray="8,8" rx="15"/>
+  <text x="80" y="425" font-family="sans-serif" font-size="26" font-weight="bold" fill="#3182CE">Online Retrieval &amp; Generation</text>
+
+  <!-- Offline Components -->
+  <!-- Documents -->
+  <rect x="120" y="160" width="220" height="120" fill="#FFFFFF" stroke="#718096" stroke-width="3" rx="10"/>
+  <text x="230" y="210" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Documents</text>
+  <text x="230" y="250" font-family="sans-serif" font-size="18" fill="#718096" text-anchor="middle">PDF / MD / Web</text>
+
+  <!-- Chunk & Embed -->
+  <rect x="420" y="160" width="220" height="120" fill="#FFFFFF" stroke="#718096" stroke-width="3" rx="10"/>
+  <text x="530" y="210" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Chunk &amp; Embed</text>
+  <text x="530" y="250" font-family="sans-serif" font-size="18" fill="#718096" text-anchor="middle">Text Splitter</text>
+
+  <!-- Vector DB (Shared) -->
+  <g transform="translate(750, 150)">
+    <ellipse cx="100" cy="20" rx="100" ry="20" fill="#FBD38D" stroke="#DD6B20" stroke-width="3"/>
+    <rect x="0" y="20" width="200" height="100" fill="#FEEBC8" stroke="none"/>
+    <line x1="0" y1="20" x2="0" y2="120" stroke="#DD6B20" stroke-width="3"/>
+    <line x1="200" y1="20" x2="200" y2="120" stroke="#DD6B20" stroke-width="3"/>
+    <ellipse cx="100" cy="120" rx="100" ry="20" fill="#FEEBC8" stroke="#DD6B20" stroke-width="3"/>
+    <text x="100" y="65" font-family="sans-serif" font-size="22" font-weight="bold" fill="#7B341E" text-anchor="middle">Vector DB</text>
+    <text x="100" y="95" font-family="sans-serif" font-size="18" fill="#7B341E" text-anchor="middle">Embeddings</text>
+  </g>
+
+  <!-- Online Components -->
+  <!-- User Query -->
+  <rect x="120" y="500" width="220" height="120" fill="#FFFFFF" stroke="#3182CE" stroke-width="3" rx="10"/>
+  <text x="230" y="550" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">User Query</text>
+  <text x="230" y="590" font-family="sans-serif" font-size="18" fill="#718096" text-anchor="middle">Prompt Input</text>
+
+  <!-- Embedding -->
+  <rect x="420" y="500" width="220" height="120" fill="#FFFFFF" stroke="#3182CE" stroke-width="3" rx="10"/>
+  <text x="530" y="550" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Embedding</text>
+  <text x="530" y="590" font-family="sans-serif" font-size="18" fill="#718096" text-anchor="middle">Query Vector</text>
+
+  <!-- Retriever -->
+  <rect x="740" y="500" width="220" height="120" fill="#FFFFFF" stroke="#DD6B20" stroke-width="3" rx="10"/>
+  <text x="850" y="550" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Retriever</text>
+  <text x="850" y="590" font-family="sans-serif" font-size="18" fill="#718096" text-anchor="middle">Similarity Search</text>
+
+  <!-- LLM -->
+  <rect x="740" y="680" width="220" height="120" fill="#E9D8FD" stroke="#805AD5" stroke-width="4" rx="10"/>
+  <text x="850" y="730" font-family="sans-serif" font-size="24" font-weight="bold" fill="#4C1D95" text-anchor="middle">LLM</text>
+  <text x="850" y="770" font-family="sans-serif" font-size="18" fill="#5B21B6" text-anchor="middle">Context + Query</text>
+
+  <!-- Answer -->
+  <rect x="420" y="680" width="220" height="120" fill="#FFFFFF" stroke="#3182CE" stroke-width="3" rx="10"/>
+  <text x="530" y="730" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1A202C" text-anchor="middle">Answer</text>
+  <text x="530" y="770" font-family="sans-serif" font-size="18" fill="#718096" text-anchor="middle">Response</text>
+
+  <!-- Flow Arrows -->
+  <!-- Offline Flow -->
+  <line x1="340" y1="220" x2="410" y2="220" stroke="#718096" stroke-width="4" marker-end="url(#arrGray)"/>
+  <line x1="640" y1="220" x2="740" y2="220" stroke="#718096" stroke-width="4" marker-end="url(#arrGray)"/>
+  <text x="690" y="200" font-family="sans-serif" font-size="18" font-weight="bold" fill="#718096" text-anchor="middle">Store</text>
+
+  <!-- Online Flow -->
+  <line x1="340" y1="560" x2="410" y2="560" stroke="#3182CE" stroke-width="4" marker-end="url(#arrBlue)"/>
+  <line x1="640" y1="560" x2="730" y2="560" stroke="#3182CE" stroke-width="4" marker-end="url(#arrBlue)"/>
+
+  <!-- Vector DB to Retriever -->
+  <line x1="850" y1="290" x2="850" y2="490" stroke="#DD6B20" stroke-width="4" marker-end="url(#arrOrange)"/>
+  <text x="870" y="400" font-family="sans-serif" font-size="18" font-weight="bold" fill="#DD6B20">Top-K Context</text>
+
+  <!-- Retriever to LLM -->
+  <line x1="850" y1="620" x2="850" y2="670" stroke="#805AD5" stroke-width="4" marker-end="url(#arrPurple)"/>
+
+  <!-- User Query Direct to LLM (bottom curve) -->
+  <path d="M 230,620 L 230,740 L 730,740" fill="none" stroke="#3182CE" stroke-width="4" marker-end="url(#arrBlue)"/>
+  <text x="330" y="725" font-family="sans-serif" font-size="18" font-weight="bold" fill="#3182CE">User Prompt</text>
+
+  <!-- LLM to Answer -->
+  <line x1="740" y1="740" x2="650" y2="740" stroke="#805AD5" stroke-width="4" marker-end="url(#arrPurple)"/>
+
+</svg>

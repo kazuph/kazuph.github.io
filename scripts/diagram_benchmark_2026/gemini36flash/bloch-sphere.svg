@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <radialGradient id="sphereGrad" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#EBF8FF" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#CBD5E0" stop-opacity="0.4"/>
+    </radialGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2D3748"/>
+    </marker>
+    <marker id="redArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E53E3E"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#FFFFFF"/>
+
+  <g transform="translate(600, 450)">
+    <!-- Sphere Main Body -->
+    <circle cx="0" cy="0" r="280" fill="url(#sphereGrad)" stroke="#2D3748" stroke-width="4"/>
+
+    <!-- Equator Ellipse -->
+    <ellipse cx="0" cy="0" rx="280" ry="90" fill="none" stroke="#4A5568" stroke-width="3"/>
+    <path d="M -280,0 A 280 90 0 0 1 280,0" fill="none" stroke="#A0AEC0" stroke-width="3" stroke-dasharray="8,8"/>
+
+    <!-- Axes -->
+    <!-- Z Axis -->
+    <line x1="0" y1="360" x2="0" y2="-360" stroke="#2D3748" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="0" y="-380" font-family="sans-serif" font-size="28" font-weight="bold" fill="#1A202C" text-anchor="middle">|0⟩ (z)</text>
+    <text x="0" y="410" font-family="sans-serif" font-size="28" font-weight="bold" fill="#1A202C" text-anchor="middle">|1⟩</text>
+
+    <!-- Y Axis -->
+    <line x1="-360" y1="0" x2="360" y2="0" stroke="#2D3748" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="385" y="10" font-family="sans-serif" font-size="28" font-weight="bold" fill="#1A202C" text-anchor="start">y</text>
+
+    <!-- X Axis -->
+    <line x1="0" y1="0" x2="-200" y2="200" stroke="#2D3748" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="-225" y="230" font-family="sans-serif" font-size="28" font-weight="bold" fill="#1A202C" text-anchor="end">x</text>
+
+    <!-- State Vector |psi> -->
+    <!-- Position: x=140, y=-190 -->
+    <line x1="0" y1="0" x2="140" y2="-190" stroke="#E53E3E" stroke-width="6" marker-end="url(#redArrow)"/>
+    <text x="165" y="-210" font-family="sans-serif" font-size="32" font-weight="bold" fill="#C53030">|ψ⟩</text>
+
+    <!-- Projections -->
+    <line x1="0" y1="0" x2="140" y2="40" stroke="#718096" stroke-width="2.5" stroke-dasharray="6,6"/>
+    <line x1="140" y1="-190" x2="140" y2="40" stroke="#718096" stroke-width="2.5" stroke-dasharray="6,6"/>
+    <line x1="140" y1="40" x2="140" y2="0" stroke="#A0AEC0" stroke-width="2" stroke-dasharray="4,4"/>
+
+    <!-- Theta Arc -->
+    <path d="M 0,-110 A 110 110 0 0 1 45,-85" fill="none" stroke="#3182CE" stroke-width="4"/>
+    <text x="35" y="-120" font-family="sans-serif" font-size="26" font-weight="bold" fill="#2B6CB0">θ</text>
+
+    <!-- Phi Arc -->
+    <path d="M -60,60 A 90 30 0 0 0 65,18" fill="none" stroke="#38A169" stroke-width="4"/>
+    <text x="15" y="80" font-family="sans-serif" font-size="26" font-weight="bold" fill="#276749">φ</text>
+
+    <!-- Origin Dot -->
+    <circle cx="0" cy="0" r="8" fill="#1A202C"/>
+  </g>
+</svg>

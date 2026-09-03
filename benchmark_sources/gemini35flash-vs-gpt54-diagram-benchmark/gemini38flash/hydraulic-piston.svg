@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background & Metallic Gradients -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#edf2f7"/>
+    </linearGradient>
+
+    <!-- Cylinder Wall Metallic -->
+    <linearGradient id="cylinderMetal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+
+    <!-- Rod Chrome Gradient -->
+    <linearGradient id="rodChrome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="25%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Piston Head Metal -->
+    <linearGradient id="pistonMetal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="35%" stop-color="#cbd5e1"/>
+      <stop offset="70%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+
+    <!-- High Pressure Fluid (Red-Orange) -->
+    <linearGradient id="fluidHigh" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+
+    <!-- Low Pressure / Return Fluid (Cool Blue) -->
+    <linearGradient id="fluidLow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+
+    <!-- Hatching Pattern for Section Cuts -->
+    <pattern id="hatchMetal" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#334155" stroke-width="1.5"/>
+    </pattern>
+
+    <!-- Arrow Markers -->
+    <marker id="arrowFlowIn" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ea580c"/>
+    </marker>
+    <marker id="arrowFlowOut" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7"/>
+    </marker>
+    <marker id="arrowMotion" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowLeader" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <circle cx="5" cy="5" r="3" fill="#1e293b"/>
+    </marker>
+
+    <!-- Drop Shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bgGrad)"/>
+
+  <!-- Outer Card Frame -->
+  <rect x="40" y="30" width="1120" height="840" rx="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="600" y="80" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#0f172a" text-anchor="middle" letter-spacing="1">油圧ピストンの構造解説 (Hydraulic Cylinder Cross-Section)</text>
+  <text x="600" y="112" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">Double-Acting Hydraulic Cylinder / Extension Stroke Operation</text>
+
+  <!-- MAIN ASSEMBLY DIAGRAM -->
+  <!-- Cylinder bounds: X: 160 to 760 (width 600), Y: 320 to 580 (height 260) -->
+  <!-- Centerline: Y = 450 -->
+  <g id="cylinder-assembly" transform="translate(40, 0)">
+
+    <!-- Centerline (dash-dot) -->
+    <line x1="80" y1="450" x2="1040" y2="450" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="14,4,3,4"/>
+
+    <!-- 1. LEFT FLUID CHAMBER (Cap-End / High Pressure) -->
+    <!-- From X=200 to X=420, Y=350 to Y=550 -->
+    <rect x="200" y="350" width="220" height="200" fill="url(#fluidHigh)" opacity="0.85"/>
+    <text x="310" y="456" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">高圧室 (P₁)</text>
+    <text x="310" y="478" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#ffedd5" text-anchor="middle">Cap End Chamber</text>
+
+    <!-- 2. RIGHT FLUID CHAMBER (Rod-End / Return / Low Pressure) -->
+    <!-- From X=490 to X=720, Y=350 to Y=550 minus rod in center (Y=410 to 490) -->
+    <path d="M 490,350 L 720,350 L 720,410 L 490,410 Z" fill="url(#fluidLow)" opacity="0.85"/>
+    <path d="M 490,490 L 720,490 L 720,550 L 490,550 Z" fill="url(#fluidLow)" opacity="0.85"/>
+    <text x="605" y="388" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">低圧・排出室 (P₂)</text>
+    <text x="605" y="528" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#e0f2fe" text-anchor="middle">Rod End Chamber</text>
+
+    <!-- 3. PISTON ROD (Chrome Steel) -->
+    <!-- Extends from Piston (X=480) through rod gland (X=720) to Clevis (X=960) -->
+    <rect x="480" y="410" width="480" height="80" rx="2" fill="url(#rodChrome)" stroke="#334155" stroke-width="2"/>
+    <!-- Rod End Mounting Clevis (Eyelet) -->
+    <path d="M 960,400 L 1020,400 C 1055,400 1070,420 1070,450 C 1070,480 1055,500 1020,500 L 960,500 Z"
+          fill="url(#rodChrome)" stroke="#334155" stroke-width="2.5"/>
+    <!-- Pin Hole in Clevis -->
+    <circle cx="1020" cy="450" r="22" fill="#f8fafc" stroke="#334155" stroke-width="2.5"/>
+    <circle cx="1020" cy="450" r="14" fill="#cbd5e1" stroke="#475569" stroke-width="1.5"/>
+
+    <!-- 4. PISTON HEAD (Center Section Cut) -->
+    <!-- Width: 70px (from X=420 to X=490), Height: 200px (Y=350 to Y=550) -->
+    <rect x="420" y="350" width="70" height="200" fill="url(#pistonMetal)" stroke="#1e293b" stroke-width="2.5"/>
+    <!-- Section Cut Hatching for Piston -->
+    <rect x="420" y="350" width="70" height="200" fill="url(#hatchMetal)" opacity="0.3"/>
+
+    <!-- Piston Seals (O-rings / Wear rings) -->
+    <!-- Top seals -->
+    <rect x="432" y="350" width="12" height="14" fill="#1e293b"/>
+    <rect x="465" y="350" width="12" height="14" fill="#1e293b"/>
+    <!-- Bottom seals -->
+    <rect x="432" y="536" width="12" height="14" fill="#1e293b"/>
+    <rect x="465" y="536" width="12" height="14" fill="#1e293b"/>
+
+    <!-- Piston-to-Rod Connection Shoulder & Thread Nut -->
+    <path d="M 420,425 L 395,432 L 395,468 L 420,475 Z" fill="#475569" stroke="#1e293b" stroke-width="2"/>
+
+    <!-- 5. CYLINDER TUBE & END CAPS (Cross-section) -->
+    <!-- Upper Cylinder Tube Wall (Y: 310 to 350, Width: 160 to 760) -->
+    <rect x="160" y="310" width="600" height="40" fill="url(#cylinderMetal)" stroke="#1e293b" stroke-width="2"/>
+    <rect x="160" y="310" width="600" height="40" fill="url(#hatchMetal)" opacity="0.4"/>
+
+    <!-- Lower Cylinder Tube Wall (Y: 550 to 590, Width: 160 to 760) -->
+    <rect x="160" y="550" width="600" height="40" fill="url(#cylinderMetal)" stroke="#1e293b" stroke-width="2"/>
+    <rect x="160" y="550" width="600" height="40" fill="url(#hatchMetal)" opacity="0.4"/>
+
+    <!-- Cap-End Head (Left End Cap) -->
+    <path d="M 120,310 L 200,310 L 200,350 L 160,350 L 160,550 L 200,550 L 200,590 L 120,590 Z"
+          fill="url(#cylinderMetal)" stroke="#1e293b" stroke-width="2.5"/>
+    <path d="M 120,310 L 200,310 L 200,350 L 160,350 L 160,550 L 200,550 L 200,590 L 120,590 Z"
+          fill="url(#hatchMetal)" opacity="0.4"/>
+    <!-- Left Mounting Bushing -->
+    <circle cx="140" cy="450" r="16" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
+
+    <!-- Rod-End Head (Right End Cap / Rod Gland) -->
+    <!-- Upper gland -->
+    <path d="M 720,310 L 780,310 L 780,410 L 720,410 Z" fill="url(#cylinderMetal)" stroke="#1e293b" stroke-width="2"/>
+    <path d="M 720,310 L 780,310 L 780,410 L 720,410 Z" fill="url(#hatchMetal)" opacity="0.4"/>
+    <!-- Lower gland -->
+    <path d="M 720,490 L 780,490 L 780,590 L 720,590 Z" fill="url(#cylinderMetal)" stroke="#1e293b" stroke-width="2"/>
+    <path d="M 720,490 L 780,490 L 780,590 L 720,590 Z" fill="url(#hatchMetal)" opacity="0.4"/>
+
+    <!-- Rod Gland Seals & Wiper -->
+    <rect x="740" y="410" width="10" height="12" fill="#1e293b"/>
+    <rect x="760" y="410" width="10" height="8" fill="#e11d48"/> <!-- Wiper seal -->
+    <rect x="740" y="478" width="10" height="12" fill="#1e293b"/>
+    <rect x="760" y="482" width="10" height="8" fill="#e11d48"/>
+
+    <!-- 6. PORTS & FLUID FLOW ARROWS -->
+    <!-- Port A (Inlet, Left Top) -->
+    <rect x="250" y="250" width="50" height="60" fill="url(#cylinderMetal)" stroke="#1e293b" stroke-width="2"/>
+    <rect x="260" y="250" width="30" height="100" fill="url(#fluidHigh)"/>
+    <!-- Inflow Arrow -->
+    <line x1="275" y1="210" x2="275" y2="280" stroke="#ea580c" stroke-width="5" marker-end="url(#arrowFlowIn)"/>
+    <line x1="275" y1="310" x2="275" y2="380" stroke="#ea580c" stroke-width="5" marker-end="url(#arrowFlowIn)"/>
+    <text x="275" y="195" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="16" font-weight="700" fill="#c2410c" text-anchor="middle">ポート A (給油 IN)</text>
+
+    <!-- Port B (Outlet, Right Top) -->
+    <rect x="640" y="250" width="50" height="60" fill="url(#cylinderMetal)" stroke="#1e293b" stroke-width="2"/>
+    <rect x="650" y="250" width="30" height="100" fill="url(#fluidLow)"/>
+    <!-- Outflow Arrow -->
+    <line x1="665" y1="360" x2="665" y2="270" stroke="#0284c7" stroke-width="5" marker-end="url(#arrowFlowOut)"/>
+    <line x1="665" y1="250" x2="665" y2="200" stroke="#0284c7" stroke-width="5" marker-end="url(#arrowFlowOut)"/>
+    <text x="665" y="185" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="16" font-weight="700" fill="#0369a1" text-anchor="middle">ポート B (排油 OUT)</text>
+
+    <!-- Piston Motion Arrow (Extension stroke) -->
+    <g transform="translate(680, 450)">
+      <line x1="0" y1="0" x2="160" y2="0" stroke="#16a34a" stroke-width="6" marker-end="url(#arrowMotion)"/>
+      <rect x="25" y="-30" width="115" height="24" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1.2"/>
+      <text x="82" y="-14" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700" fill="#15803d" text-anchor="middle">前進推力 F →</text>
+    </g>
+
+    <!-- Pressure Balance Formula -->
+    <g transform="translate(420, 630)">
+      <rect x="-10" y="-18" width="180" height="36" rx="6" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+      <text x="80" y="5" font-family="Georgia, Cambria, serif" font-size="16" font-weight="700" fill="#9a3412" text-anchor="middle">F = P₁·A₁ - P₂·A₂</text>
+    </g>
+  </g>
+
+  <!-- CALLOUT LABELS & LEADER LINES -->
+  <!-- 1. Cylinder Tube -->
+  <line x1="430" y1="310" x2="430" y2="220" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="430" cy="310" r="3.5" fill="#1e293b"/>
+  <g transform="translate(430, 210)">
+    <rect x="-80" y="-22" width="160" height="26" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <text x="0" y="-5" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">シリンダチューブ (Barrel)</text>
+  </g>
+
+  <!-- 2. Piston -->
+  <line x1="495" y1="550" x2="495" y2="720" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="495" cy="550" r="3.5" fill="#1e293b"/>
+  <g transform="translate(495, 740)">
+    <rect x="-65" y="-18" width="130" height="26" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <text x="0" y="-1" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">ピストン (Piston)</text>
+  </g>
+
+  <!-- 3. Piston Rod -->
+  <line x1="860" y1="410" x2="860" y2="290" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="860" cy="410" r="3.5" fill="#1e293b"/>
+  <g transform="translate(860, 280)">
+    <rect x="-80" y="-22" width="160" height="26" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <text x="0" y="-5" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">ピストンロッド (Rod)</text>
+  </g>
+
+  <!-- 4. Piston Seals -->
+  <line x1="505" y1="350" x2="550" y2="290" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="505" cy="350" r="3.5" fill="#1e293b"/>
+  <g transform="translate(560, 280)">
+    <rect x="-10" y="-22" width="140" height="26" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <text x="60" y="-5" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">ピストンシール (Seals)</text>
+  </g>
+
+  <!-- 5. Rod Gland & Wiper -->
+  <line x1="800" y1="570" x2="800" y2="720" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="800" cy="570" r="3.5" fill="#1e293b"/>
+  <g transform="translate(800, 740)">
+    <rect x="-80" y="-18" width="160" height="26" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <text x="0" y="-1" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">ロッドカバー / シール</text>
+  </g>
+
+  <!-- 6. Rod End Clevis -->
+  <line x1="1060" y1="450" x2="1060" y2="580" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="1060" cy="450" r="3.5" fill="#1e293b"/>
+  <g transform="translate(1060, 600)">
+    <rect x="-70" y="-18" width="140" height="26" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <text x="0" y="-1" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">クレビス金具 (Clevis)</text>
+  </g>
+
+  <!-- 7. Cap-End Cover -->
+  <line x1="180" y1="570" x2="180" y2="720" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="180" cy="570" r="3.5" fill="#1e293b"/>
+  <g transform="translate(180, 740)">
+    <rect x="-70" y="-18" width="140" height="26" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <text x="0" y="-1" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">キャップ側カバー</text>
+  </g>
+
+  <!-- FOOTER LEGEND / EXPLANATION -->
+  <g transform="translate(100, 800)">
+    <rect x="0" y="0" width="1000" height="50" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2"/>
+    <circle cx="40" cy="25" r="10" fill="#ea580c"/>
+    <text x="60" y="30" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="600" fill="#334155">作動油供給 (High Pressure)</text>
+
+    <circle cx="340" cy="25" r="10" fill="#0284c7"/>
+    <text x="360" y="30" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="600" fill="#334155">戻り油排出 (Tank / Return)</text>
+
+    <line x1="640" y1="25" x2="680" y2="25" stroke="#16a34a" stroke-width="4" marker-end="url(#arrowMotion)"/>
+    <text x="695" y="30" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="600" fill="#334155">伸長動作 (Piston Extension)</text>
+  </g>
+</svg>

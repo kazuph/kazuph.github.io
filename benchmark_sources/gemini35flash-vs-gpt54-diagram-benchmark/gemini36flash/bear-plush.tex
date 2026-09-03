@@ -1,0 +1,87 @@
+\documentclass[tikz, border=15pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, calc}
+
+\definecolor{bearfur}{HTML}{C68B59}
+\definecolor{bearmuzzle}{HTML}{F3E0BE}
+\definecolor{bearpaw}{HTML}{E5C3A6}
+\definecolor{beareye}{HTML}{2B1E16}
+\definecolor{bearpatch}{HTML}{E86A7C}
+\definecolor{bearblush}{HTML}{FFB3C1}
+\definecolor{bearoutline}{HTML}{7A4E2B}
+\definecolor{bearstitch}{HTML}{613B1F}
+
+\begin{document}
+\begin{tikzpicture}[
+    line width=1.5pt,
+    line join=round,
+    line cap=round,
+    outline/.style={draw=bearoutline, fill=bearfur},
+    stitch/.style={draw=bearstitch, dashed, line width=0.8pt, dash pattern=on 2pt off 2pt}
+]
+
+    % Background glow/shadow
+    \fill[black!8, rounded corners=15pt] (-3.2, -3.8) rectangle (3.2, -3.4);
+
+    % Left Ear (outer & inner)
+    \filldraw[outline] (-1.5, 2.2) circle (0.75);
+    \filldraw[draw=bearoutline, fill=bearmuzzle] (-1.5, 2.2) circle (0.45);
+
+    % Right Ear (outer & inner)
+    \filldraw[outline] (1.5, 2.2) circle (0.75);
+    \filldraw[draw=bearoutline, fill=bearmuzzle] (1.5, 2.2) circle (0.45);
+
+    % Left Leg
+    \filldraw[outline] (-1.4, -2.5) ellipse (0.75 and 0.9);
+    \filldraw[draw=bearoutline, fill=bearpaw] (-1.4, -2.6) circle (0.45);
+
+    % Right Leg
+    \filldraw[outline] (1.4, -2.5) ellipse (0.75 and 0.9);
+    \filldraw[draw=bearoutline, fill=bearpaw] (1.4, -2.6) circle (0.45);
+
+    % Body
+    \filldraw[outline] (0, -1.2) ellipse (2.0 and 1.8);
+    % Stitches on body center seam
+    \draw[stitch] (0, -0.2) -- (0, -2.6);
+
+    % Left Arm
+    \filldraw[outline, rotate around={30:(-1.8, -0.8)}] (-1.8, -0.8) ellipse (0.6 and 1.1);
+    \filldraw[draw=bearoutline, fill=bearpaw, rotate around={30:(-1.8, -1.3)}] (-1.8, -1.3) circle (0.35);
+
+    % Right Arm
+    \filldraw[outline, rotate around={-30:(1.8, -0.8)}] (1.8, -0.8) ellipse (0.6 and 1.1);
+    \filldraw[draw=bearoutline, fill=bearpaw, rotate around={-30:(1.8, -1.3)}] (1.8, -1.3) circle (0.35);
+
+    % Chest Heart Patch / Badge
+    \filldraw[draw=bearoutline, fill=bearpatch] (0, -0.8) ++(0, 0.25)
+        .. controls ++(-0.5, 0.4) and ++(-0.6, -0.4) .. (0, -0.4)
+        .. controls ++(0.6, -0.4) and ++(0.5, 0.4) .. (0, 0.25) -- cycle;
+    \node[white, font=\tiny\bfseries] at (0, -0.1) {♥};
+
+    % Head
+    \filldraw[outline] (0, 1.2) circle (1.7);
+
+    % Muzzle
+    \filldraw[draw=bearoutline, fill=bearmuzzle] (0, 0.8) ellipse (0.95 and 0.75);
+
+    % Eyes
+    \fill[beareye] (-0.7, 1.4) circle (0.16);
+    \fill[white] (-0.75, 1.45) circle (0.05);
+
+    \fill[beareye] (0.7, 1.4) circle (0.16);
+    \fill[white] (0.65, 1.45) circle (0.05);
+
+    % Cheeks / Blush
+    \fill[bearblush, opacity=0.6] (-1.1, 1.0) circle (0.28);
+    \fill[bearblush, opacity=0.6] (1.1, 1.0) circle (0.28);
+
+    % Nose & Mouth
+    \fill[beareye, rounded corners=2pt] (-0.22, 1.05) -- (0.22, 1.05) -- (0, 0.85) -- cycle;
+    \draw[draw=bearoutline, line width=1.4pt] (0, 0.85) -- (0, 0.7);
+    \draw[draw=bearoutline, line width=1.4pt] (-0.3, 0.55) .. controls (-0.15, 0.45) .. (0, 0.7) .. controls (0.15, 0.45) .. (0.3, 0.55);
+
+    % Forehead plush seam
+    \draw[stitch] (0, 1.8) -- (0, 2.7);
+
+\end{tikzpicture}
+\end{document}

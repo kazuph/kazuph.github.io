@@ -1,0 +1,233 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <!-- Component Block Gradients -->
+    <!-- Attention Orange/Gold -->
+    <linearGradient id="mha-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#9a3412"/>
+    </linearGradient>
+
+    <!-- Feed Forward Blue -->
+    <linearGradient id="ffn-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#075985"/>
+    </linearGradient>
+
+    <!-- Add & Norm Yellow/Amber -->
+    <linearGradient id="norm-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </linearGradient>
+
+    <!-- Embedding & Linear Purple -->
+    <linearGradient id="emb-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9333ea"/>
+      <stop offset="100%" stop-color="#6b21a8"/>
+    </linearGradient>
+
+    <!-- Softmax Green -->
+    <linearGradient id="smax-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+
+    <!-- Arrowhead Markers -->
+    <marker id="arr-main" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f8fafc"/>
+    </marker>
+    <marker id="arr-cross" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arr-resid" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#fbbf24"/>
+    </marker>
+
+    <filter id="box-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bg-grad)"/>
+
+  <!-- Header -->
+  <g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
+    <text x="600" y="55" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="1">The Transformer Model Architecture</text>
+    <text x="600" y="85" font-size="15" fill="#94a3b8">Vaswani et al. (2017) "Attention Is All You Need" Encoder-Decoder Structure</text>
+  </g>
+
+  <!-- 1. ENCODER STACK (Left Side: Center x=360) -->
+  <g id="encoder-column" transform="translate(180, 110)">
+
+    <!-- Encoder Outer Bounding Box (Nx Stack) -->
+    <rect x="30" y="90" width="300" height="420" rx="14" fill="#1e293b" fill-opacity="0.5" stroke="#38bdf8" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="45" y="125" font-family="system-ui, sans-serif" font-size="20" font-weight="900" fill="#38bdf8">N×</text>
+    <text x="180" y="120" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7dd3fc" text-anchor="middle">ENCODER LAYER</text>
+
+    <!-- Inputs & Embedding (Bottom of Encoder) -->
+    <!-- Input Tokens -->
+    <text x="180" y="695" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#f8fafc" text-anchor="middle">Inputs</text>
+    <!-- Input Embedding -->
+    <rect x="80" y="620" width="200" height="45" rx="8" fill="url(#emb-grad)" stroke="#c084fc" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="648" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#f8fafc" text-anchor="middle">Input Embedding</text>
+    <!-- Arrow: Inputs -> Embedding -->
+    <line x1="180" y1="680" x2="180" y2="665" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Summation Circle for Positional Encoding -->
+    <circle cx="180" cy="565" r="16" fill="#334155" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="180" y="571" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle">+</text>
+    <line x1="180" y1="620" x2="180" y2="581" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Positional Encoding (Left of Sum) -->
+    <rect x="-35" y="545" width="165" height="40" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="47" y="570" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7dd3fc" text-anchor="middle">Positional Encoding</text>
+    <line x1="130" y1="565" x2="164" y2="565" stroke="#38bdf8" stroke-width="2" marker-end="url(#arr-cross)"/>
+
+    <!-- Arrow: Positional Sum -> Multi-Head Attention -->
+    <line x1="180" y1="549" x2="180" y2="480" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- 1.1 Multi-Head Attention Block -->
+    <rect x="80" y="430" width="200" height="50" rx="8" fill="url(#mha-grad)" stroke="#f97316" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="460" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Multi-Head Attention</text>
+
+    <!-- 1.2 Add & Norm 1 -->
+    <rect x="80" y="340" width="200" height="45" rx="8" fill="url(#norm-grad)" stroke="#facc15" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="368" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Add &amp; Norm</text>
+    <!-- Arrow: Attention -> Add & Norm 1 -->
+    <line x1="180" y1="430" x2="180" y2="385" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Residual 1: Branch around Multi-Head Attention into Add & Norm 1 -->
+    <path d="M 180 515 L 50 515 L 50 362 L 80 362" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arr-resid)"/>
+
+    <!-- 1.3 Feed Forward Block -->
+    <rect x="80" y="240" width="200" height="50" rx="8" fill="url(#ffn-grad)" stroke="#38bdf8" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="270" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Feed Forward (FFN)</text>
+    <!-- Arrow: Add & Norm 1 -> FFN -->
+    <line x1="180" y1="340" x2="180" y2="290" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- 1.4 Add & Norm 2 -->
+    <rect x="80" y="150" width="200" height="45" rx="8" fill="url(#norm-grad)" stroke="#facc15" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="178" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Add &amp; Norm</text>
+    <!-- Arrow: FFN -> Add & Norm 2 -->
+    <line x1="180" y1="240" x2="180" y2="195" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Residual 2: Branch around FFN into Add & Norm 2 -->
+    <path d="M 180 315 L 50 315 L 50 172 L 80 172" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arr-resid)"/>
+
+    <!-- Encoder Output Trunk Line to Cross-Attention -->
+    <path d="M 180 150 L 180 70 L 415 70 L 415 285 L 480 285" fill="none" stroke="#38bdf8" stroke-width="3" marker-end="url(#arr-cross)"/>
+    <path d="M 415 285 L 415 300 L 480 300" fill="none" stroke="#38bdf8" stroke-width="3" marker-end="url(#arr-cross)"/>
+    <rect x="360" y="45" width="110" height="24" rx="4" fill="#0369a1"/>
+    <text x="415" y="62" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#e0f2fe" text-anchor="middle">Keys / Values (K, V)</text>
+
+  </g>
+
+  <!-- 2. DECODER STACK (Right Side: Center x=760) -->
+  <g id="decoder-column" transform="translate(580, 110)">
+
+    <!-- Decoder Outer Bounding Box (Nx Stack) -->
+    <rect x="30" y="90" width="300" height="420" rx="14" fill="#1e293b" fill-opacity="0.5" stroke="#ec4899" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="45" y="125" font-family="system-ui, sans-serif" font-size="20" font-weight="900" fill="#ec4899">N×</text>
+    <text x="180" y="120" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#f472b6" text-anchor="middle">DECODER LAYER</text>
+
+    <!-- Outputs & Embedding (Bottom of Decoder) -->
+    <!-- Output Tokens -->
+    <text x="180" y="695" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#f8fafc" text-anchor="middle">Outputs (Shifted Right)</text>
+    <!-- Output Embedding -->
+    <rect x="80" y="620" width="200" height="45" rx="8" fill="url(#emb-grad)" stroke="#c084fc" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="648" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#f8fafc" text-anchor="middle">Output Embedding</text>
+    <!-- Arrow: Outputs -> Embedding -->
+    <line x1="180" y1="680" x2="180" y2="665" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Summation Circle for Positional Encoding -->
+    <circle cx="180" cy="565" r="16" fill="#334155" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="180" y="571" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle">+</text>
+    <line x1="180" y1="620" x2="180" y2="581" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Positional Encoding (Right of Sum) -->
+    <rect x="230" y="545" width="165" height="40" rx="8" fill="#1e293b" stroke="#ec4899" stroke-width="1.5"/>
+    <text x="312" y="570" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#f472b6" text-anchor="middle">Positional Encoding</text>
+    <line x1="230" y1="565" x2="196" y2="565" stroke="#ec4899" stroke-width="2" marker-end="url(#arr-cross)"/>
+
+    <!-- Arrow: Positional Sum -> Masked MHA -->
+    <line x1="180" y1="549" x2="180" y2="495" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- 2.1 Masked Multi-Head Attention Block -->
+    <rect x="75" y="445" width="210" height="50" rx="8" fill="url(#mha-grad)" stroke="#f97316" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="475" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Masked Multi-Head Attn</text>
+
+    <!-- 2.2 Add & Norm 1 -->
+    <rect x="80" y="370" width="200" height="42" rx="8" fill="url(#norm-grad)" stroke="#facc15" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="396" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Add &amp; Norm</text>
+    <!-- Arrow: Masked Attn -> Add & Norm 1 -->
+    <line x1="180" y1="445" x2="180" y2="412" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Residual 1: around Masked Attn -->
+    <path d="M 180 520 L 50 520 L 50 391 L 80 391" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arr-resid)"/>
+
+    <!-- 2.3 Cross-Attention Multi-Head Attention (Queries from decoder, Keys/Values from encoder) -->
+    <rect x="75" y="275" width="210" height="50" rx="8" fill="url(#mha-grad)" stroke="#f97316" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="298" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Multi-Head Attention</text>
+    <text x="180" y="315" font-family="system-ui, sans-serif" font-size="11" fill="#fed7aa" text-anchor="middle">(Cross-Attention: Q, K, V)</text>
+
+    <!-- Query Arrow up from Add & Norm 1 into Cross-Attention -->
+    <line x1="180" y1="370" x2="180" y2="325" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- 2.4 Add & Norm 2 -->
+    <rect x="80" y="200" width="200" height="42" rx="8" fill="url(#norm-grad)" stroke="#facc15" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="226" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Add &amp; Norm</text>
+    <!-- Arrow: Cross-Attn -> Add & Norm 2 -->
+    <line x1="180" y1="275" x2="180" y2="242" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Residual 2: around Cross-Attn -->
+    <path d="M 180 345 L 50 345 L 50 221 L 80 221" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arr-resid)"/>
+
+    <!-- 2.5 Feed Forward Block -->
+    <rect x="80" y="125" width="200" height="45" rx="8" fill="url(#ffn-grad)" stroke="#38bdf8" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="152" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Feed Forward (FFN)</text>
+    <!-- Arrow: Add & Norm 2 -> FFN -->
+    <line x1="180" y1="200" x2="180" y2="170" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- 2.6 Add & Norm 3 (Top of Decoder Layer) -->
+    <rect x="80" y="50" width="200" height="42" rx="8" fill="url(#norm-grad)" stroke="#facc15" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="76" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Add &amp; Norm</text>
+    <!-- Arrow: FFN -> Add & Norm 3 -->
+    <line x1="180" y1="125" x2="180" y2="92" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+
+    <!-- Residual 3: around FFN -->
+    <path d="M 180 185 L 50 185 L 50 71 L 80 71" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arr-resid)"/>
+
+    <!-- 3. TOP PREDICTION HEAD (Linear, Softmax, Probabilities) -->
+    <!-- Arrow: Decoder top -> Linear -->
+    <line x1="180" y1="50" x2="180" y2="15" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+    <!-- Linear Projection Block -->
+    <rect x="80" y="-30" width="200" height="45" rx="8" fill="url(#emb-grad)" stroke="#c084fc" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="-2" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Linear (Projection)</text>
+
+    <!-- Arrow: Linear -> Softmax -->
+    <line x1="180" y1="-30" x2="180" y2="-60" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-main)"/>
+    <!-- Softmax Block -->
+    <rect x="80" y="-105" width="200" height="45" rx="8" fill="url(#smax-grad)" stroke="#4ade80" stroke-width="1.5" filter="url(#box-shadow)"/>
+    <text x="180" y="-77" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Softmax</text>
+
+    <!-- Final Output Arrow -->
+    <line x1="180" y1="-105" x2="180" y2="-135" stroke="#f8fafc" stroke-width="2.5" marker-end="url(#arr-main)"/>
+    <text x="180" y="-148" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#4ade80" text-anchor="middle">Output Probabilities</text>
+
+  </g>
+
+  <!-- Legend & Notation Card (Bottom Left) -->
+  <g transform="translate(60, 775)" font-family="system-ui, sans-serif">
+    <rect width="1080" height="90" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <text x="30" y="28" font-size="15" font-weight="700" fill="#f8fafc">Key Mechanics:</text>
+    <text x="30" y="52" font-size="13" fill="#38bdf8"><tspan font-weight="700">Multi-Head Attention:</tspan> Attention(Q, K, V) = softmax(Q Kᵀ / √d_k) V</text>
+    <text x="30" y="74" font-size="13" fill="#fbbf24"><tspan font-weight="700">Residual &amp; LayerNorm:</tspan> LayerNorm(x + SubLayer(x)) preserves gradient flow during deep stack training.</text>
+    <text x="650" y="52" font-size="13" fill="#f472b6"><tspan font-weight="700">Autoregressive Masking:</tspan> Prevents position i from attending to future positions &gt; i.</text>
+  </g>
+</svg>

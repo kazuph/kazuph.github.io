@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+
+    <!-- Block Gradients -->
+    <linearGradient id="online-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+
+    <linearGradient id="db-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+
+    <linearGradient id="llm-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6b21a8"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+
+    <linearGradient id="ingest-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#854d0e"/>
+      <stop offset="100%" stop-color="#451a03"/>
+    </linearGradient>
+
+    <!-- Arrowhead Markers -->
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arr-emerald" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#34d399"/>
+    </marker>
+    <marker id="arr-purple" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#c084fc"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arr-rose" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f43f5e"/>
+    </marker>
+
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bg-grad)"/>
+
+  <!-- Title Header -->
+  <g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
+    <text x="600" y="60" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="1">Retrieval-Augmented Generation (RAG) Architecture</text>
+    <text x="600" y="92" font-size="15" fill="#94a3b8">End-to-End Pipeline: Offline Document Indexing &amp; Online Real-Time Synthesis</text>
+  </g>
+
+  <!-- 1. OFFLINE INGESTION PIPELINE (Top Region) -->
+  <g transform="translate(60, 125)" filter="url(#shadow)">
+    <!-- Container Box -->
+    <rect width="1080" height="215" rx="14" fill="#1e293b" fill-opacity="0.6" stroke="#fbbf24" stroke-width="2" stroke-dasharray="6,6"/>
+    <!-- Region Title Badge -->
+    <rect x="25" y="-16" width="310" height="32" rx="6" fill="#854d0e" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="180" y="6" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fef3c7" text-anchor="middle">
+      OFFLINE INGESTION &amp; INDEXING
+    </text>
+
+    <!-- Step 1: Raw Documents -->
+    <g transform="translate(40, 45)">
+      <rect width="170" height="135" rx="8" fill="url(#ingest-grad)" stroke="#fbbf24" stroke-width="1.8"/>
+      <!-- Doc icon -->
+      <path d="M 65 30 L 105 30 L 115 42 L 115 65 L 65 65 Z" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="85" y="90" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="middle">Knowledge Base</text>
+      <text x="85" y="112" font-family="system-ui, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">PDFs, Docs, Web, DBs</text>
+    </g>
+
+    <!-- Arrow 1 -> 2 -->
+    <line x1="215" y1="112" x2="275" y2="112" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arr-amber)"/>
+
+    <!-- Step 2: Document Chunking & Cleaning -->
+    <g transform="translate(280, 45)">
+      <rect width="180" height="135" rx="8" fill="url(#ingest-grad)" stroke="#fbbf24" stroke-width="1.8"/>
+      <text x="90" y="45" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="middle">Document Chunker</text>
+      <rect x="20" y="60" width="140" height="60" rx="4" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="90" y="82" font-family="system-ui, sans-serif" font-size="12" fill="#fef08a" text-anchor="middle">Recursive Splitter</text>
+      <text x="90" y="104" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Chunk: 512 tok / Overlap 50</text>
+    </g>
+
+    <!-- Arrow 2 -> 3 -->
+    <line x1="465" y1="112" x2="525" y2="112" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arr-amber)"/>
+
+    <!-- Step 3: Embedding Model (Offline) -->
+    <g transform="translate(530, 45)">
+      <rect width="180" height="135" rx="8" fill="url(#ingest-grad)" stroke="#fbbf24" stroke-width="1.8"/>
+      <text x="90" y="45" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="middle">Embedding Model</text>
+      <rect x="20" y="60" width="140" height="60" rx="4" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="90" y="82" font-family="system-ui, sans-serif" font-size="12" fill="#fef08a" text-anchor="middle">Dense Vectorizer</text>
+      <text x="90" y="104" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Dim = 1536 / 3072</text>
+    </g>
+
+    <!-- Arrow 3 -> 4 (Vector DB Ingestion) -->
+    <line x1="715" y1="112" x2="775" y2="112" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arr-amber)"/>
+
+    <!-- Step 4: Vector Store Indexer (Cylinder Shape) -->
+    <g transform="translate(780, 35)">
+      <rect width="250" height="155" rx="10" fill="url(#db-grad)" stroke="#34d399" stroke-width="2"/>
+      <!-- Cylinder top -->
+      <ellipse cx="125" cy="24" rx="70" ry="12" fill="#059669" stroke="#34d399" stroke-width="1.5"/>
+      <text x="125" y="65" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ecfdf5" text-anchor="middle">Vector Database</text>
+      <text x="125" y="88" font-family="system-ui, sans-serif" font-size="12" fill="#a7f3d0" text-anchor="middle">HNSW / IVF Index</text>
+      <rect x="25" y="100" width="200" height="40" rx="4" fill="#064e3b"/>
+      <text x="125" y="125" font-family="system-ui, sans-serif" font-size="12" fill="#6ee7b7" text-anchor="middle">Embeddings + Metadata</text>
+    </g>
+  </g>
+
+  <!-- 2. ONLINE REAL-TIME RETRIEVAL & GENERATION PIPELINE (Bottom Region) -->
+  <g transform="translate(60, 380)" filter="url(#shadow)">
+    <!-- Container Box -->
+    <rect width="1080" height="370" rx="14" fill="#1e293b" fill-opacity="0.6" stroke="#38bdf8" stroke-width="2" stroke-dasharray="6,6"/>
+    <!-- Region Title Badge -->
+    <rect x="25" y="-16" width="310" height="32" rx="6" fill="#0369a1" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="180" y="6" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#e0f2fe" text-anchor="middle">
+      ONLINE REAL-TIME INFERENCE PIPELINE
+    </text>
+
+    <!-- Node 1: User Query (Left) -->
+    <g transform="translate(30, 40)">
+      <rect width="180" height="120" rx="8" fill="url(#online-grad)" stroke="#38bdf8" stroke-width="2"/>
+      <text x="90" y="42" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#7dd3fc" text-anchor="middle">User Query</text>
+      <rect x="15" y="55" width="150" height="50" rx="4" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="90" y="85" font-family="system-ui, sans-serif" font-size="12" fill="#e2e8f0" text-anchor="middle" font-style="italic">"How does RAG work?"</text>
+    </g>
+
+    <!-- Arrow: Query -> Embedder -->
+    <line x1="215" y1="100" x2="265" y2="100" stroke="#38bdf8" stroke-width="3" marker-end="url(#arr-blue)"/>
+
+    <!-- Node 2: Query Embedding Model -->
+    <g transform="translate(270, 40)">
+      <rect width="180" height="120" rx="8" fill="url(#online-grad)" stroke="#38bdf8" stroke-width="2"/>
+      <text x="90" y="42" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#7dd3fc" text-anchor="middle">Query Embedder</text>
+      <rect x="15" y="55" width="150" height="50" rx="4" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="90" y="80" font-family="system-ui, sans-serif" font-size="12" fill="#38bdf8" text-anchor="middle">q_vec = embed(query)</text>
+      <text x="90" y="98" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Cosine Similarity Ready</text>
+    </g>
+
+    <!-- Arrow: Query Embedder -> Similarity Search in Vector DB -->
+    <!-- Vector DB is at top right: (780+125, 35+155) relative to upper container = (905, 315) -->
+    <path d="M 455 100 L 520 100 L 520 40 L 780 40" stroke="#38bdf8" stroke-width="3" fill="none" marker-end="url(#arr-blue)"/>
+    <text x="640" y="30" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#38bdf8" text-anchor="middle">ANN / Cosine Top-k Search</text>
+
+    <!-- Return Arrow: Vector DB -> Retrieved Chunks (Down) -->
+    <path d="M 905 50 L 905 130 L 730 130" stroke="#34d399" stroke-width="3" fill="none" marker-end="url(#arr-emerald)"/>
+    <text x="820" y="122" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#34d399" text-anchor="middle">Top-k Chunks (k=5)</text>
+
+    <!-- Node 3: Retrieved Context & Re-ranker -->
+    <g transform="translate(540, 160)">
+      <rect width="185" height="150" rx="8" fill="url(#db-grad)" stroke="#34d399" stroke-width="2"/>
+      <text x="92" y="35" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#a7f3d0" text-anchor="middle">Retrieved Context</text>
+      <rect x="15" y="48" width="155" height="85" rx="4" fill="#064e3b"/>
+      <text x="92" y="70" font-family="system-ui, sans-serif" font-size="12" fill="#6ee7b7" text-anchor="middle">• Relevant Snippet #1</text>
+      <text x="92" y="92" font-family="system-ui, sans-serif" font-size="12" fill="#6ee7b7" text-anchor="middle">• Relevant Snippet #2</text>
+      <text x="92" y="115" font-family="system-ui, sans-serif" font-size="11" fill="#34d399" text-anchor="middle">Re-ranker Score: &gt; 0.88</text>
+    </g>
+
+    <!-- Direct Connection: Original Query to Prompt Synthesizer -->
+    <path d="M 120 165 L 120 235 L 535 235" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arr-blue)"/>
+    <text x="320" y="225" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#7dd3fc">Original Query Augmentation</text>
+
+    <!-- Arrow: Context + Query -> LLM -->
+    <line x1="730" y1="235" x2="785" y2="235" stroke="#c084fc" stroke-width="3" marker-end="url(#arr-purple)"/>
+
+    <!-- Node 4: LLM Generator (Augmented Prompt) -->
+    <g transform="translate(790, 150)">
+      <rect width="250" height="170" rx="10" fill="url(#llm-grad)" stroke="#c084fc" stroke-width="2"/>
+      <text x="125" y="35" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#f3e8ff" text-anchor="middle">LLM Generator</text>
+      <rect x="18" y="48" width="214" height="105" rx="6" fill="#2e1065"/>
+      <text x="125" y="72" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#c084fc" text-anchor="middle">PROMPT TEMPLATE:</text>
+      <text x="125" y="94" font-family="system-ui, sans-serif" font-size="11" fill="#e9d5ff" text-anchor="middle">System: Answer using context</text>
+      <text x="125" y="114" font-family="system-ui, sans-serif" font-size="11" fill="#a7f3d0" text-anchor="middle">Context: [Retrieved Passages]</text>
+      <text x="125" y="134" font-family="system-ui, sans-serif" font-size="11" fill="#7dd3fc" text-anchor="middle">User: [User Query]</text>
+    </g>
+  </g>
+
+  <!-- Final Synthesized Answer Arrow & Card (Bottom Left Return) -->
+  <g transform="translate(60, 785)" filter="url(#shadow)">
+    <rect width="1080" height="80" rx="10" fill="#1e293b" stroke="#34d399" stroke-width="2"/>
+    <text x="40" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#34d399">Synthesized Grounded Answer:</text>
+    <text x="40" y="58" font-family="system-ui, sans-serif" font-size="14" fill="#f8fafc">
+      "RAG combines document retrieval with generative LLMs to eliminate hallucinations and leverage private enterprise knowledge."
+    </text>
+    <rect x="880" y="20" width="160" height="40" rx="6" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
+    <text x="960" y="45" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#6ee7b7" text-anchor="middle">Verified with Sources</text>
+  </g>
+
+  <!-- Flow connecting LLM to Final Output -->
+  <path d="M 975 700 L 975 780" stroke="#34d399" stroke-width="3.5" marker-end="url(#arr-emerald)"/>
+
+</svg>

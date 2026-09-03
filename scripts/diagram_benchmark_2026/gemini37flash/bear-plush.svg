@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#fff8f0"/>
+      <stop offset="100%" stop-color="#f5e6d3"/>
+    </radialGradient>
+
+    <!-- Bear Fur Gradients -->
+    <radialGradient id="fur-body" cx="45%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#d4976a"/>
+      <stop offset="70%" stop-color="#b87b4f"/>
+      <stop offset="100%" stop-color="#9a623b"/>
+    </radialGradient>
+
+    <radialGradient id="fur-head" cx="45%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#dba074"/>
+      <stop offset="75%" stop-color="#be8053"/>
+      <stop offset="100%" stop-color="#9f663e"/>
+    </radialGradient>
+
+    <radialGradient id="ear-inner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f7d4bc"/>
+      <stop offset="100%" stop-color="#e8bca0"/>
+    </radialGradient>
+
+    <radialGradient id="snout-grad" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#ffeedd"/>
+      <stop offset="90%" stop-color="#f0d5be"/>
+      <stop offset="100%" stop-color="#debfa4"/>
+    </radialGradient>
+
+    <!-- Eye Gradient & Shine -->
+    <radialGradient id="eye-grad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#3a2312"/>
+      <stop offset="60%" stop-color="#1a0f08"/>
+      <stop offset="100%" stop-color="#050302"/>
+    </radialGradient>
+
+    <!-- Patch Texture -->
+    <pattern id="patch-pattern" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#fcf0d8"/>
+      <path d="M 0 8 L 16 8 M 8 0 L 8 16" stroke="#f0dab0" stroke-width="1.5"/>
+    </pattern>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="16"/>
+      <feOffset dx="0" dy="24" result="offsetblur"/>
+      <feFlood flood-color="#734726" flood-opacity="0.25"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="floor-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="900" fill="url(#bg-grad)"/>
+
+  <!-- Decorative Warm Sparkles / Background Elements -->
+  <g opacity="0.4">
+    <circle cx="200" cy="180" r="14" fill="#fcdbb0"/>
+    <circle cx="1020" cy="220" r="18" fill="#fcdbb0"/>
+    <circle cx="180" cy="650" r="22" fill="#edd0b0"/>
+    <circle cx="1000" cy="680" r="16" fill="#edd0b0"/>
+    <!-- Small Cross Stitches in BG -->
+    <path d="M 280 140 L 296 156 M 296 140 L 280 156" stroke="#e0c0a0" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 920 160 L 936 176 M 936 160 L 920 176" stroke="#e0c0a0" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Ground Contact Shadow -->
+  <ellipse cx="600" cy="790" rx="310" ry="48" fill="#5c381e" opacity="0.2" filter="url(#floor-shadow)"/>
+  <ellipse cx="600" cy="785" rx="220" ry="28" fill="#422510" opacity="0.3" filter="url(#floor-shadow)"/>
+
+  <!-- Main Bear Illustration -->
+  <g filter="url(#soft-shadow)">
+
+    <!-- EARS (Behind Head) -->
+    <!-- Left Ear -->
+    <g>
+      <circle cx="430" cy="270" r="75" fill="url(#fur-head)"/>
+      <circle cx="430" cy="270" r="48" fill="url(#ear-inner)"/>
+      <!-- Stitches around ear -->
+      <circle cx="430" cy="270" r="62" fill="none" stroke="#87512e" stroke-width="2.5" stroke-dasharray="6,6"/>
+    </g>
+    <!-- Right Ear -->
+    <g>
+      <circle cx="770" cy="270" r="75" fill="url(#fur-head)"/>
+      <circle cx="770" cy="270" r="48" fill="url(#ear-inner)"/>
+      <!-- Stitches around ear -->
+      <circle cx="770" cy="270" r="62" fill="none" stroke="#87512e" stroke-width="2.5" stroke-dasharray="6,6"/>
+    </g>
+
+    <!-- LEGS (Behind Body) -->
+    <!-- Left Leg -->
+    <g>
+      <ellipse cx="440" cy="710" rx="95" ry="80" fill="url(#fur-body)"/>
+      <!-- Left Paw Footpad -->
+      <ellipse cx="435" cy="725" rx="60" ry="48" fill="url(#ear-inner)"/>
+      <circle cx="405" cy="670" r="14" fill="url(#ear-inner)"/>
+      <circle cx="435" cy="660" r="15" fill="url(#ear-inner)"/>
+      <circle cx="465" cy="670" r="14" fill="url(#ear-inner)"/>
+      <!-- Stitches on footpad -->
+      <ellipse cx="435" cy="725" rx="60" ry="48" fill="none" stroke="#87512e" stroke-width="2.5" stroke-dasharray="5,5"/>
+    </g>
+    <!-- Right Leg -->
+    <g>
+      <ellipse cx="760" cy="710" rx="95" ry="80" fill="url(#fur-body)"/>
+      <!-- Right Paw Footpad -->
+      <ellipse cx="765" cy="725" rx="60" ry="48" fill="url(#ear-inner)"/>
+      <circle cx="735" cy="670" r="14" fill="url(#ear-inner)"/>
+      <circle cx="765" cy="660" r="15" fill="url(#ear-inner)"/>
+      <circle cx="795" cy="670" r="14" fill="url(#ear-inner)"/>
+      <!-- Stitches on footpad -->
+      <ellipse cx="765" cy="725" rx="60" ry="48" fill="none" stroke="#87512e" stroke-width="2.5" stroke-dasharray="5,5"/>
+    </g>
+
+    <!-- BODY -->
+    <ellipse cx="600" cy="590" rx="195" ry="185" fill="url(#fur-body)"/>
+    <!-- Body seam stitching vertical -->
+    <path d="M 600 440 Q 590 580 600 760" stroke="#7a4623" stroke-width="2.5" stroke-dasharray="7,7" fill="none"/>
+
+    <!-- Tummy Patch (Fabric Heart / Oval with Stitching) -->
+    <path d="M 555 520 C 555 480, 645 480, 645 520 C 645 575, 600 605, 600 625 C 600 605, 555 575, 555 520 Z"
+          fill="url(#patch-pattern)" stroke="#d98282" stroke-width="2"/>
+    <path d="M 555 520 C 555 480, 645 480, 645 520 C 645 575, 600 605, 600 625 C 600 605, 555 575, 555 520 Z"
+          fill="none" stroke="#b35454" stroke-width="2" stroke-dasharray="5,4"/>
+
+    <!-- Cute Button on Patch -->
+    <circle cx="600" cy="535" r="12" fill="#f07878"/>
+    <circle cx="596" cy="532" r="2.5" fill="#ffffff"/>
+    <circle cx="604" cy="532" r="2.5" fill="#ffffff"/>
+    <circle cx="596" cy="538" r="2.5" fill="#ffffff"/>
+    <circle cx="604" cy="538" r="2.5" fill="#ffffff"/>
+    <path d="M 596 532 L 604 538 M 604 532 L 596 538" stroke="#aa3333" stroke-width="1.5"/>
+
+    <!-- ARMS -->
+    <!-- Left Arm -->
+    <g>
+      <path d="M 425 460 C 330 490, 320 600, 390 625 C 445 640, 480 570, 455 490 Z" fill="url(#fur-body)"/>
+      <ellipse cx="385" cy="585" rx="35" ry="30" fill="url(#ear-inner)" transform="rotate(-15 385 585)"/>
+      <!-- Stitch seam -->
+      <path d="M 425 460 C 370 510, 370 570, 400 620" fill="none" stroke="#7a4623" stroke-width="2" stroke-dasharray="6,6"/>
+    </g>
+    <!-- Right Arm -->
+    <g>
+      <path d="M 775 460 C 870 490, 880 600, 810 625 C 755 640, 720 570, 745 490 Z" fill="url(#fur-body)"/>
+      <ellipse cx="815" cy="585" rx="35" ry="30" fill="url(#ear-inner)" transform="rotate(15 815 585)"/>
+      <!-- Stitch seam -->
+      <path d="M 775 460 C 830 510, 830 570, 800 620" fill="none" stroke="#7a4623" stroke-width="2" stroke-dasharray="6,6"/>
+    </g>
+
+    <!-- HEAD -->
+    <ellipse cx="600" cy="380" rx="190" ry="165" fill="url(#fur-head)"/>
+    <!-- Head vertical center seam -->
+    <path d="M 600 220 Q 600 320 600 420" stroke="#7a4623" stroke-width="2" stroke-dasharray="6,6" fill="none"/>
+
+    <!-- SNOUT / MUZZLE -->
+    <ellipse cx="600" cy="420" rx="90" ry="65" fill="url(#snout-grad)"/>
+    <ellipse cx="600" cy="420" rx="90" ry="65" fill="none" stroke="#7a4623" stroke-width="2" stroke-dasharray="5,5"/>
+
+    <!-- NOSE -->
+    <path d="M 570 395 Q 600 385 630 395 Q 615 425 600 425 Q 585 425 570 395 Z" fill="#4a2612"/>
+    <!-- Nose Highlight -->
+    <ellipse cx="588" cy="396" rx="8" ry="4" fill="#ffffff" opacity="0.6" transform="rotate(-15 588 396)"/>
+
+    <!-- MOUTH & PHILTRUM -->
+    <path d="M 600 425 L 600 445" stroke="#4a2612" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M 565 442 Q 585 465 600 445 Q 615 465 635 442" stroke="#4a2612" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+
+    <!-- EYES (Button Style with Gloss) -->
+    <!-- Left Eye -->
+    <g>
+      <circle cx="505" cy="360" r="22" fill="url(#eye-grad)"/>
+      <circle cx="497" cy="352" r="7" fill="#ffffff"/>
+      <circle cx="513" cy="368" r="3.5" fill="#ffffff" opacity="0.8"/>
+    </g>
+    <!-- Right Eye -->
+    <g>
+      <circle cx="695" cy="360" r="22" fill="url(#eye-grad)"/>
+      <circle cx="687" cy="352" r="7" fill="#ffffff"/>
+      <circle cx="703" cy="368" r="3.5" fill="#ffffff" opacity="0.8"/>
+    </g>
+
+    <!-- ROSY CHEEKS -->
+    <ellipse cx="455" cy="425" rx="35" ry="20" fill="#f08878" opacity="0.45"/>
+    <ellipse cx="745" cy="425" rx="35" ry="20" fill="#f08878" opacity="0.45"/>
+
+    <!-- BOW TIE (Warm Red / Burgundy Fabric) -->
+    <g id="bow-tie">
+      <path d="M 600 495 L 530 465 Q 520 500 535 535 L 600 505 Z" fill="#cf4444" stroke="#8e2020" stroke-width="2"/>
+      <path d="M 600 495 L 670 465 Q 680 500 665 535 L 600 505 Z" fill="#cf4444" stroke="#8e2020" stroke-width="2"/>
+      <!-- Bow Ribbon Folds -->
+      <path d="M 545 480 Q 575 495 548 515" fill="none" stroke="#aa2b2b" stroke-width="2"/>
+      <path d="M 655 480 Q 625 495 652 515" fill="none" stroke="#aa2b2b" stroke-width="2"/>
+      <!-- Center Knot -->
+      <rect x="585" y="485" width="30" height="28" rx="8" fill="#b82e2e" stroke="#8e2020" stroke-width="2"/>
+      <circle cx="600" cy="499" r="6" fill="#e86666"/>
+    </g>
+
+  </g>
+</svg>

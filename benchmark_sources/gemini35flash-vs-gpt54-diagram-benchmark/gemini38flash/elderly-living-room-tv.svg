@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5ede0"/>
+      <stop offset="100%" stop-color="#e8dcce"/>
+    </linearGradient>
+
+    <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b08968"/>
+      <stop offset="100%" stop-color="#7f5539"/>
+    </linearGradient>
+
+    <radialGradient id="lampGlow" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fff3b0" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#ffd166" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ffd166" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="tvGlow" cx="20%" cy="50%" r="80%">
+      <stop offset="0%" stop-color="#90e0ef" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#48cae4" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#0077b6" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="tvScreen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#bde0fe"/>
+      <stop offset="60%" stop-color="#a2d2ff"/>
+      <stop offset="100%" stop-color="#cdb4db"/>
+    </linearGradient>
+
+    <radialGradient id="rugGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ddb892"/>
+      <stop offset="85%" stop-color="#b08968"/>
+      <stop offset="100%" stop-color="#9c6644"/>
+    </radialGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="shadowSoft" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#432818" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- BACKGROUND: Wall & Floor -->
+  <!-- Upper Wall -->
+  <rect x="0" y="0" width="1200" height="600" fill="url(#wallGrad)"/>
+  <!-- Baseboard / Skirting board -->
+  <rect x="0" y="590" width="1200" height="20" fill="#6f4e37"/>
+  <!-- Hardwood Floor -->
+  <rect x="0" y="610" width="1200" height="290" fill="url(#floorGrad)"/>
+
+  <!-- Floor Planks perspective lines -->
+  <path d="M 0,660 L 1200,660 M 0,720 L 1200,720 M 0,790 L 1200,790 M 0,870 L 1200,870"
+        stroke="#58311a" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- WINDOW & CURTAINS (Left-Center Background) -->
+  <g id="window">
+    <rect x="420" y="80" width="260" height="340" fill="#e2eafc" stroke="#6f4e37" stroke-width="8" rx="4"/>
+    <!-- Window Panes & Evening Sky with warm moon -->
+    <rect x="430" y="90" width="240" height="320" fill="#2b3a4a"/>
+    <circle cx="600" cy="160" r="32" fill="#ffeaa7" opacity="0.8"/>
+    <!-- Window frame mullions -->
+    <line x1="550" y1="90" x2="550" y2="410" stroke="#8d6b4f" stroke-width="4"/>
+    <line x1="430" y1="240" x2="670" y2="240" stroke="#8d6b4f" stroke-width="4"/>
+    <!-- Curtain Rod -->
+    <line x1="390" y1="65" x2="710" y2="65" stroke="#4a3525" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="390" cy="65" r="7" fill="#6f4e37"/>
+    <circle cx="710" cy="65" r="7" fill="#6f4e37"/>
+    <!-- Left Curtain (Draped) -->
+    <path d="M 400,65 Q 430,220 395,440 L 440,440 Q 465,220 440,65 Z" fill="#b76e79"/>
+    <!-- Right Curtain (Draped) -->
+    <path d="M 700,65 Q 670,220 705,440 L 660,440 Q 635,220 660,65 Z" fill="#b76e79"/>
+  </g>
+
+  <!-- WALL ART / CLOCK -->
+  <!-- Framed Scenic Painting -->
+  <g id="framed-art" transform="translate(180, 110)">
+    <rect x="0" y="0" width="140" height="100" fill="#d4a373" stroke="#58311a" stroke-width="5" rx="4" filter="url(#shadowSoft)"/>
+    <rect x="10" y="10" width="120" height="80" fill="#faedcd"/>
+    <path d="M 20,80 L 70,30 L 120,80 Z" fill="#457b9d"/>
+    <polygon points="58,42 70,30 82,42 76,46 70,43 64,46" fill="#f1faee"/>
+    <circle cx="45" cy="35" r="10" fill="#e63946"/>
+  </g>
+
+  <!-- Wall Clock -->
+  <g id="wall-clock" transform="translate(770, 110)">
+    <circle cx="40" cy="40" r="38" fill="#fff" stroke="#6f4e37" stroke-width="4" filter="url(#shadowSoft)"/>
+    <circle cx="40" cy="40" r="3" fill="#333"/>
+    <line x1="40" y1="40" x2="25" y2="48" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="40" y1="40" x2="40" y2="15" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- WARM FLOOR RUG -->
+  <ellipse cx="640" cy="740" rx="380" ry="120" fill="url(#rugGrad)" filter="url(#shadowSoft)"/>
+  <ellipse cx="640" cy="740" rx="350" ry="105" fill="none" stroke="#faedcd" stroke-width="3" stroke-dasharray="12,8"/>
+
+  <!-- TELEVISION & TV CABINET (Left Foreground) -->
+  <g id="tv-setup" filter="url(#shadowSoft)">
+    <!-- Low TV Cabinet (Wood) -->
+    <rect x="80" y="540" width="280" height="150" fill="#7f5539" rx="6" stroke="#58311a" stroke-width="3"/>
+    <line x1="220" y1="540" x2="220" y2="690" stroke="#58311a" stroke-width="3"/>
+    <circle cx="205" cy="615" r="5" fill="#d4a373"/>
+    <circle cx="235" cy="615" r="5" fill="#d4a373"/>
+    <rect x="95" y="690" width="20" height="25" fill="#58311a" rx="2"/>
+    <rect x="325" y="690" width="20" height="25" fill="#58311a" rx="2"/>
+
+    <!-- TV Stand Base & Pole -->
+    <rect x="180" y="525" width="80" height="15" fill="#2b2d42" rx="3"/>
+    <rect x="212" y="475" width="16" height="50" fill="#2b2d42"/>
+
+    <!-- TV Frame -->
+    <rect x="100" y="270" width="240" height="205" fill="#1b1c1e" rx="6" stroke="#333" stroke-width="3"/>
+    <!-- TV Screen -->
+    <rect x="110" y="280" width="220" height="180" fill="url(#tvScreen)" rx="3"/>
+    <path d="M 110,420 Q 160,370 210,400 T 330,380 L 330,460 L 110,460 Z" fill="#588157"/>
+    <circle cx="280" cy="325" r="22" fill="#ffb703"/>
+    <path d="M 115,285 L 200,285 L 140,455 L 115,455 Z" fill="#ffffff" opacity="0.25"/>
+
+    <!-- Small plant on TV cabinet -->
+    <path d="M 310,540 L 305,510 L 335,510 L 330,540 Z" fill="#bc6c25"/>
+    <ellipse cx="320" cy="505" rx="14" ry="18" fill="#2a9d8f"/>
+    <ellipse cx="330" cy="495" rx="12" ry="15" fill="#52b788"/>
+    <ellipse cx="310" cy="495" rx="12" ry="15" fill="#52b788"/>
+  </g>
+
+  <!-- TV Light Glow cast across living room towards armchair -->
+  <polygon points="220,370 1050,420 1050,750 220,490" fill="url(#tvGlow)"/>
+
+  <!-- STANDING FLOOR LAMP (Far Right) -->
+  <g id="floor-lamp">
+    <ellipse cx="1080" cy="740" rx="45" ry="16" fill="#4a3525" filter="url(#shadowSoft)"/>
+    <line x1="1080" y1="740" x2="1080" y2="280" stroke="#b08968" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 1035,280 L 1125,280 L 1145,360 L 1015,360 Z" fill="#ffe8d6" stroke="#ddb892" stroke-width="3" filter="url(#shadowSoft)"/>
+    <ellipse cx="1080" cy="360" rx="200" ry="260" fill="url(#lampGlow)"/>
+  </g>
+
+  <!-- COZY ARMCHAIR & ELDERLY WOMAN (GRANDMOTHER) (Right Foreground) -->
+  <g id="grandmother-and-chair" filter="url(#shadowSoft)">
+    <path d="M 750,420 C 750,300 950,300 950,420 L 960,650 C 960,670 740,670 740,650 Z"
+          fill="#5c6b73" stroke="#46535a" stroke-width="3"/>
+
+    <!-- GRANDMOTHER -->
+    <path d="M 760,540 C 740,550 730,620 745,670 C 770,685 860,685 890,670 C 900,600 870,540 850,530 Z"
+          fill="#d88c9a" stroke="#b36a78" stroke-width="2"/>
+
+    <!-- Green lap blanket -->
+    <path d="M 720,630 C 710,650 710,730 735,745 C 770,755 860,755 890,740 C 905,710 900,640 880,630 Z"
+          fill="#84a59d" stroke="#5f7972" stroke-width="2.5"/>
+    <path d="M 730,680 Q 800,700 870,680" stroke="#f7ede2" stroke-width="2" stroke-dasharray="6,6"/>
+
+    <!-- Arms resting gently on lap/armrest -->
+    <path d="M 820,550 C 790,570 760,600 750,640 L 790,655 C 805,625 825,595 845,570 Z"
+          fill="#d88c9a"/>
+    <ellipse cx="752" cy="648" rx="14" ry="11" fill="#fcd5ce"/>
+    <ellipse cx="762" cy="650" rx="12" ry="10" fill="#fcd5ce"/>
+    <polygon points="748,655 756,670 764,655" fill="#f8edeb"/>
+
+    <!-- Floral patterned cozy shawl -->
+    <path d="M 770,510 C 740,535 745,580 770,605 C 810,615 860,610 885,580 C 895,540 880,515 840,510 Z"
+          fill="#f6bd60" stroke="#e76f51" stroke-width="1.5"/>
+    <circle cx="785" cy="550" r="4" fill="#e76f51"/>
+    <circle cx="830" cy="560" r="4" fill="#e76f51"/>
+    <circle cx="860" cy="545" r="4" fill="#e76f51"/>
+
+    <!-- Neck -->
+    <rect x="795" y="475" width="22" height="35" fill="#fcd5ce" rx="4"/>
+
+    <!-- Head & Bun -->
+    <circle cx="845" cy="425" r="26" fill="#ced4da" stroke="#adb5bd" stroke-width="2"/>
+    <circle cx="850" cy="420" r="18" fill="#e9ecef"/>
+
+    <ellipse cx="805" cy="435" rx="32" ry="38" fill="#ced4da" stroke="#adb5bd" stroke-width="2"/>
+    <path d="M 800,410 C 780,415 765,435 770,455 C 773,468 785,480 805,480 Z" fill="#fcd5ce"/>
+    <circle cx="778" cy="445" r="4" fill="#e29578" opacity="0.4"/>
+
+    <!-- Smiling eye looking at TV -->
+    <path d="M 770,436 Q 778,432 786,437" fill="none" stroke="#5c4d3c" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 786,437 L 791,434 M 786,438 L 792,439" stroke="#b08968" stroke-width="1.2"/>
+    <path d="M 768,428 Q 778,424 788,428" fill="none" stroke="#8d99ae" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 767,438 Q 758,446 766,452" fill="none" stroke="#d59b7b" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 768,464 Q 776,470 784,465" fill="none" stroke="#b36a78" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Glasses -->
+    <ellipse cx="776" cy="437" rx="10" ry="10" fill="none" stroke="#9a8c98" stroke-width="2"/>
+    <line x1="786" y1="435" x2="812" y2="430" stroke="#9a8c98" stroke-width="1.8"/>
+
+    <!-- Armchair Front Arms & Wooden Legs -->
+    <path d="M 735,530 C 715,535 710,610 725,640 L 755,630 C 745,600 740,545 750,530 Z"
+          fill="#46535a" stroke="#333f44" stroke-width="2"/>
+    <rect x="740" y="740" width="16" height="40" fill="#58311a" rx="3"/>
+    <rect x="870" y="735" width="16" height="40" fill="#58311a" rx="3"/>
+  </g>
+
+  <!-- WOODEN COFFEE TABLE & TEA CUP -->
+  <g id="table-and-tea" filter="url(#shadowSoft)">
+    <ellipse cx="530" cy="710" rx="140" ry="42" fill="#8b5e34" stroke="#6f4e37" stroke-width="3"/>
+    <ellipse cx="530" cy="705" rx="134" ry="36" fill="#a47148"/>
+    <path d="M 430,725 L 420,785 L 435,785 L 448,728 Z" fill="#58311a"/>
+    <path d="M 630,725 L 640,785 L 625,785 L 615,728 Z" fill="#58311a"/>
+    <path d="M 530,735 L 530,795 L 542,795 L 542,735 Z" fill="#432818"/>
+
+    <!-- Green Tea Cup (Yunomi) -->
+    <ellipse cx="520" cy="695" rx="24" ry="9" fill="#58311a"/>
+    <path d="M 508,692 L 512,662 Q 520,660 528,662 L 532,692 Q 520,695 508,692 Z"
+          fill="#e9edc9" stroke="#ccd5ae" stroke-width="1.5"/>
+    <ellipse cx="520" cy="662" rx="10" ry="4" fill="#588157"/>
+    <path d="M 518,655 Q 515,642 522,632 T 518,618" fill="none" stroke="#fff" stroke-width="2" opacity="0.65" stroke-linecap="round"/>
+    <path d="M 524,652 Q 528,640 522,628 T 526,614" fill="none" stroke="#fff" stroke-width="1.8" opacity="0.55" stroke-linecap="round"/>
+
+    <!-- TV Remote Control -->
+    <rect x="560" y="688" width="38" height="14" rx="2" fill="#212529" transform="rotate(-15 560 688)"/>
+    <circle cx="566" cy="687" r="1.5" fill="#e63946"/>
+    <circle cx="572" cy="685" r="1.2" fill="#adb5bd"/>
+    <circle cx="578" cy="683" r="1.2" fill="#adb5bd"/>
+  </g>
+
+  <circle cx="1080" cy="320" r="12" fill="#fff" opacity="0.8"/>
+</svg>

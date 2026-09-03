@@ -1,0 +1,309 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Deep Navy Night Sky Gradient -->
+    <linearGradient id="sky-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="50%" stop-color="#09142e"/>
+      <stop offset="85%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#2e1065"/>
+    </linearGradient>
+
+    <!-- River Water Reflection Gradient -->
+    <linearGradient id="water-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+
+    <!-- Lantern Glow Gradients -->
+    <radialGradient id="lantern-red" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fee2e2"/>
+      <stop offset="40%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </radialGradient>
+
+    <radialGradient id="lantern-yellow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="40%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </radialGradient>
+
+    <!-- Fireworks Glow Filter -->
+    <filter id="firework-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur1"/>
+      <feGaussianBlur stdDeviation="15" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="warm-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <!-- 1. NIGHT SKY & RIVER -->
+  <rect width="1200" height="720" fill="url(#sky-grad)"/>
+  <rect y="720" width="1200" height="180" fill="url(#water-grad)"/>
+  <!-- River Horizon Water Ripple Line -->
+  <line x1="0" y1="720" x2="1200" y2="720" stroke="#4338ca" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Distant Stars in Night Sky -->
+  <g fill="#ffffff" opacity="0.8">
+    <circle cx="80" cy="90" r="1.5"/><circle cx="150" cy="180" r="1.2"/><circle cx="230" cy="70" r="1.8"/>
+    <circle cx="340" cy="140" r="1.5"/><circle cx="490" cy="80" r="1.2"/><circle cx="620" cy="40" r="2.0"/>
+    <circle cx="750" cy="110" r="1.5"/><circle cx="890" cy="60" r="1.8"/><circle cx="980" cy="130" r="1.2"/>
+    <circle cx="1120" cy="80" r="1.6"/><circle cx="1060" cy="220" r="1.4"/><circle cx="120" cy="290" r="1.2"/>
+    <circle cx="1150" cy="340" r="1.5"/><circle cx="50" cy="450" r="1.3"/>
+  </g>
+
+  <!-- 2. FIREWORKS DISPLAY (3 Large Multicolored Bursts) -->
+
+  <!-- FIREWORK 1: Main Golden Chrysanthemum (Center-Left: cx=420, cy=280, R=190) -->
+  <g id="firework-gold" filter="url(#firework-glow)">
+    <!-- Core Flash -->
+    <circle cx="420" cy="280" r="18" fill="#ffffff"/>
+    <circle cx="420" cy="280" r="45" fill="#fef08a" opacity="0.4"/>
+
+    <!-- Radial Streamers (Gold / Orange) -->
+    <!-- 24 main spokes with sparks -->
+    <g stroke-linecap="round">
+      <!-- Inner Ring Sparks (Ruby Red) -->
+      <g stroke="#f43f5e" stroke-width="3">
+        <line x1="420" y1="280" x2="420" y2="210"/><line x1="420" y1="280" x2="420" y2="350"/>
+        <line x1="420" y1="280" x2="350" y2="280"/><line x1="420" y1="280" x2="490" y2="280"/>
+        <line x1="420" y1="280" x2="370" y2="230"/><line x1="420" y1="280" x2="470" y2="230"/>
+        <line x1="420" y1="280" x2="370" y2="330"/><line x1="420" y1="280" x2="470" y2="330"/>
+      </g>
+
+      <!-- Outer Golden Trails -->
+      <g stroke="#facc15" stroke-width="2.5" stroke-dasharray="8,4">
+        <!-- 0, 30, 60, 90 ... deg -->
+        <line x1="420" y1="280" x2="420" y2="100"/>
+        <line x1="420" y1="280" x2="510" y2="124"/>
+        <line x1="420" y1="280" x2="575" y2="190"/>
+        <line x1="420" y1="280" x2="600" y2="280"/>
+        <line x1="420" y1="280" x2="575" y2="370"/>
+        <line x1="420" y1="280" x2="510" y2="435"/>
+        <line x1="420" y1="280" x2="420" y2="460"/>
+        <line x1="420" y1="280" x2="330" y2="435"/>
+        <line x1="420" y1="280" x2="265" y2="370"/>
+        <line x1="420" y1="280" x2="240" y2="280"/>
+        <line x1="420" y1="280" x2="265" y2="190"/>
+        <line x1="420" y1="280" x2="330" y2="124"/>
+        <!-- Diagonal intermediate rays -->
+        <line x1="420" y1="280" x2="465" y2="110"/>
+        <line x1="420" y1="280" x2="545" y2="155"/>
+        <line x1="420" y1="280" x2="590" y2="235"/>
+        <line x1="420" y1="280" x2="590" y2="325"/>
+        <line x1="420" y1="280" x2="545" y2="405"/>
+        <line x1="420" y1="280" x2="465" y2="450"/>
+        <line x1="420" y1="280" x2="375" y2="450"/>
+        <line x1="420" y1="280" x2="295" y2="405"/>
+        <line x1="420" y1="280" x2="250" y2="325"/>
+        <line x1="420" y1="280" x2="250" y2="235"/>
+        <line x1="420" y1="280" x2="295" y2="155"/>
+        <line x1="420" y1="280" x2="375" y2="110"/>
+      </g>
+    </g>
+
+    <!-- Outer Drooping Willow Spark Points -->
+    <g fill="#fef08a">
+      <circle cx="420" cy="95" r="4"/><circle cx="515" cy="120" r="4"/><circle cx="580" cy="188" r="4"/>
+      <circle cx="605" cy="280" r="4"/><circle cx="580" cy="375" r="4"/><circle cx="515" cy="440" r="4"/>
+      <circle cx="420" cy="465" r="4"/><circle cx="325" cy="440" r="4"/><circle cx="260" cy="375" r="4"/>
+      <circle cx="235" cy="280" r="4"/><circle cx="260" cy="188" r="4"/><circle cx="325" cy="120" r="4"/>
+    </g>
+  </g>
+
+  <!-- FIREWORK 2: Cyan & Magenta Peony (Top Right: cx=850, cy=220, R=160) -->
+  <g id="firework-cyan-magenta" filter="url(#firework-glow)">
+    <circle cx="850" cy="220" r="14" fill="#ffffff"/>
+    <circle cx="850" cy="220" r="35" fill="#38bdf8" opacity="0.4"/>
+
+    <!-- Outer Ring Cyan Rays -->
+    <g stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round">
+      <line x1="850" y1="220" x2="850" y2="70"/><line x1="850" y1="220" x2="850" y2="370"/>
+      <line x1="850" y1="220" x2="700" y2="220"/><line x1="850" y1="220" x2="1000" y2="220"/>
+      <line x1="850" y1="220" x2="744" y2="114"/><line x1="850" y1="220" x2="956" y2="114"/>
+      <line x1="850" y1="220" x2="744" y2="326"/><line x1="850" y1="220" x2="956" y2="326"/>
+      <line x1="850" y1="220" x2="792" y2="82"/><line x1="850" y1="220" x2="908" y2="82"/>
+      <line x1="850" y1="220" x2="988" y2="162"/><line x1="850" y1="220" x2="988" y2="278"/>
+      <line x1="850" y1="220" x2="908" y2="358"/><line x1="850" y1="220" x2="792" y2="358"/>
+      <line x1="850" y1="220" x2="712" y2="278"/><line x1="850" y1="220" x2="712" y2="162"/>
+    </g>
+
+    <!-- Inner Ring Magenta Sparks -->
+    <g stroke="#ec4899" stroke-width="3" stroke-linecap="round">
+      <line x1="850" y1="220" x2="850" y2="140"/><line x1="850" y1="220" x2="850" y2="300"/>
+      <line x1="850" y1="220" x2="770" y2="220"/><line x1="850" y1="220" x2="930" y2="220"/>
+      <line x1="850" y1="220" x2="794" y2="164"/><line x1="850" y1="220" x2="906" y2="164"/>
+      <line x1="850" y1="220" x2="794" y2="276"/><line x1="850" y1="220" x2="906" y2="276"/>
+    </g>
+
+    <!-- Cyan Outer Star Points -->
+    <g fill="#bae6fd">
+      <circle cx="850" cy="65" r="3.5"/><circle cx="1005" cy="220" r="3.5"/>
+      <circle cx="850" cy="375" r="3.5"/><circle cx="695" cy="220" r="3.5"/>
+      <circle cx="960" cy="110" r="3.5"/><circle cx="960" cy="330" r="3.5"/>
+      <circle cx="740" cy="330" r="3.5"/><circle cx="740" cy="110" r="3.5"/>
+    </g>
+  </g>
+
+  <!-- FIREWORK 3: Lime & Violet Starburst (Center-Far-Right: cx=180, cy=360, R=110) -->
+  <g id="firework-lime" filter="url(#firework-glow)">
+    <circle cx="180" cy="360" r="10" fill="#ffffff"/>
+    <g stroke="#a3e635" stroke-width="2" stroke-linecap="round">
+      <line x1="180" y1="360" x2="180" y2="260"/><line x1="180" y1="360" x2="180" y2="460"/>
+      <line x1="180" y1="360" x2="80" y2="360"/><line x1="180" y1="360" x2="280" y2="360"/>
+      <line x1="180" y1="360" x2="110" y2="290"/><line x1="180" y1="360" x2="250" y2="290"/>
+      <line x1="180" y1="360" x2="110" y2="430"/><line x1="180" y1="360" x2="250" y2="430"/>
+    </g>
+    <g stroke="#c084fc" stroke-width="2.5" stroke-linecap="round">
+      <line x1="180" y1="360" x2="180" y2="305"/><line x1="180" y1="360" x2="180" y2="415"/>
+      <line x1="180" y1="360" x2="125" y2="360"/><line x1="180" y1="360" x2="235" y2="360"/>
+    </g>
+    <g fill="#d9f99d">
+      <circle cx="180" cy="255" r="3"/><circle cx="285" cy="360" r="3"/>
+      <circle cx="180" cy="465" r="3"/><circle cx="75" cy="360" r="3"/>
+    </g>
+  </g>
+
+  <!-- Launch Trails (Ascending Smoke / Sparks) -->
+  <path d="M 430 720 Q 425 500 420 280" stroke="#fef08a" stroke-width="1.8" stroke-dasharray="4,6" opacity="0.6" fill="none"/>
+  <path d="M 830 720 Q 840 470 850 220" stroke="#bae6fd" stroke-width="1.8" stroke-dasharray="4,6" opacity="0.6" fill="none"/>
+
+  <!-- 3. WATER REFLECTIONS (Shimmering horizontal glimmers) -->
+  <g filter="url(#warm-glow)" opacity="0.5">
+    <!-- Gold reflection -->
+    <ellipse cx="420" cy="760" rx="140" ry="12" fill="#facc15"/>
+    <ellipse cx="420" cy="800" rx="90" ry="8" fill="#ea580c"/>
+    <!-- Cyan reflection -->
+    <ellipse cx="850" cy="750" rx="110" ry="10" fill="#38bdf8"/>
+    <ellipse cx="850" cy="790" rx="70" ry="7" fill="#ec4899"/>
+  </g>
+
+  <!-- 4. FESTIVAL EMBANKMENT, STALLS & LANTERNS (Foreground) -->
+
+  <!-- Embankment ground silhouette -->
+  <path d="M 0 760 Q 300 745 600 750 T 1200 740 L 1200 900 L 0 900 Z" fill="#090d16"/>
+
+  <!-- Warm ambient illumination from stalls on ground -->
+  <ellipse cx="280" cy="790" rx="260" ry="35" fill="#f97316" opacity="0.25" filter="url(#warm-glow)"/>
+  <ellipse cx="780" cy="790" rx="300" ry="35" fill="#f97316" opacity="0.25" filter="url(#warm-glow)"/>
+
+  <!-- FESTIVAL FOOD STALLS (Yatai) -->
+  <!-- Stall 1: Takoyaki (Left at x=80) -->
+  <g transform="translate(80, 640)">
+    <!-- Roof / Canopy (Red & White Striped) -->
+    <polygon points="0,50 180,50 160,10 20,10" fill="#dc2626"/>
+    <polygon points="30,10 60,10 55,50 25,50" fill="#fef2f2"/>
+    <polygon points="90,10 120,10 115,50 85,50" fill="#fef2f2"/>
+    <polygon points="150,10 160,10 175,50 145,50" fill="#fef2f2"/>
+    <!-- Counter Table -->
+    <rect x="20" y="50" width="140" height="70" fill="#1e1b4b" stroke="#000" stroke-width="2"/>
+    <rect x="25" y="55" width="130" height="20" fill="#ea580c" opacity="0.8"/>
+    <!-- Stall Sign Text -->
+    <rect x="50" y="20" width="80" height="22" rx="3" fill="#ffffff"/>
+    <text x="90" y="36" font-family="sans-serif" font-size="12" font-weight="900" fill="#dc2626" text-anchor="middle">たこ焼き</text>
+    <!-- Poles -->
+    <line x1="20" y1="50" x2="20" y2="120" stroke="#78350f" stroke-width="3"/>
+    <line x1="160" y1="50" x2="160" y2="120" stroke="#78350f" stroke-width="3"/>
+
+    <!-- Chochin Lanterns hanging from roof -->
+    <g transform="translate(10, 50)">
+      <ellipse cx="15" cy="16" rx="10" ry="14" fill="url(#lantern-red)"/>
+      <ellipse cx="15" cy="16" rx="9" ry="13" fill="none" stroke="#7f1d1d" stroke-width="0.8"/>
+      <ellipse cx="50" cy="16" rx="10" ry="14" fill="url(#lantern-yellow)"/>
+      <ellipse cx="110" cy="16" rx="10" ry="14" fill="url(#lantern-yellow)"/>
+      <ellipse cx="145" cy="16" rx="10" ry="14" fill="url(#lantern-red)"/>
+    </g>
+  </g>
+
+  <!-- Stall 2: Kingyo-sukui / Goldfish (Center at x=340) -->
+  <g transform="translate(340, 645)">
+    <!-- Roof / Canopy (Blue & Yellow Striped) -->
+    <polygon points="0,50 170,50 150,15 20,15" fill="#0284c7"/>
+    <polygon points="30,15 60,15 55,50 25,50" fill="#fef08a"/>
+    <polygon points="90,15 120,15 115,50 85,50" fill="#fef08a"/>
+    <polygon points="145,15 150,15 165,50 140,50" fill="#fef08a"/>
+    <!-- Counter -->
+    <rect x="20" y="50" width="130" height="65" fill="#1e1b4b"/>
+    <!-- Sign -->
+    <rect x="45" y="22" width="80" height="22" rx="3" fill="#ffffff"/>
+    <text x="85" y="38" font-family="sans-serif" font-size="12" font-weight="900" fill="#0284c7" text-anchor="middle">金魚すくい</text>
+    <!-- Chochin Lanterns -->
+    <g transform="translate(15, 50)">
+      <ellipse cx="20" cy="14" rx="9" ry="12" fill="url(#lantern-red)"/>
+      <ellipse cx="60" cy="14" rx="9" ry="12" fill="url(#lantern-yellow)"/>
+      <ellipse cx="100" cy="14" rx="9" ry="12" fill="url(#lantern-red)"/>
+    </g>
+  </g>
+
+  <!-- Stall 3: Yakisoba / Shaved Ice (Right at x=600) -->
+  <g transform="translate(600, 640)">
+    <!-- Roof / Canopy -->
+    <polygon points="0,50 180,50 160,10 20,10" fill="#16a34a"/>
+    <polygon points="30,10 60,10 55,50 25,50" fill="#ffffff"/>
+    <polygon points="90,10 120,10 115,50 85,50" fill="#ffffff"/>
+    <polygon points="150,10 160,10 175,50 145,50" fill="#ffffff"/>
+    <!-- Counter -->
+    <rect x="20" y="50" width="140" height="70" fill="#1e1b4b"/>
+    <rect x="50" y="20" width="80" height="22" rx="3" fill="#ffffff"/>
+    <text x="90" y="36" font-family="sans-serif" font-size="12" font-weight="900" fill="#16a34a" text-anchor="middle">かき氷・焼そば</text>
+    <!-- Chochin Lanterns -->
+    <g transform="translate(10, 50)">
+      <ellipse cx="20" cy="15" rx="10" ry="13" fill="url(#lantern-yellow)"/>
+      <ellipse cx="60" cy="15" rx="10" ry="13" fill="url(#lantern-red)"/>
+      <ellipse cx="100" cy="15" rx="10" ry="13" fill="url(#lantern-red)"/>
+      <ellipse cx="140" cy="15" rx="10" ry="13" fill="url(#lantern-yellow)"/>
+    </g>
+  </g>
+
+  <!-- Overhead String Lanterns across Stalls -->
+  <path d="M 60 635 Q 260 660 460 635 Q 660 660 860 635" fill="none" stroke="#78350f" stroke-width="2"/>
+  <g>
+    <ellipse cx="160" cy="650" rx="9" ry="13" fill="url(#lantern-red)"/>
+    <ellipse cx="260" cy="655" rx="9" ry="13" fill="url(#lantern-yellow)"/>
+    <ellipse cx="360" cy="650" rx="9" ry="13" fill="url(#lantern-red)"/>
+    <ellipse cx="560" cy="650" rx="9" ry="13" fill="url(#lantern-yellow)"/>
+    <ellipse cx="760" cy="650" rx="9" ry="13" fill="url(#lantern-red)"/>
+  </g>
+
+  <!-- 5. FESTIVAL CROWD SILHOUETTES (Viewing Fireworks in Yukata) -->
+  <g fill="#070a12">
+    <!-- Parent and child pair looking up right -->
+    <circle cx="860" cy="745" r="14"/> <!-- Head -->
+    <path d="M 845 760 Q 860 755 875 760 L 880 840 L 840 840 Z"/> <!-- Yukata body -->
+    <circle cx="890" cy="775" r="9"/> <!-- Child head -->
+    <path d="M 880 785 Q 890 782 900 785 L 905 845 L 875 845 Z"/>
+    <line x1="865" y1="785" x2="885" y2="795" stroke="#070a12" stroke-width="4"/> <!-- Holding hands -->
+
+    <!-- Couple looking up left -->
+    <circle cx="970" cy="740" r="15"/>
+    <path d="M 952 755 Q 970 750 988 755 L 995 850 L 945 850 Z"/>
+    <!-- Yukata Obi sash highlight -->
+    <rect x="955" y="780" width="30" height="8" fill="#e11d48"/>
+
+    <circle cx="1010" cy="745" r="14"/>
+    <path d="M 995 760 Q 1010 755 1025 760 L 1030 850 L 990 850 Z"/>
+    <rect x="998" y="785" width="25" height="8" fill="#3b82f6"/>
+
+    <!-- Individuals & Group silhouettes along embankment -->
+    <!-- Group near stall 1 -->
+    <circle cx="280" cy="750" r="13"/><path d="M 268 763 L 292 763 L 295 830 L 265 830 Z"/>
+    <circle cx="310" cy="755" r="12"/><path d="M 300 767 L 320 767 L 323 830 L 297 830 Z"/>
+
+    <!-- Group near stall 2 -->
+    <circle cx="530" cy="748" r="13"/><path d="M 518 761 L 542 761 L 545 835 L 515 835 Z"/>
+    <circle cx="555" cy="752" r="12"/><path d="M 545 764 L 565 764 L 568 835 L 542 835 Z"/>
+
+    <!-- Pointing gesture towards sky -->
+    <circle cx="1100" cy="735" r="15"/>
+    <path d="M 1085 750 L 1115 750 L 1120 860 L 1080 860 Z"/>
+    <line x1="1100" y1="760" x2="1050" y2="700" stroke="#070a12" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+</svg>

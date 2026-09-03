@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Room Lighting Gradients -->
+    <linearGradient id="wall-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fdf3e7"/>
+      <stop offset="65%" stop-color="#faebd7"/>
+      <stop offset="100%" stop-color="#eed8c0"/>
+    </linearGradient>
+
+    <linearGradient id="floor-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b88352"/>
+      <stop offset="100%" stop-color="#8a572c"/>
+    </linearGradient>
+
+    <!-- TV Screen Glow -->
+    <radialGradient id="tv-glow" cx="60%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#e0f2fe" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#93c5fd" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0"/>
+    </radialGradient>
+
+    <!-- Floor Lamp Warm Light Glow -->
+    <radialGradient id="lamp-glow" cx="50%" cy="20%" r="70%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.6"/>
+      <stop offset="40%" stop-color="#fde047" stop-opacity="0.25"/>
+      <stop offset="80%" stop-color="#eab308" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#ca8a04" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Soft Shadows -->
+    <filter id="cozy-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#4a2e18" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- 1. WALL & FLOOR -->
+  <rect width="1200" height="620" fill="url(#wall-grad)"/>
+  <rect y="620" width="1200" height="280" fill="url(#floor-grad)"/>
+  <!-- Baseboard Trim -->
+  <rect y="612" width="1200" height="16" fill="#eed5bc" stroke="#d4b494" stroke-width="1"/>
+  <!-- Tatami / Wooden Floor Planks -->
+  <path d="M 0 680 L 1200 680 M 0 745 L 1200 745 M 0 815 L 1200 815" stroke="#784a22" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- 2. WINDOW & CURTAINS (Left Background) -->
+  <g id="window" transform="translate(80, 100)">
+    <!-- Window Frame -->
+    <rect width="220" height="340" rx="4" fill="#60a5fa" stroke="#e2e8f0" stroke-width="8"/>
+    <!-- Distant Sky / Garden Green -->
+    <rect x="8" y="8" width="204" height="324" fill="#93c5fd"/>
+    <ellipse cx="110" cy="310" rx="90" ry="40" fill="#86efac"/>
+    <ellipse cx="60" cy="270" rx="40" ry="25" fill="#4ade80"/>
+    <ellipse cx="160" cy="280" rx="45" ry="30" fill="#22c55e"/>
+    <!-- Window Panes -->
+    <line x1="110" y1="8" x2="110" y2="332" stroke="#e2e8f0" stroke-width="6"/>
+    <line x1="8" y1="170" x2="212" y2="170" stroke="#e2e8f0" stroke-width="6"/>
+
+    <!-- Curtain Rod -->
+    <line x1="-30" y1="-10" x2="250" y2="-10" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="-30" cy="-10" r="7" fill="#92400e"/>
+    <circle cx="250" cy="-10" r="7" fill="#92400e"/>
+    <!-- Curtains (Draped Warm Floral/Beige) -->
+    <path d="M -20 -6 Q 10 180 -10 350 L -30 350 L -30 -6 Z" fill="#fed7aa" stroke="#fbd5a5" stroke-width="2"/>
+    <path d="M 240 -6 Q 210 180 230 350 L 250 350 L 250 -6 Z" fill="#fed7aa" stroke="#fbd5a5" stroke-width="2"/>
+  </g>
+
+  <!-- Wall Hanging Painting -->
+  <g transform="translate(420, 120)">
+    <rect width="150" height="110" rx="4" fill="#fef3c7" stroke="#b45309" stroke-width="6" filter="url(#cozy-shadow)"/>
+    <circle cx="75" cy="55" r="28" fill="#f87171" opacity="0.8"/>
+    <path d="M 20 85 Q 75 40 130 85 Z" fill="#34d399"/>
+  </g>
+
+  <!-- Wall Clock -->
+  <g transform="translate(680, 110)">
+    <circle cx="45" cy="45" r="42" fill="#fff" stroke="#92400e" stroke-width="6"/>
+    <circle cx="45" cy="45" r="3" fill="#1e293b"/>
+    <line x1="45" y1="45" x2="45" y2="22" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+    <line x1="45" y1="45" x2="62" y2="45" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- 3. FLOOR LAMP (Left Side of Grandma) -->
+  <g id="floor-lamp" transform="translate(260, 240)">
+    <!-- Light cone overlay -->
+    <polygon points="40,90 -80,500 180,500" fill="url(#lamp-glow)" opacity="0.85"/>
+    <!-- Lamp Pole & Base -->
+    <line x1="40" y1="80" x2="40" y2="450" stroke="#78350f" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="40" cy="450" rx="35" ry="12" fill="#451a03"/>
+    <!-- Shade -->
+    <path d="M 20 40 L 60 40 L 75 90 L 5 90 Z" fill="#fde047" stroke="#eab308" stroke-width="2"/>
+    <ellipse cx="40" cy="90" rx="35" ry="10" fill="#fef08a"/>
+  </g>
+
+  <!-- 4. RUG UNDER GRANDMA -->
+  <ellipse cx="490" cy="740" rx="260" ry="90" fill="#d97706" opacity="0.25"/>
+  <ellipse cx="490" cy="740" rx="245" ry="80" fill="#fef3c7" opacity="0.6"/>
+
+  <!-- 5. GRANDMOTHER & ARMCHAIR (Facing Right towards TV) -->
+  <g id="grandma-armchair" filter="url(#cozy-shadow)">
+    <!-- Armchair Backrest -->
+    <path d="M 330 400 Q 340 320 410 320 Q 480 320 490 400 L 480 620 L 340 620 Z" fill="#9a3412"/>
+    <ellipse cx="410" cy="335" rx="70" ry="25" fill="#c2410c"/>
+
+    <!-- GRANDMA -->
+    <!-- Grandma Torso / Green Cardigan -->
+    <path d="M 390 450 C 370 500, 380 580, 470 590 L 490 530 C 470 470, 440 440, 390 450 Z" fill="#4d7c0f"/>
+    <!-- Cardigan Collar -->
+    <path d="M 405 450 L 430 490 L 445 470" fill="none" stroke="#fef08a" stroke-width="3"/>
+
+    <!-- Warm Lap Blanket (Plaid Red/Cream) -->
+    <path d="M 440 540 C 420 570, 420 630, 520 640 C 550 640, 560 590, 530 560 Z" fill="#dc2626"/>
+    <path d="M 440 570 Q 480 600 530 580" stroke="#fef08a" stroke-width="3" fill="none" stroke-dasharray="8,6"/>
+
+    <!-- Grandma Slippers -->
+    <ellipse cx="535" cy="655" rx="25" ry="12" fill="#ec4899"/>
+    <ellipse cx="510" cy="660" rx="24" ry="11" fill="#ec4899"/>
+
+    <!-- Grandma Head & Bun (Facing Profile-Right) -->
+    <!-- Gray Hair Bun -->
+    <circle cx="395" cy="385" r="22" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+    <circle cx="390" cy="380" r="16" fill="#e2e8f0"/>
+    <!-- Head Base -->
+    <circle cx="430" cy="405" r="32" fill="#fed7aa"/>
+    <!-- Gray Hair Front -->
+    <path d="M 400 395 C 410 365, 455 365, 460 390 C 445 385, 420 390, 400 395 Z" fill="#cbd5e1"/>
+    <!-- Glasses (Profile Looking Right) -->
+    <ellipse cx="448" cy="405" rx="10" ry="12" fill="none" stroke="#d97706" stroke-width="2.5"/>
+    <line x1="438" y1="405" x2="418" y2="400" stroke="#d97706" stroke-width="2"/>
+    <!-- Smile & Gentle Profile Nose -->
+    <path d="M 458 402 Q 465 408 458 414" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 452 422 Q 458 426 462 422" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Armchair Front Armrest & Pillow -->
+    <path d="M 370 510 C 370 480, 460 480, 470 520 L 460 620 L 370 620 Z" fill="#c2410c"/>
+    <ellipse cx="420" cy="510" rx="50" ry="18" fill="#ea580c"/>
+
+    <!-- Sleeping Cat curled at her feet -->
+    <g transform="translate(360, 640)">
+      <ellipse cx="40" cy="30" rx="35" ry="24" fill="#fb923c"/>
+      <circle cx="65" cy="22" r="15" fill="#fb923c"/>
+      <polygon points="65,10 72,18 60,18" fill="#f97316"/>
+      <!-- Tail -->
+      <path d="M 10 30 Q 15 10 30 18" fill="none" stroke="#ea580c" stroke-width="5" stroke-linecap="round"/>
+      <!-- Sleeping eye -->
+      <path d="M 68 24 Q 72 28 76 24" fill="none" stroke="#7c2d12" stroke-width="2"/>
+    </g>
+  </g>
+
+  <!-- 6. LOW TEA TABLE (Center Living Room) -->
+  <g id="tea-table" transform="translate(600, 600)" filter="url(#cozy-shadow)">
+    <!-- Table Legs -->
+    <rect x="20" y="30" width="12" height="70" fill="#78350f"/>
+    <rect x="180" y="30" width="12" height="70" fill="#78350f"/>
+    <!-- Table Top -->
+    <ellipse cx="110" cy="30" rx="105" ry="32" fill="#92400e"/>
+    <ellipse cx="110" cy="25" rx="100" ry="28" fill="#b45309"/>
+
+    <!-- Teapot & Japanese Teacup -->
+    <g transform="translate(65, 0)">
+      <ellipse cx="20" cy="18" rx="16" ry="12" fill="#065f46"/>
+      <ellipse cx="20" cy="8" rx="8" ry="4" fill="#047857"/>
+      <!-- Teapot Spout & Handle -->
+      <path d="M 34 14 Q 44 12 42 20" fill="none" stroke="#065f46" stroke-width="4" stroke-linecap="round"/>
+      <path d="M 6 12 Q -4 16 6 22" fill="none" stroke="#065f46" stroke-width="3"/>
+    </g>
+    <g transform="translate(130, 8)">
+      <rect x="0" y="0" width="16" height="18" rx="3" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.5"/>
+      <!-- Gentle Steam -->
+      <path d="M 6 -4 Q 10 -12 6 -18" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.7"/>
+      <path d="M 12 -2 Q 8 -10 12 -16" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.7"/>
+    </g>
+    <!-- TV Remote on Table -->
+    <rect x="80" y="28" width="28" height="12" rx="2" fill="#334155" transform="rotate(-15 80 28)"/>
+  </g>
+
+  <!-- 7. TELEVISION & TV STAND (Right Side) -->
+  <g id="television-set" transform="translate(870, 360)">
+    <!-- TV Glow into Room (Directed towards Grandma) -->
+    <polygon points="50,150 -250,50 -250,320 50,220" fill="url(#tv-glow)"/>
+
+    <!-- Line of Sight indicator (subtle glowing dotted line towards Grandma) -->
+    <path d="M -410, 45 Q -150, 100 50, 130" fill="none" stroke="#60a5fa" stroke-width="2" stroke-dasharray="6,8" opacity="0.4"/>
+
+    <!-- TV Stand / Cabinet -->
+    <rect x="10" y="240" width="240" height="150" rx="6" fill="#78350f" stroke="#451a03" stroke-width="3" filter="url(#cozy-shadow)"/>
+    <!-- Shelves & VCR/Tuner -->
+    <rect x="30" y="265" width="200" height="45" rx="3" fill="#292524"/>
+    <rect x="30" y="325" width="95" height="50" rx="3" fill="#92400e"/>
+    <rect x="135" y="325" width="95" height="50" rx="3" fill="#92400e"/>
+
+    <!-- TV Main Frame -->
+    <rect x="25" y="40" width="210" height="170" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="4" filter="url(#cozy-shadow)"/>
+    <!-- TV Screen -->
+    <rect x="37" y="52" width="186" height="135" rx="4" fill="#38bdf8"/>
+    <!-- Broadcast on Screen (Nature/Landscape show) -->
+    <rect x="37" y="52" width="186" height="85" fill="#7dd3fc"/>
+    <circle cx="170" cy="80" r="18" fill="#fbbf24"/>
+    <!-- Green hills on TV -->
+    <path d="M 37 150 Q 80 100 130 140 Q 180 110 223 150 L 223 187 L 37 187 Z" fill="#22c55e"/>
+    <path d="M 37 165 Q 100 130 160 170 Q 190 145 223 170 L 223 187 L 37 187 Z" fill="#15803d"/>
+
+    <!-- TV Stand Base Legs -->
+    <rect x="110" y="210" width="40" height="30" fill="#334155"/>
+    <ellipse cx="130" cy="240" rx="55" ry="8" fill="#1e293b"/>
+  </g>
+
+  <!-- Potted Houseplant (Far Right) -->
+  <g transform="translate(1120, 520)" filter="url(#cozy-shadow)">
+    <!-- Pot -->
+    <polygon points="10,120 60,120 50,190 20,190" fill="#ea580c"/>
+    <!-- Leaves -->
+    <path d="M 35 120 Q 10 50 -10 60 Q 20 85 35 120 Z" fill="#16a34a"/>
+    <path d="M 35 120 Q 35 30 55 40 Q 45 80 35 120 Z" fill="#22c55e"/>
+    <path d="M 35 120 Q 65 50 85 70 Q 55 95 35 120 Z" fill="#15803d"/>
+  </g>
+
+  <!-- Room Ambient Warmth / Vignette Overlay -->
+  <rect width="1200" height="900" fill="#f59e0b" opacity="0.04" pointer-events="none"/>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFDF9"/>
+      <stop offset="100%" stop-color="#F5EBE1"/>
+    </radialGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="15" flood-color="#5C3D2E" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bgGlow)"/>
+
+  <!-- Shadow on Floor -->
+  <ellipse cx="600" cy="780" rx="280" ry="40" fill="#E2D0BE"/>
+
+  <g filter="url(#shadow)" stroke="#613B1F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- Left Ear -->
+    <circle cx="420" cy="250" r="85" fill="#C68B59"/>
+    <circle cx="420" cy="250" r="50" fill="#F3E0BE"/>
+
+    <!-- Right Ear -->
+    <circle cx="780" cy="250" r="85" fill="#C68B59"/>
+    <circle cx="780" cy="250" r="50" fill="#F3E0BE"/>
+
+    <!-- Left Leg -->
+    <ellipse cx="440" cy="680" rx="80" ry="95" fill="#C68B59"/>
+    <circle cx="440" cy="690" r="50" fill="#E5C3A6"/>
+
+    <!-- Right Leg -->
+    <ellipse cx="760" cy="680" rx="80" ry="95" fill="#C68B59"/>
+    <circle cx="760" cy="690" r="50" fill="#E5C3A6"/>
+
+    <!-- Body -->
+    <ellipse cx="600" cy="540" rx="200" ry="180" fill="#C68B59"/>
+    <!-- Center Seam Stitches -->
+    <path d="M 600,420 L 600,690" stroke="#7A4E2B" stroke-width="4" stroke-dasharray="8,8"/>
+
+    <!-- Left Arm -->
+    <ellipse cx="400" cy="500" rx="60" ry="110" transform="rotate(25 400 500)" fill="#C68B59"/>
+    <circle cx="380" cy="560" r="40" fill="#E5C3A6"/>
+
+    <!-- Right Arm -->
+    <ellipse cx="800" cy="500" rx="60" ry="110" transform="rotate(-25 800 500)" fill="#C68B59"/>
+    <circle cx="820" cy="560" r="40" fill="#E5C3A6"/>
+
+    <!-- Chest Heart Patch -->
+    <path d="M 600,530 C 600,530 540,480 540,440 C 540,410 570,395 600,420 C 630,395 660,410 660,440 C 660,480 600,530 600,530 Z" fill="#E86A7C"/>
+    <text x="600" y="465" font-family="sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF" text-anchor="middle" stroke="none">♥</text>
+
+    <!-- Head -->
+    <circle cx="600" cy="320" r="180" fill="#C68B59"/>
+
+    <!-- Muzzle -->
+    <ellipse cx="600" cy="370" rx="100" ry="75" fill="#F3E0BE"/>
+
+    <!-- Nose & Mouth -->
+    <path d="M 575,340 L 625,340 L 600,365 Z" fill="#2B1E16"/>
+    <path d="M 600,365 L 600,390" stroke="#2B1E16" stroke-width="5"/>
+    <path d="M 565,395 Q 582,415 600,390 Q 618,415 635,395" fill="none" stroke="#2B1E16" stroke-width="5"/>
+
+    <!-- Eyes -->
+    <circle cx="520" cy="300" r="20" fill="#2B1E16" stroke="none"/>
+    <circle cx="513" cy="293" r="6" fill="#FFFFFF" stroke="none"/>
+
+    <circle cx="680" cy="300" r="20" fill="#2B1E16" stroke="none"/>
+    <circle cx="673" cy="293" r="6" fill="#FFFFFF" stroke="none"/>
+
+    <!-- Blush Cheeks -->
+    <circle cx="470" cy="350" r="30" fill="#FFB3C1" opacity="0.6" stroke="none"/>
+    <circle cx="730" cy="350" r="30" fill="#FFB3C1" opacity="0.6" stroke="none"/>
+
+    <!-- Forehead Seam -->
+    <path d="M 600,140 L 600,230" stroke="#7A4E2B" stroke-width="4" stroke-dasharray="6,6"/>
+
+  </g>
+</svg>

@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <!-- Block Gradients -->
+    <linearGradient id="pred-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+
+    <linearGradient id="upd-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+
+    <linearGradient id="gain-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#854d0e"/>
+      <stop offset="100%" stop-color="#451a03"/>
+    </linearGradient>
+
+    <!-- Arrowhead Markers -->
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arr-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#4ade80"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arr-rose" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f43f5e"/>
+    </marker>
+    <marker id="arr-purple" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#c084fc"/>
+    </marker>
+
+    <filter id="block-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bg-grad)"/>
+
+  <!-- Title Header -->
+  <g font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">
+    <text x="600" y="65" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="1">Discrete Kalman Filter Block Diagram</text>
+    <text x="600" y="98" font-size="16" fill="#94a3b8">Recursive State Estimation: Predict (Time Update) &amp; Correct (Measurement Update)</text>
+  </g>
+
+  <!-- 1. PREDICTION (TIME UPDATE) REGION (Left Container) -->
+  <g transform="translate(60, 130)" filter="url(#block-shadow)">
+    <!-- Container Box -->
+    <rect width="440" height="490" rx="16" fill="#1e293b" fill-opacity="0.7" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8,6"/>
+    <!-- Region Title Badge -->
+    <rect x="25" y="-18" width="280" height="36" rx="8" fill="#0369a1" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="165" y="6" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">
+      1. PREDICT (Time Update)
+    </text>
+
+    <!-- State Ahead Predictor Block -->
+    <g transform="translate(40, 60)">
+      <rect width="360" height="130" rx="10" fill="url(#pred-grad)" stroke="#38bdf8" stroke-width="2"/>
+      <text x="180" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#7dd3fc" text-anchor="middle">Project State Ahead</text>
+      <!-- Equation Box -->
+      <rect x="20" y="48" width="320" height="60" rx="6" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="180" y="84" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#f8fafc" text-anchor="middle" font-style="italic">
+        x̂⁻_k = A·x̂_{k-1} + B·u_k
+      </text>
+    </g>
+
+    <!-- Error Covariance Predictor Block -->
+    <g transform="translate(40, 240)">
+      <rect width="360" height="130" rx="10" fill="url(#pred-grad)" stroke="#38bdf8" stroke-width="2"/>
+      <text x="180" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#7dd3fc" text-anchor="middle">Project Error Covariance</text>
+      <!-- Equation Box -->
+      <rect x="20" y="48" width="320" height="60" rx="6" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="180" y="84" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#f8fafc" text-anchor="middle" font-style="italic">
+        P⁻_k = A·P_{k-1}·Aᵀ + Q
+      </text>
+    </g>
+
+    <!-- Noise Q Input Callout -->
+    <rect x="40" y="410" width="360" height="50" rx="8" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+    <text x="55" y="440" font-family="system-ui, sans-serif" font-size="14" fill="#94a3b8">
+      Process Noise Covariance: <tspan fill="#38bdf8" font-weight="700">Q = E[w_k w_kᵀ]</tspan>
+    </text>
+  </g>
+
+  <!-- Control Input u_k Arrow into Predictor -->
+  <g>
+    <line x1="20" y1="255" x2="95" y2="255" stroke="#c084fc" stroke-width="3" marker-end="url(#arr-purple)"/>
+    <rect x="15" y="215" width="70" height="30" rx="4" fill="#3b0764" stroke="#c084fc" stroke-width="1.5"/>
+    <text x="50" y="235" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#e9d5ff" text-anchor="middle">Input u_k</text>
+  </g>
+
+  <!-- 2. UPDATE (MEASUREMENT UPDATE) REGION (Right Container) -->
+  <g transform="translate(680, 130)" filter="url(#block-shadow)">
+    <!-- Container Box -->
+    <rect width="460" height="490" rx="16" fill="#1e293b" fill-opacity="0.7" stroke="#4ade80" stroke-width="2" stroke-dasharray="8,6"/>
+    <!-- Region Title Badge -->
+    <rect x="25" y="-18" width="280" height="36" rx="8" fill="#047857" stroke="#4ade80" stroke-width="1.5"/>
+    <text x="165" y="6" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">
+      2. UPDATE (Measurement Update)
+    </text>
+
+    <!-- Kalman Gain Block -->
+    <g transform="translate(40, 45)">
+      <rect width="380" height="110" rx="10" fill="url(#gain-grad)" stroke="#fbbf24" stroke-width="2"/>
+      <text x="190" y="28" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#fde047" text-anchor="middle">Compute Kalman Gain</text>
+      <!-- Equation Box -->
+      <rect x="15" y="40" width="350" height="52" rx="6" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="190" y="72" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#f8fafc" text-anchor="middle" font-style="italic">
+        K_k = P⁻_k·Hᵀ·(H·P⁻_k·Hᵀ + R)⁻¹
+      </text>
+    </g>
+
+    <!-- State Estimate Update Block -->
+    <g transform="translate(40, 185)">
+      <rect width="380" height="135" rx="10" fill="url(#upd-grad)" stroke="#4ade80" stroke-width="2"/>
+      <text x="190" y="28" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#86efac" text-anchor="middle">Update State Estimate (with Residual)</text>
+      <!-- Equation Box -->
+      <rect x="15" y="40" width="350" height="75" rx="6" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="190" y="70" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#f8fafc" text-anchor="middle" font-style="italic">
+        x̂_k = x̂⁻_k + K_k·(z_k - H·x̂⁻_k)
+      </text>
+      <text x="190" y="98" font-family="system-ui, sans-serif" font-size="13" fill="#fbbf24" text-anchor="middle">
+        Innovation / Residual: y_k = z_k - H·x̂⁻_k
+      </text>
+    </g>
+
+    <!-- Error Covariance Update Block -->
+    <g transform="translate(40, 345)">
+      <rect width="380" height="110" rx="10" fill="url(#upd-grad)" stroke="#4ade80" stroke-width="2"/>
+      <text x="190" y="28" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#86efac" text-anchor="middle">Update Error Covariance</text>
+      <!-- Equation Box -->
+      <rect x="15" y="40" width="350" height="52" rx="6" fill="#0f172a" fill-opacity="0.8"/>
+      <text x="190" y="72" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#f8fafc" text-anchor="middle" font-style="italic">
+        P_k = (I - K_k·H)·P⁻_k
+      </text>
+    </g>
+  </g>
+
+  <!-- Measurement Input z_k (From Right/Top) -->
+  <g transform="translate(870, 30)">
+    <rect width="160" height="42" rx="6" fill="#831843" stroke="#f43f5e" stroke-width="2"/>
+    <text x="80" y="26" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#fecdd3" text-anchor="middle">
+      Measurement z_k
+    </text>
+    <line x1="80" y1="42" x2="80" y2="310" stroke="#f43f5e" stroke-width="3" stroke-dasharray="4,4"/>
+    <line x1="80" y1="310" x2="865" y2="310" stroke="#f43f5e" stroke-width="3" marker-end="url(#arr-rose)"/>
+  </g>
+
+  <!-- 3. INTER-BLOCK FORWARD FLOWS (Predict -> Update) -->
+  <!-- x̂⁻_k Flow -->
+  <g>
+    <path d="M 460 255 L 715 255" stroke="#38bdf8" stroke-width="3.5" marker-end="url(#arr-blue)"/>
+    <rect x="525" y="235" width="90" height="32" rx="6" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="570" y="256" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="middle">x̂⁻_k (prior)</text>
+  </g>
+
+  <!-- P⁻_k Flow (Branching to Gain and Cov Update) -->
+  <g>
+    <path d="M 460 435 L 560 435 L 560 215 L 715 215" stroke="#fbbf24" stroke-width="3" marker-end="url(#arr-amber)"/>
+    <path d="M 560 435 L 560 515 L 715 515" stroke="#fbbf24" stroke-width="3" marker-end="url(#arr-amber)"/>
+    <rect x="525" y="325" width="90" height="32" rx="6" fill="#713f12" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="570" y="346" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fbbf24" text-anchor="middle">P⁻_k (prior)</text>
+  </g>
+
+  <!-- Kalman Gain K_k internal flow down to State Update -->
+  <g>
+    <line x1="870" y1="285" x2="870" y2="310" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arr-amber)"/>
+  </g>
+
+  <!-- 4. FEEDBACK LOOP (Time Step k -> k+1 Delay / Memory Unit) -->
+  <!-- State Estimate Output & Feedback Path -->
+  <g>
+    <!-- Output Arrow out of System -->
+    <line x1="1100" y1="380" x2="1175" y2="380" stroke="#4ade80" stroke-width="4" marker-end="url(#arr-green)"/>
+    <rect x="1100" y="335" width="85" height="36" rx="6" fill="#064e3b" stroke="#4ade80" stroke-width="1.5"/>
+    <text x="1142" y="358" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#86efac" text-anchor="middle">x̂_k, P_k</text>
+
+    <!-- Feedback Line down and left -->
+    <path d="M 1120 380 L 1140 380 L 1140 680 L 300 680 L 300 625" stroke="#4ade80" stroke-width="3" stroke-dasharray="8,6" fill="none" marker-end="url(#arr-green)"/>
+
+    <!-- Unit Delay Block z⁻¹ on feedback line -->
+    <g transform="translate(540, 650)" filter="url(#block-shadow)">
+      <rect width="120" height="60" rx="8" fill="#1e293b" stroke="#4ade80" stroke-width="2"/>
+      <text x="60" y="36" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#f8fafc" text-anchor="middle">Delay: z⁻¹</text>
+      <text x="60" y="52" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">(step k → k+1)</text>
+    </g>
+    <text x="420" y="670" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#86efac">x̂_{k-1}, P_{k-1}</text>
+  </g>
+
+  <!-- Bottom Explanatory Summary Card -->
+  <g transform="translate(100, 775)" font-family="system-ui, sans-serif">
+    <rect width="1000" height="85" rx="10" fill="#1e293b" fill-opacity="0.95" stroke="#334155" stroke-width="1.5"/>
+    <text x="30" y="30" font-size="15" font-weight="700" fill="#38bdf8">1. Prediction Phase:</text>
+    <text x="180" y="30" font-size="14" fill="#f8fafc">Estimates current state &amp; error covariance using system dynamics model and prior knowledge.</text>
+    <text x="30" y="60" font-size="15" font-weight="700" fill="#4ade80">2. Correction Phase:</text>
+    <text x="180" y="60" font-size="14" fill="#f8fafc">Balances prediction uncertainty (P⁻) against measurement noise (R) via optimal Kalman Gain K_k.</text>
+  </g>
+</svg>
