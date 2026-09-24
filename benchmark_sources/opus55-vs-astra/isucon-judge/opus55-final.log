@@ -1,0 +1,172 @@
+judge opus55 commit=cdbe4be target=192.168.64.18 started=2026-09-23 20:14:33
+time=20:14:33.699 level=DEBUG source=isucon14/bench/cmd/run.go:90 msg=target targetURL=http://192.168.64.18 targetAddr="" benchrun.GetTargetAddress()="" paymentURL=http://192.168.64.1:12345
+time=20:14:33.700 level=INFO msg=負荷走行を開始します
+time=20:14:36.389 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=60
+time=20:14:36.389 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=4 score="[0 0 0 3 1]" criteria="[4 1 4 4]"
+time=20:14:38.165 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=20:14:38.165 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=1
+time=20:14:38.168 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=1
+time=20:14:38.189 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=120
+time=20:14:38.189 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=20 score="[0 0 0 11 9]" criteria="[20 9 20 20]"
+time=20:14:39.962 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=2
+time=20:14:39.962 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=1
+time=20:14:39.962 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=1
+time=20:14:39.963 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=1
+time=20:14:39.963 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=20:14:39.989 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=180
+time=20:14:39.989 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=38 score="[0 0 0 23 15]" criteria="[38 15 38 38]"
+time=20:14:39.989 level=INFO msg=これまでに地域内の評判によって7人、既存ユーザーの招待経由で36人が新規登録しました
+time=20:14:39.991 level=INFO msg=0.0%のライドは椅子がマッチされるまでの時間、60.5%のライドはマッチされた椅子が乗車地点までに掛かる時間、0.0%のライドは椅子の実移動時間に不満がありました
+time=20:14:41.764 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=2
+time=20:14:41.764 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=20:14:41.765 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=2
+time=20:14:41.765 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=2
+time=20:14:41.767 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=3
+time=20:14:41.789 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=240
+time=20:14:41.789 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=66 score="[0 0 0 32 34]" criteria="[66 34 66 66]"
+time=20:14:43.570 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=2
+time=20:14:43.570 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=3
+time=20:14:43.571 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=2
+time=20:14:43.572 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=20:14:43.572 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=2
+time=20:14:43.589 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=300
+time=20:14:43.589 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=103 score="[0 0 1 40 62]" criteria="[99 65 103 103]"
+time=20:14:45.367 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=20:14:45.367 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=2
+time=20:14:45.368 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=4
+time=20:14:45.368 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=2
+time=20:14:45.369 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=4
+time=20:14:45.389 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=360
+time=20:14:45.389 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=145 score="[0 0 1 54 90]" criteria="[135 99 145 145]"
+time=20:14:45.389 level=INFO msg=これまでに地域内の評判によって20人、既存ユーザーの招待経由で138人が新規登録しました
+time=20:14:45.389 level=INFO msg=6.9%のライドは椅子がマッチされるまでの時間、31.7%のライドはマッチされた椅子が乗車地点までに掛かる時間、0.0%のライドは椅子の実移動時間に不満がありました
+time=20:14:47.168 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=4
+time=20:14:47.169 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=4
+time=20:14:47.169 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=3
+time=20:14:47.169 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=2
+time=20:14:47.170 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=3
+time=20:14:47.189 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=420
+time=20:14:47.189 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=207 score="[0 0 2 62 143]" criteria="[191 157 207 207]"
+time=20:14:48.975 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=4
+time=20:14:48.976 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=6
+time=20:14:48.977 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=6
+time=20:14:48.977 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=5
+time=20:14:48.979 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=6
+time=20:14:48.989 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=480
+time=20:14:48.989 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=300 score="[0 0 2 83 215]" criteria="[267 248 300 298]"
+time=20:14:50.789 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=540
+time=20:14:50.789 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=380 score="[0 0 3 104 273]" criteria="[326 327 380 377]"
+time=20:14:50.789 level=INFO msg=これまでに地域内の評判によって31人、既存ユーザーの招待経由で329人が新規登録しました
+time=20:14:50.789 level=INFO msg=14.2%のライドは椅子がマッチされるまでの時間、13.9%のライドはマッチされた椅子が乗車地点までに掛かる時間、0.4%のライドは椅子の実移動時間に不満がありました
+time=20:14:50.807 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=4
+time=20:14:50.807 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=5
+time=20:14:50.810 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=4
+time=20:14:50.814 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=3
+time=20:14:50.819 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=2
+time=20:14:52.589 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=600
+time=20:14:52.589 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=467 score="[0 0 10 134 323]" criteria="[397 414 467 436]"
+time=20:14:52.622 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=5
+time=20:14:52.625 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=5
+time=20:14:52.628 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=4
+time=20:14:52.631 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=6
+time=20:14:52.637 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=6
+time=20:14:54.389 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=660
+time=20:14:54.389 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=545 score="[0 1 26 177 341]" criteria="[449 491 544 464]"
+time=20:14:54.438 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=4
+time=20:14:54.440 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=20:14:54.441 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=3
+time=20:14:54.441 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=4
+time=20:14:54.445 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=3
+time=20:14:56.189 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=720
+time=20:14:56.189 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=641 score="[0 2 52 239 348]" criteria="[513 585 640 477]"
+time=20:14:56.189 level=INFO msg=これまでに地域内の評判によって43人、既存ユーザーの招待経由で505人が新規登録しました
+time=20:14:56.191 level=INFO msg=これまでに低評価なライドによって2人が利用をやめました
+time=20:14:56.191 level=INFO msg=20.0%のライドは椅子がマッチされるまでの時間、8.7%のライドはマッチされた椅子が乗車地点までに掛かる時間、12.9%のライドは椅子の実移動時間に不満がありました
+time=20:14:56.241 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=4
+time=20:14:56.251 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=4
+time=20:14:56.253 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=4
+time=20:14:56.255 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=3
+time=20:14:56.260 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=5
+time=20:14:57.989 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=780
+time=20:14:57.989 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=721 score="[0 3 82 287 349]" criteria="[563 664 717 480]"
+time=20:14:58.055 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=4
+time=20:14:58.059 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=1
+time=20:14:58.061 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=4
+time=20:14:58.063 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=2
+time=20:14:58.068 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=4
+time=20:14:59.789 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=840
+time=20:14:59.789 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=805 score="[0 6 117 329 353]" criteria="[608 747 792 492]"
+time=20:14:59.835 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=3
+time=20:14:59.837 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=20:14:59.902 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=4
+time=20:14:59.904 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=2
+time=20:14:59.915 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=4
+time=20:15:01.589 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=900
+time=20:15:01.589 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=894 score="[0 14 165 362 353]" criteria="[649 836 861 496]"
+time=20:15:01.589 level=INFO msg=これまでに地域内の評判によって55人、既存ユーザーの招待経由で625人が新規登録しました
+time=20:15:01.589 level=INFO msg=これまでに低評価なライドによって7人が利用をやめました
+time=20:15:01.589 level=INFO msg=27.4%のライドは椅子がマッチされるまでの時間、6.5%のライドはマッチされた椅子が乗車地点までに掛かる時間、24.1%のライドは椅子の実移動時間に不満がありました
+time=20:15:01.704 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=3
+time=20:15:01.705 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=20:15:01.706 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=4
+time=20:15:01.706 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=3
+time=20:15:01.713 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=3
+time=20:15:03.389 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=960
+time=20:15:03.389 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=986 score="[0 20 213 398 355]" criteria="[702 927 928 503]"
+time=20:15:03.517 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=20:15:03.552 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=2
+time=20:15:03.554 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=2
+time=20:15:03.557 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=3
+time=20:15:03.560 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=3
+time=20:15:05.189 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1020
+time=20:15:05.189 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1069 score="[0 36 259 417 357]" criteria="[740 1010 977 506]"
+time=20:15:05.333 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=2
+time=20:15:05.335 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=3
+time=20:15:05.336 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=20:15:05.336 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=2
+time=20:15:05.336 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=3
+time=20:15:06.989 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1080
+time=20:15:06.989 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1159 score="[0 63 299 440 357]" criteria="[776 1100 1021 512]"
+time=20:15:06.989 level=INFO msg=これまでに地域内の評判によって67人、既存ユーザーの招待経由で698人が新規登録しました
+time=20:15:06.989 level=INFO msg=これまでに低評価なライドによって32人が利用をやめました
+time=20:15:06.989 level=INFO msg=33.0%のライドは椅子がマッチされるまでの時間、5.1%のライドはマッチされた椅子が乗車地点までに掛かる時間、33.9%のライドは椅子の実移動時間に不満がありました
+time=20:15:07.073 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=2
+time=20:15:07.102 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=3
+time=20:15:07.131 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=1
+time=20:15:07.146 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=3
+time=20:15:07.149 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=20:15:08.789 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1140
+time=20:15:08.789 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1250 score="[1 97 336 457 359]" criteria="[813 1190 1056 517]"
+time=20:15:08.931 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=3
+time=20:15:08.937 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=3
+time=20:15:08.938 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ゆったり号 増加数=3
+time=20:15:08.939 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=20:15:08.945 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=2
+time=20:15:10.589 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1200
+time=20:15:10.589 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1368 score="[2 136 394 476 360]" criteria="[863 1307 1100 522]"
+time=20:15:10.737 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=快旅タクシー 増加数=4
+time=20:15:10.807 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Urban Wheels" 増加数=5
+time=20:15:11.155 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=4
+time=20:15:11.167 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=木座デザイン 増加数=3
+time=20:15:11.229 level=WARN msg="ユーザー登録に失敗しました (CODE=17): POST /api/app/usersへのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:500)"
+time=20:15:11.969 level=ERROR msg=クリティカルエラーが発生しました error="ライドが長時間マッチングされませんでした (CODE=32)"
+time=20:15:15.421 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:15.442 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:15.445 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:15.446 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:15.457 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:15.459 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:15.465 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:15.466 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:15.467 level=WARN msg="付近の椅子情報が想定よりも足りていません (CODE=31): 不足数1台"
+time=20:15:16.969 level=INFO msg=最終地域情報 名前=チェアタウン ユーザー登録数=498 アクティブユーザー数=458
+time=20:15:16.969 level=INFO msg=最終地域情報 名前=コシカケシティ ユーザー登録数=344 アクティブユーザー数=312
+time=20:15:16.969 level=INFO msg=最終オーナー情報 名前=木座デザイン 売上=1958000 椅子数=65
+time=20:15:16.969 level=INFO msg=最終オーナー情報 名前=ゆったり号 売上=1533900 椅子数=54
+time=20:15:16.969 level=INFO msg=最終オーナー情報 名前=快旅タクシー 売上=1588800 椅子数=58
+time=20:15:16.969 level=INFO msg=最終オーナー情報 名前="Urban Wheels" 売上=1785100 椅子数=63
+time=20:15:16.969 level=INFO msg=最終オーナー情報 名前=GoEase 売上=1844000 椅子数=64
+time=20:15:16.969 level=INFO msg=39.9%のライドは椅子がマッチされるまでの時間、4.1%のライドはマッチされた椅子が乗車地点までに掛かる時間、44.1%のライドは椅子の実移動時間に不満がありました
+time=20:15:16.970 level=INFO msg=結果 pass=false スコア=92544 種別エラー数="map[17:1 31:9 32:1]"
+time=20:15:16.970 level=INFO msg=負荷走行が終了しました
+time=20:15:16.970 level=ERROR source=isucon14/bench/cmd/run.go:138 msg=発生したエラー errors="[load:\n    github.com/isucon/isucandar.(*BenchmarkStep).AddError\n        $GOPATH/pkg/mod/github.com/isucon/isucandar@v0.0.0-20220322062028-6dd56dc57d72/benchmark_step.go:30\n    github.com/isucon/isucandar.(*Benchmark).Start.func3.func1\n        $GOPATH/pkg/mod/github.com/isucon/isucandar@v0.0.0-20220322062028-6dd56dc57d72/benchmark.go:132\n    github.com/isucon/isucandar/parallel.(*Parallel).Do.func1\n        $GOPATH/pkg/mod/github.com/isucon/isucandar@v0.0.0-20220322062028-6dd56dc57d72/parallel/parallel.go:68\n  - ライドが長時間マッチングされませんでした (CODE=32)]"

@@ -22,10 +22,7 @@ Claude Fable 5が出たとき、同じ12題材をTikZ、matplotlib、SVGで描�
 見た目の優劣は自動判定せず、108枚のレンダリング結果と実際のソースを掲載します。
 
 <style>
-.site-main > .inner:has(.fable-compare-wide) {
-  max-width: 1400px;
-  padding-inline: 12px;
-}
+body:has(.fable-compare-wide) { --page-max-width: 1400px; --page-gutter: 12px; }
 .content-layout:has(.fable-compare-wide) {
   grid-template-columns: minmax(0, 1fr) 260px;
   gap: 16px;
@@ -111,9 +108,7 @@ Claude Fable 5が出たとき、同じ12題材をTikZ、matplotlib、SVGで描�
   text-decoration-thickness: 2px;
 }
 @media screen and (max-width: 860px) {
-  .site-main > .inner:has(.fable-compare-wide) {
-    padding-inline: 4px;
-  }
+  body:has(.fable-compare-wide) { --page-gutter: 4px; }
   .content-layout:has(.fable-compare-wide) {
     grid-template-columns: minmax(0, 1fr);
     gap: 8px;

@@ -1,0 +1,92 @@
+judge opus55 commit=6616fc8 target=192.168.64.9 started=2026-09-23 18:59:55
+time=18:59:55.468 level=DEBUG source=isucon14/bench/cmd/run.go:90 msg=target targetURL=http://192.168.64.9 targetAddr="" benchrun.GetTargetAddress()="" paymentURL=http://192.168.64.1:12345
+time=18:59:55.468 level=INFO msg=負荷走行を開始します
+time=18:59:58.074 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=60
+time=18:59:58.074 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=4 score="[0 0 0 3 1]" criteria="[4 1 4 4]"
+time=18:59:59.847 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=1
+time=18:59:59.849 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=1
+time=18:59:59.849 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=18:59:59.874 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=120
+time=18:59:59.874 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=18 score="[0 0 0 11 7]" criteria="[18 7 18 18]"
+time=19:00:01.649 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=2
+time=19:00:01.650 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:00:01.654 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=2
+time=19:00:01.654 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=CityRide 増加数=2
+time=19:00:01.674 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=180
+time=19:00:01.674 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=38 score="[0 0 0 23 15]" criteria="[38 15 38 38]"
+time=19:00:01.674 level=INFO msg=これまでに地域内の評判によって6人、既存ユーザーの招待経由で38人が新規登録しました
+time=19:00:01.674 level=INFO msg=0.0%のライドは椅子がマッチされるまでの時間、60.5%のライドはマッチされた椅子が乗車地点までに掛かる時間、0.0%のライドは椅子の実移動時間に不満がありました
+time=19:00:03.469 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=1
+time=19:00:03.469 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=2
+time=19:00:03.469 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:00:03.473 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=2
+time=19:00:03.474 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=CityRide 増加数=1
+time=19:00:03.474 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=240
+time=19:00:03.474 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=62 score="[0 0 1 32 29]" criteria="[62 29 62 61]"
+time=19:00:05.274 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=300
+time=19:00:05.274 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=80 score="[0 0 3 40 37]" criteria="[79 43 78 74]"
+time=19:00:05.274 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=2
+time=19:00:05.277 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:00:05.277 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=1
+time=19:00:05.284 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=CityRide 増加数=2
+time=19:00:05.287 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=2
+time=19:00:07.065 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=3
+time=19:00:07.072 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:00:07.074 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=CityRide 増加数=2
+time=19:00:07.074 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=360
+time=19:00:07.074 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=117 score="[0 1 9 62 45]" criteria="[108 75 115 87]"
+time=19:00:07.074 level=INFO msg=これまでに地域内の評判によって19人、既存ユーザーの招待経由で97人が新規登録しました
+time=19:00:07.074 level=INFO msg=これまでに低評価なライドによって1人が利用をやめました
+time=19:00:07.074 level=INFO msg=7.7%のライドは椅子がマッチされるまでの時間、35.9%のライドはマッチされた椅子が乗車地点までに掛かる時間、13.7%のライドは椅子の実移動時間に不満がありました
+time=19:00:07.082 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:00:07.083 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=2
+time=19:00:08.874 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=420
+time=19:00:08.874 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=144 score="[0 3 13 73 55]" criteria="[127 95 141 105]"
+time=19:00:08.895 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=1
+time=19:00:08.897 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:00:08.897 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=CityRide 増加数=2
+time=19:00:08.902 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=2
+time=19:00:10.674 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=480
+time=19:00:10.674 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=182 score="[1 4 22 94 61]" criteria="[159 126 176 113]"
+time=19:00:10.679 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:00:10.683 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=CityRide 増加数=1
+time=19:00:10.684 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=3
+time=19:00:10.686 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:00:10.687 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=3
+time=19:00:12.474 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=540
+time=19:00:12.474 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=218 score="[1 7 26 117 67]" criteria="[191 159 208 120]"
+time=19:00:12.474 level=INFO msg=これまでに地域内の評判によって31人、既存ユーザーの招待経由で162人が新規登録しました
+time=19:00:12.474 level=INFO msg=これまでに低評価なライドによって5人が利用をやめました
+time=19:00:12.474 level=INFO msg=12.4%のライドは椅子がマッチされるまでの時間、27.1%のライドはマッチされた椅子が乗車地点までに掛かる時間、24.8%のライドは椅子の実移動時間に不満がありました
+time=19:00:12.520 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=CityRide 増加数=3
+time=19:00:12.543 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=2
+time=19:00:12.545 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=1
+time=19:00:12.546 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:00:12.548 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=2
+time=19:00:14.274 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=600
+time=19:00:14.274 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=247 score="[1 12 35 131 68]" criteria="[213 185 228 121]"
+time=19:00:14.374 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:00:14.379 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=1
+time=19:00:14.383 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=1
+time=19:00:14.399 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=CityRide 増加数=2
+time=19:00:14.445 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=街のりタクシー 増加数=2
+time=19:00:16.074 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=660
+time=19:00:16.074 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=274 score="[1 21 40 141 71]" criteria="[233 207 244 124]"
+time=19:00:16.191 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=ZenDrive 増加数=1
+time=19:00:16.191 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=2
+time=19:00:16.198 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:00:17.563 level=WARN msg="取得したオーナーの椅子一覧の情報が想定しているものと異なります (CODE=26): total_distanceが一致しないデータがあります (id: 01M36VASVCXJ11EC98W7C8HXV1, got: 57, want: 42)"
+time=19:00:17.563 level=WARN msg="取得したオーナーの椅子一覧の情報が想定しているものと異なります (CODE=26): total_distanceが一致しないデータがあります (id: 01M36VAF2PS9WQQFVM8M1BFPJV, got: 360, want: 351)"
+time=19:00:17.564 level=WARN msg="取得したオーナーの椅子一覧の情報が想定しているものと異なります (CODE=26): total_distanceが一致しないデータがあります (id: 01M36VA9M7WRNRG32YG7VN00R6, got: 769, want: 763)"
+time=19:00:17.664 level=ERROR msg=クリティカルエラーが発生しました error="ユーザーに想定していないライドの状態遷移の通知がありました (CODE=11): ride_id: 01M36VAWHMZM6FRFJK1C9D18T2, expect: CARRYING, got: ENROUTE (current: PICKUP)"
+time=19:00:22.665 level=INFO msg=最終地域情報 名前=チェアタウン ユーザー登録数=155 アクティブユーザー数=150
+time=19:00:22.665 level=INFO msg=最終地域情報 名前=コシカケシティ ユーザー登録数=113 アクティブユーザー数=105
+time=19:00:22.665 level=INFO msg=最終オーナー情報 名前=ZenDrive 売上=339000 椅子数=19
+time=19:00:22.665 level=INFO msg=最終オーナー情報 名前=CityRide 売上=334300 椅子数=19
+time=19:00:22.665 level=INFO msg=最終オーナー情報 名前=街のりタクシー 売上=454700 椅子数=23
+time=19:00:22.665 level=INFO msg=最終オーナー情報 名前=座和インダストリー 売上=312400 椅子数=18
+time=19:00:22.665 level=INFO msg=最終オーナー情報 名前=GoEase 売上=401500 椅子数=22
+time=19:00:22.665 level=INFO msg=18.0%のライドは椅子がマッチされるまでの時間、20.7%のライドはマッチされた椅子が乗車地点までに掛かる時間、41.6%のライドは椅子の実移動時間に不満がありました
+time=19:00:22.665 level=INFO msg=結果 pass=false スコア=20478 種別エラー数="map[11:1 26:3]"
+time=19:00:22.665 level=INFO msg=負荷走行が終了しました
+time=19:00:22.665 level=ERROR source=isucon14/bench/cmd/run.go:138 msg=発生したエラー errors="[load:\n    github.com/isucon/isucandar.(*BenchmarkStep).AddError\n        $GOPATH/pkg/mod/github.com/isucon/isucandar@v0.0.0-20220322062028-6dd56dc57d72/benchmark_step.go:30\n    github.com/isucon/isucandar.(*Benchmark).Start.func3.func1\n        $GOPATH/pkg/mod/github.com/isucon/isucandar@v0.0.0-20220322062028-6dd56dc57d72/benchmark.go:132\n    github.com/isucon/isucandar/parallel.(*Parallel).Do.func1\n        $GOPATH/pkg/mod/github.com/isucon/isucandar@v0.0.0-20220322062028-6dd56dc57d72/parallel/parallel.go:68\n  - ユーザーに想定していないライドの状態遷移の通知がありました (CODE=11): ride_id: 01M36VAWHMZM6FRFJK1C9D18T2, expect: CARRYING, got: ENROUTE (current: PICKUP)]"

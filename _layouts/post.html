@@ -37,9 +37,12 @@ layout: default
     {% endif %}
     {% if page.full_ai %}
       <aside class="full-ai-notice" aria-label="Full AI article notice">
-        この記事はすべてAIが執筆したものですが、ユーザーの意向を取り入れつつ、実環境で実際に検証した内容だけを掲載しています。
-        <br>
-        執筆モデル: {{ page.full_ai_model | default: "gpt-5.5" }}
+        <span class="full-ai-notice__badge" aria-hidden="true">AI</span>
+        <div class="full-ai-notice__body">
+          <p class="full-ai-notice__title">この記事はすべてAIが執筆しました</p>
+          <p class="full-ai-notice__text">ユーザーの意向を取り入れつつ、実環境で実際に検証した内容だけを掲載しています。</p>
+          <p class="full-ai-notice__model">執筆モデル <code>{{ page.full_ai_model | default: "gpt-5.5" }}</code></p>
+        </div>
       </aside>
     {% endif %}
     {{ content }}

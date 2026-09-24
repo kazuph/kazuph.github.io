@@ -1,0 +1,674 @@
+diff --git a/webapp/config/env.sh b/webapp/config/env.sh
+new file mode 100644
+index 0000000..911e0c6
+--- /dev/null
++++ b/webapp/config/env.sh
+@@ -0,0 +1,6 @@
++ISUCON_DB_HOST="127.0.0.1"
++ISUCON_DB_PORT="3306"
++ISUCON_DB_USER="isucon"
++ISUCON_DB_PASSWORD="isucon"
++ISUCON_DB_NAME="isuride"
++ISUCON_MATCHING_INTERVAL=0.2
+diff --git a/webapp/config/mysql/99-isucon.cnf b/webapp/config/mysql/99-isucon.cnf
+new file mode 100644
+index 0000000..901fb6d
+--- /dev/null
++++ b/webapp/config/mysql/99-isucon.cnf
+@@ -0,0 +1,6 @@
++[mysqld]
++disable-log-bin
++innodb_flush_log_at_trx_commit = 0
++innodb_buffer_pool_size = 1G
++innodb_doublewrite = 0
++max_connections = 500
+diff --git a/webapp/go/app_handlers.go b/webapp/go/app_handlers.go
+index 7c9596c..ef6e7d8 100644
+--- a/webapp/go/app_handlers.go
++++ b/webapp/go/app_handlers.go
+@@ -285,7 +285,7 @@ type executableGet interface {
+ 
+ func getLatestRideStatus(ctx context.Context, tx executableGet, rideID string) (string, error) {
+ 	status := ""
+-	if err := tx.GetContext(ctx, &status, `SELECT status FROM ride_statuses WHERE ride_id = ? ORDER BY created_at DESC LIMIT 1`, rideID); err != nil {
++	if err := tx.GetContext(ctx, &status, `SELECT latest_status FROM rides WHERE id = ?`, rideID); err != nil {
+ 		return "", err
+ 	}
+ 	return status, nil
+@@ -346,11 +346,7 @@ func appPostRides(w http.ResponseWriter, r *http.Request) {
+ 		return
+ 	}
+ 
+-	if _, err := tx.ExecContext(
+-		ctx,
+-		`INSERT INTO ride_statuses (id, ride_id, status) VALUES (?, ?, ?)`,
+-		ulid.Make().String(), rideID, "MATCHING",
+-	); err != nil {
++	if _, err := insertRideStatus(ctx, tx, rideID, "MATCHING"); err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+ 		return
+ 	}
+@@ -562,10 +558,7 @@ func appPostRideEvaluatation(w http.ResponseWriter, r *http.Request) {
+ 		return
+ 	}
+ 
+-	_, err = tx.ExecContext(
+-		ctx,
+-		`INSERT INTO ride_statuses (id, ride_id, status) VALUES (?, ?, ?)`,
+-		ulid.Make().String(), rideID, "COMPLETED")
++	_, err = insertRideStatus(ctx, tx, rideID, "COMPLETED")
+ 	if err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+ 		return
+@@ -673,7 +666,7 @@ func appGetNotification(w http.ResponseWriter, r *http.Request) {
+ 	if err := tx.GetContext(ctx, ride, `SELECT * FROM rides WHERE user_id = ? ORDER BY created_at DESC LIMIT 1`, user.ID); err != nil {
+ 		if errors.Is(err, sql.ErrNoRows) {
+ 			writeJSON(w, http.StatusOK, &appGetNotificationResponse{
+-				RetryAfterMs: 30,
++				RetryAfterMs: 100,
+ 			})
+ 			return
+ 		}
+@@ -720,7 +713,7 @@ func appGetNotification(w http.ResponseWriter, r *http.Request) {
+ 			CreatedAt: ride.CreatedAt.UnixMilli(),
+ 			UpdateAt:  ride.UpdatedAt.UnixMilli(),
+ 		},
+-		RetryAfterMs: 30,
++		RetryAfterMs: 100,
+ 	}
+ 
+ 	if ride.ChairID.Valid {
+@@ -763,58 +756,15 @@ func appGetNotification(w http.ResponseWriter, r *http.Request) {
+ func getChairStats(ctx context.Context, tx *sqlx.Tx, chairID string) (appGetNotificationResponseChairStats, error) {
+ 	stats := appGetNotificationResponseChairStats{}
+ 
+-	rides := []Ride{}
+-	err := tx.SelectContext(
+-		ctx,
+-		&rides,
+-		`SELECT * FROM rides WHERE chair_id = ? ORDER BY updated_at DESC`,
+-		chairID,
+-	)
+-	if err != nil {
+-		return stats, err
++	var row struct {
++		Cnt int     `db:"cnt"`
++		Avg float64 `db:"avg"`
+ 	}
+-
+-	totalRideCount := 0
+-	totalEvaluation := 0.0
+-	for _, ride := range rides {
+-		rideStatuses := []RideStatus{}
+-		err = tx.SelectContext(
+-			ctx,
+-			&rideStatuses,
+-			`SELECT * FROM ride_statuses WHERE ride_id = ? ORDER BY created_at`,
+-			ride.ID,
+-		)
+-		if err != nil {
+-			return stats, err
+-		}
+-
+-		var arrivedAt, pickupedAt *time.Time
+-		var isCompleted bool
+-		for _, status := range rideStatuses {
+-			if status.Status == "ARRIVED" {
+-				arrivedAt = &status.CreatedAt
+-			} else if status.Status == "CARRYING" {
+-				pickupedAt = &status.CreatedAt
+-			}
+-			if status.Status == "COMPLETED" {
+-				isCompleted = true
+-			}
+-		}
+-		if arrivedAt == nil || pickupedAt == nil {
+-			continue
+-		}
+-		if !isCompleted {
+-			continue
+-		}
+-
+-		totalRideCount++
+-		totalEvaluation += float64(*ride.Evaluation)
+-	}
+-
+-	stats.TotalRidesCount = totalRideCount
+-	if totalRideCount > 0 {
+-		stats.TotalEvaluationAvg = totalEvaluation / float64(totalRideCount)
++	if err := tx.GetContext(ctx, &row, `SELECT COUNT(*) AS cnt, IFNULL(AVG(evaluation), 0) AS avg FROM rides WHERE chair_id = ? AND evaluation IS NOT NULL`, chairID); err != nil {
++		return stats, err
+ 	}
++	stats.TotalRidesCount = row.Cnt
++	stats.TotalEvaluationAvg = row.Avg
+ 
+ 	return stats, nil
+ }
+@@ -871,70 +821,30 @@ func appGetNearbyChairs(w http.ResponseWriter, r *http.Request) {
+ 	}
+ 	defer tx.Rollback()
+ 
+-	chairs := []Chair{}
+-	err = tx.SelectContext(
+-		ctx,
+-		&chairs,
+-		`SELECT * FROM chairs`,
+-	)
+-	if err != nil {
++	type nearbyRow struct {
++		ID    string `db:"id"`
++		Name  string `db:"name"`
++		Model string `db:"model"`
++		Lat   int    `db:"last_lat"`
++		Lon   int    `db:"last_lon"`
++	}
++	rows := []nearbyRow{}
++	if err := tx.SelectContext(ctx, &rows, `SELECT c.id, c.name, c.model, cd.last_lat, cd.last_lon FROM chairs c JOIN chair_distances cd ON cd.chair_id = c.id
++WHERE c.is_active = TRUE AND NOT EXISTS (SELECT 1 FROM rides r WHERE r.chair_id = c.id AND r.chair_done = 0)`); err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+ 		return
+ 	}
+ 
+ 	nearbyChairs := []appGetNearbyChairsResponseChair{}
+-	for _, chair := range chairs {
+-		if !chair.IsActive {
+-			continue
+-		}
+-
+-		rides := []*Ride{}
+-		if err := tx.SelectContext(ctx, &rides, `SELECT * FROM rides WHERE chair_id = ? ORDER BY created_at DESC`, chair.ID); err != nil {
+-			writeError(w, http.StatusInternalServerError, err)
+-			return
+-		}
+-
+-		skip := false
+-		for _, ride := range rides {
+-			// 過去にライドが存在し、かつ、それが完了していない場合はスキップ
+-			status, err := getLatestRideStatus(ctx, tx, ride.ID)
+-			if err != nil {
+-				writeError(w, http.StatusInternalServerError, err)
+-				return
+-			}
+-			if status != "COMPLETED" {
+-				skip = true
+-				break
+-			}
+-		}
+-		if skip {
+-			continue
+-		}
+-
+-		// 最新の位置情報を取得
+-		chairLocation := &ChairLocation{}
+-		err = tx.GetContext(
+-			ctx,
+-			chairLocation,
+-			`SELECT * FROM chair_locations WHERE chair_id = ? ORDER BY created_at DESC LIMIT 1`,
+-			chair.ID,
+-		)
+-		if err != nil {
+-			if errors.Is(err, sql.ErrNoRows) {
+-				continue
+-			}
+-			writeError(w, http.StatusInternalServerError, err)
+-			return
+-		}
+-
+-		if calculateDistance(coordinate.Latitude, coordinate.Longitude, chairLocation.Latitude, chairLocation.Longitude) <= distance {
++	for _, c := range rows {
++		if calculateDistance(coordinate.Latitude, coordinate.Longitude, c.Lat, c.Lon) <= distance {
+ 			nearbyChairs = append(nearbyChairs, appGetNearbyChairsResponseChair{
+-				ID:    chair.ID,
+-				Name:  chair.Name,
+-				Model: chair.Model,
++				ID:    c.ID,
++				Name:  c.Name,
++				Model: c.Model,
+ 				CurrentCoordinate: Coordinate{
+-					Latitude:  chairLocation.Latitude,
+-					Longitude: chairLocation.Longitude,
++					Latitude:  c.Lat,
++					Longitude: c.Lon,
+ 				},
+ 			})
+ 		}
+@@ -1004,3 +914,10 @@ func calculateDiscountedFare(ctx context.Context, tx *sqlx.Tx, userID string, ri
+ 
+ 	return initialFare + discountedMeteredFare, nil
+ }
++
++func insertRideStatus(ctx context.Context, tx *sqlx.Tx, rideID string, status string) (sql.Result, error) {
++	if _, err := tx.ExecContext(ctx, "INSERT INTO ride_statuses (id, ride_id, status) VALUES (?, ?, ?)", ulid.Make().String(), rideID, status); err != nil {
++		return nil, err
++	}
++	return tx.ExecContext(ctx, "UPDATE rides SET latest_status = ?, updated_at = updated_at WHERE id = ?", status, rideID)
++}
+diff --git a/webapp/go/chair_handlers.go b/webapp/go/chair_handlers.go
+index a258e86..28bdf33 100644
+--- a/webapp/go/chair_handlers.go
++++ b/webapp/go/chair_handlers.go
+@@ -5,6 +5,7 @@ import (
+ 	"errors"
+ 	"fmt"
+ 	"net/http"
++	"time"
+ 
+ 	"github.com/oklog/ulid/v2"
+ )
+@@ -112,23 +113,25 @@ func chairPostCoordinate(w http.ResponseWriter, r *http.Request) {
+ 	defer tx.Rollback()
+ 
+ 	chairLocationID := ulid.Make().String()
++	now := time.Now().Truncate(time.Microsecond)
++	location := &ChairLocation{ID: chairLocationID, ChairID: chair.ID, Latitude: req.Latitude, Longitude: req.Longitude, CreatedAt: now}
+ 	if _, err := tx.ExecContext(
+ 		ctx,
+-		`INSERT INTO chair_locations (id, chair_id, latitude, longitude) VALUES (?, ?, ?, ?)`,
+-		chairLocationID, chair.ID, req.Latitude, req.Longitude,
++		`INSERT INTO chair_locations (id, chair_id, latitude, longitude, created_at) VALUES (?, ?, ?, ?, ?)`,
++		chairLocationID, chair.ID, req.Latitude, req.Longitude, now,
+ 	); err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+ 		return
+ 	}
+-
+-	location := &ChairLocation{}
+-	if err := tx.GetContext(ctx, location, `SELECT * FROM chair_locations WHERE id = ?`, chairLocationID); err != nil {
++	if _, err := tx.ExecContext(ctx, `INSERT INTO chair_distances (chair_id, total_distance, updated_at, last_lat, last_lon) VALUES (?, 0, ?, ?, ?)
++ON DUPLICATE KEY UPDATE total_distance = total_distance + ABS(last_lat - VALUES(last_lat)) + ABS(last_lon - VALUES(last_lon)), updated_at = VALUES(updated_at), last_lat = VALUES(last_lat), last_lon = VALUES(last_lon)`,
++		chair.ID, now, req.Latitude, req.Longitude); err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+ 		return
+ 	}
+ 
+ 	ride := &Ride{}
+-	if err := tx.GetContext(ctx, ride, `SELECT * FROM rides WHERE chair_id = ? ORDER BY updated_at DESC LIMIT 1`, chair.ID); err != nil {
++	if err := tx.GetContext(ctx, ride, `SELECT * FROM rides FORCE INDEX (idx_chair_updated) WHERE chair_id = ? ORDER BY updated_at DESC LIMIT 1`, chair.ID); err != nil {
+ 		if !errors.Is(err, sql.ErrNoRows) {
+ 			writeError(w, http.StatusInternalServerError, err)
+ 			return
+@@ -141,14 +144,14 @@ func chairPostCoordinate(w http.ResponseWriter, r *http.Request) {
+ 		}
+ 		if status != "COMPLETED" && status != "CANCELED" {
+ 			if req.Latitude == ride.PickupLatitude && req.Longitude == ride.PickupLongitude && status == "ENROUTE" {
+-				if _, err := tx.ExecContext(ctx, "INSERT INTO ride_statuses (id, ride_id, status) VALUES (?, ?, ?)", ulid.Make().String(), ride.ID, "PICKUP"); err != nil {
++				if _, err := insertRideStatus(ctx, tx, ride.ID, "PICKUP"); err != nil {
+ 					writeError(w, http.StatusInternalServerError, err)
+ 					return
+ 				}
+ 			}
+ 
+ 			if req.Latitude == ride.DestinationLatitude && req.Longitude == ride.DestinationLongitude && status == "CARRYING" {
+-				if _, err := tx.ExecContext(ctx, "INSERT INTO ride_statuses (id, ride_id, status) VALUES (?, ?, ?)", ulid.Make().String(), ride.ID, "ARRIVED"); err != nil {
++				if _, err := insertRideStatus(ctx, tx, ride.ID, "ARRIVED"); err != nil {
+ 					writeError(w, http.StatusInternalServerError, err)
+ 					return
+ 				}
+@@ -198,10 +201,10 @@ func chairGetNotification(w http.ResponseWriter, r *http.Request) {
+ 	yetSentRideStatus := RideStatus{}
+ 	status := ""
+ 
+-	if err := tx.GetContext(ctx, ride, `SELECT * FROM rides WHERE chair_id = ? ORDER BY updated_at DESC LIMIT 1`, chair.ID); err != nil {
++	if err := tx.GetContext(ctx, ride, `SELECT * FROM rides FORCE INDEX (idx_chair_updated) WHERE chair_id = ? ORDER BY updated_at DESC LIMIT 1`, chair.ID); err != nil {
+ 		if errors.Is(err, sql.ErrNoRows) {
+ 			writeJSON(w, http.StatusOK, &chairGetNotificationResponse{
+-				RetryAfterMs: 30,
++				RetryAfterMs: 100,
+ 			})
+ 			return
+ 		}
+@@ -237,6 +240,12 @@ func chairGetNotification(w http.ResponseWriter, r *http.Request) {
+ 			writeError(w, http.StatusInternalServerError, err)
+ 			return
+ 		}
++		if yetSentRideStatus.Status == "COMPLETED" {
++			if _, err := tx.ExecContext(ctx, `UPDATE rides SET chair_done = 1, updated_at = updated_at WHERE id = ?`, ride.ID); err != nil {
++				writeError(w, http.StatusInternalServerError, err)
++				return
++			}
++		}
+ 	}
+ 
+ 	if err := tx.Commit(); err != nil {
+@@ -261,7 +270,7 @@ func chairGetNotification(w http.ResponseWriter, r *http.Request) {
+ 			},
+ 			Status: status,
+ 		},
+-		RetryAfterMs: 30,
++		RetryAfterMs: 100,
+ 	})
+ }
+ 
+@@ -306,22 +315,21 @@ func chairPostRideStatus(w http.ResponseWriter, r *http.Request) {
+ 	switch req.Status {
+ 	// Acknowledge the ride
+ 	case "ENROUTE":
+-		if _, err := tx.ExecContext(ctx, "INSERT INTO ride_statuses (id, ride_id, status) VALUES (?, ?, ?)", ulid.Make().String(), ride.ID, "ENROUTE"); err != nil {
+-			writeError(w, http.StatusInternalServerError, err)
+-			return
++		// 重複したENROUTE要求で状態が巻き戻らないよう、MATCHING中のみ遷移させる
++		if ride.LatestStatus == "MATCHING" {
++			if _, err := insertRideStatus(ctx, tx, ride.ID, "ENROUTE"); err != nil {
++				writeError(w, http.StatusInternalServerError, err)
++				return
++			}
+ 		}
+ 	// After Picking up user
+ 	case "CARRYING":
+-		status, err := getLatestRideStatus(ctx, tx, ride.ID)
+-		if err != nil {
+-			writeError(w, http.StatusInternalServerError, err)
+-			return
+-		}
++		status := ride.LatestStatus
+ 		if status != "PICKUP" {
+ 			writeError(w, http.StatusBadRequest, errors.New("chair has not arrived yet"))
+ 			return
+ 		}
+-		if _, err := tx.ExecContext(ctx, "INSERT INTO ride_statuses (id, ride_id, status) VALUES (?, ?, ?)", ulid.Make().String(), ride.ID, "CARRYING"); err != nil {
++		if _, err := insertRideStatus(ctx, tx, ride.ID, "CARRYING"); err != nil {
+ 			writeError(w, http.StatusInternalServerError, err)
+ 			return
+ 		}
+diff --git a/webapp/go/internal_handlers.go b/webapp/go/internal_handlers.go
+index 4febcb6..2a31a51 100644
+--- a/webapp/go/internal_handlers.go
++++ b/webapp/go/internal_handlers.go
+@@ -1,53 +1,72 @@
+ package main
+ 
+ import (
+-	"database/sql"
+-	"errors"
+ 	"net/http"
++	"sort"
+ )
+ 
+-// このAPIをインスタンス内から一定間隔で叩かせることで、椅子とライドをマッチングさせる
++type matchRide struct {
++	ID   string `db:"id"`
++	Lat  int    `db:"pickup_latitude"`
++	Lon  int    `db:"pickup_longitude"`
++	DLat int    `db:"destination_latitude"`
++	DLon int    `db:"destination_longitude"`
++}
++
++type matchChair struct {
++	ID    string `db:"id"`
++	Lat   int    `db:"last_lat"`
++	Lon   int    `db:"last_lon"`
++	Speed int    `db:"speed"`
++}
++
++// 待機中のライドを古い順に、到着が最も早い空き椅子へ割り当てる
+ func internalGetMatching(w http.ResponseWriter, r *http.Request) {
+ 	ctx := r.Context()
+-	// MEMO: 一旦最も待たせているリクエストに適当な空いている椅子マッチさせる実装とする。おそらくもっといい方法があるはず…
+-	ride := &Ride{}
+-	if err := db.GetContext(ctx, ride, `SELECT * FROM rides WHERE chair_id IS NULL ORDER BY created_at LIMIT 1`); err != nil {
+-		if errors.Is(err, sql.ErrNoRows) {
+-			w.WriteHeader(http.StatusNoContent)
+-			return
+-		}
++	rides := []matchRide{}
++	if err := db.SelectContext(ctx, &rides, `SELECT id, pickup_latitude, pickup_longitude, destination_latitude, destination_longitude FROM rides WHERE chair_id IS NULL ORDER BY created_at`); err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+ 		return
+ 	}
+-
+-	matched := &Chair{}
+-	empty := false
+-	for i := 0; i < 10; i++ {
+-		if err := db.GetContext(ctx, matched, "SELECT * FROM chairs INNER JOIN (SELECT id FROM chairs WHERE is_active = TRUE ORDER BY RAND() LIMIT 1) AS tmp ON chairs.id = tmp.id LIMIT 1"); err != nil {
+-			if errors.Is(err, sql.ErrNoRows) {
+-				w.WriteHeader(http.StatusNoContent)
+-				return
+-			}
+-			writeError(w, http.StatusInternalServerError, err)
+-		}
+-
+-		if err := db.GetContext(ctx, &empty, "SELECT COUNT(*) = 0 FROM (SELECT COUNT(chair_sent_at) = 6 AS completed FROM ride_statuses WHERE ride_id IN (SELECT id FROM rides WHERE chair_id = ?) GROUP BY ride_id) is_completed WHERE completed = FALSE", matched.ID); err != nil {
+-			writeError(w, http.StatusInternalServerError, err)
+-			return
+-		}
+-		if empty {
+-			break
+-		}
+-	}
+-	if !empty {
++	if len(rides) == 0 {
+ 		w.WriteHeader(http.StatusNoContent)
+ 		return
+ 	}
+-
+-	if _, err := db.ExecContext(ctx, "UPDATE rides SET chair_id = ? WHERE id = ?", matched.ID, ride.ID); err != nil {
++	chairs := []matchChair{}
++	if err := db.SelectContext(ctx, &chairs, `SELECT c.id, cd.last_lat, cd.last_lon, m.speed FROM chairs c
++JOIN chair_distances cd ON cd.chair_id = c.id
++JOIN chair_models m ON m.name = c.model
++WHERE c.is_active = TRUE AND NOT EXISTS (SELECT 1 FROM rides r WHERE r.chair_id = c.id AND r.chair_done = 0)`); err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+ 		return
+ 	}
++	type pair struct{ r, c, score int }
++	pairs := make([]pair, 0, len(rides)*len(chairs))
++	for ri, ride := range rides {
++		for ci, c := range chairs {
++			d := calculateDistance(ride.Lat, ride.Lon, c.Lat, c.Lon)
++			pairs = append(pairs, pair{ri, ci, (d*100 + c.Speed - 1) / c.Speed})
++		}
++	}
++	sort.Slice(pairs, func(i, j int) bool {
++		if pairs[i].score != pairs[j].score {
++			return pairs[i].score < pairs[j].score
++		}
++		return pairs[i].r < pairs[j].r
++	})
++	usedRide := make([]bool, len(rides))
++	usedChair := make([]bool, len(chairs))
++	for _, p := range pairs {
++		if usedRide[p.r] || usedChair[p.c] {
++			continue
++		}
++		if _, err := db.ExecContext(ctx, "UPDATE rides SET chair_id = ? WHERE id = ? AND chair_id IS NULL", chairs[p.c].ID, rides[p.r].ID); err != nil {
++			writeError(w, http.StatusInternalServerError, err)
++			return
++		}
++		usedRide[p.r] = true
++		usedChair[p.c] = true
++	}
+ 
+ 	w.WriteHeader(http.StatusNoContent)
+ }
+diff --git a/webapp/go/main.go b/webapp/go/main.go
+index e347346..bca1b37 100644
+--- a/webapp/go/main.go
++++ b/webapp/go/main.go
+@@ -58,15 +58,17 @@ func setup() http.Handler {
+ 	dbConfig.Net = "tcp"
+ 	dbConfig.DBName = dbname
+ 	dbConfig.ParseTime = true
++	dbConfig.InterpolateParams = true
+ 
+ 	_db, err := sqlx.Connect("mysql", dbConfig.FormatDSN())
+ 	if err != nil {
+ 		panic(err)
+ 	}
+ 	db = _db
++	db.SetMaxOpenConns(64)
++	db.SetMaxIdleConns(64)
+ 
+ 	mux := chi.NewRouter()
+-	mux.Use(middleware.Logger)
+ 	mux.Use(middleware.Recoverer)
+ 	mux.HandleFunc("POST /api/initialize", postInitialize)
+ 
+@@ -133,6 +135,25 @@ func postInitialize(w http.ResponseWriter, r *http.Request) {
+ 		return
+ 	}
+ 
++	if _, err := db.ExecContext(ctx, `INSERT INTO chair_distances (chair_id, total_distance, updated_at, last_lat, last_lon)
++SELECT chair_id, SUM(IFNULL(distance, 0)), MAX(created_at),
++  MAX(ll), MAX(lo)
++FROM (SELECT chair_id, created_at,
++  FIRST_VALUE(latitude) OVER (PARTITION BY chair_id ORDER BY created_at DESC) AS ll,
++  FIRST_VALUE(longitude) OVER (PARTITION BY chair_id ORDER BY created_at DESC) AS lo,
++  ABS(latitude - LAG(latitude) OVER (PARTITION BY chair_id ORDER BY created_at)) +
++  ABS(longitude - LAG(longitude) OVER (PARTITION BY chair_id ORDER BY created_at)) AS distance
++  FROM chair_locations) tmp GROUP BY chair_id`); err != nil {
++		writeError(w, http.StatusInternalServerError, err)
++		return
++	}
++
++	if _, err := db.ExecContext(ctx, `UPDATE rides r SET latest_status = (SELECT status FROM ride_statuses WHERE ride_id = r.id ORDER BY created_at DESC LIMIT 1),
++chair_done = EXISTS (SELECT 1 FROM ride_statuses WHERE ride_id = r.id AND status = 'COMPLETED' AND chair_sent_at IS NOT NULL), updated_at = updated_at`); err != nil {
++		writeError(w, http.StatusInternalServerError, err)
++		return
++	}
++
+ 	if _, err := db.ExecContext(ctx, "UPDATE settings SET value = ? WHERE name = 'payment_gateway_url'", req.PaymentServer); err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+ 		return
+@@ -172,7 +193,7 @@ func writeError(w http.ResponseWriter, statusCode int, err error) {
+ 	}
+ 	w.Write(buf)
+ 
+-	slog.Error("error response wrote", err)
++	slog.Error("error response wrote", "err", err)
+ }
+ 
+ func secureRandomStr(b int) string {
+diff --git a/webapp/go/middlewares.go b/webapp/go/middlewares.go
+index 715d0db..d576621 100644
+--- a/webapp/go/middlewares.go
++++ b/webapp/go/middlewares.go
+@@ -5,6 +5,7 @@ import (
+ 	"database/sql"
+ 	"errors"
+ 	"net/http"
++	"sync"
+ )
+ 
+ func appAuthMiddleware(next http.Handler) http.Handler {
+@@ -17,7 +18,14 @@ func appAuthMiddleware(next http.Handler) http.Handler {
+ 		}
+ 		accessToken := c.Value
+ 		user := &User{}
+-		err = db.GetContext(ctx, user, "SELECT * FROM users WHERE access_token = ?", accessToken)
++		if v, ok := userTokenCache.Load(accessToken); ok {
++			user = v.(*User)
++		} else {
++			err = db.GetContext(ctx, user, "SELECT * FROM users WHERE access_token = ?", accessToken)
++			if err == nil {
++				userTokenCache.Store(accessToken, user)
++			}
++		}
+ 		if err != nil {
+ 			if errors.Is(err, sql.ErrNoRows) {
+ 				writeError(w, http.StatusUnauthorized, errors.New("invalid access token"))
+@@ -65,8 +73,16 @@ func chairAuthMiddleware(next http.Handler) http.Handler {
+ 			return
+ 		}
+ 		accessToken := c.Value
+-		chair := &Chair{}
+-		err = db.GetContext(ctx, chair, "SELECT * FROM chairs WHERE access_token = ?", accessToken)
++		var chair *Chair
++		if v, ok := chairTokenCache.Load(accessToken); ok {
++			chair = v.(*Chair)
++		} else {
++			chair = &Chair{}
++			err = db.GetContext(ctx, chair, "SELECT * FROM chairs WHERE access_token = ?", accessToken)
++			if err == nil {
++				chairTokenCache.Store(accessToken, chair)
++			}
++		}
+ 		if err != nil {
+ 			if errors.Is(err, sql.ErrNoRows) {
+ 				writeError(w, http.StatusUnauthorized, errors.New("invalid access token"))
+@@ -80,3 +96,6 @@ func chairAuthMiddleware(next http.Handler) http.Handler {
+ 		next.ServeHTTP(w, r.WithContext(ctx))
+ 	})
+ }
++
++var chairTokenCache sync.Map
++var userTokenCache sync.Map
+diff --git a/webapp/go/models.go b/webapp/go/models.go
+index 4493533..0ef2c08 100644
+--- a/webapp/go/models.go
++++ b/webapp/go/models.go
+@@ -58,6 +58,8 @@ type Ride struct {
+ 	Evaluation           *int           `db:"evaluation"`
+ 	CreatedAt            time.Time      `db:"created_at"`
+ 	UpdatedAt            time.Time      `db:"updated_at"`
++	LatestStatus         string         `db:"latest_status"`
++	ChairDone            bool           `db:"chair_done"`
+ }
+ 
+ type RideStatus struct {
+diff --git a/webapp/go/owner_handlers.go b/webapp/go/owner_handlers.go
+index 5c1a877..8af418e 100644
+--- a/webapp/go/owner_handlers.go
++++ b/webapp/go/owner_handlers.go
+@@ -206,15 +206,7 @@ func ownerGetChairs(w http.ResponseWriter, r *http.Request) {
+        IFNULL(total_distance, 0) AS total_distance,
+        total_distance_updated_at
+ FROM chairs
+-       LEFT JOIN (SELECT chair_id,
+-                          SUM(IFNULL(distance, 0)) AS total_distance,
+-                          MAX(created_at)          AS total_distance_updated_at
+-                   FROM (SELECT chair_id,
+-                                created_at,
+-                                ABS(latitude - LAG(latitude) OVER (PARTITION BY chair_id ORDER BY created_at)) +
+-                                ABS(longitude - LAG(longitude) OVER (PARTITION BY chair_id ORDER BY created_at)) AS distance
+-                         FROM chair_locations) tmp
+-                   GROUP BY chair_id) distance_table ON distance_table.chair_id = chairs.id
++       LEFT JOIN (SELECT chair_id, total_distance, updated_at AS total_distance_updated_at FROM chair_distances) distance_table ON distance_table.chair_id = chairs.id
+ WHERE owner_id = ?
+ `, owner.ID); err != nil {
+ 		writeError(w, http.StatusInternalServerError, err)
+diff --git a/webapp/sql/1-schema.sql b/webapp/sql/1-schema.sql
+index 9c839a3..42067e8 100644
+--- a/webapp/sql/1-schema.sql
++++ b/webapp/sql/1-schema.sql
+@@ -134,3 +134,20 @@ CREATE TABLE coupons
+   PRIMARY KEY (user_id, code)
+ )
+   COMMENT 'クーポンテーブル';
++
++ALTER TABLE chairs ADD INDEX idx_owner (owner_id), ADD INDEX idx_token (access_token);
++ALTER TABLE chair_locations ADD INDEX idx_chair_created (chair_id, created_at);
++ALTER TABLE rides ADD INDEX idx_user_created (user_id, created_at), ADD INDEX idx_chair_updated (chair_id, updated_at), ADD INDEX idx_chair_created (chair_id, created_at);
++ALTER TABLE ride_statuses ADD INDEX idx_ride_created (ride_id, created_at);
++ALTER TABLE coupons ADD INDEX idx_used_by (used_by), ADD INDEX idx_code (code);
++
++DROP TABLE IF EXISTS chair_distances;
++CREATE TABLE chair_distances
++(
++  chair_id VARCHAR(26) NOT NULL,
++  total_distance INTEGER NOT NULL DEFAULT 0,
++  updated_at DATETIME(6) NOT NULL,
++  last_lat INTEGER NOT NULL,
++  last_lon INTEGER NOT NULL,
++  PRIMARY KEY (chair_id)
++);
+diff --git a/webapp/sql/4-post.sql b/webapp/sql/4-post.sql
+new file mode 100644
+index 0000000..df0b882
+--- /dev/null
++++ b/webapp/sql/4-post.sql
+@@ -0,0 +1 @@
++ALTER TABLE rides ADD COLUMN latest_status VARCHAR(16) NOT NULL DEFAULT 'MATCHING', ADD COLUMN chair_done TINYINT NOT NULL DEFAULT 0, ADD INDEX idx_chair_status (chair_id, latest_status), ADD INDEX idx_chair_done (chair_id, chair_done);
+diff --git a/webapp/sql/init.sh b/webapp/sql/init.sh
+index a513151..8c5bf5b 100755
+--- a/webapp/sql/init.sh
++++ b/webapp/sql/init.sh
+@@ -35,3 +35,9 @@ gzip -dkc 3-initial-data.sql.gz | mysql -u"$ISUCON_DB_USER" \
+ 		--host "$ISUCON_DB_HOST" \
+ 		--port "$ISUCON_DB_PORT" \
+ 		"$ISUCON_DB_NAME"
++
++mysql -u"$ISUCON_DB_USER" \
++		-p"$ISUCON_DB_PASSWORD" \
++		--host "$ISUCON_DB_HOST" \
++		--port "$ISUCON_DB_PORT" \
++		"$ISUCON_DB_NAME" < 4-post.sql

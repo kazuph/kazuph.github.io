@@ -1,0 +1,321 @@
+judge astra commit=90863a7 target=192.168.64.14 started=2026-09-23 19:29:24
+time=19:29:24.556 level=DEBUG source=isucon14/bench/cmd/run.go:90 msg=target targetURL=http://192.168.64.14 targetAddr="" benchrun.GetTargetAddress()="" paymentURL=http://192.168.64.1:12345
+time=19:29:24.556 level=INFO msg=負荷走行を開始します
+time=19:29:27.202 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=60
+time=19:29:27.202 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=2 score="[0 0 0 2 0]" criteria="[2 0 2 2]"
+time=19:29:28.975 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:29:28.975 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=1
+time=19:29:29.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=120
+time=19:29:29.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=18 score="[0 0 0 11 7]" criteria="[18 7 18 18]"
+time=19:29:30.776 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=2
+time=19:29:30.777 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:29:30.777 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=1
+time=19:29:30.778 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=1
+time=19:29:30.778 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:29:30.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=180
+time=19:29:30.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=37 score="[0 0 0 25 12]" criteria="[37 12 37 37]"
+time=19:29:30.801 level=INFO msg=これまでに地域内の評判によって9人、既存ユーザーの招待経由で37人が新規登録しました
+time=19:29:30.801 level=INFO msg=0.0%のライドは椅子がマッチされるまでの時間、67.6%のライドはマッチされた椅子が乗車地点までに掛かる時間、0.0%のライドは椅子の実移動時間に不満がありました
+time=19:29:32.576 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:29:32.577 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:29:32.578 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:29:32.578 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=1
+time=19:29:32.578 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=1
+time=19:29:32.602 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=240
+time=19:29:32.602 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=51 score="[0 0 0 34 17]" criteria="[51 17 51 51]"
+time=19:29:34.377 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=2
+time=19:29:34.377 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:29:34.377 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:29:34.378 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=1
+time=19:29:34.379 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:29:34.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=300
+time=19:29:34.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=73 score="[0 0 0 50 23]" criteria="[73 23 73 73]"
+time=19:29:36.180 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:29:36.181 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:29:36.182 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:29:36.182 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:29:36.187 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:29:36.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=360
+time=19:29:36.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=106 score="[0 0 0 64 42]" criteria="[106 42 106 106]"
+time=19:29:36.201 level=INFO msg=これまでに地域内の評判によって17人、既存ユーザーの招待経由で102人が新規登録しました
+time=19:29:36.201 level=INFO msg=0.0%のライドは椅子がマッチされるまでの時間、60.4%のライドはマッチされた椅子が乗車地点までに掛かる時間、0.0%のライドは椅子の実移動時間に不満がありました
+time=19:29:37.977 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=4
+time=19:29:37.978 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:29:37.980 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=1
+time=19:29:37.980 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:29:37.983 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=2
+time=19:29:38.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=420
+time=19:29:38.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=137 score="[0 0 2 82 53]" criteria="[133 55 137 137]"
+time=19:29:39.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=480
+time=19:29:39.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=172 score="[0 1 6 105 60]" criteria="[155 71 172 170]"
+time=19:29:39.819 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:29:39.831 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:29:39.831 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:29:39.831 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:29:41.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=540
+time=19:29:41.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=221 score="[0 4 24 133 60]" criteria="[170 91 221 209]"
+time=19:29:41.601 level=INFO msg=これまでに地域内の評判によって29人、既存ユーザーの招待経由で181人が新規登録しました
+time=19:29:41.601 level=INFO msg=これまでに低評価なライドによって2人が利用をやめました
+time=19:29:41.601 level=INFO msg=23.1%のライドは椅子がマッチされるまでの時間、58.8%のライドはマッチされた椅子が乗車地点までに掛かる時間、2.7%のライドは椅子の実移動時間に不満がありました
+time=19:29:41.609 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:29:41.609 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:29:41.609 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:29:41.614 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=4
+time=19:29:41.614 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:29:43.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=600
+time=19:29:43.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=281 score="[0 14 47 160 60]" criteria="[177 122 274 255]"
+time=19:29:43.417 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:29:43.418 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=4
+time=19:29:43.433 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=4
+time=19:29:43.433 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:29:43.441 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=2
+time=19:29:45.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=660
+time=19:29:45.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=334 score="[1 27 65 181 60]" criteria="[180 156 323 281]"
+time=19:29:45.222 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:29:45.222 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=5
+time=19:29:45.223 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=1
+time=19:29:45.223 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:29:45.228 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:29:47.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=720
+time=19:29:47.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=409 score="[10 40 100 199 60]" criteria="[181 204 386 306]"
+time=19:29:47.001 level=INFO msg=これまでに地域内の評判によって41人、既存ユーザーの招待経由で240人が新規登録しました
+time=19:29:47.001 level=INFO msg=これまでに低評価なライドによって24人が利用をやめました
+time=19:29:47.001 level=INFO msg=55.7%のライドは椅子がマッチされるまでの時間、50.1%のライドはマッチされた椅子が乗車地点までに掛かる時間、15.4%のライドは椅子の実移動時間に不満がありました
+time=19:29:47.039 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=6
+time=19:29:47.041 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:29:47.056 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=4
+time=19:29:47.056 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:29:47.056 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=5
+time=19:29:48.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=780
+time=19:29:48.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=475 score="[15 49 127 224 60]" criteria="[181 253 445 336]"
+time=19:29:48.826 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:29:48.827 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:29:48.832 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=4
+time=19:29:48.832 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:29:48.840 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=4
+time=19:29:50.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=840
+time=19:29:50.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=555 score="[22 60 168 245 60]" criteria="[182 313 511 365]"
+time=19:29:50.647 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:29:50.653 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=4
+time=19:29:50.657 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:29:50.698 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:29:50.704 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=4
+time=19:29:52.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=900
+time=19:29:52.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=643 score="[39 71 211 262 60]" criteria="[184 370 580 385]"
+time=19:29:52.401 level=INFO msg=これまでに地域内の評判によって53人、既存ユーザーの招待経由で294人が新規登録しました
+time=19:29:52.401 level=INFO msg=これまでに低評価なライドによって46人が利用をやめました
+time=19:29:52.401 level=INFO msg=71.4%のライドは椅子がマッチされるまでの時間、42.5%のライドはマッチされた椅子が乗車地点までに掛かる時間、25.0%のライドは椅子の実移動時間に不満がありました
+time=19:29:52.436 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:29:52.437 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=4
+time=19:29:52.437 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=4
+time=19:29:52.503 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=4
+time=19:29:52.506 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:29:54.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=960
+time=19:29:54.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=720 score="[51 78 246 284 61]" criteria="[202 428 637 399]"
+time=19:29:54.227 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:29:54.242 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:29:54.243 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:29:54.243 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:29:54.243 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:29:54.829 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X0Q88AYXW84WWJX24TX24の椅子は既にライド中です"
+time=19:29:56.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1020
+time=19:29:56.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=805 score="[65 93 279 303 65]" criteria="[231 486 686 417]"
+time=19:29:56.124 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:29:56.125 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:29:56.131 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:29:56.137 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=5
+time=19:29:56.138 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:29:56.202 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X13NT59XEFGWJTHV79JKBの椅子は既にライド中です"
+time=19:29:57.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1080
+time=19:29:57.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=894 score="[68 114 319 327 66]" criteria="[276 552 740 429]"
+time=19:29:57.801 level=INFO msg=これまでに地域内の評判によって65人、既存ユーザーの招待経由で354人が新規登録しました
+time=19:29:57.801 level=INFO msg=これまでに低評価なライドによって65人が利用をやめました
+time=19:29:57.801 level=INFO msg=69.1%のライドは椅子がマッチされるまでの時間、38.3%のライドはマッチされた椅子が乗車地点までに掛かる時間、34.6%のライドは椅子の実移動時間に不満がありました
+time=19:29:57.897 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:29:57.898 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:29:57.912 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:29:57.920 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:29:57.959 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=4
+time=19:29:59.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1140
+time=19:29:59.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=976 score="[74 126 354 353 69]" criteria="[315 618 796 440]"
+time=19:29:59.652 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:29:59.715 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:29:59.719 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=4
+time=19:29:59.719 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:29:59.720 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:30:01.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1200
+time=19:30:01.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1059 score="[79 140 382 380 78]" criteria="[376 681 843 456]"
+time=19:30:01.521 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:30:01.535 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:30:01.555 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=1
+time=19:30:01.595 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:30:01.599 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:30:02.916 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X105569FAYG3MV9CJW3CYの椅子は既にライド中です"
+time=19:30:02.918 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X105569FAYG3MV9CJW3CYの椅子は既にライド中です"
+time=19:30:03.041 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X0ED87ZTEQMCGWY3GTS6Hの椅子は既にライド中です"
+time=19:30:03.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1260
+time=19:30:03.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1137 score="[84 157 412 406 78]" criteria="[427 742 882 460]"
+time=19:30:03.201 level=INFO msg=これまでに地域内の評判によって77人、既存ユーザーの招待経由で426人が新規登録しました
+time=19:30:03.201 level=INFO msg=これまでに低評価なライドによって84人が利用をやめました
+time=19:30:03.201 level=INFO msg=62.4%のライドは椅子がマッチされるまでの時間、34.7%のライドはマッチされた椅子が乗車地点までに掛かる時間、41.0%のライドは椅子の実移動時間に不満がありました
+time=19:30:03.328 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X11Y442HH51PTAA061YSZの椅子は既にライド中です"
+time=19:30:03.405 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:30:03.434 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:30:03.437 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:30:03.446 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:30:03.449 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:30:05.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1320
+time=19:30:05.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1222 score="[89 190 445 418 80]" criteria="[465 804 917 468]"
+time=19:30:05.043 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X11ZTB0WB5X3MFK4D8W93の椅子は既にライド中です"
+time=19:30:05.149 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:30:05.203 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:30:05.207 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X193RBYWP013ZBV804F73の椅子は既にライド中です"
+time=19:30:05.235 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=1
+time=19:30:05.239 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:30:05.240 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:30:05.264 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X1AWEGXH9ECDT7Q6Y0XGJの椅子は既にライド中です"
+time=19:30:06.208 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X13QG57V16B54T3PSKB9Kの椅子は既にライド中です"
+time=19:30:06.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1380
+time=19:30:06.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1304 score="[93 215 489 427 80]" criteria="[504 871 945 474]"
+time=19:30:06.928 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:30:06.932 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:30:06.962 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:30:06.999 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:30:07.017 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=4
+time=19:30:07.041 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X13R6FD5NEEH971WDQAZCの椅子は既にライド中です"
+time=19:30:07.407 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X11Y442HH51PTAA061YSZの椅子は既にライド中です"
+time=19:30:08.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1440
+time=19:30:08.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1405 score="[101 268 526 430 80]" criteria="[537 943 970 480]"
+time=19:30:08.601 level=INFO msg=これまでに地域内の評判によって89人、既存ユーザーの招待経由で455人が新規登録しました
+time=19:30:08.601 level=INFO msg=これまでに低評価なライドによって119人が利用をやめました
+time=19:30:08.601 level=INFO msg=61.8%のライドは椅子がマッチされるまでの時間、32.9%のライドはマッチされた椅子が乗車地点までに掛かる時間、48.4%のライドは椅子の実移動時間に不満がありました
+time=19:30:08.759 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X13NR8PXR3BBZ3582PCK0の椅子は既にライド中です"
+time=19:30:08.763 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:30:08.763 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:30:08.835 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:30:08.843 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X1CQMKRZ349DFCJ38TZZXの椅子は既にライド中です"
+time=19:30:08.897 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:30:08.917 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:30:09.013 level=WARN msg="椅子がライドを受理できませんでした (CODE=3): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1GVX89SHA7M02WGJSAXQ/status\": read tcp 192.168.64.1:60485->192.168.64.14:80: read: connection reset by peer"
+time=19:30:10.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1500
+time=19:30:10.401 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1497 score="[116 295 570 436 80]" criteria="[548 1011 1016 488]"
+time=19:30:10.742 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=4
+time=19:30:10.753 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:30:10.793 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:30:10.811 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:30:10.818 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:30:12.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1560
+time=19:30:12.201 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1593 score="[127 325 622 439 80]" criteria="[555 1090 1067 494]"
+time=19:30:12.498 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:30:12.534 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=4
+time=19:30:12.540 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:30:12.545 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:30:12.554 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=2
+time=19:30:12.605 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X0NEJ449JJY8X7930W5CGの椅子は既にライド中です"
+time=19:30:12.609 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X0NEJ449JJY8X7930W5CGの椅子は既にライド中です"
+time=19:30:12.799 level=WARN msg="椅子がライドを受理できませんでした (CODE=3): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1MVSDYF91NV2N5HKQ0SA/status\": read tcp 192.168.64.1:60068->192.168.64.14:80: read: connection reset by peer"
+time=19:30:12.799 level=WARN msg="椅子がライドを受理できませんでした (CODE=3): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1MXV2ESRGM68DT8KJ5ZK/status\": read tcp 192.168.64.1:61204->192.168.64.14:80: read: connection reset by peer"
+time=19:30:13.058 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X1KSA824AE4XFN5CK4K75の椅子は既にライド中です"
+time=19:30:14.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1620
+time=19:30:14.001 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1685 score="[133 376 655 441 80]" criteria="[568 1169 1096 496]"
+time=19:30:14.001 level=INFO msg=これまでに地域内の評判によって101人、既存ユーザーの招待経由で463人が新規登録しました
+time=19:30:14.001 level=INFO msg=これまでに低評価なライドによって163人が利用をやめました
+time=19:30:14.001 level=INFO msg=66.3%のライドは椅子がマッチされるまでの時間、30.6%のライドはマッチされた椅子が乗車地点までに掛かる時間、52.8%のライドは椅子の実移動時間に不満がありました
+time=19:30:14.099 level=WARN msg="椅子がライドを受理できませんでした (CODE=3): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1PCJ8355XMHT0V5191SZ/status\": read tcp 192.168.64.1:59281->192.168.64.14:80: read: connection reset by peer"
+time=19:30:14.232 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=1
+time=19:30:14.359 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:30:14.393 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=4
+time=19:30:14.397 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=4
+time=19:30:14.424 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:30:15.293 level=WARN msg="椅子がライドを受理できませんでした (CODE=3): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1QWJ6JS6NMRVSHV3NG8Z/status\": read tcp 192.168.64.1:61907->192.168.64.14:80: read: connection reset by peer"
+time=19:30:15.801 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1680
+time=19:30:15.802 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1782 score="[141 410 700 451 80]" criteria="[601 1247 1131 504]"
+time=19:30:15.915 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X13NZSFMWRAP8D2381QQ2の椅子は既にライド中です"
+time=19:30:16.237 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=3
+time=19:30:16.257 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:30:16.261 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=3
+time=19:30:16.296 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=2
+time=19:30:16.303 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:30:16.728 level=WARN msg="椅子がライドを受理できませんでした (CODE=3): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1SDBKDTD27J1QWDAK0J2/status\": read tcp 192.168.64.1:60216->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.204 level=WARN msg="椅子が出発できませんでした (CODE=2): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1S3XNCS1XYK0SB1GK65A/status\": read tcp 192.168.64.1:62347->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.204 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:60644->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.252 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62344->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.252 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62148->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1740
+time=19:30:17.601 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1863 score="[146 438 726 473 80]" criteria="[651 1313 1160 505]"
+time=19:30:17.619 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:61233->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.619 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62136->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.712 level=WARN msg="椅子が出発できませんでした (CODE=2): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1SVAQZHMPWQG8HTPR5YV/status\": read tcp 192.168.64.1:62384->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.712 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62376->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.733 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:30:17.748 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:30:17.799 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:30:17.800 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=4
+time=19:30:17.804 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:30:17.822 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62407->192.168.64.14:80: read: connection reset by peer"
+time=19:30:17.900 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X11ZY8W6DWYJD6F3R721Cの椅子は既にライド中です"
+time=19:30:18.034 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X1B1W9FB34B3W7D3ASYAKの椅子は既にライド中です"
+time=19:30:18.254 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X196QDETF0AEAA211674Zの椅子は既にライド中です"
+time=19:30:18.419 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62408->192.168.64.14:80: read: connection reset by peer"
+time=19:30:18.606 level=WARN msg="椅子が出発できませんでした (CODE=2): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1TBA2N3TBRNCC0DZ8P8V/status\": read tcp 192.168.64.1:62543->192.168.64.14:80: read: connection reset by peer"
+time=19:30:18.697 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X1AZGPHP7VA1C2HBWW7C8の椅子は既にライド中です"
+time=19:30:19.018 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62394->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.296 level=WARN msg="椅子が出発できませんでした (CODE=2): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1VSD1AQEEJDA7QMY54QJ/status\": read tcp 192.168.64.1:62636->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.296 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:59806->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.402 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1800
+time=19:30:19.402 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1943 score="[150 455 771 487 80]" criteria="[699 1379 1189 511]"
+time=19:30:19.402 level=INFO msg=これまでに地域内の評判によって113人、既存ユーザーの招待経由で490人が新規登録しました
+time=19:30:19.402 level=INFO msg=これまでに低評価なライドによって178人が利用をやめました
+time=19:30:19.402 level=INFO msg=64.0%のライドは椅子がマッチされるまでの時間、29.0%のライドはマッチされた椅子が乗車地点までに掛かる時間、56.3%のライドは椅子の実移動時間に不満がありました
+time=19:30:19.450 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62535->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.450 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62598->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.450 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62564->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.621 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:30:19.714 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62191->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.714 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:59558->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.722 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=つばさ交通 増加数=3
+time=19:30:19.796 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62750->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.796 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62557->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.796 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62413->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.833 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62166->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.833 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62553->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.915 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62662->192.168.64.14:80: read: connection reset by peer"
+time=19:30:19.940 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=3
+time=19:30:19.942 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=2
+time=19:30:19.995 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="SitWell Designs" 増加数=3
+time=19:30:20.296 level=WARN msg="椅子が出発できませんでした (CODE=2): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1WHG55G21M2V52XYGS80/status\": read tcp 192.168.64.1:62783->192.168.64.14:80: read: connection reset by peer"
+time=19:30:20.302 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62622->192.168.64.14:80: read: connection reset by peer"
+time=19:30:20.302 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:61656->192.168.64.14:80: read: connection reset by peer"
+time=19:30:20.302 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62640->192.168.64.14:80: read: connection reset by peer"
+time=19:30:21.202 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1860
+time=19:30:21.202 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=2023 score="[153 469 815 505 81]" criteria="[750 1450 1223 515]"
+time=19:30:21.708 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X1AWEGXH9ECDT7Q6Y0XGJの椅子は既にライド中です"
+time=19:30:21.951 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=暮らしの椅子研究所 増加数=4
+time=19:30:21.952 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=GoEase 増加数=2
+time=19:30:22.311 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:62656->192.168.64.14:80: read: connection reset by peer"
+time=19:30:22.504 level=WARN msg="椅子が出発できませんでした (CODE=2): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1YBAF4S79B3TY94J4R6B/status\": read tcp 192.168.64.1:63049->192.168.64.14:80: read: connection reset by peer"
+time=19:30:22.614 level=WARN msg="椅子が出発できませんでした (CODE=2): POST /api/chair/rides/{rideID}/statusのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/rides/01M36X1YZHDX42PS2ERGW9MYNF/status\": read tcp 192.168.64.1:63060->192.168.64.14:80: read: connection reset by peer"
+time=19:30:22.715 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:63012->192.168.64.14:80: read: connection reset by peer"
+time=19:30:23.002 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1920
+time=19:30:23.002 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=2099 score="[154 481 854 529 81]" criteria="[822 1514 1243 521]"
+time=19:30:23.528 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:60076->192.168.64.14:80: read: connection reset by peer"
+time=19:30:23.528 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:59131->192.168.64.14:80: read: connection reset by peer"
+time=19:30:23.528 level=WARN msg="椅子の座標送信に失敗しました (CODE=1): POST /api/chair/coordinateのリクエストが失敗しました: Post \"http://192.168.64.14/api/chair/coordinate\": read tcp 192.168.64.1:63018->192.168.64.14:80: read: connection reset by peer"
+time=19:30:24.802 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1980
+time=19:30:24.802 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=2205 score="[154 504 905 559 83]" criteria="[924 1598 1276 525]"
+time=19:30:24.802 level=INFO msg=これまでに地域内の評判によって125人、既存ユーザーの招待経由で537人が新規登録しました
+time=19:30:24.802 level=INFO msg=これまでに低評価なライドによって186人が利用をやめました
+time=19:30:24.802 level=INFO msg=58.1%のライドは椅子がマッチされるまでの時間、27.5%のライドはマッチされた椅子が乗車地点までに掛かる時間、59.2%のライドは椅子の実移動時間に不満がありました
+time=19:30:24.822 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X0NEEW9JSTWVH3XVGTCECの椅子は既にライド中です"
+time=19:30:24.826 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36X0NEEW9JSTWVH3XVGTCECの椅子は既にライド中です"
+time=19:30:25.007 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=椅子やいちば 増加数=7
+time=19:30:30.402 level=INFO msg=最終地域情報 名前=チェアタウン ユーザー登録数=452 アクティブユーザー数=339
+time=19:30:30.402 level=INFO msg=最終地域情報 名前=コシカケシティ ユーザー登録数=282 アクティブユーザー数=208
+time=19:30:30.402 level=INFO msg=最終オーナー情報 名前=椅子やいちば 売上=2670800 椅子数=85
+time=19:30:30.402 level=INFO msg=最終オーナー情報 名前=暮らしの椅子研究所 売上=2772900 椅子数=84
+time=19:30:30.402 level=INFO msg=最終オーナー情報 名前="SitWell Designs" 売上=2953200 椅子数=85
+time=19:30:30.402 level=INFO msg=最終オーナー情報 名前=GoEase 売上=2086000 椅子数=68
+time=19:30:30.402 level=INFO msg=最終オーナー情報 名前=つばさ交通 売上=3163300 椅子数=89
+time=19:30:30.402 level=INFO msg=55.3%のライドは椅子がマッチされるまでの時間、27.0%のライドはマッチされた椅子が乗車地点までに掛かる時間、60.0%のライドは椅子の実移動時間に不満がありました
+time=19:30:30.402 level=INFO msg=結果 pass=true スコア=156052 種別エラー数="map[1:29 2:7 3:6 30:25]"
+time=19:30:30.402 level=INFO msg=負荷走行が終了しました

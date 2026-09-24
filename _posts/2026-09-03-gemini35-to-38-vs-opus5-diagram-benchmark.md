@@ -20,10 +20,7 @@ Gemini 3.5 Flashを基準にしてきた図解生成ベンチマークへ、Gemi
 見た目の順位は機械検証から捏造せず、180枚のレンダリング結果と公開ソースをそのまま掲載します。
 
 <style>
-.site-main > .inner:has(.diagram-benchmark-wide) {
-  max-width: 1600px;
-  padding-inline: 12px;
-}
+body:has(.diagram-benchmark-wide) { --page-max-width: 1600px; --page-gutter: 12px; }
 .content-layout:has(.diagram-benchmark-wide) {
   grid-template-columns: minmax(0, 1fr) 260px;
   gap: 16px;
@@ -126,9 +123,7 @@ Gemini 3.5 Flashを基準にしてきた図解生成ベンチマークへ、Gemi
   margin-block: 0;
 }
 @media screen and (max-width: 860px) {
-  .site-main > .inner:has(.diagram-benchmark-wide) {
-    padding-inline: 4px;
-  }
+  body:has(.diagram-benchmark-wide) { --page-gutter: 4px; }
   .content-layout:has(.diagram-benchmark-wide) {
     grid-template-columns: minmax(0, 1fr);
     gap: 8px;

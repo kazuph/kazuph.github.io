@@ -1,0 +1,16 @@
+#!/bin/bash
+# Container entrypoint: start mysql, init DB once, then nginx, webapp and matcher.
+set -u
+mkdir -p /var/run/mysqld /var/log/isu && chown mysql:mysql /var/run/mysqld
+isu-restart mysql
+if [ ! -f /var/lib/mysql/.isu-initialized ]; then
+  mysql -uroot -e "CREATE USER IF NOT EXISTS 'isucon'@'%' IDENTIFIED BY 'isucon'; GRANT ALL PRIVILEGES ON *.* TO 'isucon'@'%' WITH GRANT OPTION; CREATE USER IF NOT EXISTS 'isucon'@'localhost' IDENTIFIED BY 'isucon'; GRANT ALL PRIVILEGES ON *.* TO 'isucon'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+  mysql -uroot < /home/isucon/webapp/sql/0-init.sql
+  sudo -u isucon bash /home/isucon/webapp/sql/init.sh > /var/log/isu/init.log 2>&1
+  touch /var/lib/mysql/.isu-initialized
+fi
+isu-restart app
+isu-restart nginx
+isu-restart matcher
+touch /var/log/isu/ready
+exec sleep infinity

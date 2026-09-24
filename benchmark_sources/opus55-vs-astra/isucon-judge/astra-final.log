@@ -1,0 +1,293 @@
+judge astra commit=bbcaa64 target=192.168.64.16 started=2026-09-23 19:57:57
+time=19:57:57.505 level=DEBUG source=isucon14/bench/cmd/run.go:90 msg=target targetURL=http://192.168.64.16 targetAddr="" benchrun.GetTargetAddress()="" paymentURL=http://192.168.64.1:12345
+time=19:57:57.506 level=INFO msg=負荷走行を開始します
+time=19:58:00.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=60
+time=19:58:00.155 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=2 score="[0 0 0 2 0]" criteria="[2 0 2 2]"
+time=19:58:01.929 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:01.929 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=1
+time=19:58:01.929 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=1
+time=19:58:01.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=120
+time=19:58:01.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=19 score="[0 0 0 13 6]" criteria="[19 6 19 19]"
+time=19:58:03.729 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=1
+time=19:58:03.729 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=1
+time=19:58:03.729 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=1
+time=19:58:03.729 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=1
+time=19:58:03.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=180
+time=19:58:03.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=33 score="[0 0 0 23 10]" criteria="[33 10 33 33]"
+time=19:58:03.754 level=INFO msg=これまでに地域内の評判によって9人、既存ユーザーの招待経由で33人が新規登録しました
+time=19:58:03.754 level=INFO msg=0.0%のライドは椅子がマッチされるまでの時間、69.7%のライドはマッチされた椅子が乗車地点までに掛かる時間、0.0%のライドは椅子の実移動時間に不満がありました
+time=19:58:05.529 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:05.529 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=1
+time=19:58:05.530 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=2
+time=19:58:05.532 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:05.532 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:05.555 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=240
+time=19:58:05.555 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=54 score="[0 0 0 40 14]" criteria="[54 14 54 54]"
+time=19:58:07.260 level=WARN msg="ユーザー登録に失敗しました (CODE=17): POST /api/app/usersへのリクエストに対して、期待されたHTTPステータスコードが確認できませんでした (expected:201, actual:500)"
+time=19:58:07.330 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=1
+time=19:58:07.331 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:07.333 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=3
+time=19:58:07.334 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=1
+time=19:58:07.334 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:07.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=300
+time=19:58:07.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=80 score="[0 0 0 57 23]" criteria="[80 23 80 80]"
+time=19:58:09.130 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:09.131 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:09.132 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=1
+time=19:58:09.135 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=1
+time=19:58:09.136 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:09.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=360
+time=19:58:09.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=111 score="[0 0 1 78 32]" criteria="[111 32 111 110]"
+time=19:58:09.154 level=INFO msg=これまでに地域内の評判によって18人、既存ユーザーの招待経由で104人が新規登録しました
+time=19:58:09.154 level=INFO msg=0.0%のライドは椅子がマッチされるまでの時間、71.2%のライドはマッチされた椅子が乗車地点までに掛かる時間、0.5%のライドは椅子の実移動時間に不満がありました
+time=19:58:10.944 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:10.946 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:10.947 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:10.947 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:10.947 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=4
+time=19:58:10.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=420
+time=19:58:10.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=154 score="[0 0 1 104 49]" criteria="[153 50 154 153]"
+time=19:58:12.569 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMHRH882DWGZCNMMQBSS2の椅子は既にライド中です"
+time=19:58:12.748 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:12.748 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:12.749 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:12.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=480
+time=19:58:12.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=189 score="[0 0 7 127 55]" criteria="[180 67 189 179]"
+time=19:58:12.755 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=2
+time=19:58:12.763 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:14.552 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=2
+time=19:58:14.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=540
+time=19:58:14.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=226 score="[0 2 25 143 56]" criteria="[196 85 225 199]"
+time=19:58:14.554 level=INFO msg=これまでに地域内の評判によって29人、既存ユーザーの招待経由で184人が新規登録しました
+time=19:58:14.554 level=INFO msg=これまでに低評価なライドによって1人が利用をやめました
+time=19:58:14.554 level=INFO msg=13.3%のライドは椅子がマッチされるまでの時間、62.4%のライドはマッチされた椅子が乗車地点までに掛かる時間、6.2%のライドは椅子の実移動時間に不満がありました
+time=19:58:14.554 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:14.554 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:14.555 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:14.559 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:15.273 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMWHYE56VRJD6H008HHJAの椅子は既にライド中です"
+time=19:58:16.357 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=600
+time=19:58:16.357 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=276 score="[1 9 48 162 56]" criteria="[208 111 266 230]"
+time=19:58:16.363 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:16.377 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=2
+time=19:58:16.378 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=3
+time=19:58:16.379 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:16.379 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:18.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=660
+time=19:58:18.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=342 score="[1 24 69 192 56]" criteria="[213 153 326 270]"
+time=19:58:18.170 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=4
+time=19:58:18.173 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:18.177 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=4
+time=19:58:18.179 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=3
+time=19:58:18.182 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:19.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=720
+time=19:58:19.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=413 score="[9 42 92 214 56]" criteria="[214 188 385 305]"
+time=19:58:19.954 level=INFO msg=これまでに地域内の評判によって41人、既存ユーザーの招待経由で242人が新規登録しました
+time=19:58:19.954 level=INFO msg=これまでに低評価なライドによって30人が利用をやめました
+time=19:58:19.954 level=INFO msg=48.2%のライドは椅子がマッチされるまでの時間、54.5%のライドはマッチされた椅子が乗車地点までに掛かる時間、16.5%のライドは椅子の実移動時間に不満がありました
+time=19:58:20.044 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:20.044 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=5
+time=19:58:20.055 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=5
+time=19:58:20.059 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=3
+time=19:58:20.059 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:20.078 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YN3MDYV5H06AF2QSRAH3Kの椅子は既にライド中です"
+time=19:58:21.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=780
+time=19:58:21.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=505 score="[13 56 141 239 56]" criteria="[216 259 470 334]"
+time=19:58:21.763 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:21.767 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=4
+time=19:58:21.769 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=5
+time=19:58:21.775 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=4
+time=19:58:21.780 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=4
+time=19:58:23.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=840
+time=19:58:23.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=586 score="[22 73 172 258 61]" criteria="[235 310 532 358]"
+time=19:58:23.582 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:23.584 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=3
+time=19:58:23.586 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=4
+time=19:58:23.586 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:23.592 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=3
+time=19:58:25.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=900
+time=19:58:25.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=648 score="[30 78 185 281 74]" criteria="[278 354 581 374]"
+time=19:58:25.354 level=INFO msg=これまでに地域内の評判によって53人、既存ユーザーの招待経由で313人が新規登録しました
+time=19:58:25.354 level=INFO msg=これまでに低評価なライドによって53人が利用をやめました
+time=19:58:25.354 level=INFO msg=57.1%のライドは椅子がマッチされるまでの時間、45.4%のライドはマッチされた椅子が乗車地点までに掛かる時間、26.3%のライドは椅子の実移動時間に不満がありました
+time=19:58:25.389 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=2
+time=19:58:25.391 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=3
+time=19:58:25.391 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:25.396 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=1
+time=19:58:25.461 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:27.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=960
+time=19:58:27.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=717 score="[30 89 197 317 84]" criteria="[338 410 635 387]"
+time=19:58:27.273 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:27.273 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:27.275 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:27.275 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:27.289 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:28.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1020
+time=19:58:28.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=804 score="[34 123 225 337 85]" criteria="[381 470 679 394]"
+time=19:58:29.043 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:29.049 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=4
+time=19:58:29.049 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=4
+time=19:58:29.050 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:29.063 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:30.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1080
+time=19:58:30.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=877 score="[43 145 261 343 85]" criteria="[400 517 713 406]"
+time=19:58:30.754 level=INFO msg=これまでに地域内の評判によって65人、既存ユーザーの招待経由で382人が新規登録しました
+time=19:58:30.754 level=INFO msg=これまでに低評価なライドによって82人が利用をやめました
+time=19:58:30.754 level=INFO msg=54.4%のライドは椅子がマッチされるまでの時間、41.0%のライドはマッチされた椅子が乗車地点までに掛かる時間、36.2%のライドは椅子の実移動時間に不満がありました
+time=19:58:30.783 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNASP0N464VT3STXEDK17の椅子は既にライド中です"
+time=19:58:30.871 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:30.886 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:30.888 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:30.895 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:30.952 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=2
+time=19:58:32.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1140
+time=19:58:32.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=963 score="[53 166 313 346 85]" criteria="[411 584 765 410]"
+time=19:58:32.666 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=1
+time=19:58:32.667 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:32.687 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=3
+time=19:58:32.755 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:32.767 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=4
+time=19:58:34.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1200
+time=19:58:34.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1042 score="[63 193 349 352 85]" criteria="[420 645 806 416]"
+time=19:58:34.561 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMNGW2YPSC7W8G5Y3VY3Cの椅子は既にライド中です"
+time=19:58:34.592 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:34.605 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=3
+time=19:58:34.637 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:34.644 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:34.654 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=2
+time=19:58:35.563 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMHS0XKCFKRDNRYXD3Z7Jの椅子は既にライド中です"
+time=19:58:36.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1260
+time=19:58:36.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1129 score="[82 213 389 360 85]" criteria="[432 703 852 424]"
+time=19:58:36.154 level=INFO msg=これまでに地域内の評判によって77人、既存ユーザーの招待経由で396人が新規登録しました
+time=19:58:36.154 level=INFO msg=これまでに低評価なライドによって120人が利用をやめました
+time=19:58:36.154 level=INFO msg=61.7%のライドは椅子がマッチされるまでの時間、37.7%のライドはマッチされた椅子が乗車地点までに掛かる時間、43.5%のライドは椅子の実移動時間に不満がありました
+time=19:58:36.267 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMQ95HR6JFYPFRSGBSR76の椅子は既にライド中です"
+time=19:58:36.281 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=1
+time=19:58:36.338 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:36.351 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=4
+time=19:58:36.361 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:36.400 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=4
+time=19:58:37.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1320
+time=19:58:37.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1210 score="[98 234 430 363 85]" criteria="[439 761 890 433]"
+time=19:58:38.201 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:38.204 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:38.256 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=1
+time=19:58:38.263 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:38.286 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:39.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1380
+time=19:58:39.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1304 score="[121 264 461 373 85]" criteria="[457 826 924 438]"
+time=19:58:39.904 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:39.958 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=3
+time=19:58:39.965 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=2
+time=19:58:39.969 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:39.969 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=5
+time=19:58:41.260 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMTSSN4P1NPQCWN0QNM1Xの椅子は既にライド中です"
+time=19:58:41.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1440
+time=19:58:41.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1380 score="[129 277 498 390 86]" criteria="[511 883 952 441]"
+time=19:58:41.554 level=INFO msg=これまでに地域内の評判によって89人、既存ユーザーの招待経由で417人が新規登録しました
+time=19:58:41.554 level=INFO msg=これまでに低評価なライドによって151人が利用をやめました
+time=19:58:41.554 level=INFO msg=63.0%のライドは椅子がマッチされるまでの時間、36.0%のライドはマッチされた椅子が乗車地点までに掛かる時間、49.5%のライドは椅子の実移動時間に不満がありました
+time=19:58:41.607 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:41.609 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:41.699 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:41.758 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=1
+time=19:58:41.764 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YN77HZP22P2H7XFB063TMの椅子は既にライド中です"
+time=19:58:41.771 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:43.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1500
+time=19:58:43.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1465 score="[135 287 536 421 86]" criteria="[587 954 984 441]"
+time=19:58:43.581 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=1
+time=19:58:43.583 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:43.649 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:43.652 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=4
+time=19:58:43.739 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=2
+time=19:58:43.857 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNG30NJ2RKZW2AR2KQ9R8の椅子は既にライド中です"
+time=19:58:45.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1560
+time=19:58:45.155 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1543 score="[141 298 571 444 89]" criteria="[658 1015 1008 447]"
+time=19:58:45.398 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMNGY2WW1QC66Q0PPTCEMの椅子は既にライド中です"
+time=19:58:45.400 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=1
+time=19:58:45.401 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=1
+time=19:58:45.401 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=2
+time=19:58:45.405 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:45.439 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:46.000 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMS1CRBC3XK52KZ2VAQACの椅子は既にライド中です"
+time=19:58:46.265 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMTSSN4P1NPQCWN0QNM1Xの椅子は既にライド中です"
+time=19:58:46.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1620
+time=19:58:46.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1629 score="[147 311 609 471 91]" criteria="[738 1082 1035 451]"
+time=19:58:46.954 level=INFO msg=これまでに地域内の評判によって101人、既存ユーザーの招待経由で480人が新規登録しました
+time=19:58:46.954 level=INFO msg=これまでに低評価なライドによって159人が利用をやめました
+time=19:58:46.954 level=INFO msg=54.7%のライドは椅子がマッチされるまでの時間、33.6%のライドはマッチされた椅子が乗車地点までに掛かる時間、54.4%のライドは椅子の実移動時間に不満がありました
+time=19:58:47.290 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNAQ8VD38KDWR8M6GXGECの椅子は既にライド中です"
+time=19:58:47.381 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:47.395 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:47.401 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:47.439 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=3
+time=19:58:47.447 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=2
+time=19:58:48.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1680
+time=19:58:48.754 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1708 score="[147 323 650 497 91]" criteria="[817 1148 1057 456]"
+time=19:58:48.887 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=3
+time=19:58:48.888 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:48.981 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:48.989 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=3
+time=19:58:48.991 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:50.364 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNAS8H62A60GZ17XV9AV7の椅子は既にライド中です"
+time=19:58:50.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1740
+time=19:58:50.554 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1779 score="[148 335 691 514 91]" criteria="[887 1206 1071 459]"
+time=19:58:50.748 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=2
+time=19:58:50.748 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:50.763 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=2
+time=19:58:50.764 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=1
+time=19:58:50.839 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=2
+time=19:58:51.285 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YN5CZZJCP3VQ5XFD2ADG0の椅子は既にライド中です"
+time=19:58:51.288 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNYFXDH0S9FQG9966ZNS2の椅子は既にライド中です"
+time=19:58:51.641 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YN5DCP77WB543CQQPMF2Nの椅子は既にライド中です"
+time=19:58:51.692 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YN03GNEXG5CH6G5JVEW3Cの椅子は既にライド中です"
+time=19:58:52.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1800
+time=19:58:52.354 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1865 score="[151 351 748 524 91]" criteria="[970 1273 1081 459]"
+time=19:58:52.355 level=INFO msg=これまでに地域内の評判によって113人、既存ユーザーの招待経由で528人が新規登録しました
+time=19:58:52.355 level=INFO msg=これまでに低評価なライドによって166人が利用をやめました
+time=19:58:52.355 level=INFO msg=48.0%のライドは椅子がマッチされるまでの時間、31.7%のライドはマッチされた椅子が乗車地点までに掛かる時間、58.7%のライドは椅子の実移動時間に不満がありました
+time=19:58:52.680 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=2
+time=19:58:52.681 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:52.802 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMYBB9VRQYY60NR0QK3Q9の椅子は既にライド中です"
+time=19:58:52.805 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:53.068 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YN8Z0JTH47PCH60CFTPA2の椅子は既にライド中です"
+time=19:58:53.970 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YN1VT2NXF8BHQREKG8JGMの椅子は既にライド中です"
+time=19:58:54.069 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMS1DKR23W7SF73YTA8WQの椅子は既にライド中です"
+time=19:58:54.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1860
+time=19:58:54.154 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=1941 score="[151 363 793 543 91]" criteria="[1046 1337 1097 462]"
+time=19:58:54.306 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:54.441 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:55.668 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YN03GNEXG5CH6G5JVEW3Cの椅子は既にライド中です"
+time=19:58:55.954 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1920
+time=19:58:55.955 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=2032 score="[153 388 845 555 91]" criteria="[1135 1401 1107 464]"
+time=19:58:56.250 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=4
+time=19:58:56.252 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=3
+time=19:58:56.707 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YP5CJHT7MQVQ8A40GN0D9の椅子は既にライド中です"
+time=19:58:56.760 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMTSQ01J9Z4HHJFRX4JCCの椅子は既にライド中です"
+time=19:58:57.299 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNYKGQXY17ATBBZ7MCZE0の椅子は既にライド中です"
+time=19:58:57.301 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNYKGQXY17ATBBZ7MCZE0の椅子は既にライド中です"
+time=19:58:57.569 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNQF6JDKYAB56ZQF5SPN3の椅子は既にライド中です"
+time=19:58:57.569 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNQF6JDKYAB56ZQF5SPN3の椅子は既にライド中です"
+time=19:58:57.571 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YMTSTDNR0HW79KSA5862Aの椅子は既にライド中です"
+time=19:58:57.574 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNQF6JDKYAB56ZQF5SPN3の椅子は既にライド中です"
+time=19:58:57.755 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:315 msg=時間経過 tick=1980
+time=19:58:57.755 level=DEBUG source=isucon14/bench/benchmarker/scenario/scenario.go:317 msg=eval reqs=2122 score="[153 410 903 564 92]" criteria="[1225 1468 1117 466]"
+time=19:58:57.755 level=INFO msg=これまでに地域内の評判によって125人、既存ユーザーの招待経由で561人が新規登録しました
+time=19:58:57.755 level=INFO msg=これまでに低評価なライドによって183人が利用をやめました
+time=19:58:57.755 level=INFO msg=42.3%のライドは椅子がマッチされるまでの時間、30.8%のライドはマッチされた椅子が乗車地点までに掛かる時間、62.7%のライドは椅子の実移動時間に不満がありました
+time=19:58:57.975 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Chair Charm" 増加数=9
+time=19:58:58.083 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="PreLoved Chairs" 増加数=2
+time=19:58:58.084 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前="Skyline Taxis" 増加数=7
+time=19:58:58.085 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=晴れ道タクシー 増加数=12
+time=19:58:58.142 level=INFO msg=一定の売上が立ったためオーナーの椅子が増加します 名前=座和インダストリー 増加数=3
+time=19:58:58.402 level=WARN msg="取得した付近の椅子情報に不備があります (CODE=30): ID:01M36YNWHYJRFFZ0XYQ8TH5HQ5の椅子は既にライド中です"
+time=19:59:03.355 level=INFO msg=最終地域情報 名前=チェアタウン ユーザー登録数=482 アクティブユーザー数=364
+time=19:59:03.355 level=INFO msg=最終地域情報 名前=コシカケシティ ユーザー登録数=236 アクティブユーザー数=168
+time=19:59:03.355 level=INFO msg=最終オーナー情報 名前="Chair Charm" 売上=2621400 椅子数=84
+time=19:59:03.355 level=INFO msg=最終オーナー情報 名前="Skyline Taxis" 売上=2342900 椅子数=78
+time=19:59:03.355 level=INFO msg=最終オーナー情報 名前=晴れ道タクシー 売上=2701200 椅子数=88
+time=19:59:03.355 level=INFO msg=最終オーナー情報 名前="PreLoved Chairs" 売上=2064800 椅子数=71
+time=19:59:03.355 level=INFO msg=最終オーナー情報 名前=座和インダストリー 売上=3318200 椅子数=102
+time=19:59:03.355 level=INFO msg=40.5%のライドは椅子がマッチされるまでの時間、30.6%のライドはマッチされた椅子が乗車地点までに掛かる時間、64.0%のライドは椅子の実移動時間に不満がありました
+time=19:59:03.356 level=INFO msg=結果 pass=true スコア=152416 種別エラー数="map[17:1 30:33]"
+time=19:59:03.356 level=INFO msg=負荷走行が終了しました

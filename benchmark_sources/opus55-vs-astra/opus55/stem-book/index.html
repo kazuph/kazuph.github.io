@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ひなたと かげまる</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFF8EC; --ink:#3A3350; --accent:#FF6B4A; --sun:#FFC93C; --sky:#8FD3FF;
+    --card:#FFFFFF; --muted:#7A7390; --kage:#3B3A55; --leaf:#7BBE5C;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink)}
+  body{font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    padding:12px 16px 96px; -webkit-text-size-adjust:100%}
+  .book{max-width:980px;margin:0 auto}
+  .page{display:none;background:var(--card);border-radius:22px;box-shadow:0 10px 30px rgba(58,51,80,.12),0 2px 0 rgba(58,51,80,.06);
+    overflow:hidden;margin:0 0 24px}
+  .page.active{display:block;animation:turn .45s ease}
+  body.all .page{display:block;animation:none}
+  @keyframes turn{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:none}}
+  .art svg{display:block;width:100%;height:auto}
+  .text{padding:18px clamp(18px,4vw,44px) 26px}
+  .text p{font-size:clamp(19px,2.5vw,27px);line-height:1.95;letter-spacing:.06em;margin:.3em 0;font-weight:700}
+  .text p.say{color:var(--accent)}
+  .text p.kage{color:#4B4A78}
+  .pnum{float:right;color:var(--muted);font-size:14px;font-weight:700;margin-top:4px}
+  .point{margin:14px 0 0;background:#FFF3C4;border:3px dashed #F2B705;border-radius:16px;padding:10px 16px;
+    font-size:clamp(17px,2.1vw,22px);line-height:1.8;font-weight:700;letter-spacing:.04em}
+  .point b{color:#C75B00}
+  /* cover */
+  .cover .title{padding:22px 24px 6px;text-align:center}
+  .cover h1{font-size:clamp(30px,7vw,78px);margin:0;letter-spacing:.12em;line-height:1.2;font-weight:900}
+  .cover h1 span{white-space:nowrap}.cover h1 .h{color:#FF8A3D}.cover h1 .k{color:var(--kage)}
+  .cover .sub{font-size:clamp(17px,2.4vw,24px);font-weight:700;color:var(--muted);margin:6px 0 0;letter-spacing:.1em}
+  .cover .meta{text-align:center;color:var(--muted);font-weight:700;padding:6px 16px 22px;font-size:15px}
+  /* interactive */
+  .ctrl{padding:14px clamp(18px,4vw,44px) 4px;display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+  .ctrl label{font-weight:900;font-size:20px}
+  .ctrl input[type=range]{flex:1 1 260px;accent-color:var(--accent);height:34px;min-width:0}
+  .seg{display:flex;gap:8px;flex-wrap:wrap}
+  .seg button,.navbtn,.modebtn{font:inherit;white-space:nowrap;font-weight:900;border:0;cursor:pointer;border-radius:999px}
+  .seg button{font-size:18px;padding:8px 16px;background:#EFEAF8;color:var(--ink)}
+  .seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+  .readout{display:flex;flex-wrap:wrap;gap:10px;padding:6px clamp(18px,4vw,44px) 0}
+  .chip{background:#EEF7FF;border-radius:14px;padding:8px 14px;font-weight:900;font-size:clamp(17px,2vw,21px)}
+  .chip span{color:var(--accent);font-size:1.25em}
+  /* experiment */
+  .steps{counter-reset:s;list-style:none;padding:0;margin:8px 0}
+  .steps li{counter-increment:s;position:relative;padding:8px 0 8px 58px;font-size:clamp(18px,2.3vw,24px);line-height:1.8;font-weight:700}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:8px;width:44px;height:44px;border-radius:50%;
+    background:var(--sun);display:grid;place-items:center;font-weight:900;font-size:24px}
+  .warn{background:#FFE4DE;border:3px solid #FF6B4A;border-radius:16px;padding:10px 16px;font-weight:900;font-size:clamp(17px,2.1vw,22px);line-height:1.8}
+  .mat{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+  .mat span{background:#EFEAF8;border-radius:999px;padding:4px 14px;font-weight:700;font-size:18px}
+  /* parents */
+  .parents .text{font-family:"Hiragino Sans","Yu Gothic","Zen Maru Gothic",sans-serif}
+  .parents h2{font-size:26px;margin:.2em 0 .4em;letter-spacing:.06em}
+  .parents h3{font-size:19px;margin:1.3em 0 .3em;color:#C75B00}
+  .parents p,.parents li{font-size:16px;line-height:1.9;font-weight:400;letter-spacing:.02em}
+  .parents .tw{overflow-x:auto}
+  .parents table{border-collapse:collapse;font-size:15px;min-width:520px}
+  .parents th,.parents td{border:1px solid #E3DDEE;padding:6px 10px;text-align:center}
+  .parents th{background:#F6F2FC}
+  .parents .formula{background:#F6F2FC;border-radius:12px;padding:10px 14px;font-size:17px;display:inline-block}
+  /* nav */
+  .nav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,248,236,.94);backdrop-filter:blur(6px);
+    border-top:1px solid #EADFCB;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;justify-content:center;gap:14px;z-index:5}
+  .navbtn{font-size:20px;padding:10px 22px;background:var(--accent);color:#fff;min-width:110px}
+  .navbtn:disabled{background:#D9D2E4;cursor:default}
+  .counter{font-weight:900;font-size:18px;min-width:84px;text-align:center}
+  .modebtn{font-size:14px;padding:8px 14px;background:#EFEAF8;color:var(--ink)}
+  body.all .navbtn,body.all .counter{display:none}
+  @media (max-width:520px){.nav{gap:8px}.navbtn{min-width:0;padding:10px 14px;font-size:17px}.counter{min-width:0;font-size:15px}.modebtn{font-size:11px;padding:8px 9px}}
+  @media print{.nav{display:none}.page{display:block!important;break-inside:avoid;box-shadow:none;border:1px solid #ddd}}
+</style>
+</head>
+<body>
+<main class="book" id="book">
+
+<!-- 0 表紙 -->
+<section class="page cover" data-title="ひょうし">
+  <div class="title">
+    <h1><span class="h">ひなた</span>と <span class="k">かげまる</span></h1>
+    <p class="sub">〜 かげの ふしぎを しらべよう 〜</p>
+  </div>
+  <div class="art"><svg id="sc-cover" viewBox="0 0 800 450" role="img" aria-label="あさの こうえんで てを ふる ひなたと、ながく のびた かげの かげまる"></svg></div>
+  <p class="meta">たいしょう：5さい〜8さい ・ ひかりと かげの かがくえほん</p>
+</section>
+
+<!-- 1 -->
+<section class="page">
+  <div class="art"><svg id="sc-meet" viewBox="0 0 800 450" role="img" aria-label="あさの こうえん。ひなたの あしもとから くろい かげが のびている"></svg></div>
+  <div class="text"><span class="pnum">1</span>
+    <p>あさです。ひなたは こうえんへ でかけました。</p>
+    <p>あれれ？ あしもとに くろい だれかが ぴったり ついてくる。</p>
+    <p class="say">「きみは だれ？」</p>
+    <p class="kage">「ぼくは かげまる。きみの かげ だよ。<br>ぼくが どうして できるのか、いっしょに しらべてみない？」</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="page">
+  <div class="art"><svg id="sc-rays" viewBox="0 0 800 450" role="img" aria-label="たいようの ひかりが まっすぐ すすみ、ひなたの からだで さえぎられて、うしろに ひかりの とどかない ばしょが できる ずかい"></svg></div>
+  <div class="text"><span class="pnum">2</span>
+    <p>たいようの ひかりは、まっすぐ まっすぐ すすみます。</p>
+    <p>ひなたの からだに ぶつかった ひかりは、そのむこうへ まがって いけません。</p>
+    <p class="kage">「ひかりが とどかない ところ。そこが ぼくの いばしょ なんだ」</p>
+    <div class="point">🔬 はっけん！ <b>かげ</b>は、ひかりが ものに <b>さえぎられて</b> とどかない ところに できる。</div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="page">
+  <div class="art"><svg id="sc-opposite" viewBox="0 0 800 450" role="img" aria-label="たいようが ひだりに あると かげは みぎ、たいようが みぎに あると かげは ひだりに できる ようすを ならべた え"></svg></div>
+  <div class="text"><span class="pnum">3</span>
+    <p>ひなたが くるっと まわって みました。</p>
+    <p>たいようが ひだりに あると、かげまるは みぎ。<br>たいようが みぎに あると、かげまるは ひだり。</p>
+    <p class="kage">「ぼくは いつも、たいようの <b>はんたいがわ</b> に いるよ」</p>
+    <div class="point">🔬 はっけん！ かげは いつも <b>ひかりの はんたいがわ</b> に できる。</div>
+  </div>
+</section>
+
+<!-- 4 あさ -->
+<section class="page">
+  <div class="art"><svg id="sc-morning" viewBox="0 0 800 450" role="img" aria-label="あさ。ひがしの ひくい たいようと、せの たかさの 3ばいちかく ながく のびた かげ"></svg></div>
+  <div class="text"><span class="pnum">4</span>
+    <p>あさの たいようは、<b>ひがし</b>の そらの ひくい ところ。</p>
+    <p>よこから ななめに てらすので、かげまるは ながーく のびて、<b>にし</b>を むきます。</p>
+    <p class="kage">「みて！ ぼく、ひなたより ずっと せが たかいぞ！」</p>
+  </div>
+</section>
+
+<!-- 5 ひる -->
+<section class="page">
+  <div class="art"><svg id="sc-noon" viewBox="0 0 800 450" role="img" aria-label="おひる。みなみの そらの たかい ところに たいようが あり、かげは あしもとで みじかい"></svg></div>
+  <div class="text"><span class="pnum">5</span>
+    <p>おひるの たいようは、<b>みなみ</b>の そらの たかい ところ。</p>
+    <p>うえの ほうから てらすので、かげまるは あしもとで ちいさく なって、<b>きた</b>を むきます。</p>
+    <p class="kage">「うーん、きゅうくつ。おひるの ぼくは ちびなんだ」</p>
+    <div class="point">🔬 はっけん！ たいようが <b>たかい</b> ほど、かげは <b>みじかい</b>。</div>
+  </div>
+</section>
+
+<!-- 6 ゆうがた -->
+<section class="page">
+  <div class="art"><svg id="sc-evening" viewBox="0 0 800 450" role="img" aria-label="ゆうがた。にしの ひくい たいようと、ひがしへ ながく のびた かげ"></svg></div>
+  <div class="text"><span class="pnum">6</span>
+    <p>ゆうがた、たいようは <b>にし</b>の そらへ しずんで いきます。</p>
+    <p>かげまるは また ながーく のびて、こんどは <b>ひがし</b>を むきました。</p>
+    <p class="kage">「たいようが うごくと、ぼくも ぐるっと うごくんだ」</p>
+    <div class="point">🔬 はっけん！ たいようは ひがし → みなみ → にし と うごく。かげは そのはんたいに、にし → きた → ひがし と うごく。</div>
+  </div>
+</section>
+
+<!-- 7 実験1 -->
+<section class="page" id="sim-sun">
+  <div class="art"><svg id="sc-sim" viewBox="0 0 800 450" role="img" aria-label="じかんを うごかすと たいようと かげが うごく しかけ"></svg></div>
+  <div class="ctrl">
+    <label for="hour">じかん</label>
+    <input id="hour" type="range" min="4.5" max="19.5" step="0.25" value="9">
+  </div>
+  <div class="ctrl">
+    <label>きせつ</label>
+    <div class="seg" id="season">
+      <button type="button" data-d="23.44" aria-pressed="false">なつ</button>
+      <button type="button" data-d="0" aria-pressed="true">はる・あき</button>
+      <button type="button" data-d="-23.44" aria-pressed="false">ふゆ</button>
+    </div>
+  </div>
+  <div class="readout">
+    <div class="chip">🕘 <span id="r-time">9じ</span></div>
+    <div class="chip">☀️ たいようの たかさ <span id="r-el">36</span> ど</div>
+    <div class="chip">👤 かげの ながさ ＝ せの <span id="r-len">1.4</span> ばい</div>
+  </div>
+  <div class="text"><span class="pnum">7</span>
+    <p>やってみよう①　<b>じかん</b> と <b>きせつ</b> を かえて、たいようを うごかしてみよう。</p>
+    <p>かげまるは どっちを むく？ いちばん みじかく なるのは なんじ かな？</p>
+  </div>
+</section>
+
+<!-- 8 季節 -->
+<section class="page">
+  <div class="art"><svg id="sc-season" viewBox="0 0 800 450" role="img" aria-label="なつの おひるは たいようが たかく かげが みじかい。ふゆの おひるは たいようが ひくく かげが ながい"></svg></div>
+  <div class="text"><span class="pnum">8</span>
+    <p>おなじ おひる でも、なつと ふゆでは ぜんぜん ちがう！</p>
+    <p>なつの たいようは とても たかく のぼるので、かげまるは ちっちゃい。<br>ふゆの たいようは あまり たかく のぼらないので、おひるでも かげまるは ながいまま。</p>
+    <div class="point">🔬 はっけん！ とうきょうの おひるの かげは、なつは せの <b>0.2ばい</b>くらい、ふゆは せの <b>1.7ばい</b>くらい。</div>
+  </div>
+</section>
+
+<!-- 9 懐中電灯 -->
+<section class="page" id="sim-lamp">
+  <div class="art"><svg id="sc-lamp" viewBox="0 0 800 450" role="img" aria-label="かいちゅうでんとうと てと かべ。てを ちかづけると かべの かげが おおきくなる しかけ"></svg></div>
+  <div class="ctrl">
+    <label for="hand">て の いち</label>
+    <input id="hand" type="range" min="130" max="400" step="1" value="220">
+  </div>
+  <div class="readout">
+    <div class="chip">🦊 かべの かげ ＝ ての <span id="r-scale">2.1</span> ばい</div>
+  </div>
+  <div class="text"><span class="pnum">9</span>
+    <p>よるの へや。かいちゅうでんとうで かげあそび。</p>
+    <p>やってみよう②　てを ひかりに <b>ちかづける</b>と？ <b>はなす</b>と？</p>
+    <p class="kage">「ひかりに ちかいと、ぼくは おばけみたいに おおきく なるよ！」</p>
+    <div class="point">🔬 はっけん！ ひかりと ものが <b>ちかい</b> ほど、かげは <b>おおきく</b> なる。<br>（たいようは とても とおいので、そとの かげは からだと おなじ はばに なるよ）</div>
+  </div>
+</section>
+
+<!-- 10 日時計 -->
+<section class="page">
+  <div class="art"><svg id="sc-dial" viewBox="0 0 800 450" role="img" aria-label="ぼうの かげと じかんの しるし。うえから みた ひどけいの ずかい"></svg></div>
+  <div class="text"><span class="pnum">10</span>
+    <p>むかしの ひとは、かげで じかんを しりました。</p>
+    <p>じめんに ぼうを たてて、かげの さきに しるしを つけておくと……<br>かげを みるだけで「いまは 10じ くらい」と わかるのです。</p>
+    <p>これが <b>ひどけい</b>。とけいの はじまりの ひとつ です。</p>
+  </div>
+</section>
+
+<!-- 11 実験3 -->
+<section class="page">
+  <div class="art"><svg id="sc-exp" viewBox="0 0 800 450" role="img" aria-label="ひどけいの つくりかた。あつがみに ねんどで ぼうを たてる"></svg></div>
+  <div class="text"><span class="pnum">11</span>
+    <p>やってみよう③　ひどけいを つくろう！</p>
+    <div class="mat"><span>あつがみ</span><span>わりばし</span><span>ねんど</span><span>ペン</span><span>ほうい じしゃく（あれば）</span></div>
+    <ol class="steps">
+      <li>あつがみの まんなかに、ねんどで わりばしを まっすぐ たてる。</li>
+      <li>はれた ひの あさ、ひあたりの よい たいらな ところに おく。<br>（ずっと うごかさないように。いしで おさえると いいよ）</li>
+      <li>1じかん ごとに、かげの さきに てんを うって じかんを かく。</li>
+      <li>ゆうがたまで つづけたら、かげが どう うごいたか みてみよう。</li>
+    </ol>
+    <div class="warn">⚠️ たいようを ぜったいに ちょくせつ みないこと。めを いためるよ。<br>⚠️ あつい ひは ぼうしを かぶって、みずを のもう。おとなの ひとと いっしょに やろう。</div>
+  </div>
+</section>
+
+<!-- 12 おわり -->
+<section class="page">
+  <div class="art"><svg id="sc-end" viewBox="0 0 800 450" role="img" aria-label="ゆうやけの なか、いえに かえる ひなたと、ながい てを ふる かげまる"></svg></div>
+  <div class="text"><span class="pnum">12</span>
+    <p>そらが オレンジいろに なりました。</p>
+    <p class="say">「かげまる、また あした！」</p>
+    <p class="kage">「うん。たいようが でたら、また あおうね」</p>
+    <p>よるに なると、かげまるは よるの くらさに とけて みえなく なりました。<br>あしたの かげまるは、どんな かたち かな？</p>
+    <p style="text-align:center;font-size:1.3em;margin-top:.8em">おしまい</p>
+  </div>
+</section>
+
+<!-- 13 おうちの方へ -->
+<section class="page parents">
+  <div class="text">
+    <h2>おうちの方へ ― この絵本の科学</h2>
+    <p>この絵本は、小学3年理科「太陽と地面の様子」で扱う内容（影のでき方、影の向きと太陽の位置、日なたと日かげ）を、就学前〜低学年の子が体験から学べるように組み立てています。絵はすべてプログラムで描いた図で、影の向きと長さは実際の太陽の位置の計算にもとづいています。</p>
+
+    <h3>1. 影ができる理由（2〜3ページ）</h3>
+    <p>光は同じ物質の中をまっすぐ進みます（光の直進）。からだにさえぎられた光は裏側へ回り込めないため、光の届かない領域が影になります。影が必ず光源の反対側にできるのはこのためです。</p>
+
+    <h3>2. 太陽の高さと影の長さ（4〜7ページ）</h3>
+    <p>太陽の高度（地平線からの角度）を θ とすると、高さ h の棒の影の長さは次の式になります。</p>
+    <p class="formula">影の長さ L ＝ h ÷ tan θ</p>
+    <div class="tw"><table>
+      <tr><th>太陽の高さ θ</th><th>15°</th><th>30°</th><th>45°</th><th>60°</th><th>75°</th></tr>
+      <tr><td>影の長さ（身長の何倍）</td><td>3.7</td><td>1.7</td><td>1.0</td><td>0.58</td><td>0.27</td></tr>
+    </table></div>
+    <p>太陽は東から昇り、南の空で最も高くなり（南中）、西に沈みます。北半球の日本では、影は朝に西、正午ごろに北、夕方に東を向きます。7ページのしかけは東京（北緯35.7°）で、太陽が真南に来る時刻を12時とした「太陽の時刻」で計算しています。実際の時計の時刻とは地域や日付により十数分〜30分ほどずれます。</p>
+
+    <h3>3. 季節による違い（8ページ）</h3>
+    <div class="tw"><table>
+      <tr><th>東京の南中</th><th>夏至（6月下旬）</th><th>春分・秋分</th><th>冬至（12月下旬）</th></tr>
+      <tr><td>太陽の高さ</td><td>約78°</td><td>約54°</td><td>約31°</td></tr>
+      <tr><td>正午の影（身長の何倍）</td><td>約0.22</td><td>約0.72</td><td>約1.67</td></tr>
+    </table></div>
+    <p>地球の自転軸が公転面に対して約23.4°傾いているため、季節によって南中高度が変わります。夏の早朝や夕方は太陽が真東より北寄りから昇り北寄りへ沈むので、影が南寄りを向く時間帯もあります（7ページで「なつ」を選ぶと確認できます）。</p>
+
+    <h3>4. 近い光と遠い光（9ページ）</h3>
+    <p>懐中電灯のような近い光源では、光が一点から広がるため、影の大きさは「光源から壁までの距離 ÷ 光源から手までの距離」倍になります。太陽は約1億5000万km離れていて、地上に届く光はほぼ平行なので、屋外の影は物とほぼ同じ幅になります。</p>
+
+    <h3>5. 日時計（10〜11ページ）</h3>
+    <p>10ページの図は東京の春分・秋分の日の計算値です。春分・秋分の日には、棒の影の先が東西方向のほぼ一直線上に並ぶという面白い性質があります。季節が変わると影の先の曲線も変わるので、作った日時計が「季節によってずれる」ことに気づけたら大発見です。</p>
+
+    <h3>親子で話してみたい問い</h3>
+    <ul>
+      <li>くもりの日や、日かげの中では、かげまるはどうなる？（光がさえぎられているので、くっきりした影はできない）</li>
+      <li>電灯が2つある部屋では、影はいくつできる？（光源の数だけできる）</li>
+      <li>自分の影を踏まれないように逃げるには、どっちへ走る？（太陽に向かって走ると影は背中側）</li>
+      <li>日なたと日かげの地面を触ると、温度はどう違う？（3年生の理科で扱う発展）</li>
+    </ul>
+    <p style="color:#7A7390;font-size:14px">安全のために：太陽は直接見ないでください。観察は帽子・水分補給を忘れずに、大人と一緒に行ってください。</p>
+  </div>
+</section>
+
+</main>
+
+<nav class="nav" aria-label="ページ">
+  <button class="navbtn" id="prev" type="button">◀ まえ</button>
+  <div class="counter" id="counter">1 / 14</div>
+  <button class="navbtn" id="next" type="button">つぎ ▶</button>
+  <button class="modebtn" id="mode" type="button">ぜんぶ ならべる</button>
+</nav>
+
+<script>
+(() => {
+'use strict';
+const C = {skin:'#FFD9B8', cap:'#FF6B4A', shirt:'#FFC93C', pants:'#4A7BD1', shoe:'#7A4A2A', cheek:'#FF9A8B',
+  eye:'#3A3350', shadow:'#3B3A55', grass:'#9BD37A', grass2:'#7BBE5C', trunk:'#9B6A43', leaf:'#5FB35A', leaf2:'#79C66C'};
+const KID_H = 134; // height of the kid drawing (feet to cap top) at scale 1
+const rad = Math.PI / 180;
+const $ = (id) => document.getElementById(id);
+
+/* ---------- drawing parts ---------- */
+// feet at (0,0), up is negative y. sil=true => shapes without fill (silhouette via parent fill)
+function kidParts(sil, pose = 'stand') {
+  const f = (c) => sil ? '' : `fill="${c}"`;
+  const arm = (x, rot) => `<g transform="translate(${x} -80) rotate(${rot})"><rect x="-5.5" y="-3" width="11" height="38" rx="5.5" ${f(C.shirt)}/><circle cy="38" r="6.5" ${f(C.skin)}/></g>`;
+  const rightArm = pose === 'wave' ? arm(20, -150) : arm(20, -14);
+  let s = '';
+  s += `<rect x="-14" y="-44" width="11" height="42" rx="4" ${f(C.pants)}/><rect x="3" y="-44" width="11" height="42" rx="4" ${f(C.pants)}/>`;
+  s += `<ellipse cx="-10" cy="-3" rx="9" ry="5" ${f(C.shoe)}/><ellipse cx="10" cy="-3" rx="9" ry="5" ${f(C.shoe)}/>`;
+  s += arm(-20, 14) + rightArm;
+  s += `<rect x="-22" y="-88" width="44" height="50" rx="14" ${f(C.shirt)}/>`;
+  s += `<rect x="-20" y="-48" width="40" height="14" rx="5" ${f(C.pants)}/>`;
+  s += `<circle cy="-106" r="23" ${f(C.skin)}/>`;
+  s += `<path d="M-24 -110 Q-23 -134 0 -134 Q23 -134 24 -112 Z" ${f(C.cap)}/>`;
+  s += `<path d="M8 -113 Q30 -117 40 -111 Q30 -105 8 -108 Z" ${f(C.cap)}/>`;
+  if (!sil) {
+    s += `<circle cx="0" cy="-64" r="6" fill="#FF8A3D"/>`;
+    s += `<circle cx="-8" cy="-103" r="3" fill="${C.eye}"/><circle cx="8" cy="-103" r="3" fill="${C.eye}"/>`;
+    s += `<circle cx="-14" cy="-95" r="4.5" fill="${C.cheek}" opacity=".55"/><circle cx="14" cy="-95" r="4.5" fill="${C.cheek}" opacity=".55"/>`;
+    s += `<path d="M-6 -94 Q0 -88 6 -94" stroke="${C.eye}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
+  }
+  return s;
+}
+function treeParts(sil) {
+  const f = (c) => sil ? '' : `fill="${c}"`;
+  return `<rect x="-8" y="-62" width="16" height="62" rx="4" ${f(C.trunk)}/>` +
+    `<circle cx="0" cy="-92" r="36" ${f(C.leaf)}/><circle cx="-26" cy="-72" r="25" ${f(C.leaf2)}/><circle cx="26" cy="-72" r="25" ${f(C.leaf2)}/>`;
+}
+// shadow of vertical object: unit height (0,-1) maps to screen vector (dx, dy)
+// ground is drawn in perspective: a ground vector (gx, gz) appears on screen as (gx, gz*Q).
+// The object's width axis lies on the ground perpendicular to the shadow direction.
+const Q = 0.35;
+function shadowOf(parts, x, y, s, dx, dy, op = 0.62) {
+  let ux = dx, uz = dy / Q;
+  const n = Math.hypot(ux, uz) || 1; ux /= n; uz /= n;
+  const wx = uz, wy = -ux * Q;
+  return `<g transform="translate(${x} ${y}) matrix(${wx} ${wy} ${-dx} ${-dy} 0 0) scale(${s})" fill="${C.shadow}" opacity="${op}">${parts}</g>`;
+}
+function kagemaruEyes(x, y, s, dx, dy, r = 1) {
+  const cx = x + 106 * s * dx, cy = y + 106 * s * dy;
+  const e = (ox) => `<ellipse cx="${cx + ox}" cy="${cy}" rx="${4.6 * r}" ry="${5.6 * r}" fill="#fff"/><circle cx="${cx + ox + 1}" cy="${cy + 1}" r="${2.3 * r}" fill="#2A2940"/>`;
+  return e(-8 * r) + e(8 * r) + `<path d="M${cx - 5 * r} ${cy + 9 * r} Q${cx} ${cy + 13 * r} ${cx + 5 * r} ${cy + 9 * r}" stroke="#fff" stroke-width="${2 * r}" fill="none" stroke-linecap="round"/>`;
+}
+function kid(x, y, s, pose) { return `<g transform="translate(${x} ${y}) scale(${s})">${kidParts(false, pose)}</g>`; }
+function tree(x, y, s) { return `<g transform="translate(${x} ${y}) scale(${s})">${treeParts(false)}</g>`; }
+function sun(x, y, r, face = true, id = 'sg') {
+  let rays = '';
+  for (let i = 0; i < 12; i++) {
+    const a = i * 30 * rad;
+    rays += `<line x1="${x + Math.cos(a) * (r + 8)}" y1="${y + Math.sin(a) * (r + 8)}" x2="${x + Math.cos(a) * (r + 22)}" y2="${y + Math.sin(a) * (r + 22)}" stroke="#FFB300" stroke-width="5" stroke-linecap="round"/>`;
+  }
+  const fc = face ? `<path d="M${x - 12} ${y - 4} q5 -6 10 0 M${x + 2} ${y - 4} q5 -6 10 0" stroke="#B25E00" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M${x - 9} ${y + 8} Q${x} ${y + 16} ${x + 9} ${y + 8}" stroke="#B25E00" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="${x - 15}" cy="${y + 6}" r="4" fill="#FF8A5B" opacity=".6"/><circle cx="${x + 15}" cy="${y + 6}" r="4" fill="#FF8A5B" opacity=".6"/>` : '';
+  return `<defs><radialGradient id="${id}"><stop offset="0" stop-color="#FFF4A8"/><stop offset="1" stop-color="#FFC93C"/></radialGradient></defs>${rays}<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${id})" stroke="#FFB300" stroke-width="3"/>${fc}`;
+}
+function cloud(x, y, s, op = 0.95) {
+  return `<g transform="translate(${x} ${y}) scale(${s})" fill="#fff" opacity="${op}"><ellipse cx="0" cy="0" rx="46" ry="18"/><circle cx="-18" cy="-10" r="18"/><circle cx="10" cy="-16" r="22"/><circle cx="30" cy="-4" r="14"/></g>`;
+}
+function sky(id, top, bottom) {
+  return `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${top}"/><stop offset="1" stop-color="${bottom}"/></linearGradient></defs><rect width="800" height="450" fill="url(#${id})"/>`;
+}
+function ground(y = 300, c1 = C.grass, c2 = C.grass2) {
+  return `<path d="M0 ${y} Q200 ${y - 18} 400 ${y} T800 ${y} V450 H0 Z" fill="${c1}"/><path d="M0 ${y + 70} Q260 ${y + 55} 520 ${y + 72} T800 ${y + 66} V450 H0 Z" fill="${c2}" opacity=".45"/>`;
+}
+function flowers(list) {
+  return list.map(([x, y, c]) => `<g transform="translate(${x} ${y})"><circle r="4" cx="-5" fill="${c}"/><circle r="4" cx="5" fill="${c}"/><circle r="4" cy="-5" fill="${c}"/><circle r="4" cy="5" fill="${c}"/><circle r="3.4" fill="#FFE066"/></g>`).join('');
+}
+function label(x, y, t, size = 22, color = '#3A3350', anchor = 'middle', weight = 900) {
+  return `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight}" fill="${color}" text-anchor="${anchor}" font-family="Zen Maru Gothic, Hiragino Maru Gothic ProN, sans-serif" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">${t}</text>`;
+}
+function tag(x, y, t, bg = '#fff', fg = '#3A3350', size = 20) {
+  const w = t.length * size * 1.02 + 26;
+  return `<g><rect x="${x - w / 2}" y="${y - size - 6}" width="${w}" height="${size + 18}" rx="${(size + 18) / 2}" fill="${bg}" opacity=".95"/><text x="${x}" y="${y + 2}" font-size="${size}" font-weight="900" fill="${fg}" text-anchor="middle" font-family="Zen Maru Gothic, Hiragino Maru Gothic ProN, sans-serif">${t}</text></g>`;
+}
+const cot = (el) => 1 / Math.tan(el * rad);
+
+/* ---------- sun position (solar time) ---------- */
+function sunPos(hour, declDeg, latDeg = 35.7) {
+  const H = (hour - 12) * 15 * rad, d = declDeg * rad, p = latDeg * rad;
+  const sinEl = Math.sin(p) * Math.sin(d) + Math.cos(p) * Math.cos(d) * Math.cos(H);
+  const el = Math.asin(sinEl);
+  const A = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(p) - Math.tan(d) * Math.cos(p)); // from south, west positive
+  return { el: el / rad, A };
+}
+
+/* ---------- scenes ---------- */
+function sceneCover() {
+  const el = 22, k = cot(el), s = 1.05;
+  return sky('cvsky', '#FFE9C9', '#BDE6FF') + cloud(560, 80, 1) + cloud(700, 140, .7) +
+    sun(120, 175, 40, true, 'cvsun') + ground(310) +
+    shadowOf(treeParts(true), 690, 330, .9, k, .1, .45) + tree(690, 330, .9) +
+    shadowOf(kidParts(true, 'wave'), 250, 370, s, k, .1) + kagemaruEyes(250, 370, s, k, .1, 1.2) +
+    kid(250, 370, s, 'wave') + flowers([[80, 400, '#FF8FB1'], [140, 425, '#B892FF'], [620, 410, '#FF8FB1'], [740, 395, '#fff']]);
+}
+function sceneMeet() {
+  const el = 25, k = cot(el), s = .95;
+  return sky('mtsky', '#FFE3C2', '#CFEBFF') + cloud(420, 70, .9) + cloud(640, 120, .6) +
+    sun(95, 205, 34, true, 'mtsun') + ground(300) +
+    `<rect x="560" y="300" width="130" height="10" rx="4" fill="#B07A4F"/><rect x="570" y="310" width="8" height="30" fill="#8A5B37"/><rect x="672" y="310" width="8" height="30" fill="#8A5B37"/>` +
+    shadowOf(treeParts(true), 470, 318, .8, k, .1, .4) + tree(470, 318, .8) +
+    shadowOf(kidParts(true), 210, 380, s, k, .12) + kagemaruEyes(210, 380, s, k, .12) +
+    kid(210, 380, s) +
+    label(300, 250, '？', 54, '#FF6B4A') + label(345, 225, '？', 36, '#FF6B4A') + flowers([[60, 420, '#FF8FB1'], [360, 430, '#B892FF'], [740, 415, '#FF8FB1']]);
+}
+function sceneRays() {
+  const el = 35, k = cot(el), kx = 400, fy = 380, s = 1.1, h = KID_H * s;
+  const dirx = Math.cos(el * rad), diry = Math.sin(el * rad);
+  let rays = '';
+  for (let i = -6; i < 12; i++) {
+    // parallel lines from upper-left to lower-right
+    const x0 = i * 70 - 160, y0 = 0;
+    const t = (fy - y0) / diry;
+    rays += `<line x1="${x0}" y1="${y0}" x2="${x0 + dirx * t}" y2="${fy}" stroke="#FFD23F" stroke-width="5" stroke-linecap="round" opacity=".8"/>`;
+    const f = .3 + ((i + 6) % 3) * .18;
+    const px = x0 + dirx * t * f, py = y0 + diry * t * f;
+    rays += `<polygon points="${px + dirx * 20},${py + diry * 20} ${px - diry * 7},${py + dirx * 7} ${px + diry * 7},${py - dirx * 7}" fill="#FFB300"/>`;
+  }
+  // shadow volume behind the kid (light cannot reach)
+  const topY = fy - h;
+  const vol = `${kx - 24},${topY + 14} ${kx - 4},${topY - 2} ${kx + 10 + h * k},${fy} ${kx - 24},${fy}`;
+  return sky('rysky', '#DFF3FF', '#F4FBFF') +
+    `<defs><mask id="rymask"><rect width="800" height="450" fill="#fff"/><polygon points="${vol}" fill="#000"/></mask></defs>` +
+    `<rect y="${fy}" width="800" height="${450 - fy}" fill="${C.grass}"/>` +
+    `<polygon points="${vol}" fill="#3B3A55" opacity=".13"/>` +
+    `<g mask="url(#rymask)">${rays}</g>` +
+    `<rect y="${fy}" width="800" height="${450 - fy}" fill="${C.grass}"/>` +
+    `<rect x="${kx}" y="${fy - 3}" width="${h * k}" height="14" rx="7" fill="${C.shadow}" opacity=".75"/>` +
+    kagemaruEyes(kx + h * k - 26, fy - 8, 0, 0, 0, .9) +
+    kid(kx, fy, s) +
+    sun(80, 75, 36, true, 'rysun') +
+    tag(190, 150, 'ひかりは まっすぐ', '#FFF3C4', '#B25E00') +
+    `<path d="M${kx + 150} ${fy - 150} Q${kx + 190} ${fy - 110} ${kx + 150} ${fy - 60}" stroke="#3A3350" stroke-width="3" fill="none" stroke-dasharray="6 6"/>` +
+    tag(kx + 200, fy - 168, 'ひかりが とどかない', '#3B3A55', '#fff');
+}
+function sceneOpposite() {
+  const k = cot(30), s = .82;
+  const panel = (ox, sunLeft) => {
+    const kx = ox + (sunLeft ? 130 : 270), fy = 370, dir = sunLeft ? 1 : -1;
+    return `<rect x="${ox + 8}" y="8" width="384" height="434" rx="22" fill="#CFEBFF"/>` +
+      `<rect x="${ox + 8}" y="300" width="384" height="142" fill="${C.grass}"/>` +
+      `<rect x="${ox + 8}" y="8" width="384" height="434" rx="22" fill="none" stroke="#fff" stroke-width="6"/>` +
+      sun(sunLeft ? ox + 70 : ox + 330, 170, 28, true, 'op' + ox) +
+      shadowOf(kidParts(true), kx, fy, s, dir * k, .1) + kagemaruEyes(kx, fy, s, dir * k, .1, .9) +
+      kid(kx, fy, s) +
+      label(ox + 200, 425, sunLeft ? 'たいようが ひだり → かげは みぎ' : 'たいようが みぎ → かげは ひだり', 20, '#3B3A55');
+  };
+  return `<rect width="800" height="450" fill="#FFF8EC"/>` + panel(0, true) + panel(400, false);
+}
+function sceneMorning() {
+  const el = 20, k = cot(el), s = .85, kx = 150, fy = 385, L = KID_H * s * k;
+  let ticks = '';
+  const unit = KID_H * s;
+  for (let i = 1; i <= Math.floor(k); i++) ticks += `<line x1="${kx + unit * i}" y1="${fy + 22}" x2="${kx + unit * i}" y2="${fy + 38}" stroke="#3A3350" stroke-width="3"/>` + label(kx + unit * i, fy + 60, `せの ${i}ばい`, 17);
+  return sky('mnsky', '#FFD9B0', '#C9E9FF') + cloud(430, 80, .8) + cloud(640, 60, .6) +
+    sun(80, 225, 34, true, 'mnsun') + ground(300) + label(24, 40, '← ひがし', 24, '#C75B00', 'start') + label(776, 40, 'にし →', 24, '#3A3350', 'end') +
+    shadowOf(treeParts(true), 560, 318, .75, k, .1, .4) + tree(560, 318, .75) +
+    shadowOf(kidParts(true), kx, fy, s, k, .1) + kagemaruEyes(kx, fy, s, k, .1) + kid(kx, fy, s) +
+    `<line x1="${kx}" y1="${fy + 30}" x2="${kx + L}" y2="${fy + 30}" stroke="#3A3350" stroke-width="3"/>` +
+    `<line x1="${kx}" y1="${fy + 22}" x2="${kx}" y2="${fy + 38}" stroke="#3A3350" stroke-width="3"/>` + ticks +
+    `<line x1="${kx - 34}" y1="${fy}" x2="${kx - 34}" y2="${fy - unit}" stroke="#FF6B4A" stroke-width="3"/>` +
+    label(kx - 40, fy - unit / 2, 'せ', 20, '#FF6B4A', 'end') + tag(kx + L - 20, fy - 60, 'ながーい！', '#3B3A55', '#fff');
+}
+function sceneNoon() {
+  const el = 54, k = cot(el), s = 1.05, kx = 400, fy = 350;
+  // viewer faces south: noon shadow points toward the viewer (north = down/front)
+  const dy = k * 0.35;
+  return sky('nnsky', '#6EC3FF', '#BFE6FF') + cloud(170, 110, .9) + cloud(620, 90, .8) +
+    sun(400, 70, 40, true, 'nnsun') + label(400, 150, 'みなみの そら', 20, '#1E5B8C') + ground(270) +
+    shadowOf(treeParts(true), 130, 300, .75, 0, dy, .4) + tree(130, 300, .75) +
+    shadowOf(treeParts(true), 680, 305, .8, 0, dy, .4) + tree(680, 305, .8) +
+    shadowOf(kidParts(true), kx, fy, s, 0, dy, .7) + kagemaruEyes(kx, fy, s, 0, dy, .8) +
+    kid(kx, fy, s) + label(kx, 440, '↓ きた', 20, '#3A3350') +
+    flowers([[250, 410, '#FF8FB1'], [560, 420, '#B892FF'], [300, 330, '#fff']]);
+}
+function sceneEvening() {
+  const el = 18, k = cot(el), s = .85, kx = 640, fy = 385;
+  return sky('evsky', '#FF9E7A', '#FFE0A3') + cloud(260, 80, .8, .7) + cloud(430, 120, .6, .6) +
+    sun(725, 255, 36, true, 'evsun') + ground(305, '#8CC56E', '#6DAA54') +
+    label(24, 40, '← ひがし', 24, '#3A3350', 'start') + label(776, 40, 'にし →', 24, '#8A2B00', 'end') +
+    shadowOf(treeParts(true), 260, 322, .75, -k, .1, .45) + tree(260, 322, .75) +
+    shadowOf(kidParts(true), kx, fy, s, -k, .1, .68) + kagemaruEyes(kx, fy, s, -k, .1) + kid(kx, fy, s, 'wave');
+}
+function sceneSeason() {
+  const panel = (ox, el, title, skyc, note) => {
+    const s = 100 / KID_H, kx = ox + 200, fy = 380, h = 100, L = h * cot(el), R = 180;
+    const sx = kx - Math.cos(el * rad) * R, sy = fy - Math.sin(el * rad) * R;
+    const tipx = kx + L;
+    return `<rect x="${ox + 8}" y="8" width="384" height="434" rx="22" fill="${skyc}"/>` +
+      `<rect x="${ox + 8}" y="${fy}" width="384" height="${442 - fy}" fill="${C.grass}"/>` +
+      `<rect x="${ox + 8}" y="8" width="384" height="434" rx="22" fill="none" stroke="#fff" stroke-width="6"/>` +
+      label(ox + 200, 50, title, 30) +
+      `<line x1="${sx}" y1="${sy}" x2="${tipx}" y2="${fy}" stroke="#FFB300" stroke-width="3" stroke-dasharray="8 7"/>` +
+      `<rect x="${kx}" y="${fy - 5}" width="${L}" height="10" rx="5" fill="${C.shadow}" opacity=".8"/>` +
+      kid(kx, fy, s) + sun(sx, sy, 22, false, 'ss' + ox) +
+      tag(ox + 200, 96, `たいようの たかさ ${el}ど`, '#FFF3C4', '#C75B00', 18) +
+      label(ox + 200, 425, note, 19, '#3A3350');
+  };
+  return `<rect width="800" height="450" fill="#FFF8EC"/>` +
+    panel(0, 78, 'なつの おひる', '#8FD3FF', 'かげ ＝ せの 0.2ばい') +
+    panel(400, 31, 'ふゆの おひる', '#CFE3F5', 'かげ ＝ せの 1.7ばい') +
+    label(40, 372, 'みなみ', 16, '#3A3350', 'start', 700) + label(385, 372, 'きた', 16, '#3A3350', 'end', 700) +
+    label(440, 372, 'みなみ', 16, '#3A3350', 'start', 700) + label(785, 372, 'きた', 16, '#3A3350', 'end', 700);
+}
+function sceneDial() {
+  const cx = 400, cy = 310, stick = 105;
+  let s = `<rect width="800" height="450" fill="#F3EAD7"/>`;
+  s += `<rect x="150" y="30" width="500" height="400" rx="20" fill="#FFFDF7" stroke="#D8C9A8" stroke-width="4"/>`;
+  s += label(400, 24 + 30, 'きた ↑', 22, '#3A3350') + label(400, 424, 'みなみ', 20) + label(172, 330, 'にし', 22, '#3A3350', 'start') + label(628, 330, 'ひがし', 22, '#3A3350', 'end');
+  const pts = [];
+  for (let hr = 8; hr <= 16; hr++) {
+    const p = sunPos(hr, 0);
+    const L = stick * cot(p.el);
+    // shadow: north comp = cos A, east comp = sin A. Screen (north up, east right): dx = sinA*L, dy = -cosA*L
+    const tx = cx + Math.sin(p.A) * L, ty = cy - Math.cos(p.A) * L;
+    pts.push([tx, ty, hr]);
+  }
+  pts.forEach(([tx, ty, hr]) => {
+    const now = hr === 10;
+    s += `<line x1="${cx}" y1="${cy}" x2="${tx}" y2="${ty}" stroke="${C.shadow}" stroke-width="${now ? 10 : 3}" stroke-linecap="round" opacity="${now ? .8 : .25}"/>`;
+  });
+  s += `<polyline points="${pts.map(p => p[0] + ',' + p[1]).join(' ')}" fill="none" stroke="#FF6B4A" stroke-width="2" stroke-dasharray="5 6"/>`;
+  pts.forEach(([tx, ty, hr]) => {
+    s += `<circle cx="${tx}" cy="${ty}" r="7" fill="#FF6B4A" stroke="#fff" stroke-width="2"/>` + label(tx, ty - 14 - (hr % 2) * 18, `${hr}じ`, hr === 10 ? 22 : 17, hr === 10 ? '#C75B00' : '#3A3350');
+  });
+  s += `<circle cx="${cx}" cy="${cy}" r="10" fill="#9B6A43" stroke="#6B4424" stroke-width="3"/>` + label(cx, cy + 36, 'ぼう', 18);
+  const e = pts.find(p => p[2] === 10);
+  s += kagemaruEyes(e[0] + (cx - e[0]) * .25, e[1] + (cy - e[1]) * .25 - 22, 0, 0, 0, .7);
+  s += sun(725, 330, 26, false, 'dlsun') + label(790, 395, 'たいようは', 15, '#3A3350', 'end') + label(790, 415, 'みなみ がわ', 15, '#3A3350', 'end');
+  s += tag(76, 110, 'うえから みた ず', '#3B3A55', '#fff', 14);
+  return s;
+}
+function sceneExp() {
+  let s = `<rect width="800" height="450" fill="#E9F6FF"/>` + `<rect y="330" width="800" height="120" fill="${C.grass}"/>`;
+  // board in perspective
+  s += `<polygon points="210,330 590,330 660,420 140,420" fill="#FFF7E3" stroke="#D8C9A8" stroke-width="4"/>`;
+  // dots
+  const dots = [[240, 360, '8'], [300, 340, '9'], [360, 334, '10'], [440, 334, '12'], [520, 340, '14'], [570, 358, '16']];
+  s += `<path d="M240 360 Q400 322 570 358" stroke="#FF6B4A" stroke-width="2" fill="none" stroke-dasharray="5 6"/>`;
+  dots.forEach(([x, y, t]) => { s += `<circle cx="${x}" cy="${y}" r="5" fill="#FF6B4A"/>` + label(x, y - 8, t, 14); });
+  // stick + clay + current shadow (10時)
+  s += `<line x1="400" y1="392" x2="362" y2="336" stroke="${C.shadow}" stroke-width="8" stroke-linecap="round" opacity=".55"/>`;
+  s += `<ellipse cx="400" cy="394" rx="26" ry="10" fill="#FF9AC2"/><rect x="394" y="240" width="12" height="154" rx="3" fill="#E7C08A" stroke="#B98B4E" stroke-width="2"/>`;
+  s += sun(690, 90, 34, true, 'exsun');
+  s += tag(150, 70, 'ざいりょう', '#3B3A55', '#fff', 18);
+  // material icons
+  s += `<g transform="translate(70 120)"><rect width="110" height="70" rx="6" fill="#FFF7E3" stroke="#D8C9A8" stroke-width="3"/></g>` + label(125, 212, 'あつがみ', 15, '#3A3350', 'middle', 700);
+  s += `<g transform="translate(200 110)"><rect x="0" y="0" width="10" height="84" rx="3" fill="#E7C08A" stroke="#B98B4E" stroke-width="2"/><rect x="14" y="0" width="10" height="84" rx="3" fill="#E7C08A" stroke="#B98B4E" stroke-width="2"/></g>` + label(212, 212, 'わりばし', 15, '#3A3350', 'middle', 700);
+  s += `<ellipse cx="290" cy="170" rx="30" ry="18" fill="#FF9AC2"/>` + label(290, 212, 'ねんど', 15, '#3A3350', 'middle', 700);
+  s += `<g transform="translate(345 120) rotate(30)"><rect width="12" height="70" rx="3" fill="#4A7BD1"/><polygon points="0,70 12,70 6,84" fill="#3A3350"/></g>` + label(360, 212, 'ペン', 15, '#3A3350', 'middle', 700);
+  s += tag(560, 300, '● ＝ その じかんの かげの さき', '#fff', '#C75B00', 15);
+  s += shadowOf(kidParts(true), 720, 440, .55, -.5, .1, .4) + kid(720, 440, .55);
+  return s;
+}
+function sceneEnd() {
+  const el = 8, k = Math.min(cot(el), 4.2), s = .8, kx = 600, fy = 390;
+  let stars = '';
+  [[80, 50], [180, 90], [300, 40], [420, 80], [520, 30], [260, 130]].forEach(([x, y], i) => {
+    stars += `<path d="M${x} ${y - 7} L${x + 2} ${y - 2} L${x + 7} ${y} L${x + 2} ${y + 2} L${x} ${y + 7} L${x - 2} ${y + 2} L${x - 7} ${y} L${x - 2} ${y - 2} Z" fill="#FFF6C8" opacity="${.5 + (i % 3) * .2}"/>`;
+  });
+  return sky('ensky', '#5B4B8A', '#FFAE7A') + stars +
+    `<circle cx="250" cy="215" r="22" fill="#FFF1C8" opacity=".9"/>` +
+    `<circle cx="760" cy="300" r="46" fill="#FF7A45" opacity=".9"/>` + ground(310, '#6FA65A', '#57904A') +
+    `<g transform="translate(90 300)"><rect x="0" y="-60" width="90" height="60" fill="#FFE2B8"/><polygon points="-10,-60 45,-105 100,-60" fill="#D9573F"/><rect x="34" y="-34" width="22" height="34" fill="#8A5B37"/><rect x="10" y="-48" width="16" height="16" fill="#FFD66B"/><rect x="64" y="-48" width="16" height="16" fill="#FFD66B"/></g>` +
+    shadowOf(kidParts(true, 'wave'), kx, fy, s, -k, .08, .6) + kagemaruEyes(kx, fy, s, -k, .08, 1.1) +
+    kid(kx, fy, s, 'wave') + label(kx - KID_H * s * k * .55, fy - 40, 'また あした〜！', 22, '#3B3A55');
+}
+
+/* ---------- interactive 1: sun & shadow ---------- */
+const sim = { hour: 9, decl: 0 };
+function mix(a, b, t) {
+  const pa = a.match(/\w\w/g).map(h => parseInt(h, 16)), pb = b.match(/\w\w/g).map(h => parseInt(h, 16));
+  return '#' + pa.map((v, i) => Math.round(v + (pb[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}
+function renderSim() {
+  const svg = $('sc-sim');
+  const { hour, decl } = sim;
+  const p = sunPos(hour, decl);
+  const gx = 400, gy = 350, ks = .85, horizon = 250;
+  const sunXY = (q) => [gx + 360 * Math.cos(q.el * rad) * Math.sin(q.A), horizon - 205 * Math.sin(q.el * rad) - 25 * Math.cos(q.el * rad) * Math.cos(q.A)];
+  const t = Math.max(0, Math.min(1, p.el / 45));
+  const night = p.el <= 0;
+  const top = night ? '#1D2550' : mix('FFB08A', '6EC3FF', t), bot = night ? '#3A3F7A' : mix('FFE3B0', 'CFEBFF', t);
+  let s = sky('simsky', top, bot);
+  // sun path of the day
+  const path = [];
+  for (let h = 4; h <= 20; h += .25) { const q = sunPos(h, decl); if (q.el > -1) path.push(sunXY(q)); }
+  s += `<polyline points="${path.map(v => v.join(',')).join(' ')}" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="4 8" opacity=".8"/>`;
+  s += `<rect y="${horizon}" width="800" height="${450 - horizon}" fill="${night ? '#35506A' : C.grass}"/>`;
+  s += `<ellipse cx="${gx}" cy="${gy}" rx="370" ry="92" fill="${night ? '#3F6078' : '#A9DB8C'}" stroke="#fff" stroke-width="3" stroke-dasharray="3 7"/>`;
+  s += label(230, horizon + 26, '↑ みなみ', 18, '#3A3350') + label(gx, 444, 'きた', 18, '#3A3350') + label(46, gy + 6, 'ひがし', 18, '#3A3350') + label(754, gy + 6, 'にし', 18, '#3A3350');
+  if (!night) {
+    const k = Math.min(cot(p.el), 3.2);
+    // shadow: north comp = cosA, east comp = sinA; screen: east = left(-x), north = down(+y)*0.35
+    const sdx = -Math.sin(p.A) * k, sdy = Math.cos(p.A) * k * 0.35;
+    s += shadowOf(kidParts(true), gx, gy, ks, sdx, sdy, .66) + kagemaruEyes(gx, gy, ks, sdx, sdy, .9);
+    const [sx, sy] = sunXY(p);
+    s += sun(sx, sy, 28, true, 'simsun');
+    if (cot(p.el) > 3.2) s += tag(gx, 190, 'かげが とても ながい！', '#3B3A55', '#fff', 18);
+  } else {
+    s += [[120, 60], [260, 40], [560, 50], [690, 90], [740, 30]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.5" fill="#FFF6C8"/>`).join('');
+    s += tag(gx, 150, 'たいようが しずんで かげは できないよ', '#fff', '#1D2550', 18);
+  }
+  s += kid(gx, gy, ks);
+  svg.innerHTML = s;
+  const hh = Math.floor(hour), mm = Math.round((hour - hh) * 60);
+  $('r-time').textContent = `${hh}じ${mm ? mm + 'ふん' : ''}`;
+  $('r-el').textContent = night ? '0' : Math.round(p.el);
+  $('r-len').textContent = night ? '―' : (cot(p.el) > 20 ? '20いじょう' : cot(p.el).toFixed(1));
+}
+
+/* ---------- interactive 2: flashlight ---------- */
+const FOX = 'M-30 12 L-24 -6 L-20 -26 L-11 -10 L-4 -27 L2 -8 Q18 -4 30 2 Q35 6 29 10 L2 12 L-6 26 L-22 26 Z';
+function renderLamp(hx) {
+  const lx = 70, ly = 205, wall = 430, handH = 52;
+  const S = handH * (wall - lx) / (hx - lx);
+  const k = S / handH;
+  let s = `<rect width="800" height="450" fill="#1F2346"/>`;
+  s += `<rect x="0" y="360" width="450" height="90" fill="#2C3160"/>`;
+  // light cone
+  s += `<polygon points="${lx},${ly} ${wall},${ly - 170} ${wall},${ly + 170}" fill="#FFF3B0" opacity=".16"/>`;
+  // rays through hand edges
+  const top = ly - handH / 2, bot = ly + handH / 2;
+  const wy1 = ly + (top - ly) * (wall - lx) / (hx - lx), wy2 = ly + (bot - ly) * (wall - lx) / (hx - lx);
+  s += `<line x1="${lx}" y1="${ly}" x2="${wall}" y2="${wy1}" stroke="#FFE066" stroke-width="3" stroke-dasharray="7 6"/>`;
+  s += `<line x1="${lx}" y1="${ly}" x2="${wall}" y2="${wy2}" stroke="#FFE066" stroke-width="3" stroke-dasharray="7 6"/>`;
+  s += `<polygon points="${hx},${top} ${wall},${wy1} ${wall},${wy2} ${hx},${bot}" fill="#000" opacity=".35"/>`;
+  // wall (side)
+  s += `<rect x="${wall}" y="20" width="14" height="400" fill="#C9C3E6"/>`;
+  s += `<line x1="${wall + 7}" y1="${Math.max(20, wy1)}" x2="${wall + 7}" y2="${Math.min(420, wy2)}" stroke="#2A2940" stroke-width="12"/>`;
+  // flashlight
+  s += `<g transform="translate(${lx} ${ly})"><rect x="-58" y="-13" width="50" height="26" rx="6" fill="#4A7BD1"/><polygon points="-10,-20 6,-24 6,24 -10,20" fill="#6E98E4"/><circle cx="6" r="8" fill="#FFF6C8"/></g>`;
+  // hand (side view, fox)
+  s += `<rect x="${hx - 8}" y="${bot}" width="16" height="${420 - bot}" rx="8" fill="${C.skin}"/>`;
+  s += `<path d="${FOX}" transform="translate(${hx} ${ly})" fill="${C.skin}" stroke="#E0A77F" stroke-width="2"/>`;
+  s += tag(lx, ly + 62, 'ひかり', '#FFE066', '#1F2346', 16) + tag(hx, 438, 'て', '#FFD9B8', '#1F2346', 16);
+  // wall front view
+  const fx = 470, fw = 310, cy = 215;
+  s += `<rect x="${fx}" y="30" width="${fw}" height="380" rx="16" fill="#C9C3E6"/>`;
+  s += `<circle cx="${fx + fw / 2}" cy="${cy}" r="170" fill="#FFF6C8" opacity=".55"/>`;
+  s += `<defs><clipPath id="wallclip"><rect x="${fx}" y="30" width="${fw}" height="380" rx="16"/></clipPath></defs>`;
+  s += `<g clip-path="url(#wallclip)"><path d="${FOX}" transform="translate(${fx + fw / 2} ${cy}) scale(${k})" fill="#2A2940"/><circle cx="${fx + fw / 2 + 4 * k}" cy="${cy - 3 * k}" r="${2.6 * k}" fill="#FFF6C8" opacity=".85"/></g>`;
+  s += tag(fx + fw / 2, 438, 'かべを まえから みると', '#C9C3E6', '#1F2346', 16);
+  $('sc-lamp').innerHTML = s;
+  $('r-scale').textContent = k.toFixed(1);
+}
+
+/* ---------- mount ---------- */
+const scenes = { 'sc-cover': sceneCover, 'sc-meet': sceneMeet, 'sc-rays': sceneRays, 'sc-opposite': sceneOpposite,
+  'sc-morning': sceneMorning, 'sc-noon': sceneNoon, 'sc-evening': sceneEvening, 'sc-season': sceneSeason,
+  'sc-dial': sceneDial, 'sc-exp': sceneExp, 'sc-end': sceneEnd };
+Object.entries(scenes).forEach(([id, fn]) => { $(id).innerHTML = fn(); });
+
+const hourEl = $('hour');
+hourEl.addEventListener('input', () => { sim.hour = +hourEl.value; renderSim(); });
+document.querySelectorAll('#season button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#season button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  sim.decl = +b.dataset.d; renderSim();
+}));
+renderSim();
+const handEl = $('hand');
+handEl.addEventListener('input', () => renderLamp(+handEl.value));
+renderLamp(+handEl.value);
+
+/* ---------- page navigation ---------- */
+const pages = [...document.querySelectorAll('.page')];
+let cur = 0;
+function show(i) {
+  cur = Math.max(0, Math.min(pages.length - 1, i));
+  pages.forEach((p, j) => p.classList.toggle('active', j === cur));
+  $('counter').textContent = `${cur + 1} / ${pages.length}`;
+  $('prev').disabled = cur === 0; $('next').disabled = cur === pages.length - 1;
+  if (!document.body.classList.contains('all')) { history.replaceState(null, '', '#p' + cur); window.scrollTo(0, 0); }
+}
+$('prev').addEventListener('click', () => show(cur - 1));
+$('next').addEventListener('click', () => show(cur + 1));
+$('mode').addEventListener('click', () => {
+  const all = document.body.classList.toggle('all');
+  $('mode').textContent = all ? '1ページずつ よむ' : 'ぜんぶ ならべる';
+  if (!all) show(cur);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown') show(cur + 1);
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') show(cur - 1);
+});
+let tx0 = null;
+document.addEventListener('touchstart', (e) => { tx0 = e.target.tagName === 'INPUT' ? null : e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', (e) => {
+  if (tx0 === null || document.body.classList.contains('all')) return;
+  const d = e.changedTouches[0].clientX - tx0;
+  if (Math.abs(d) > 60) show(cur + (d < 0 ? 1 : -1));
+  tx0 = null;
+});
+const m = location.hash.match(/^#p(\d+)$/);
+if (location.hash === '#all') { document.body.classList.add('all'); $('mode').textContent = '1ページずつ よむ'; }
+show(m ? +m[1] : 0);
+})();
+</script>
+</body>
+</html>

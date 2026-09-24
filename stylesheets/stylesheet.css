@@ -706,15 +706,57 @@ a:hover {
 }
 
 .full-ai-notice {
-  margin: 0 0 24px;
-  padding: 14px 16px;
-  color: #1f2937;
-  background: #fff7e6;
-  border: 1px solid #f2d394;
-  border-left: 4px solid #c88719;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  margin: 0 0 28px;
+  padding: 16px 20px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 28px rgba(15, 23, 42, 0.05);
   font-size: 14px;
-  font-weight: 700;
   line-height: 1.7;
+}
+
+.full-ai-notice__badge {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  color: #0f172a;
+  background: linear-gradient(135deg, #f8d34f 0%, #72e0c1 100%);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.full-ai-notice__body p {
+  margin: 0;
+}
+
+.full-ai-notice__title {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.full-ai-notice__model {
+  margin-top: 6px !important;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.full-ai-notice__model code {
+  margin-left: 4px;
+  padding: 2px 8px;
+  color: #174a7c;
+  background: #eef4fb;
+  border: 1px solid #d6e4f3;
+  border-radius: 999px;
+  font-size: 12px;
 }
 
 .read-more {
@@ -1582,4 +1624,108 @@ body.media-lightbox-open {
   .post-header h1 {
     font-size: 30px;
   }
+}
+
+/*******************************************************************************
+Callout (site-wide notice box)
+  <aside class="callout callout--caution">
+    <span class="callout__icon" aria-hidden="true">!</span>
+    <div class="callout__body"><p class="callout__title">…</p> …</div>
+  </aside>
+*******************************************************************************/
+
+.post-body .callout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  margin: 28px 0;
+  padding: 18px 22px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 28px rgba(15, 23, 42, 0.05);
+  line-height: 1.8;
+}
+
+.post-body .callout__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: #ffffff;
+  background: #174a7c;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.post-body .callout__body > :last-child {
+  margin-bottom: 0;
+}
+
+.post-body .callout__title {
+  margin: 3px 0 8px;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.post-body .callout__body ul {
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.post-body .callout__body ul li {
+  margin: 0 0 4px 1.2em;
+}
+
+.post-body .callout--caution .callout__icon {
+  background: #d97706;
+}
+
+.post-body .callout--caution {
+  border-color: #f1e2c6;
+}
+
+.post-body .callout--info .callout__icon {
+  background: #174a7c;
+}
+
+@media screen and (max-width: 480px) {
+  .post-body .callout,
+  .full-ai-notice {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px;
+  }
+}
+
+/*******************************************************************************
+Page width (shared by header / main / footer so their left edges always align)
+  A post that needs a wider page overrides the variables, e.g.
+  body:has(.v3d-wide) { --page-max-width: 1320px; --page-gutter: 40px; }
+*******************************************************************************/
+
+:root {
+  --page-max-width: 1160px;
+  --page-gutter: 26px;
+}
+
+.site-header > .inner,
+.site-main > .inner,
+.site-footer > .inner {
+  max-width: var(--page-max-width);
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
+}
+
+@media screen and (max-width: 860px) {
+  :root { --page-gutter: 20px; }
+}
+
+@media screen and (max-width: 480px) {
+  :root { --page-gutter: 18px; }
 }

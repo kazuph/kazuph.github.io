@@ -1,0 +1,43 @@
+#!/bin/bash
+# ISUCON14 on Apple container — operation helper for one competitor.
+#   ./isu up        : start a fresh server container (drops any previous one; DB is re-initialized)
+#   ./isu restart X : X = app|mysql|nginx|matcher|all (app = go build + restart)
+#   ./isu sh [cmd]  : run a shell / command inside the server container (as root)
+#   ./isu bench     : run the official benchmarker (60s). Max 10 runs; results -> bench-results/
+#   ./isu status    : container status and number of bench runs used
+#
+# Place this script in the competitor directory (next to webapp/).
+# ISUCON_ENV points to the isucon-env directory prepared by setup.sh
+# (default: ../../isucon-env relative to this script, as laid out in this repository).
+set -euo pipefail
+HERE="$(cd "$(dirname "$0")" && pwd)"
+NAME="isu-$(basename "$(dirname "$HERE")")-$(basename "$HERE")"
+ISUCON_ENV="${ISUCON_ENV:-$HERE/../../isucon-env}"
+BENCH="$ISUCON_ENV/bench-bin"
+BENCH_SRC="$ISUCON_ENV/isucon14/bench"
+MAX_RUNS=10
+cmd=${1:-status}; shift || true
+ip() { container inspect "$NAME" | jq -r '.[0].status.networks[0].ipv4Address' | cut -d/ -f1; }
+case "$cmd" in
+  up)
+    container rm -f "$NAME" >/dev/null 2>&1 || true
+    container run -d --name "$NAME" --cpus 2 --memory 4g \
+      -v "$HERE/webapp:/home/isucon/webapp" isucon14-server:latest >/dev/null
+    for i in $(seq 1 600); do container exec "$NAME" test -f /var/log/isu/ready 2>/dev/null && break; sleep 1; done
+    echo "server up: http://$(ip)/" ;;
+  restart) container exec "$NAME" isu-restart "${1:-all}" ;;
+  sh) if [ $# -gt 0 ]; then container exec "$NAME" bash -lc "$*"; else container exec -it "$NAME" bash; fi ;;
+  bench)
+    mkdir -p "$HERE/bench-results"
+    n=$(find "$HERE/bench-results" -name 'run-*.log' | wc -l | tr -d ' ')
+    if [ "$n" -ge "$MAX_RUNS" ]; then echo "ベンチ実行は上限${MAX_RUNS}回に達しています" >&2; exit 3; fi
+    n=$((n+1)); log="$HERE/bench-results/run-$(printf %02d $n).log"
+    target="http://$(ip)"; gw="$(ip | awk -F. '{print $1"."$2"."$3".1"}')"
+    echo "bench run $n/$MAX_RUNS target=$target started=$(date '+%F %T')" | tee "$log"
+    (cd "$BENCH_SRC" && "$BENCH" run --target "$target" --payment-url "http://$gw:12345" -t 60) 2>&1 | tee -a "$log" | grep -v "level=DEBUG" | tail -25
+    echo "finished=$(date '+%F %T') log=$log" | tee -a "$log" ;;
+  status)
+    container ls -a | grep -E "NAME|$NAME" || true
+    echo "bench runs used: $(find "$HERE/bench-results" -name 'run-*.log' 2>/dev/null | wc -l | tr -d ' ')/$MAX_RUNS" ;;
+  *) sed -n 2,11p "$0"; exit 2 ;;
+esac

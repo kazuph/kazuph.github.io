@@ -1,0 +1,117 @@
+{
+  "desktop": {
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "stats": {
+      "keeps": [
+        {
+          "name": "大天守",
+          "tiers": 5
+        },
+        {
+          "name": "西小天守",
+          "tiers": 3
+        },
+        {
+          "name": "乾小天守",
+          "tiers": 3
+        },
+        {
+          "name": "東小天守",
+          "tiers": 3
+        }
+      ],
+      "drawCalls": 577,
+      "triangles": 701808,
+      "meshes": 111,
+      "position": [
+        -53.99999999999999,
+        40,
+        67
+      ],
+      "target": [
+        0,
+        9,
+        0
+      ]
+    },
+    "bounds": {
+      "xmin": -0.6826278101565861,
+      "xmax": 0.6836393434996422,
+      "ymin": -0.9335887156735031,
+      "ymax": 0.7326358848334183,
+      "count": 215336
+    },
+    "orbit": true,
+    "zoom": true,
+    "labels": true,
+    "above": true,
+    "autorotate": true,
+    "reset": true
+  },
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "layout": {
+      "width": 390,
+      "scroll": 390,
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844,
+        "top": 0,
+        "right": 390,
+        "bottom": 844,
+        "left": 0
+      },
+      "buttons": [
+        {
+          "x": 75.765625,
+          "y": 761,
+          "width": 66.40625,
+          "height": 35,
+          "top": 761,
+          "right": 142.171875,
+          "bottom": 796,
+          "left": 75.765625
+        },
+        {
+          "x": 148.171875,
+          "y": 761,
+          "width": 87.609375,
+          "height": 35,
+          "top": 761,
+          "right": 235.78125,
+          "bottom": 796,
+          "left": 148.171875
+        },
+        {
+          "x": 241.78125,
+          "y": 761,
+          "width": 66.40625,
+          "height": 35,
+          "top": 761,
+          "right": 308.1875,
+          "bottom": 796,
+          "left": 241.78125
+        },
+        {
+          "x": 314.1875,
+          "y": 761,
+          "width": 55.8125,
+          "height": 35,
+          "top": 761,
+          "right": 370,
+          "bottom": 796,
+          "left": 314.1875
+        }
+      ]
+    }
+  }
+}

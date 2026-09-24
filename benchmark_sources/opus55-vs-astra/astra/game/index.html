@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#171917">
+  <meta name="description" content="その文字、読んだら負け。色とコトバが入れ替わる30秒の脳内バグゲーム。">
+  <title>読んだら負け。 — 30秒の脳内バグ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="masthead"><a href="./index.html" class="brand" aria-label="読んだら負け。ホーム">YOMU / MAKE<span>脳内バグ研究所</span></a><span class="edition" id="edition"></span></header>
+    <main>
+      <section id="home" class="home">
+        <div class="intro">
+          <p class="eyebrow"><span class="tag">30 SEC</span> 頭ではわかる。指が裏切る。</p>
+          <h1>読んだら<br><span>負け。</span></h1>
+          <p class="lede">文字の<strong>「色」</strong>を答えるだけ。<br>……のはずが、途中でルールが反転。</p>
+          <button class="primary start" id="start">30秒、挑戦する <span aria-hidden="true">↗</span></button>
+          <div class="start-meta"><span>登録なし・音なし</span><span id="home-best">自己ベスト —</span></div>
+        </div>
+        <div class="demo-column">
+          <div class="sample-label"><span>まずは、指ならし。</span><span>TRY IT ↓</span></div>
+          <div class="demo-card">
+            <div class="question-caption">この文字の <strong>色</strong> は？</div>
+            <div class="demo-word">アオ</div>
+            <div class="demo-note">読まずに、見て。</div>
+          </div>
+          <div class="answers demo-answers" aria-label="練習の回答">
+            <button data-demo="0">アカ</button><button data-demo="1">アオ</button><button data-demo="2">ミドリ</button><button data-demo="3">ムラサキ</button>
+          </div>
+          <p id="demo-feedback" class="demo-feedback" aria-live="polite">どれか押してみて。練習は何度でも。</p>
+        </div>
+        <div class="howto"><div><span class="step">01</span><p><strong>色を答える</strong><br>意味につられたら、−3秒。</p></div><div><span class="step">02</span><p><strong>5正解でルール反転</strong><br>「読む」と「見る」を切り替えろ。</p></div><div><span class="step">03</span><p><strong>今日の問題はみんな同じ</strong><br>あなたの正解数、超えられる？</p></div></div>
+      </section>
+      <section id="play" class="play" hidden aria-label="ゲーム">
+        <div class="game-top"><button class="text-button" id="quit">やめる</button><span id="game-label">TODAY’S CHALLENGE</span><span>BEST <b id="play-best">—</b></span></div>
+        <div class="stats"><div><span class="stat-label">残り時間</span><strong id="timer">30<span>.0</span></strong></div><div class="score-stat"><span class="stat-label">正解数</span><strong id="score">0</strong></div></div>
+        <div class="time-track"><div id="time-fill"></div></div>
+        <div id="rule-banner" class="rule-banner"><span id="rule-prefix">読まないで！</span><strong id="rule">文字の「色」を答える</strong><span id="rule-count">あと5正解で反転</span></div>
+        <div class="question-card" id="question-card"><span id="question-number" class="question-number">QUESTION 01</span><div id="word" class="word">アオ</div><div id="feedback" class="feedback" aria-live="polite"></div><div id="countdown" class="countdown" hidden><span>準備はいい？</span><strong id="count-number">3</strong><span>最初は、文字の「色」を答えて。</span></div></div>
+        <div class="answers game-answers" id="answers" aria-label="色の回答"><button data-answer="0"><kbd>1</kbd>アカ</button><button data-answer="1"><kbd>2</kbd>アオ</button><button data-answer="2"><kbd>3</kbd>ミドリ</button><button data-answer="3"><kbd>4</kbd>ムラサキ</button></div>
+        <div class="game-bottom"><span id="combo">落ち着いて、まず1問。</span><span>タップ / キー 1–4</span></div>
+      </section>
+      <section id="result" class="result" hidden>
+        <p class="eyebrow">TIME UP / 今日の脳内バグ診断</p>
+        <div class="result-card"><div class="result-heading"><span>読んだら負け。</span><span id="result-date"></span></div><p id="rank" class="rank"></p><div class="result-score"><strong id="final-score">0</strong><span>問正解<span>IN 30 SECONDS</span></span></div><p id="result-comment" class="result-comment"></p><div id="result-grid" class="result-grid" aria-label="直近の回答履歴"></div><div class="result-details"><span>正答率 <b id="accuracy"></b></span><span>最長連続 <b id="max-combo"></b></span><span>反転突破 <b id="switches"></b></span></div><div class="personal-best" id="record"></div></div>
+        <p class="challenge-line">「こんなの簡単」と思った人に、送ってみて。</p>
+        <div class="share-actions"><a class="primary" id="share-x" target="_blank" rel="noopener noreferrer">Xで結果をシェア ↗</a><button class="secondary" id="copy">結果をコピー</button></div>
+        <div id="copy-area" hidden><label for="share-text">コピーできないときは、この文章を選択してください。</label><textarea id="share-text" readonly rows="5"></textarea></div><p id="copy-status" aria-live="polite"></p>
+        <button class="retry" id="retry">もう一度、脳を信じる <span aria-hidden="true">↻</span></button><button class="text-button" id="back">遊び方に戻る</button>
+      </section>
+    </main>
+    <footer><span>脳の自動変換、停止できますか。</span><span>YOMU / MAKE <span class="footer-divider">—</span> DAILY BRAIN GLITCH</span></footer>
+  </div>
+</body>
+</html>

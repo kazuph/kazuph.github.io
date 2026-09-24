@@ -28,10 +28,7 @@ full_ai_model: claude-fable-5
 <p>この記事は題材設計、コード生成、検証、記事化までをAIで進める <strong>Full AI</strong> 方式で書いています。</p>
 
 <style>
-.site-main > .inner:has(.v3d-wide) {
-  max-width: 1800px;
-  padding-inline: 12px;
-}
+body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
 .content-layout:has(.v3d-wide) {
   grid-template-columns: minmax(0, 1fr) 320px;
   gap: 16px;
@@ -43,7 +40,7 @@ full_ai_model: claude-fable-5
   margin: 1.2rem 0 1.6rem;
 }
 @media (max-width: 720px) {
-  .site-main > .inner:has(.v3d-wide) { padding-inline: 4px; }
+  body:has(.v3d-wide) { --page-gutter: 4px; }
   .content-layout:has(.v3d-wide) { grid-template-columns: 1fr; gap: 8px; }
   .v3d-grid { grid-template-columns: 1fr; }
 }

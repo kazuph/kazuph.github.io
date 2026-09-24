@@ -1,0 +1,241 @@
+{
+  "coordinate_system": "元画像のピクセル座標。原点=左上、x右向き・y下向き。width/heightはピクセル。",
+  "images": {
+    "photo": {
+      "file": "input/snap-photo.png",
+      "source": "shared/images/snap-photo.png",
+      "width": 1086,
+      "height": 1448,
+      "objects": [
+        {
+          "no": 1,
+          "id": "face",
+          "label_ja": "女性の顔",
+          "label_en": "Face",
+          "x": 486,
+          "y": 198,
+          "width": 118,
+          "height": 136,
+          "crop": "crops/photo_01_face.png"
+        },
+        {
+          "no": 2,
+          "id": "tote",
+          "label_ja": "肩に掛けたトートバッグ",
+          "label_en": "Tote bag",
+          "x": 294,
+          "y": 362,
+          "width": 166,
+          "height": 480,
+          "crop": "crops/photo_02_tote.png"
+        },
+        {
+          "no": 3,
+          "id": "phone",
+          "label_ja": "手に持ったスマートフォン",
+          "label_en": "Smartphone",
+          "x": 279,
+          "y": 396,
+          "width": 99,
+          "height": 74,
+          "crop": "crops/photo_03_phone.png"
+        },
+        {
+          "no": 4,
+          "id": "coffee",
+          "label_ja": "テイクアウトのコーヒーカップ",
+          "label_en": "Coffee cup",
+          "x": 645,
+          "y": 409,
+          "width": 68,
+          "height": 99,
+          "crop": "crops/photo_04_coffee.png"
+        },
+        {
+          "no": 5,
+          "id": "sneakers",
+          "label_ja": "スニーカー（左右両足）",
+          "label_en": "Sneakers",
+          "x": 443,
+          "y": 1238,
+          "width": 177,
+          "height": 108,
+          "crop": "crops/photo_05_sneakers.png"
+        },
+        {
+          "no": 6,
+          "id": "sign",
+          "label_ja": "背景の日本語の看板（さくら書店）",
+          "label_en": "Japanese sign",
+          "x": 18,
+          "y": 0,
+          "width": 446,
+          "height": 223,
+          "crop": "crops/photo_06_sign.png"
+        },
+        {
+          "no": 7,
+          "id": "vending",
+          "label_ja": "自動販売機",
+          "label_en": "Vending machine",
+          "x": 0,
+          "y": 209,
+          "width": 181,
+          "height": 527,
+          "crop": "crops/photo_07_vending.png"
+        },
+        {
+          "no": 8,
+          "id": "bicycle",
+          "label_ja": "自転車",
+          "label_en": "Bicycle",
+          "x": 756,
+          "y": 486,
+          "width": 330,
+          "height": 596,
+          "crop": "crops/photo_08_bicycle.png"
+        },
+        {
+          "no": 9,
+          "id": "crosswalk",
+          "label_ja": "横断歩道",
+          "label_en": "Crosswalk",
+          "x": 688,
+          "y": 445,
+          "width": 398,
+          "height": 260,
+          "crop": "crops/photo_09_crosswalk.png"
+        },
+        {
+          "no": 10,
+          "id": "signal",
+          "label_ja": "信号機（歩行者用）",
+          "label_en": "Traffic signal",
+          "x": 728,
+          "y": 76,
+          "width": 51,
+          "height": 108,
+          "crop": "crops/photo_10_signal.png"
+        }
+      ]
+    },
+    "illust": {
+      "file": "input/snap-illust.png",
+      "source": "shared/images/snap-illust.png",
+      "width": 1086,
+      "height": 1448,
+      "objects": [
+        {
+          "no": 1,
+          "id": "face",
+          "label_ja": "女性の顔",
+          "label_en": "Face",
+          "x": 482,
+          "y": 192,
+          "width": 126,
+          "height": 139,
+          "crop": "crops/illust_01_face.png"
+        },
+        {
+          "no": 2,
+          "id": "tote",
+          "label_ja": "肩に掛けたトートバッグ",
+          "label_en": "Tote bag",
+          "x": 288,
+          "y": 361,
+          "width": 172,
+          "height": 483,
+          "crop": "crops/illust_02_tote.png"
+        },
+        {
+          "no": 3,
+          "id": "phone",
+          "label_ja": "手に持ったスマートフォン",
+          "label_en": "Smartphone",
+          "x": 279,
+          "y": 393,
+          "width": 100,
+          "height": 77,
+          "crop": "crops/illust_03_phone.png"
+        },
+        {
+          "no": 4,
+          "id": "coffee",
+          "label_ja": "テイクアウトのコーヒーカップ",
+          "label_en": "Coffee cup",
+          "x": 648,
+          "y": 409,
+          "width": 66,
+          "height": 101,
+          "crop": "crops/illust_04_coffee.png"
+        },
+        {
+          "no": 5,
+          "id": "sneakers",
+          "label_ja": "スニーカー（左右両足）",
+          "label_en": "Sneakers",
+          "x": 444,
+          "y": 1256,
+          "width": 177,
+          "height": 101,
+          "crop": "crops/illust_05_sneakers.png"
+        },
+        {
+          "no": 6,
+          "id": "sign",
+          "label_ja": "背景の日本語の看板（さくら書店）",
+          "label_en": "Japanese sign",
+          "x": 18,
+          "y": 0,
+          "width": 446,
+          "height": 223,
+          "crop": "crops/illust_06_sign.png"
+        },
+        {
+          "no": 7,
+          "id": "vending",
+          "label_ja": "自動販売機",
+          "label_en": "Vending machine",
+          "x": 0,
+          "y": 209,
+          "width": 178,
+          "height": 526,
+          "crop": "crops/illust_07_vending.png"
+        },
+        {
+          "no": 8,
+          "id": "bicycle",
+          "label_ja": "自転車",
+          "label_en": "Bicycle",
+          "x": 738,
+          "y": 486,
+          "width": 348,
+          "height": 596,
+          "crop": "crops/illust_08_bicycle.png"
+        },
+        {
+          "no": 9,
+          "id": "crosswalk",
+          "label_ja": "横断歩道",
+          "label_en": "Crosswalk",
+          "x": 686,
+          "y": 447,
+          "width": 400,
+          "height": 245,
+          "crop": "crops/illust_09_crosswalk.png"
+        },
+        {
+          "no": 10,
+          "id": "signal",
+          "label_ja": "信号機（歩行者用）",
+          "label_en": "Traffic signal",
+          "x": 728,
+          "y": 74,
+          "width": 51,
+          "height": 113,
+          "crop": "crops/illust_10_signal.png"
+        }
+      ]
+    }
+  }
+}

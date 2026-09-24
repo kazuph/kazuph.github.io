@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>姫路城 ジオラマ — 白鷺城</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#1b1a18;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;}
+  canvas{display:block}
+  #title{position:fixed;left:24px;top:20px;color:#fbf8f0;text-shadow:0 1px 6px rgba(0,0,0,.55);pointer-events:none}
+  #title h1{margin:0;font-size:34px;letter-spacing:.35em;font-weight:600}
+  #title p{margin:4px 0 0;font-size:13px;letter-spacing:.12em;opacity:.9}
+  #ui{position:fixed;right:18px;top:18px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;font-family:"Hiragino Sans",sans-serif}
+  .row{display:flex;gap:6px;background:rgba(20,18,16,.55);padding:6px;border-radius:10px;backdrop-filter:blur(6px)}
+  button{font:12px "Hiragino Sans",sans-serif;color:#f4efe4;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:7px;padding:6px 10px;cursor:pointer}
+  button.on{background:#c9a86a;color:#1d1a15;border-color:#e8d3a2}
+  #help{position:fixed;left:24px;bottom:18px;color:#efe9dc;font:12px "Hiragino Sans",sans-serif;opacity:.8;text-shadow:0 1px 4px #000;pointer-events:none}
+  #labels{position:fixed;inset:0;pointer-events:none}
+  .lbl{position:absolute;transform:translate(-50%,-100%);color:#fff;font:12px "Hiragino Sans",sans-serif;white-space:nowrap;
+       background:rgba(25,22,18,.72);border:1px solid rgba(233,211,160,.6);padding:2px 8px;border-radius:12px}
+  .lbl::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:14px;background:rgba(233,211,160,.8)}
+  #loading{position:fixed;inset:0;display:grid;place-items:center;color:#eee;font-size:18px;letter-spacing:.3em}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div id="loading">白鷺城 普請中…</div>
+<div id="title"><h1>姫路城</h1><p>白鷺城 ジオラマ ── 連立式天守と平山城の縄張り</p></div>
+<div id="ui">
+  <div class="row" id="timeRow">
+    <button data-t="morning">朝</button><button data-t="noon" class="on">昼</button><button data-t="evening">夕</button><button data-t="night">夜（ライトアップ）</button>
+  </div>
+  <div class="row">
+    <button id="bSeason" class="on">桜</button><button id="bLabels" class="on">名称</button><button id="bRotate">自動回転</button><button id="bFront">正面</button>
+  </div>
+</div>
+<div id="labels"></div>
+<div id="help">左ドラッグ: 回転　／　ホイール: ズーム　／　右ドラッグ: 移動</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const V3 = THREE.Vector3;
+// ---------- deterministic random ----------
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+const rng = mulberry32(20260923);
+const R = (a,b)=>a+(b-a)*rng();
+
+// ---------- renderer / scene ----------
+const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(33, innerWidth/innerHeight, 1, 4000);
+const HOME_POS = new V3(165, 120, 235), HOME_TGT = new V3(-8, 26, -28);
+camera.position.copy(HOME_POS);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.copy(HOME_TGT);
+controls.enableDamping = true; controls.dampingFactor = .07;
+controls.maxPolarAngle = 1.48; controls.minDistance = 35; controls.maxDistance = 1100;
+controls.autoRotateSpeed = 0.6;
+
+// ---------- canvas textures (all procedural) ----------
+function ctex(w,h,draw,rep=[1,1]){
+  const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');draw(g,w,h);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  t.anisotropy=renderer.capabilities.getMaxAnisotropy();t.repeat.set(rep[0],rep[1]);return t;
+}
+function noise(g,w,h,amt,base){ const d=g.getImageData(0,0,w,h); for(let i=0;i<d.data.length;i+=4){const n=(rng()-.5)*amt; d.data[i]+=n; d.data[i+1]+=n; d.data[i+2]+=n;} g.putImageData(d,0,0); }
+
+// 本瓦葺き + 白い目地漆喰（姫路城の屋根の白い筋）: 2m x 2m / 4 columns
+const tileTex = ctex(256,256,(g,w,h)=>{
+  g.fillStyle='#565c63';g.fillRect(0,0,w,h);
+  for(let r=0;r<4;r++){ // 平瓦の重なり
+    const y=r*64; const gr=g.createLinearGradient(0,y,0,y+64); gr.addColorStop(0,'#4a5057');gr.addColorStop(1,'#646a71');
+    g.fillStyle=gr;g.fillRect(0,y,w,64); g.fillStyle='rgba(20,22,26,.55)';g.fillRect(0,y,w,3);
+  }
+  for(let c=0;c<4;c++){ // 丸瓦
+    const x=c*64+32; const gr=g.createLinearGradient(x-12,0,x+12,0);
+    gr.addColorStop(0,'#3a3f45');gr.addColorStop(.45,'#7a8087');gr.addColorStop(1,'#353a40');
+    g.fillStyle='#e9e7df';g.fillRect(x-16,0,32,h); // 目地漆喰
+    g.fillStyle=gr;g.fillRect(x-12,0,24,h);
+    for(let r=0;r<4;r++){g.fillStyle='rgba(15,16,18,.7)';g.fillRect(x-12,r*64+60,24,4);}
+  }
+  noise(g,w,h,14);
+},[0.5,0.5]);
+const plasterTex = ctex(256,256,(g,w,h)=>{g.fillStyle='#f3f1ea';g.fillRect(0,0,w,h);noise(g,w,h,9);},[0.12,0.12]);
+const stoneTex = ctex(512,512,(g,w,h)=>{
+  g.fillStyle='#46423c';g.fillRect(0,0,w,h);
+  let y=0; while(y<h){ const rh=Math.min(h-y, R(38,78)); let x=-R(0,80);
+    while(x<w){ const sw=R(55,140); const l=R(46,66), s=R(6,14), hue=R(30,45);
+      const gr=g.createLinearGradient(x,y,x,y+rh); gr.addColorStop(0,`hsl(${hue},${s}%,${l+6}%)`); gr.addColorStop(1,`hsl(${hue},${s}%,${l-8}%)`);
+      g.fillStyle=gr; g.beginPath(); const j=()=>R(-3,3);
+      g.moveTo(x+2+j(),y+2+j()); g.lineTo(x+sw-2+j(),y+2+j()); g.lineTo(x+sw-2+j(),y+rh-2+j()); g.lineTo(x+2+j(),y+rh-2+j()); g.closePath(); g.fill();
+      if(x<0){ g.save(); g.translate(w,0); g.fill(); g.restore(); }
+      x+=sw; }
+    y+=rh; }
+  noise(g,w,h,22);
+},[1/6,1/6]);
+const winTex = ctex(64,64,(g,w,h)=>{g.fillStyle='#1c1a18';g.fillRect(0,0,w,h);g.fillStyle='#2e2a26';g.fillRect(5,5,54,54);
+  g.fillStyle='#8a8074';for(let i=0;i<6;i++)g.fillRect(9+i*9,5,3,54);});
+const dobeiTex = ctex(512,256,(g,w,h)=>{g.fillStyle='#f1eee6';g.fillRect(0,0,w,h);
+  g.fillStyle='#7c7a74';g.fillRect(0,h-8,w,8);
+  g.fillStyle='#26231f'; const cy=h*0.42; const shapes=['c','t','s','t'];
+  shapes.forEach((s,i)=>{const cx=64+i*128; g.beginPath();
+    if(s==='c'){g.arc(cx,cy,13,0,7);} else if(s==='t'){g.moveTo(cx,cy-14);g.lineTo(cx+14,cy+11);g.lineTo(cx-14,cy+11);g.closePath();} else {g.rect(cx-12,cy-12,24,24);} g.fill();});
+  noise(g,w,h,8);
+},[1/4,1/2.2]);
+const grassTex = ctex(256,256,(g,w,h)=>{g.fillStyle='#e8e8e8';g.fillRect(0,0,w,h);
+  for(let i=0;i<5000;i++){const v=R(170,255);g.fillStyle=`rgb(${v},${v},${v})`;g.fillRect(R(0,w),R(0,h),R(1,3),R(1,4));}},[1/8,1/8]);
+const gravelTex = ctex(256,256,(g,w,h)=>{g.fillStyle='#d9ccb0';g.fillRect(0,0,w,h);
+  for(let i=0;i<6000;i++){const v=R(150,245);g.fillStyle=`rgb(${v},${v*0.95},${v*0.84})`;g.fillRect(R(0,w),R(0,h),R(1,2.5),R(1,2.5));}},[1/6,1/6]);
+const woodTex = ctex(512,256,(g,w,h)=>{g.fillStyle='#4a2f1c';g.fillRect(0,0,w,h);
+  for(let i=0;i<90;i++){const y=R(0,h),a=R(2,8),f=R(.005,.02),p=R(0,6);g.strokeStyle=`rgba(${R(20,40)},${R(10,20)},5,${R(.2,.5)})`;g.lineWidth=R(.5,2.5);g.beginPath();
+    for(let x=0;x<=w;x+=8)g.lineTo(x,y+Math.sin(x*f+p)*a);g.stroke();}
+  noise(g,w,h,10);},[1/40,1/12]);
+const soilTex = ctex(128,512,(g,w,h)=>{
+  const L=[['#4f7a36',8],['#3f2d1f',50],['#5a4230',60],['#7b6246',80],['#8e7b62',30],['#6b5a48',90],['#595049',100],['#3f3a36',94]];
+  let y=h; for(const [c,t] of L){ g.fillStyle=c; g.fillRect(0,y-t,w,t); y-=t; }
+  for(let i=0;i<900;i++){g.fillStyle=`rgba(${R(80,160)},${R(70,130)},${R(50,110)},.5)`;g.beginPath();g.arc(R(0,w),R(0,h-8),R(.6,2.4),0,7);g.fill();}
+},[1/8,1/14]);
+function nameplateTex(){ return ctex(1024,160,(g,w,h)=>{
+  const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#d9bf7c');gr.addColorStop(.5,'#b08d47');gr.addColorStop(1,'#8a6b31');
+  g.fillStyle=gr;g.fillRect(0,0,w,h);g.strokeStyle='#5b451c';g.lineWidth=6;g.strokeRect(10,10,w-20,h-20);
+  g.fillStyle='#3a2a0e';g.textAlign='center';g.font='600 62px "Hiragino Mincho ProN","Yu Mincho",serif';g.fillText('国宝 姫路城　白鷺城',w/2,82);
+  g.font='26px "Hiragino Mincho ProN",serif';g.fillText('HIMEJI CASTLE ─ 連立式天守 ・ 世界文化遺産（1993） ・ 縮尺 約1/1000',w/2,128);
+}); }
+function skyTex(top,mid,bot){ const t=ctex(4,512,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,top);gr.addColorStop(.6,mid);gr.addColorStop(1,bot);g.fillStyle=gr;g.fillRect(0,0,w,h);}); t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping; return t; }
+
+// ---------- materials ----------
+const std = o => new THREE.MeshStandardMaterial(Object.assign({envMapIntensity:.35},o));
+const MAT = {
+  plaster: std({map:plasterTex,color:0xf6f4ee,roughness:.88,side:THREE.DoubleSide}),
+  tile:    std({map:tileTex,roughness:.6,metalness:.12,side:THREE.DoubleSide}),
+  ridge:   std({color:0x4d535a,roughness:.55,metalness:.2}),
+  stone:   std({map:stoneTex,roughness:.95,side:THREE.DoubleSide}),
+  window:  std({map:winTex,roughness:.8,emissive:0xffb35c,emissiveIntensity:0}),
+  wood:    std({color:0x3a281c,roughness:.8}),
+  woodL:   std({color:0x8b6a48,roughness:.75}),
+  ornament:std({color:0xb8995a,metalness:.7,roughness:.35}),
+  shachi:  std({color:0x7f868d,metalness:.55,roughness:.4}),
+  dobei:   std({map:dobeiTex,roughness:.9,side:THREE.DoubleSide}),
+  gravel:  std({map:gravelTex,roughness:1,side:THREE.DoubleSide}),
+  lawn:    std({map:grassTex,color:0x86a85a,roughness:1,side:THREE.DoubleSide}),
+  soil:    std({map:soilTex,roughness:1,side:THREE.DoubleSide}),
+  plinth:  std({map:woodTex,color:0xc9a27a,roughness:.45,metalness:.05,envMapIntensity:.8}),
+  plinthDark: std({color:0x221710,roughness:.5}),
+  pond:    new THREE.MeshPhysicalMaterial({color:0x2f5550,roughness:.08,metalness:0,clearcoat:1,envMapIntensity:1}),
+};
+MAT.plaster.emissive=new THREE.Color(0xdfe8ff); MAT.plaster.emissiveIntensity=0;
+MAT.dobei.emissive=new THREE.Color(0xdfe8ff); MAT.dobei.emissiveIntensity=0;
+
+// ---------- geometry batching ----------
+const batches = {};
+function put(key, geo, ...mats){
+  if(!geo.getAttribute('normal')) geo.computeVertexNormals();
+  let g = geo.index ? geo.toNonIndexed() : geo;
+  for(const m of mats) if(m) g.applyMatrix4(m);
+  const out=new THREE.BufferGeometry();
+  out.setAttribute('position',g.getAttribute('position'));
+  out.setAttribute('normal',g.getAttribute('normal'));
+  out.setAttribute('uv',g.getAttribute('uv')||new THREE.BufferAttribute(new Float32Array(g.getAttribute('position').count*2),2));
+  (batches[key] ||= []).push(out);
+}
+function flush(){
+  for(const k in batches){ const mesh=new THREE.Mesh(mergeGeometries(batches[k]),MAT[k]); mesh.castShadow=k!=='gravel'&&k!=='lawn'; mesh.receiveShadow=true; scene.add(mesh); }
+}
+const M = (x=0,y=0,z=0,ry=0,rx=0,rz=0,s=1)=>new THREE.Matrix4().compose(new V3(x,y,z),new THREE.Quaternion().setFromEuler(new THREE.Euler(rx,ry,rz,'YXZ')),s instanceof V3?s:new V3(s,s,s));
+function mBox(w,h,d){ const g=new THREE.BoxGeometry(w,h,d); const uv=g.attributes.uv; const S=[[d,h],[d,h],[w,d],[w,d],[w,h],[w,h]];
+  for(let f=0;f<6;f++)for(let k=0;k<4;k++){const i=f*4+k;uv.setXY(i,uv.getX(i)*S[f][0],uv.getY(i)*S[f][1]);} return g; }
+function surf(nu,nv,fn){
+  const pos=[],uv=[],idx=[];
+  for(let j=0;j<=nv;j++)for(let i=0;i<=nu;i++){const r=fn(i/nu,j/nv);pos.push(r[0],r[1],r[2]);uv.push(r[3],r[4]);}
+  for(let j=0;j<nv;j++)for(let i=0;i<nu;i++){const a=j*(nu+1)+i,b=a+1,c=a+nu+1,d=c+1;idx.push(a,c,b,b,c,d);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
+  g.setIndex(idx);g.computeVertexNormals();return g;
+}
+function beam(key,a,b,tw,th,F){ const dir=b.clone().sub(a);const len=dir.length();const g=mBox(len,th,tw);
+  const q=new THREE.Quaternion().setFromUnitVectors(new V3(1,0,0),dir.normalize());
+  put(key,g,new THREE.Matrix4().compose(a.clone().add(b).multiplyScalar(.5),q,new V3(1,1,1)),F); }
+
+// ---------- polygon helpers ----------
+function inPoly(x,z,P){let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const[xi,zi]=P[i],[xj,zj]=P[j];if(((zi>z)!=(zj>z))&&(x<(xj-xi)*(z-zi)/(zj-zi)+xi))c=!c;}return c;}
+function segD(x,z,a,b){const dx=b[0]-a[0],dz=b[1]-a[1];let t=((x-a[0])*dx+(z-a[1])*dz)/(dx*dx+dz*dz);t=Math.max(0,Math.min(1,t));return Math.hypot(x-a[0]-dx*t,z-a[1]-dz*t);}
+function sdPoly(x,z,P){let d=1e9;for(let i=0;i<P.length;i++)d=Math.min(d,segD(x,z,P[i],P[(i+1)%P.length]));return inPoly(x,z,P)?-d:d;}
+function outNormals(P){ return P.map((p,i)=>{const q=P[(i+1)%P.length];let dx=q[0]-p[0],dz=q[1]-p[1];const l=Math.hypot(dx,dz);let n=[dz/l,-dx/l];
+  const mx=(p[0]+q[0])/2+n[0]*.01,mz=(p[1]+q[1])/2+n[1]*.01; if(inPoly(mx,mz,P))n=[-n[0],-n[1]]; return n;}); }
+function miters(P,N){ return P.map((p,i)=>{const a=N[(i-1+P.length)%P.length],b=N[i];const s=1+a[0]*b[0]+a[1]*b[1];return[(a[0]+b[0])/s,(a[1]+b[1])/s];}); }
+function insetPoly(P,d){const N=outNormals(P),Mi=miters(P,N);return P.map((p,i)=>[p[0]-Mi[i][0]*d,p[1]-Mi[i][1]*d]);}
+
+// 石垣: 扇の勾配（下は緩く、上ほど垂直に反り上がる）
+function stoneWall(P, top, bottom, batter, inward=false){
+  let N=outNormals(P); if(inward) N=N.map(n=>[-n[0],-n[1]]); const Mi=miters(P,N); const H=top-bottom; let per=0;
+  for(let i=0;i<P.length;i++){ const j=(i+1)%P.length; const a=P[i],b=P[j],ma=Mi[i],mb=Mi[j]; const len=Math.hypot(b[0]-a[0],b[1]-a[1]); const p0=per;
+    put('stone', surf(Math.max(2,Math.ceil(len/5)),10,(u,v)=>{ const off=batter*Math.pow(1-v,2);
+      const ax=a[0]+ma[0]*off, az=a[1]+ma[1]*off, bx=b[0]+mb[0]*off, bz=b[1]+mb[1]*off;
+      return [ax+(bx-ax)*u, bottom+v*H, az+(bz-az)*u, p0+u*len, v*H]; }));
+    // 天端の笠石
+    put('stone', surf(Math.max(2,Math.ceil(len/5)),1,(u,v)=>{const x=a[0]+(b[0]-a[0])*u, z=a[1]+(b[1]-a[1])*u; const k=v*0.5;
+      return [x-(ma[0]*(1-u)+mb[0]*u)*k, top+0.02, z-(ma[1]*(1-u)+mb[1]*u)*k, p0+u*len, v]; }));
+    per+=len; }
+}
+function platformTop(P, y, key){ const s=new THREE.Shape(P.map(p=>new THREE.Vector2(p[0],-p[1]))); const g=new THREE.ShapeGeometry(s); g.rotateX(-Math.PI/2); g.translate(0,y,0); put(key,g); }
+
+// ---------- architecture ----------
+const roofShape = v => 0.42*v + 0.58*v*v; // 反り（下が緩く上が急）
+function kengyo(F){ // 懸魚
+  const g=new THREE.CylinderGeometry(.55,.55,.14,6); g.rotateX(Math.PI/2); put('ornament',g,F);
+  const g2=new THREE.CylinderGeometry(.22,.22,.2,12); g2.rotateX(Math.PI/2); put('plaster',g2,M(0,0,.05),F);
+}
+function shachi(F,s){ // 鯱（姫路城は銅/瓦製の銀灰色）
+  const body=new THREE.SphereGeometry(.5,10,8); put('shachi',body,M(0,.55*s,0,0,0,-.25,new V3(.42*s,1.0*s,.38*s)),F);
+  const head=new THREE.SphereGeometry(.5,10,8); put('shachi',head,M(.18*s,.18*s,0,0,0,0,new V3(.42*s,.34*s,.36*s)),F);
+  const tail=new THREE.ConeGeometry(.35,.7,5); put('shachi',tail,M(-.2*s,1.25*s,0,0,0,.9,new V3(s,s,s*.5)),F);
+  const fin=new THREE.ConeGeometry(.18,.5,4); put('shachi',fin,M(-.05*s,.55*s,.28*s,0,.6,-.4,s),F); put('shachi',fin.clone(),M(-.05*s,.55*s,-.28*s,0,-.6,-.4,s),F);
+}
+// 千鳥破風（入母屋破風も同形で大きく）
+function chidori(F,w,h,dpt){
+  const tri=new THREE.BufferGeometry(); tri.setAttribute('position',new THREE.Float32BufferAttribute([-w/2,0,0, w/2,0,0, 0,h,0],3));
+  tri.setAttribute('uv',new THREE.Float32BufferAttribute([0,0,1,0,.5,1],2)); tri.computeVertexNormals(); put('plaster',tri,F);
+  const e=.9, s=.9, k=h/(w/2), ridgeY=h+.35;
+  for(const sg of [-1,1]){
+    const ex=sg*(w/2+s), ey=ridgeY-k*(w/2+s); const sl=Math.hypot(ex,ridgeY-ey);
+    put('tile', surf(4,6,(u,v)=>{ const z=e-(e+dpt)*u; const x=ex*v, y=ridgeY+(ey-ridgeY)*v - .22*Math.sin(Math.PI*v)*(w/8); return [x,y,z, z, v*sl]; }), F);
+    const pts=[0,.5,1].map(v=>new V3(ex*v, ridgeY+(ey-ridgeY)*v-.22*Math.sin(Math.PI*v)*(w/8)-.25, e+.05));
+    for(let i=0;i<2;i++) beam('plaster',pts[i],pts[i+1],.3,.6,F);
+  }
+  beam('ridge',new V3(0,ridgeY+.12,e+.1),new V3(0,ridgeY+.12,-dpt),.5,.45,F);
+  put('ridge',mBox(.5,.9,.5),M(0,ridgeY+.3,e+.1),F);
+  kengyo(new THREE.Matrix4().multiplyMatrices(F,M(0,h-.6,.12,0,0,0,Math.min(1.3,w/6))));
+  if(w>9){ for(const x of [-w*.14,w*.14]) put('window',new THREE.PlaneGeometry(1,1.1),M(x,h*.32,.05),F); }
+}
+// 唐破風（中央が膨らみ両端が反る曲線）
+function karahafu(F,w,h,dpt){
+  const hw=w/2+.7; const yc=x=>{const s=Math.abs(x)/(w/2); return h*(.5+.5*Math.cos(Math.PI*Math.min(s,1)))+ (s>.8?.5*Math.pow((s-.8)/.2,2)*.35:0);};
+  const e=.6;
+  let arc=[0]; for(let i=1;i<=30;i++){const x0=-hw+2*hw*(i-1)/30,x1=-hw+2*hw*i/30;arc.push(arc[i-1]+Math.hypot(x1-x0,yc(x1)-yc(x0)));}
+  put('tile', surf(30,3,(u,v)=>{const x=-hw+2*hw*u; const z=e-(e+dpt)*v; return [x,yc(x)+.35,z, z, arc[Math.round(u*30)]];}), F);
+  put('plaster', surf(30,1,(u,v)=>{const x=-hw+2*hw*u; return [x,yc(x)+.35-.7*v,e, u*w, v];}), F);
+  put('plaster', surf(24,1,(u,v)=>{const x=-w/2+w*u; return [x,-.6+(yc(x)+.2)*v,0, u*w, v];}), F);
+  kengyo(new THREE.Matrix4().multiplyMatrices(F,M(0,h-.25,e+.1,0,0,0,.8)));
+  put('ornament',mBox(.9,.5,.2),M(0,h+.55,e+.1),F);
+}
+// 寄棟状の裳階屋根（下層）
+function hipRoof(F, ow,od, iw,id, rise, lift, ww,wd, gables=[]){
+  const O=[[-ow/2,-od/2],[ow/2,-od/2],[ow/2,od/2],[-ow/2,od/2]], I=[[-iw/2,-id/2],[iw/2,-id/2],[iw/2,id/2],[-iw/2,id/2]], W=[[-ww/2,-wd/2],[ww/2,-wd/2],[ww/2,wd/2],[-ww/2,wd/2]];
+  for(let k=0;k<4;k++){ const k1=(k+1)%4; const ex=O[k1][0]-O[k][0], ez=O[k1][1]-O[k][1], el=Math.hypot(ex,ez), dx=ex/el, dz=ez/el;
+    const run = (k%2===0)? (od-id)/2 : (ow-iw)/2; const sl=Math.hypot(run,rise);
+    const P=(u,v)=>{const ox=O[k][0]+(O[k1][0]-O[k][0])*u, oz=O[k][1]+(O[k1][1]-O[k][1])*u, ix=I[k][0]+(I[k1][0]-I[k][0])*u, iz=I[k][1]+(I[k1][1]-I[k][1])*u;
+      return [ox+(ix-ox)*v, rise*roofShape(v)+lift*Math.pow(Math.abs(2*u-1),4)*Math.pow(1-v,1.6), oz+(iz-oz)*v];};
+    put('tile', surf(16,7,(u,v)=>{const p=P(u,v);return [p[0],p[1],p[2], p[0]*dx+p[2]*dz, v*sl];}), F);
+    put('plaster', surf(16,1,(u,v)=>{const p=P(u,0);return [p[0],p[1]-.45*v,p[2], u*el, v];}), F);
+    put('plaster', surf(16,1,(u,v)=>{const p=P(u,0); const wx=W[k][0]+(W[k1][0]-W[k][0])*u, wz=W[k][1]+(W[k1][1]-W[k][1])*u;
+      return [p[0]+(wx-p[0])*v, (p[1]-.45)+(-.2-(p[1]-.45))*v, p[2]+(wz-p[2])*v, u*el, v];}), F);
+    const pts=[0,.25,.5,.75,1].map(v=>{const p=P(0,v);return new V3(p[0],p[1]+.2,p[2]);});
+    for(let s=0;s<4;s++) beam('ridge',pts[s],pts[s+1],.3,.3,F);
+    put('ridge',mBox(.42,.5,.42),M(pts[0].x,pts[0].y+.08,pts[0].z),F);
+  }
+  const SIDE={N:{ry:Math.PI,hO:od/2,hI:id/2},S:{ry:0,hO:od/2,hI:id/2},E:{ry:Math.PI/2,hO:ow/2,hI:iw/2},W:{ry:-Math.PI/2,hO:ow/2,hI:iw/2}};
+  for(const g of gables){ const S=SIDE[g.side];
+    if(g.type==='kara'){ const G=new THREE.Matrix4().multiplyMatrices(F,M(0,0,0,S.ry)).multiply(M(g.pos||0,-.15,S.hO+.05));
+      karahafu(G,g.w,g.h,S.hO-S.hI+1.2); }
+    else { const v=g.v??.3; const df=S.hO+(S.hI-S.hO)*v; const G=new THREE.Matrix4().multiplyMatrices(F,M(0,0,0,S.ry)).multiply(M(g.pos||0,rise*roofShape(v)+.02,df));
+      chidori(G,g.w,g.h,df-S.hI+1.4); }
+  }
+}
+// 入母屋屋根（最上層）
+function irimoya(F, ow,od, ww,wd, rise1, rise2, lift, gables=[], shachiOn=true){
+  const run=od*.3, iw=ow-2*run, id=od-2*run; hipRoof(F,ow,od,iw,id,rise1,lift,ww,wd,gables);
+  const yb=rise1, yr=yb+rise2, ext=.9, sl=Math.hypot(id/2+.5,rise2+.3);
+  const gy=v=>yb-.3+(rise2+.3)*roofShape(v);
+  for(const sg of [-1,1]){
+    put('tile', surf(12,7,(u,v)=>{const x=-(iw/2+ext)+u*(iw+2*ext); const z=sg*(id/2+.5)*(1-v); return [x,gy(v),z, x, v*sl];}), F);
+    put('plaster', surf(12,1,(u,v)=>{const x=-(iw/2+ext)+u*(iw+2*ext); const z=sg*(id/2+.5); return [x,gy(0)-.4*v,z,x,v];}), F);
+  }
+  for(const sx of [-1,1]){
+    const x=sx*(iw/2-.3);
+    put('plaster', surf(10,1,(u,v)=>{const z=-(id/2)+u*id; const vv=1-Math.abs(z)/(id/2+.5); const yt=gy(vv)-.15; return [x, yb+(yt-yb)*v, z, z, v];}), F);
+    const pts=[0,.25,.5,.75,1].map(t=>{const z=-(id/2+.5)+t*(id+1); const vv=1-Math.abs(z)/(id/2+.5); return new V3(sx*(iw/2+ext),gy(vv)-.2,z);});
+    for(let i=0;i<4;i++) beam('plaster',pts[i],pts[i+1],.3,.55,F);
+    kengyo(new THREE.Matrix4().multiplyMatrices(F,M(sx*(iw/2+ext+.12),yr-.9,0,sx*Math.PI/2,0,0,Math.min(1.2,id/7))));
+  }
+  const L=iw/2+ext+.3;
+  beam('ridge',new V3(-L,yr+.28,0),new V3(L,yr+.28,0),.8,.7,F);
+  for(const sz of [-.42,.42]) beam('plaster',new V3(-L,yr+.1,sz),new V3(L,yr+.1,sz),.08,.14,F);
+  const s=Math.max(.8,Math.min(2.4,iw*.16));
+  if(shachiOn) for(const sx of [-1,1]) shachi(new THREE.Matrix4().multiplyMatrices(F,M(sx*(L-.2),yr+.6,0,sx>0?Math.PI:0)),s);
+}
+function windows(cx,cz,y0,f,hidden,ry=0){
+  const wy=y0+Math.max(hidden+.9, f.h-1.55);
+  const sides=[[f.w,0,0,f.d/2],[f.w,Math.PI,0,-f.d/2],[f.d,Math.PI/2,f.w/2,0],[f.d,-Math.PI/2,-f.w/2,0]];
+  const Fk=M(cx,0,cz,ry);
+  for(const [len,sry,ox,oz] of sides){ const n=Math.max(1,Math.floor((len-2)/2.7)); const st=len/n;
+    for(let k=0;k<n;k++){ put('window',new THREE.PlaneGeometry(1.0,1.1),M(-len/2+st*(k+.5),0,.06),M(ox,wy,oz,sry),Fk); } }
+}
+function buildKeep(cx,cz,yb,spec){
+  let y=yb; const ry=spec.ry||0; const Fk=M(cx,0,cz,ry);
+  spec.floors.forEach((f,i)=>{
+    put('plaster',mBox(f.w,f.h,f.d),M(0,y+f.h/2,0),Fk);
+    const prev=i>0?spec.roofs[i-1]:null; windows(cx,cz,y,f,prev?(prev.rise||prev.rise1||0)+.3:0,ry);
+    if(i===0 && spec.ishi) for(const sx of [-1,1])for(const sz of [-1,1]){ // 石落とし
+      put('plaster',mBox(2.4,2.2,2.4),M(sx*(f.w/2+.2),y+2.2,sz*(f.d/2+.2)),Fk);
+      put('ridge',mBox(2.9,.25,2.9),M(sx*(f.w/2+.2),y+3.4,sz*(f.d/2+.2)),Fk); }
+    const r=spec.roofs[i]; const top=y+f.h; const F=new THREE.Matrix4().multiplyMatrices(Fk,M(0,top-.25,0));
+    const ow=f.w+2*r.over, od=f.d+2*r.over;
+    if(r.type==='irimoya'){
+      if(r.axis==='z') irimoya(new THREE.Matrix4().multiplyMatrices(F,M(0,0,0,Math.PI/2)),od,ow,f.d,f.w,r.rise1,r.rise2,r.lift||.6,r.gables,r.shachi!==false);
+      else irimoya(F,ow,od,f.w,f.d,r.rise1,r.rise2,r.lift||.6,r.gables,r.shachi!==false);
+    } else { const nf=spec.floors[i+1]; hipRoof(F,ow,od,nf.w,nf.d,r.rise+.25,r.lift||.6,f.w,f.d,r.gables); }
+    y=top;
+  });
+}
+function yagura(x,z,y,w=8,d=7,ry=0){
+  buildKeep(x,z,y,{ry,floors:[{w,d,h:4.4},{w:w-2,d:d-1.6,h:3.6}],
+    roofs:[{over:1.3,rise:1.5,lift:.5,gables:[{side:'S',type:'chidori',w:3.8,h:1.9,v:.3}]},{type:'irimoya',over:1.3,rise1:.9,rise2:2.3,lift:.5}]});
+}
+function dobei(P,y,gaps=[],closed=true){
+  const n=P.length, segs=closed?n:n-1;
+  for(let i=0;i<segs;i++){ const a=P[i],b=P[(i+1)%n]; const len=Math.hypot(b[0]-a[0],b[1]-a[1]); const pcs=Math.ceil(len/6);
+    const dx=(b[0]-a[0])/len, dz=(b[1]-a[1])/len, th=Math.atan2(-dz,dx);
+    for(let p=0;p<pcs;p++){ const L=len/pcs, mx=a[0]+dx*L*(p+.5), mz=a[1]+dz*L*(p+.5);
+      if(gaps.some(g=>Math.hypot(mx-g[0],mz-g[1])<g[2])) continue;
+      const F=M(mx,y,mz,th);
+      put('dobei',mBox(L+.05,2.2,.55),M(0,1.1,0),F);
+      for(const s of [-1,1]) put('tile',mBox(L+.3,.12,.8),M(0,2.35,s*.3,0,s*.42),F);
+      put('ridge',mBox(L+.3,.22,.24),M(0,2.55,0),F);
+    } }
+}
+
+// ---------- 縄張り（地形・曲輪） ----------
+const BW=360, BD=300;               // 盤面
+const MOAT_IN=[148,118], MOAT_OUT=[162,132];
+const P_NINO=[[-60,-96],[80,-96],[84,0],[50,26],[-10,26],[-24,14],[-60,6]];     // 二の丸
+const P_HON =[[-44,-86],[56,-86],[58,-4],[22,6],[-44,6]];                    // 本丸（備前丸）
+const P_TEN =[[-30,-70],[34,-70],[34,-14],[-30,-14]];                         // 天守曲輪
+const P_NISHI=[[-136,-100],[-80,-100],[-80,-24],[-100,-6],[-136,-6]];           // 西の丸
+const TOP={nino:12,hon:24,ten:34,nishi:16};
+const RAMP={x:10,z0:66,z1:26.5,hw:4.5};
+const rampY=z=>{const t=(RAMP.z0-z)/(RAMP.z0-RAMP.z1);return 3.2+(TOP.nino-3.2)*Math.max(0,Math.min(1,t));};
+const PATH=[[-20,113],[-20,88],[10,76],[10,66]];
+function inMoat(x,z,m=0){const ax=Math.abs(x),az=Math.abs(z);const inOut=ax<MOAT_OUT[0]+m&&az<MOAT_OUT[1]+m;const inIn=ax<MOAT_IN[0]-m&&az<MOAT_IN[1]-m;return inOut&&!inIn;}
+function Hraw(x,z){
+  let h=2;
+  const d1=Math.max(0,sdPoly(x,z,P_NINO)), d2=Math.max(0,sdPoly(x,z,P_NISHI));
+  h=Math.max(h, 2+6.5*Math.exp(-Math.pow(d1/30,2)), 2+7*Math.exp(-Math.pow(d2/22,2)));
+  if(h>2.4) h+= (Math.sin(x*.21)*Math.cos(z*.17)+Math.sin(x*.07+z*.11))*.55*Math.min(1,(h-2.4)/2);
+  const dm=Math.min(MOAT_IN[0]-Math.abs(x), MOAT_IN[1]-Math.abs(z));
+  if(dm>0 && dm<16) h=Math.min(h,2+dm*.32);
+  if(Math.abs(x-RAMP.x)<RAMP.hw+3 && z<RAMP.z0+3 && z>RAMP.z1-2) h=Math.min(h,rampY(z)-.4);
+  return h;
+}
+function H(x,z){
+  const ax=Math.abs(x),az=Math.abs(z);
+  if(ax<MOAT_OUT[0]&&az<MOAT_OUT[1]&&!(ax<MOAT_IN[0]&&az<MOAT_IN[1])){
+    const d=Math.min(ax-MOAT_IN[0]<0?1e9:ax-MOAT_IN[0], az-MOAT_IN[1]<0?1e9:az-MOAT_IN[1]);
+    const d2=Math.min(MOAT_OUT[0]-ax, MOAT_OUT[1]-az); const dd=Math.min(d,d2);
+    return dd<2? 2-2.5*dd : -3.2;
+  }
+  return Hraw(x,z);
+}
+function groundAt(x,z){ if(inPoly(x,z,P_TEN))return TOP.ten; if(inPoly(x,z,P_HON))return TOP.hon; if(inPoly(x,z,P_NINO))return TOP.nino; if(inPoly(x,z,P_NISHI))return TOP.nishi; return H(x,z); }
+
+// terrain
+{
+  const nx=240, nz=200; const g=new THREE.PlaneGeometry(BW,BD,nx,nz); g.rotateX(-Math.PI/2);
+  const p=g.attributes.position; const col=new Float32Array(p.count*3);
+  const c=new THREE.Color();
+  for(let i=0;i<p.count;i++){ const x=p.getX(i), z=p.getZ(i); const h=H(x,z); p.setY(i,h);
+    const n=(Math.sin(x*.37)*Math.sin(z*.29)+Math.sin(x*.9+z*.7)*.5)*.04;
+    if(h<-.5) c.setRGB(.24,.22,.17);
+    else if(h>2.5) c.setRGB(.2+n,.31+n,.15);
+    else c.setRGB(.36+n,.5+n*1.5,.23);
+    col[i*3]=c.r;col[i*3+1]=c.g;col[i*3+2]=c.b; }
+  g.setAttribute('color',new THREE.BufferAttribute(col,3));
+  const uv=g.attributes.uv; for(let i=0;i<uv.count;i++) uv.setXY(i,uv.getX(i)*BW/8,uv.getY(i)*BD/8);
+  g.computeVertexNormals();
+  const m=new THREE.Mesh(g,std({map:grassTex,vertexColors:true,roughness:1}));
+  m.receiveShadow=true; scene.add(m);
+  // 断面（土層）
+  const edges=[[[-BW/2,BD/2],[BW/2,BD/2]],[[BW/2,BD/2],[BW/2,-BD/2]],[[BW/2,-BD/2],[-BW/2,-BD/2]],[[-BW/2,-BD/2],[-BW/2,BD/2]]];
+  for(const [a,b] of edges){ const len=Math.hypot(b[0]-a[0],b[1]-a[1]);
+    put('soil', surf(240,1,(u,v)=>{const x=a[0]+(b[0]-a[0])*u, z=a[1]+(b[1]-a[1])*u; const top=H(x,z); const y=-6+(top+6)*v; return [x,y,z,u*len,top-y];})); }
+}
+// water (内堀)
+{
+  const s=new THREE.Shape([[-MOAT_OUT[0],-MOAT_OUT[1]],[MOAT_OUT[0],-MOAT_OUT[1]],[MOAT_OUT[0],MOAT_OUT[1]],[-MOAT_OUT[0],MOAT_OUT[1]]].map(p=>new THREE.Vector2(...p)));
+  s.holes.push(new THREE.Path([[-MOAT_IN[0],-MOAT_IN[1]],[-MOAT_IN[0],MOAT_IN[1]],[MOAT_IN[0],MOAT_IN[1]],[MOAT_IN[0],-MOAT_IN[1]]].map(p=>new THREE.Vector2(...p))));
+  const g=new THREE.ShapeGeometry(s); g.rotateX(-Math.PI/2); g.translate(0,.3,0);
+  const water=new THREE.Mesh(g,new THREE.MeshPhysicalMaterial({color:0x2c4f4a,roughness:.07,metalness:0,clearcoat:1,clearcoatRoughness:.05,transparent:true,opacity:.9,envMapIntensity:1.2}));
+  water.receiveShadow=true; scene.add(water);
+  const rect=(a,b)=>[[-a,-b],[a,-b],[a,b],[-a,b]];
+  stoneWall(rect(...MOAT_IN),2,-3.5,1.4);
+  stoneWall(rect(...MOAT_OUT),2,-3.5,1.4,true);
+}
+// 曲輪の石垣と天端
+stoneWall(P_NINO,TOP.nino,0,3.2);          platformTop(P_NINO,TOP.nino,'lawn');
+stoneWall(P_HON,TOP.hon,TOP.nino-1,3.6);   platformTop(P_HON,TOP.hon,'gravel');
+stoneWall(P_TEN,TOP.ten,TOP.hon-1,3.4);    platformTop(P_TEN,TOP.ten,'gravel');
+stoneWall(P_NISHI,TOP.nishi,0,3.4);        platformTop(P_NISHI,TOP.nishi,'lawn');
+// 登城坂（菱の門へのスロープ）
+{
+  const {x,z0,z1,hw}=RAMP;
+  put('gravel', surf(2,12,(u,v)=>{const z=z0+(z1-z0)*v;return [x-hw+2*hw*u, rampY(z)+.02, z, (x-hw+2*hw*u), z];}));
+  for(const s of [-1,1]) put('stone', surf(12,1,(u,v)=>{const z=z0+(z1-z0)*u;const top=rampY(z);return [x+s*(hw+.6*(1-v)), v*top, z, z, v*top];}));
+  put('stone', surf(1,1,(u,v)=>[x-hw+2*hw*u, v*rampY(z0), z0, u*2*hw, v*3]));
+}
+// 参道
+function ribbon(pts,w){
+  for(let i=0;i<pts.length-1;i++){ const a=pts[i],b=pts[i+1]; const len=Math.hypot(b[0]-a[0],b[1]-a[1]); const nx=-(b[1]-a[1])/len*w/2, nz=(b[0]-a[0])/len*w/2;
+    put('gravel', surf(2,Math.ceil(len/2),(u,v)=>{const x=a[0]+(b[0]-a[0])*v+nx*(2*u-1), z=a[1]+(b[1]-a[1])*v+nz*(2*u-1); return [x,H(x,z)+.08,z,x,z];})); }
+}
+ribbon(PATH,7);
+ribbon([[10,26],[10,10]],6);                        // 二の丸内の道
+ribbon([[-160,141],[160,141]],9);                    // 外周の大手前通り
+ribbon([[-20,132],[-20,141]],7);
+
+// 桜門橋 + 大手門（高麗門）
+{
+  const x=-20; put('woodL',mBox(7,.6,18),M(x,2.3,125));
+  for(const s of [-1,1]){ put('woodL',mBox(.3,1,18),M(x+s*3.3,3.1,125)); for(let z=117;z<=133;z+=2) put('woodL',mBox(.35,1.2,.35),M(x+s*3.3,3.1,z)); }
+  for(const z of [120,125,130]) for(const s of [-1,1]){const c=new THREE.CylinderGeometry(.35,.35,6,8);put('wood',c,M(x+s*2.5,-1,z));}
+  const gz=113; for(const s of [-1,1]){ put('wood',mBox(.9,6,.9),M(x+s*3.2,5,gz)); put('wood',mBox(.6,4.5,.6),M(x+s*3.2,4.2,gz-2.2)); }
+  put('wood',mBox(8.4,.8,1),M(x,7.4,gz)); put('wood',mBox(6,4.6,.25),M(x-1.6,4.3,gz-.4,.9)); put('wood',mBox(6,4.6,.25),M(x+1.6,4.3,gz-.4,-.9));
+  put('ornament',mBox(.3,.3,.3),M(x-3.2,6,gz+.5)); put('ornament',mBox(.3,.3,.3),M(x+3.2,6,gz+.5));
+  const F=M(x,8,gz); for(const s of [-1,1]) put('tile',mBox(10,.2,2.2),M(0,.45,s*.9,0,s*.35),F); put('ridge',mBox(10.4,.5,.5),M(0,.95,0),F);
+  dobei([[-140,gz],[140,gz]],2,[[x,gz,6]],false);
+}
+// 天守群 --------------------------------------------------------
+// 大天守: 外観五重・内部六階地下一階、東西に大入母屋破風、各重に千鳥破風・唐破風を配す
+const DAI={x:18,z:-28};
+buildKeep(DAI.x,DAI.z,TOP.ten,{ishi:true,floors:[{w:23,d:19,h:5.8},{w:22,d:18,h:6.4},{w:19,d:15.5,h:5.8},{w:16,d:12.5,h:5.4},{w:12.5,d:9.5,h:5.4}],
+  roofs:[
+    {over:2.5,rise:2.6,lift:1.0,gables:[{side:'S',type:'kara',w:7,h:1.9},{side:'N',type:'kara',w:7,h:1.9},{side:'E',type:'chidori',w:6.5,h:3,v:.3},{side:'W',type:'chidori',w:6.5,h:3,v:.3}]},
+    {over:2.3,rise:2.6,lift:1.0,gables:[{side:'E',type:'chidori',w:14,h:6.4,v:.1},{side:'W',type:'chidori',w:14,h:6.4,v:.1},
+      {side:'S',type:'chidori',pos:-4.8,w:6,h:3.2,v:.3},{side:'S',type:'chidori',pos:4.8,w:6,h:3.2,v:.3},{side:'N',type:'chidori',pos:-4.8,w:6,h:3.2,v:.3},{side:'N',type:'chidori',pos:4.8,w:6,h:3.2,v:.3}]},
+    {over:2.1,rise:2.4,lift:.9,gables:[{side:'S',type:'chidori',w:8.5,h:4.2,v:.2},{side:'N',type:'chidori',w:8.5,h:4.2,v:.2},{side:'E',type:'kara',w:5.5,h:1.6},{side:'W',type:'kara',w:5.5,h:1.6}]},
+    {over:2.0,rise:2.3,lift:.9,gables:[{side:'S',type:'kara',w:6,h:1.8},{side:'N',type:'kara',w:6,h:1.8},{side:'E',type:'chidori',w:5.5,h:3,v:.3},{side:'W',type:'chidori',w:5.5,h:3,v:.3}]},
+    {type:'irimoya',over:2.1,rise1:2.2,rise2:4.4,lift:1.1,axis:'x'}
+  ]});
+// 大天守台の石垣（天守曲輪から更に一段）
+stoneWall([[DAI.x-12.6,DAI.z-10.6],[DAI.x+12.6,DAI.z-10.6],[DAI.x+12.6,DAI.z+10.6],[DAI.x-12.6,DAI.z+10.6]],TOP.ten,TOP.ten-10.5,1.6);
+const KEEPS={nishi:{x:-16,z:-24},inui:{x:-16,z:-58},higashi:{x:18,z:-59}};
+buildKeep(KEEPS.nishi.x,KEEPS.nishi.z,TOP.ten,{floors:[{w:12,d:10.5,h:5},{w:11,d:9.5,h:5},{w:8.5,d:7.5,h:4.4}],
+  roofs:[{over:1.7,rise:2,lift:.7,gables:[{side:'S',type:'chidori',w:5,h:2.6,v:.3},{side:'W',type:'kara',w:4.5,h:1.4}]},
+         {over:1.6,rise:1.9,lift:.7,gables:[{side:'S',type:'kara',w:4.5,h:1.4},{side:'W',type:'chidori',w:4.5,h:2.4,v:.3}]},
+         {type:'irimoya',over:1.6,rise1:1.4,rise2:3.2,lift:.8,axis:'z'}]});
+buildKeep(KEEPS.inui.x,KEEPS.inui.z,TOP.ten,{floors:[{w:13.5,d:11.5,h:5.2},{w:12.5,d:10.5,h:5},{w:9.5,d:8,h:4.6}],
+  roofs:[{over:1.8,rise:2.1,lift:.7,gables:[{side:'W',type:'chidori',w:5.5,h:2.8,v:.3},{side:'N',type:'kara',w:5,h:1.5}]},
+         {over:1.7,rise:2,lift:.7,gables:[{side:'N',type:'chidori',w:5,h:2.6,v:.3},{side:'W',type:'kara',w:4.5,h:1.4}]},
+         {type:'irimoya',over:1.7,rise1:1.5,rise2:3.4,lift:.8,axis:'x',gables:[{side:'S',type:'kara',w:4.2,h:1.3}]}]});
+buildKeep(KEEPS.higashi.x,KEEPS.higashi.z,TOP.ten,{floors:[{w:10.5,d:9,h:4.8},{w:9.5,d:8,h:4.6},{w:7.5,d:6.5,h:4.2}],
+  roofs:[{over:1.6,rise:1.9,lift:.6,gables:[{side:'E',type:'chidori',w:4.5,h:2.4,v:.3}]},
+         {over:1.5,rise:1.8,lift:.6,gables:[{side:'N',type:'kara',w:4,h:1.3}]},
+         {type:'irimoya',over:1.5,rise1:1.3,rise2:3,lift:.7,axis:'z'}]});
+// 渡櫓（イ・ロ・ハ・ニ）で四棟を口の字に連結
+function watari(x,z,len,axis){ const w=axis==='x'?len:7.5, d=axis==='x'?7.5:len;
+  buildKeep(x,z,TOP.ten,{floors:[{w,d,h:4.6},{w,d,h:3.8}],roofs:[{over:1.3,rise:1.6,lift:.3},{type:'irimoya',over:1.2,rise1:1,rise2:2.2,lift:.3,axis,shachi:false}]}); }
+watari(-2.5,-24,15,'x');          // ハの渡櫓（大天守－西小天守）
+watari(-16,-41,22,'z');           // ロの渡櫓（西－乾）
+watari(1,-58.5,23,'x');           // イの渡櫓（乾－東）
+watari(18,-47.5,11,'z');          // ニの渡櫓（東－大天守）
+// 天守曲輪の土塀
+dobei(insetPoly(P_TEN,1),TOP.ten,[[18,-15,14],[-16,-15,9],[-30,-24,7],[-30,-58,8],[-16,-69,8],[18,-69,7],[33,-59,6],[33,-28,14]]);
+// 本丸・二の丸・西の丸の櫓と土塀
+yagura(48,-78,TOP.hon); yagura(-36,-78,TOP.hon,8,7,Math.PI/2); yagura(50,-4,TOP.hon,9,7); yagura(-36,0,TOP.hon);
+dobei(insetPoly(P_HON,1.2),TOP.hon,[[48,-86,7],[-44,-78,7],[-36,-86,6],[58,-4,8],[50,5,7],[-44,0,7],[-36,6,6]]);
+yagura(74,-90,TOP.nino); yagura(78,-6,TOP.nino,8,7,Math.PI/2); yagura(-53,2,TOP.nino);
+dobei(insetPoly(P_NINO,1.2),TOP.nino,[[10,26,8],[74,-96,7],[80,-90,7],[84,-6,7],[78,1,6],[-60,2,7],[-53,6,6]]);
+// 三国堀
+{ put('pond',new THREE.BoxGeometry(12,.2,18),M(70,TOP.nino+.05,-32));
+  for(const [w,d,x,z] of [[13,.6,70,-41.2],[13,.6,70,-22.8],[.6,18,63.7,-32],[.6,18,76.3,-32]]) put('stone',mBox(w,.5,d),M(x,TOP.nino+.2,z)); }
+// 菱の門（櫓門）
+{
+  const gx=10,gz=21.5,y=TOP.nino;
+  buildKeep(gx,gz,y,{floors:[{w:14,d:6,h:4.8},{w:15,d:6.8,h:3.8}],roofs:[{over:1.1,rise:1.1,lift:.3},{type:'irimoya',over:1.4,rise1:1,rise2:2.6,lift:.5,axis:'x',gables:[{side:'S',type:'kara',w:4.5,h:1.3}]}]});
+  for(const s of [-1,1]){ put('wood',mBox(5.2,4.4,.2),M(gx,y+2.2,gz+s*3.05)); for(const k of [-2,-1,0,1,2]) for(const r of [1.2,2.4,3.6]) put('ornament',mBox(.18,.18,.1),M(gx+k*1,y+r,gz+s*3.18)); }
+  for(const k of [-4.5,4.5]) put('ornament',mBox(.9,.9,.12),M(gx+k,y+6.9,gz+3.45)); // 菱の飾り金具
+}
+// 西の丸: 百間廊下と化粧櫓
+buildKeep(-131.5,-56,TOP.nishi,{floors:[{w:5.5,d:88,h:4.4}],roofs:[{type:'irimoya',over:1.1,rise1:.8,rise2:1.8,lift:.2,axis:'z',shachi:false}]});
+buildKeep(-111,-95.5,TOP.nishi,{floors:[{w:36,d:5.5,h:4.4}],roofs:[{type:'irimoya',over:1.1,rise1:.8,rise2:1.8,lift:.2,axis:'x',shachi:false}]});
+buildKeep(-87,-94,TOP.nishi,{floors:[{w:10,d:8,h:4.8}],roofs:[{type:'irimoya',over:1.4,rise1:1.2,rise2:2.8,lift:.6,axis:'x',gables:[{side:'S',type:'kara',w:4,h:1.2}]}]}); // 化粧櫓
+yagura(-131,-6.5,TOP.nishi,9,8);  // ワの櫓
+yagura(-86,-30,TOP.nishi,8,7,Math.PI/2); // カの櫓
+dobei(insetPoly(P_NISHI,1.2).slice(1,5),TOP.nishi,[[-86,-30,6],[-131,-7,7],[-87,-94,8]],false);
+
+flush();
+
+// ---------- plinth (台座) ----------
+{
+  const top=new THREE.Mesh(mBox(BW+10,9,BD+10),MAT.plinth); top.position.y=-10.5; top.castShadow=top.receiveShadow=true; scene.add(top);
+  const lip=new THREE.Mesh(mBox(BW+14,1.2,BD+14),MAT.plinth); lip.position.y=-5.9; lip.receiveShadow=true; scene.add(lip);
+  const bot=new THREE.Mesh(new THREE.BoxGeometry(BW+22,4,BD+22),MAT.plinthDark); bot.position.y=-17; bot.castShadow=bot.receiveShadow=true; scene.add(bot);
+  const plate=new THREE.Mesh(new THREE.PlaneGeometry(90,14),new THREE.MeshStandardMaterial({map:nameplateTex(),metalness:.75,roughness:.32,envMapIntensity:1.2}));
+  plate.position.set(0,-10.5,BD/2+5.08); scene.add(plate);
+  const table=new THREE.Mesh(new THREE.CircleGeometry(330,96),std({color:0x3b332c,roughness:.7,envMapIntensity:.5})); table.rotation.x=-Math.PI/2; table.position.y=-19; table.receiveShadow=true; scene.add(table);
+}
+
+// ---------- 植栽（黒松・広葉樹・桜） ----------
+const ico=(()=>{const g=new THREE.IcosahedronGeometry(1,1);const p=g.attributes.position;const key=(x,y,z)=>`${x.toFixed(3)},${y.toFixed(3)},${z.toFixed(3)}`;const off={};
+  for(let i=0;i<p.count;i++){const k=key(p.getX(i),p.getY(i),p.getZ(i));off[k]??=1+R(-.18,.18);const s=off[k];p.setXYZ(i,p.getX(i)*s,p.getY(i)*s,p.getZ(i)*s);}g.computeVertexNormals();return g;})();
+const trunkGeo=new THREE.CylinderGeometry(.22,.38,1,6); trunkGeo.translate(0,.5,0);
+const canopyList=[], trunkList=[], cherryIdx=[];
+const tmpM=new THREE.Matrix4(), tmpC=new THREE.Color();
+function canopy(x,y,z,sx,sy,sz,color,isCherry=false){ canopyList.push([x,y,z,sx,sy,sz,color]); if(isCherry)cherryIdx.push(canopyList.length-1); }
+function trunk(x,y,z,h,s,lean=0){ trunkList.push([x,y,z,h,s,lean]); }
+const GREENS=['#3f6b34','#4c7a3a','#5a8641','#35602f','#6a8f47'], PINE=['#2c4a2a','#324f2d','#27432a'], SAKURA=['#f4c7d2','#f8d9df','#eeb7c6','#f6cfd8'];
+const pick=a=>a[Math.floor(rng()*a.length)];
+function broad(x,z,s,y=groundAt(x,z)){ trunk(x,y,z,2.4*s,s); canopy(x,y+3.3*s,z,2.4*s,2.1*s,2.4*s,pick(GREENS)); canopy(x+R(-1,1)*s,y+4.6*s,z+R(-1,1)*s,1.7*s,1.5*s,1.7*s,pick(GREENS)); }
+function pine(x,z,s,y=groundAt(x,z)){ const l=R(-.2,.2); trunk(x,y,z,4.2*s,.8*s,l);
+  [[0,2.4,2.2],[.5,3.5,1.7],[-.3,4.5,1.2]].forEach(([o,hh,r],i)=>canopy(x+o*s+l*hh*s,y+hh*s,z+o*.6*s,r*s,r*.45*s,r*s*.9,pick(PINE))); }
+function cherry(x,z,s,y=groundAt(x,z)){ trunk(x,y,z,1.9*s,1.1*s); for(let i=0;i<3;i++) canopy(x+R(-1.3,1.3)*s,y+(2.8+R(0,.9))*s,z+R(-1.3,1.3)*s,R(1.7,2.3)*s,R(1.3,1.7)*s,R(1.7,2.3)*s,pick(SAKURA),true); }
+const nearPath=(x,z,r)=>{for(let i=0;i<PATH.length-1;i++) if(segD(x,z,PATH[i],PATH[i+1])<r) return true; return Math.abs(x-RAMP.x)<RAMP.hw+4&&z>RAMP.z1-4&&z<RAMP.z0+4 || Math.abs(z-141)<7 || (Math.abs(x+20)<8&&z>108);};
+const inAnyPlat=(x,z,m)=>[P_NINO,P_NISHI].some(P=>sdPoly(x,z,P)<m);
+// 姫山の森
+for(let i=0;i<14000;i++){ const x=R(-176,176), z=R(-146,146);
+  if(inMoat(x,z,3)||inAnyPlat(x,z,4)||nearPath(x,z,5)) continue;
+  const h=H(x,z); if(h<2.6) continue; if(rng()>.55) continue;
+  (rng()<.42?pine:broad)(x,z,R(.8,1.25)); }
+// 内堀沿いの桜並木
+for(let x=-142;x<=142;x+=7.5){ if(Math.abs(x+20)<11) continue; cherry(x+R(-1,1),111.5+R(-1,1),R(.9,1.15)); }
+for(const sx of [-1,1]) for(let z=-110;z<=108;z+=7.5){ const x=sx*141+R(-1,1); if(H(x,z)<2.6 && !inAnyPlat(x,z,3)) cherry(x,z,R(.9,1.15)); }
+for(let x=-172;x<=172;x+=8){ if(Math.abs(x+20)<9) continue; (Math.floor(x/8)%3===0?pine:cherry)(x+R(-1,1),146+R(-.8,.8),R(.85,1.1)); }
+for(const sx of [-1,1]) for(let z=-144;z<=136;z+=8) (rng()<.5?pine:cherry)(sx*171+R(-1,1),z,R(.85,1.1));
+for(let x=-170;x<=170;x+=8) (rng()<.6?pine:broad)(x+R(-1,1),-140+R(-1,1),R(.9,1.2));
+// 三の丸の桜群
+for(const [cx,cz,n] of [[70,70,9],[112,40,8],[-80,62,10],[-122,92,7],[55,100,7],[-60,98,6],[120,90,6],[-120,40,6],[100,-20,5],[-100,20,4]])
+  for(let k=0;k<n;k++){ const x=cx+R(-14,14), z=cz+R(-11,11); if(inMoat(x,z,4)||nearPath(x,z,6)||inAnyPlat(x,z,5)||H(x,z)>2.6) continue; cherry(x,z,R(.9,1.2)); }
+for(const [x,z] of [[30,56],[-45,80],[90,110],[-110,110],[130,-60],[-150,70]]) if(!inMoat(x,z,3)) pine(x,z,1.3);
+// 曲輪内（西の丸は桜の名所）
+for(let i=0;i<260;i++){ const x=R(-128,-84), z=R(-90,-12); if(sdPoly(x,z,P_NISHI)>-4 || x<-126 || z<-89 || Math.hypot(x+86,z+30)<8 || Math.hypot(x+131,z+7)<9) continue; if(rng()<.3) cherry(x,z,R(.9,1.15)); }
+for(let i=0;i<400;i++){ const x=R(-60,84), z=R(-96,26); if(sdPoly(x,z,P_NINO)>-3 || sdPoly(x,z,P_HON)<5 || Math.abs(x-10)<7 || (Math.abs(x-70)<9&&Math.abs(z+32)<12)) continue;
+  if([[74,-90],[78,-6],[-53,2]].some(([a,b])=>Math.hypot(x-a,z-b)<8)) continue; if(rng()<.25) (rng()<.6?pine:cherry)(x,z,R(.8,1.05)); }
+for(const [x,z] of [[-30,-4],[-18,-6],[36,-6],[-38,-40],[-38,-60],[46,-40],[46,-60],[44,-20]]) pine(x,z,1.05);
+
+function buildInstances(){
+  const cm=new THREE.InstancedMesh(ico,std({roughness:.9,flatShading:true,envMapIntensity:.2}),canopyList.length);
+  canopyList.forEach(([x,y,z,sx,sy,sz,c],i)=>{tmpM.compose(new V3(x,y,z),new THREE.Quaternion().setFromEuler(new THREE.Euler(0,R(0,6),0)),new V3(sx,sy,sz));cm.setMatrixAt(i,tmpM);cm.setColorAt(i,tmpC.set(c));});
+  cm.castShadow=cm.receiveShadow=true; scene.add(cm);
+  const tm=new THREE.InstancedMesh(trunkGeo,std({color:0x4a3a2c,roughness:1}),trunkList.length);
+  trunkList.forEach(([x,y,z,h,s,l],i)=>{tmpM.compose(new V3(x,y-.3,z),new THREE.Quaternion().setFromEuler(new THREE.Euler(0,0,l)),new V3(s,h+.3,s));tm.setMatrixAt(i,tmpM);});
+  tm.castShadow=true; scene.add(tm);
+  return cm;
+}
+const canopyMesh=buildInstances();
+function setSeason(sakura){ cherryIdx.forEach(i=>canopyMesh.setColorAt(i,tmpC.set(sakura?pick(SAKURA):pick(GREENS)))); canopyMesh.instanceColor.needsUpdate=true; }
+
+// ---------- lighting ----------
+const hemi=new THREE.HemisphereLight(0xdfe9ff,0x5a4a36,.7); scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff1dc,2.8); sun.castShadow=true;
+sun.shadow.mapSize.set(4096,4096); const sc=sun.shadow.camera; sc.left=-240;sc.right=240;sc.top=240;sc.bottom=-240;sc.near=10;sc.far=1400;
+sun.shadow.bias=-.0004; sun.shadow.normalBias=.6; sun.shadow.radius=3;
+scene.add(sun); scene.add(sun.target);
+const lightUp=new THREE.Group(); scene.add(lightUp);
+for(const [x,z] of [[18,20],[-60,10],[90,0],[-110,30]]){ const s=new THREE.SpotLight(0xe9f0ff,0,520,.16,.7,1.2); s.position.set(x*1.6,60,z+160); s.target.position.set(18,50,-30); lightUp.add(s); lightUp.add(s.target); }
+const TIMES={
+  morning:{az:-70,el:18,col:0xffd9b0,int:2.4,hemi:.55,sky:['#8fb6dd','#f3d8c0','#f7e6d2'],exp:1.0,night:0},
+  noon:{az:-30,el:52,col:0xfff4e4,int:2.9,hemi:.75,sky:['#6fa3d6','#bfd8ec','#eaf1f5'],exp:1.05,night:0},
+  evening:{az:65,el:12,col:0xffa060,int:2.5,hemi:.45,sky:['#35477a','#e28a55','#f7c58a'],exp:1.0,night:0},
+  night:{az:40,el:40,col:0x9fb4ff,int:.25,hemi:.12,sky:['#050914','#101c38','#1c2a4a'],exp:1.15,night:1},
+};
+function setTime(k){ const t=TIMES[k]; const az=THREE.MathUtils.degToRad(t.az), el=THREE.MathUtils.degToRad(t.el);
+  sun.position.set(Math.sin(az)*Math.cos(el)*600, Math.sin(el)*600, Math.cos(az)*Math.cos(el)*600); sun.target.position.set(0,0,0);
+  sun.color.set(t.col); sun.intensity=t.int; hemi.intensity=t.hemi; renderer.toneMappingExposure=t.exp;
+  scene.background=skyTex(...t.sky);
+  MAT.plaster.emissiveIntensity=t.night*.32; MAT.dobei.emissiveIntensity=t.night*.18; MAT.window.emissiveIntensity=t.night*1.4;
+  lightUp.children.forEach(o=>{if(o.isSpotLight)o.intensity=t.night*2600;});
+  scene.traverse(o=>{const ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];ms.forEach(m=>{if(m.envMapIntensity===undefined)return;m.userData.env??=m.envMapIntensity;m.envMapIntensity=m.userData.env*(t.night?.12:1);});});
+  document.querySelectorAll('#timeRow button').forEach(b=>b.classList.toggle('on',b.dataset.t===k));
+}
+setTime(new URLSearchParams(location.search).get('t')||'noon');
+
+// ---------- labels ----------
+const LABELS=[['大天守',DAI.x,76,DAI.z],['西小天守',KEEPS.nishi.x,55,KEEPS.nishi.z],['乾小天守',KEEPS.inui.x,57,KEEPS.inui.z],['東小天守',KEEPS.higashi.x,54,KEEPS.higashi.z],
+  ['百間廊下（西の丸）',-131,26,-60],['化粧櫓',-87,28,-94],['菱の門',10,26,21.5],['三国堀',70,16,-32],['備前丸',0,27,-4],['内堀',120,4,125],['桜門橋・大手門',-20,12,120],['三の丸（桜の広場）',80,12,70]];
+const labelBox=document.getElementById('labels');
+const labelEls=LABELS.map(([t])=>{const d=document.createElement('div');d.className='lbl';d.textContent=t;labelBox.appendChild(d);return d;});
+const pv=new V3();
+function updateLabels(){ if(labelBox.hidden) return; LABELS.forEach(([t,x,y,z],i)=>{pv.set(x,y,z).project(camera);const el=labelEls[i];
+  if(pv.z>1){el.style.display='none';return;} el.style.display='';el.style.left=((pv.x+1)/2*innerWidth)+'px';el.style.top=((1-pv.y)/2*innerHeight-14)+'px';}); }
+
+// ---------- UI ----------
+document.querySelectorAll('#timeRow button').forEach(b=>b.onclick=()=>setTime(b.dataset.t));
+let season=true; document.getElementById('bSeason').onclick=e=>{season=!season;setSeason(season);e.target.classList.toggle('on',season);e.target.textContent=season?'桜':'新緑';};
+document.getElementById('bLabels').onclick=e=>{labelBox.hidden=!labelBox.hidden;e.target.classList.toggle('on',!labelBox.hidden);};
+document.getElementById('bRotate').onclick=e=>{controls.autoRotate=!controls.autoRotate;e.target.classList.toggle('on',controls.autoRotate);};
+document.getElementById('bFront').onclick=()=>{camera.position.copy(HOME_POS);controls.target.copy(HOME_TGT);};
+const q=new URLSearchParams(location.search);
+if(q.get('cam')){const [a,b,c,d,e,f]=q.get('cam').split(',').map(Number);camera.position.set(a,b,c);controls.target.set(d,e,f);}
+if(q.get('nolabel')){labelBox.hidden=true;document.getElementById('bLabels').classList.remove('on');}
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+document.getElementById('loading').remove();
+renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);updateLabels();});
+window.__trees=trunkList.length; window.__ready=true;
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+#!/bin/bash
+# usage: isu-restart mysql|nginx|app|matcher|all
+#   app: rebuilds /home/isucon/webapp/go and restarts it (logs: /var/log/isu/app.log)
+set -eu
+t=${1:-all}
+apply_config() {
+  # Persisted configs from the mounted webapp dir (survive ./isu up)
+  C=/home/isucon/webapp/config
+  if [ -d $C/mysql ]; then cp $C/mysql/*.cnf /etc/mysql/mysql.conf.d/ 2>/dev/null || true; fi
+  if [ -f $C/nginx/nginx.conf ]; then cp $C/nginx/nginx.conf /etc/nginx/nginx.conf; fi
+  if [ -f $C/nginx/isuride.conf ]; then cp $C/nginx/isuride.conf /etc/nginx/sites-available/isuride.conf; fi
+  if [ -f $C/env.sh ]; then cp $C/env.sh /home/isucon/env.sh; fi
+}
+start_mysql() {
+  apply_config
+  pkill -x mysqld 2>/dev/null && while pgrep -x mysqld >/dev/null; do sleep 0.5; done || true
+  mysqld_safe > /var/log/isu/mysqld_safe.log 2>&1 &
+  for i in $(seq 1 120); do mysqladmin ping -uroot --silent 2>/dev/null && return 0; sleep 0.5; done
+  echo "mysql failed to start" >&2; return 1
+}
+start_nginx() { apply_config; nginx -t && { nginx -s reload 2>/dev/null || nginx; }; }
+start_app() {
+  apply_config
+  cd /home/isucon/webapp/go
+  sudo -u isucon env PATH=$PATH GOPATH=/home/isucon/go GOCACHE=/home/isucon/.cache/go-build GOTOOLCHAIN=local go build -o isuride -ldflags "-s -w" .
+  pkill -x isuride 2>/dev/null || true; sleep 0.5
+  sudo -u isucon bash -c 'set -a; . /home/isucon/env.sh; set +a; cd /home/isucon/webapp/go; exec nohup ./isuride' >> /var/log/isu/app.log 2>&1 &
+  for i in $(seq 1 60); do curl -s -o /dev/null localhost:8080 && return 0; sleep 0.5; done
+  echo "app failed to start (see /var/log/isu/app.log)" >&2; return 1
+}
+start_matcher() {
+  pkill -f isu-matcher-loop 2>/dev/null || true
+  nohup bash -c 'exec -a isu-matcher-loop bash -c ". /home/isucon/env.sh; while true; do curl -s http://127.0.0.1/api/internal/matching >/dev/null; sleep \$ISUCON_MATCHING_INTERVAL; done"' >/dev/null 2>&1 &
+}
+case "$t" in
+  mysql) start_mysql ;; nginx) start_nginx ;; app) start_app ;; matcher) start_matcher ;;
+  all) start_mysql; start_app; start_nginx; start_matcher ;;
+  *) echo "usage: isu-restart mysql|nginx|app|matcher|all" >&2; exit 2 ;;
+esac

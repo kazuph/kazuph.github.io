@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>姫路城 — 白鷺のジオラマ</title>
+<style>
+:root{color-scheme:light;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#303b37;background:#e7e6dd}*{box-sizing:border-box}body{margin:0;overflow:hidden}canvas{display:block;width:100%;height:100%;touch-action:none}#scene{position:fixed;inset:0}header{position:absolute;top:40px;left:46px;pointer-events:none}.eyebrow{font-size:10px;letter-spacing:.24em;color:#68726a}h1{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:400;font-size:49px;letter-spacing:.17em;margin:17px 0 8px}header p{font-size:12px;letter-spacing:.12em;margin:0;color:#68726a}.edition{position:absolute;right:42px;top:42px;text-align:right;font-size:10px;letter-spacing:.17em;line-height:2;color:#68726a}.edition strong{font-size:12px;font-weight:500;color:#394b43}.caption{position:absolute;bottom:36px;left:46px;border-left:2px solid #8e9c83;padding-left:15px;pointer-events:none}.caption b{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:17px;font-weight:400;letter-spacing:.13em}.caption p{font-size:10px;color:#6a7169;line-height:1.8;margin:8px 0 0;letter-spacing:.07em}.controls{position:absolute;right:38px;bottom:33px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:450px}button{font:inherit;font-size:11px;letter-spacing:.06em;border:1px solid #b9bdb1;background:#f8f8f0d9;color:#3e4a41;padding:10px 14px;border-radius:3px;cursor:pointer}button:hover,button[aria-pressed=true]{background:#4a5c4f;color:#fff;border-color:#4a5c4f}button:focus-visible{outline:2px solid #667852;outline-offset:3px}.hint{width:100%;text-align:right;font-size:10px;color:#758075;margin-top:6px;letter-spacing:.06em}#loading{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:13px;letter-spacing:.16em;padding:20px;background:#f5f4eb}#loading[hidden]{display:none}.marker{position:absolute;pointer-events:none;font-size:11px;color:#394b3e;background:#fbfaf0e8;padding:5px 9px;border-bottom:1px solid #87987f;white-space:nowrap;transform:translate(-50%,-100%);display:none}#error{position:absolute;inset:40% 20%;text-align:center;background:#fff;padding:24px;display:none;font-size:14px}@media(max-width:650px){header{top:24px;left:23px}h1{font-size:34px;margin-top:10px}.edition{right:20px;top:24px;font-size:8px}.edition strong{font-size:10px}.eyebrow{font-size:8px}header p{font-size:10px}.caption{left:23px;bottom:103px}.caption b{font-size:13px}.caption p{font-size:9px}.controls{right:20px;left:20px;bottom:22px;max-width:none}button{padding:9px 11px;font-size:10px}.hint{font-size:9px}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+</head><body>
+<main id="scene" aria-label="姫路城の立体ジオラマ。ドラッグで回転、ホイールで拡大縮小。"></main>
+<header><div class="eyebrow">ARCHITECTURAL MINIATURE / 01</div><h1>姫路城</h1><p>白鷺が羽を広げる、春の城郭。</p></header>
+<div class="edition"><strong>HIMEJI CASTLE</strong><br>HARIMA, JAPAN · 1609<br>PROCEDURAL DIORAMA</div>
+<div class="caption"><b>白い連なり、甍のリズム。</b><p>五重の大天守と三つの小天守。<br>石垣、瓦の列、木々を積み重ねた小さな城。</p></div>
+<nav class="controls" aria-label="模型の表示操作"><button id="home">南西から</button><button id="above">縄張りを見る</button><button id="rotate" aria-pressed="false">自動回転</button><button id="labels" aria-pressed="false">建物名</button><div class="hint">ドラッグで回転 ／ スクロールでズーム ／ 右ドラッグで移動</div></nav>
+<div id="loading">姫路城を組み立てています…</div><div id="error" role="alert"></div>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const root=document.getElementById('scene');
+const scene=new THREE.Scene();scene.background=new THREE.Color('#e7e6dd');
+const camera=new THREE.PerspectiveCamera(36,innerWidth/innerHeight,.1,300);
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.17;root.appendChild(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.07;controls.maxPolarAngle=Math.PI*.475;controls.minDistance=24;controls.maxDistance=240;controls.autoRotateSpeed=.6;controls.target.set(0,9,0);
+const initial=new THREE.Vector3(-54,40,67);camera.position.copy(initial);
+scene.add(new THREE.HemisphereLight(0xe7f1f2,0x777866,2.15));
+const sun=new THREE.DirectionalLight(0xffedcf,3.6);sun.position.set(-32,52,27);sun.castShadow=true;sun.shadow.mapSize.set(4096,4096);Object.assign(sun.shadow.camera,{left:-43,right:43,top:40,bottom:-40,near:.5,far:130});sun.shadow.normalBias=.035;sun.shadow.bias=-.00012;sun.shadow.radius=3;scene.add(sun);
+const fill=new THREE.DirectionalLight(0xddeaf0,.8);fill.position.set(30,23,-20);scene.add(fill);
+let seed=1609;function rand(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}function mix(a,b,t){return a+(b-a)*t}
+const mats={};function material(n,c,rough=1,metal=0){mats[n]=new THREE.MeshStandardMaterial({color:c,roughness:rough,metalness:metal});return mats[n]}
+const plaster=material('plaster','#eeeadd'),white=material('white','#fffaf0'),roofMat=material('roof','#4a5354',.78),roofEdge=material('roofEdge','#697273',.72),wood=material('wood','#4e5147'),dark=material('dark','#273230'),sand=material('sand','#c9bda3'),grass=material('grass','#83966a'),bark=material('bark','#655f49'),baseMat=material('base','#384740',.75),brass=material('brass','#a9986e',.43,.55);
+function mesh(g,m,x=0,y=0,z=0,parent=scene){const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+const batches=new Map(),dummy=new THREE.Object3D();function batch(kind,mat,p,s,q=null){const key=kind+'_'+mat.name+'_'+mat.uuid;if(!batches.has(key))batches.set(key,{kind,mat,items:[]});batches.get(key).items.push({p,s,q})}
+function box(x,y,z,w,h,d,m=plaster){batch('box',m,[x,y,z],[w,h,d])}
+function rod(a,b,r,m=roofEdge){const av=new THREE.Vector3(...a),bv=new THREE.Vector3(...b),v=bv.clone().sub(av);batch('cyl',m,av.clone().add(bv).multiplyScalar(.5).toArray(),[r,v.length(),r],new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),v.normalize()))}
+function ball(x,y,z,sx,sy,sz,m){batch('ico',m,[x,y,z],[sx,sy,sz])}
+function polyGeom(vertices,indices){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(vertices.flat(),3));g.setIndex(indices);g.computeVertexNormals();return g}
+function prism(points,bottom,top,m){const sh=new THREE.Shape();points.forEach((p,i)=>i?sh.lineTo(p[0],-p[1]):sh.moveTo(p[0],-p[1]));sh.closePath();const g=new THREE.ExtrudeGeometry(sh,{depth:top-bottom,bevelEnabled:false});g.rotateX(-Math.PI/2);return mesh(g,m,0,bottom,0)}
+function bevelBase(w,d,h,y,m,bevel){const shape=new THREE.Shape(),r=1.4;shape.moveTo(-w/2+r,-d/2);shape.lineTo(w/2-r,-d/2);shape.quadraticCurveTo(w/2,-d/2,w/2,-d/2+r);shape.lineTo(w/2,d/2-r);shape.quadraticCurveTo(w/2,d/2,w/2-r,d/2);shape.lineTo(-w/2+r,d/2);shape.quadraticCurveTo(-w/2,d/2,-w/2,d/2-r);shape.lineTo(-w/2,-d/2+r);shape.quadraticCurveTo(-w/2,-d/2,-w/2+r,-d/2);const g=new THREE.ExtrudeGeometry(shape,{depth:h,bevelEnabled:true,bevelThickness:bevel,bevelSize:bevel,bevelSegments:3,steps:1,curveSegments:6});g.rotateX(-Math.PI/2);mesh(g,m,0,y,0)}
+bevelBase(47,38,1.3,-1.65,baseMat,.22);bevelBase(47.1,38.1,.13,-.29,brass,.08);bevelBase(46.8,37.8,.45,-.13,material('soil','#6d745c'),.17);
+const floor=mesh(new THREE.PlaneGeometry(500,500),new THREE.ShadowMaterial({opacity:.16}),0,-2.0,0);floor.rotation.x=-Math.PI/2;floor.castShadow=false;
+// Every stone is an individually coloured, irregular solid face; no image textures.
+const stonePos=[],stoneColors=[];const stonePalette=['#8a8877','#777a6d','#9d9986','#a6a18d','#717667','#8f9381','#b0aa94'].map(x=>new THREE.Color(x));
+function stoneTri(a,b,c,col){stonePos.push(...a,...b,...c);for(let i=0;i<3;i++)stoneColors.push(col.r,col.g,col.b)}
+function stoneWall(x,z,bw,bd,tw,td,bottom,height){
+const verts=[[-bw/2,bottom,-bd/2],[bw/2,bottom,-bd/2],[bw/2,bottom,bd/2],[-bw/2,bottom,bd/2],[-tw/2,bottom+height,-td/2],[tw/2,bottom+height,-td/2],[tw/2,bottom+height,td/2],[-tw/2,bottom+height,td/2]].map(p=>[p[0]+x,p[1],p[2]+z]);mesh(polyGeom(verts,[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7]),material('mortar'+rand(),'#565e51'));
+const rows=Math.max(1,Math.round(height/.62));for(let side=0;side<4;side++){const swapped=side%2===1,B=swapped?bd:bw,T=swapped?td:tw,D=swapped?bw:bd,U=swapped?tw:td;const sign=side<2?1:-1;function point(u,v,off){const t=v/height,width=mix(B,T,t),depth=mix(D,U,t);return swapped?[x+sign*(depth/2+off),bottom+v,z+u*width]:[x+u*width,bottom+v,z+sign*(depth/2+off)]}
+for(let row=0;row<rows;row++){const v0=row*height/rows+.022,v1=(row+1)*height/rows-.025;let u=-.5;while(u<.499){const step=(.65+rand()*.7)/mix(B,T,row/rows),end=Math.min(.5,u+step);const gap=.018/B;const p=[point(u+gap,v0,.015),point(end-gap,v0,.015),point(end-gap,v1,.015),point(u+gap,v1,.015)];const center=point((u+end)/2,mix(v0,v1,.45+rand()*.1),.027+rand()*.027);const col=stonePalette[Math.floor(rand()*stonePalette.length)].clone().multiplyScalar(.94+rand()*.12);for(let k=0;k<4;k++)stoneTri(p[k],p[(k+1)%4],center,col);u=end;}}
+}}
+// Terraced bailey, cut to reveal the fortification rather than the entire modern city.
+prism([[-22,-17],[21,-17],[22,16],[-21,17]],.31,.55,grass);
+stoneWall(1,-1,34,28,31,25,.45,2.1);box(1,2.63,-1,31,.16,25,sand);
+stoneWall(2,-6,25,19,23,17,2.7,2.8);box(2,5.53,-6,23,.1,17,sand);
+// Main and three small keeps form the four corners of the connected compound.
+stoneWall(5,-1.3,14.8,12.9,12.2,10.5,5.55,5.4);
+stoneWall(-7.2,-1.3,7.7,7.8,6.3,6.4,5.55,3.1);
+stoneWall(-7.2,-11.1,8.0,7.2,6.7,6.0,5.55,2.9);
+stoneWall(5,-11.1,7.3,7.0,6.0,5.7,5.55,3.1);
+const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(stonePos,3));sg.setAttribute('color',new THREE.Float32BufferAttribute(stoneColors,3));sg.computeVertexNormals();mesh(sg,new THREE.MeshStandardMaterial({vertexColors:true,roughness:1}));
+function roofY(t,rise){return rise*Math.pow(1-t,1.55)+.18*Math.pow(t,8)}
+function hipRoof(x,y,z,w,d,rise,orientation=0){const rw=w*.49;const vs=[],idx=[];function tr(a,b,c){return orientation===0?[x+a,y+b,z+c]:[x+c,y+b,z+a]}
+for(let side=0;side<4;side++){let start=vs.length;for(let j=0;j<=12;j++){const t=j/12,yy=roofY(t,rise);let a,b;if(side<2){let sign=side===0?1:-1;a=[-mix(rw,w,t)/2,yy,sign*d/2*t];b=[mix(rw,w,t)/2,yy,sign*d/2*t]}else{let sign=side===2?1:-1;a=[sign*mix(rw,w,t)/2,yy,-d/2*t];b=[sign*mix(rw,w,t)/2,yy,d/2*t]}vs.push(tr(...a),tr(...b));if(j<12){const n=start+j*2;idx.push(n,n+1,n+3,n,n+3,n+2)}}}
+const m=mesh(polyGeom(vs,idx),roofMat);m.material.side=THREE.DoubleSide;
+// Raised rows of round tiles, sampled along the changing eave profile.
+for(let s of [-1,1]){for(let a=-w/2+.12;a<w/2;a+=.235){let t0=Math.max(0,(Math.abs(a)-rw/2)/((w-rw)/2));for(let j=0;j<7;j++){let t=mix(t0,1,j/7),v=mix(t0,1,(j+1)/7);rod(tr(a,roofY(t,rise)+.032,s*d/2*t),tr(a,roofY(v,rise)+.032,s*d/2*v),.038,roofEdge)}}
+for(let a=-d/2+.12;a<d/2;a+=.235){const t0=Math.abs(a)/(d/2);for(let j=0;j<6;j++){let t=mix(t0,1,j/6),v=mix(t0,1,(j+1)/6);rod(tr(s*mix(rw,w,t)/2,roofY(t,rise)+.03,a),tr(s*mix(rw,w,v)/2,roofY(v,rise)+.03,a),.037,roofEdge)}}
+rod(tr(-w/2,.16,s*d/2),tr(w/2,.16,s*d/2),.105,roofMat);rod(tr(s*w/2,.16,-d/2),tr(s*w/2,.16,d/2),.105,roofMat);
+for(let sx of [-1,1]){for(let j=0;j<10;j++){const t=j/10,v=(j+1)/10;rod(tr(sx*mix(rw,w,t)/2,roofY(t,rise)+.055,s*d/2*t),tr(sx*mix(rw,w,v)/2,roofY(v,rise)+.055,s*d/2*v),.075,roofMat)}}}
+rod(tr(-rw/2,rise+.09,0),tr(rw/2,rise+.09,0),.14,roofMat);
+}
+function windowAt(x,y,z,w,h,side=0,ornate=false,out=1){const thick=.065; if(side===0){box(x,y,z,w,h,.055,dark);box(x,y-h/2-.055,z,w+.16,.105,.18,white);box(x,y+h/2+.04,z,w+.13,.09,.11,white);for(let a=-w/2+.1;a<w/2;a+=.18)box(x+a,y,z+out*.05,.044,h,.065,ornate?wood:white)}else{box(x,y,z,.055,h,w,dark);box(x,y-h/2-.055,z,.18,.105,w+.16,white);box(x,y+h/2+.04,z,.11,.09,w+.13,white);for(let a=-w/2+.1;a<w/2;a+=.18)box(x+out*.04,y,z+a,.065,h,.044,ornate?wood:white)}}
+function storey(x,y,z,w,d,h,top=false){box(x,y+h/2,z,w,h,d);box(x,y+.16,z,w+.09,.18,d+.09,white);box(x,y+h-.18,z,w+.15,.17,d+.15,white);
+for(const sign of [-1,1]){const n=Math.max(2,Math.floor(w/2));for(let j=0;j<n;j++)windowAt(x+(j-(n-1)/2)*w/n,y+h*.53,z+sign*(d/2+.036),top?.7:.65,h*.39,0,top,sign);const n2=Math.max(2,Math.floor(d/2));for(let j=0;j<n2;j++)windowAt(x+sign*(w/2+.036),y+h*.53,z+(j-(n2-1)/2)*d/n2,.63,h*.39,1,top,sign);
+// White exposed rafter ends give the silhouette a finely serrated underside.
+for(let a=-w/2;a<=w/2;a+=.38)box(x+a,y+h-.03,z+sign*(d/2+.34),.095,.13,.75,white);for(let a=-d/2;a<=d/2;a+=.38)box(x+sign*(w/2+.34),y+h-.03,z+a,.75,.13,.095,white);
+if(top){for(let a=-w/2;a<=w/2+.01;a+=w/4)box(x+a,y+h/2,z+sign*(d/2+.04),.105,h,.07,white);for(let a=-d/2;a<=d/2+.01;a+=d/3)box(x+sign*(w/2+.04),y+h/2,z+a,.07,h,.105,white)}}}
+function gable(x,y,z,w,h,depth,rot=0,curved=false){const group=new THREE.Group();group.position.set(x,y,z);group.rotation.y=rot;scene.add(group);const v=[],ind=[];const samples=curved?24:12;
+function profile(u){return curved?h*(.17+.83*Math.exp(-Math.pow(u*2.05,2))):h*(1-Math.abs(u))+.1*Math.pow(Math.abs(u),8)}
+// Solid plaster tympanum, with two curved timber-and-tile verges.
+for(let i=0;i<=samples;i++){let u=-1+2*i/samples;v.push([u*w/2,0,depth/2],[u*w/2,profile(u),depth/2]);if(i<samples){let n=i*2;ind.push(n,n+2,n+3,n,n+3,n+1)}}mesh(polyGeom(v,ind),plaster,0,0,0,group).material.side=THREE.DoubleSide;
+const surf=[],si=[];for(let i=0;i<=samples;i++){let u=-1+2*i/samples;surf.push([u*w/2,profile(u)+.1,-depth/2],[u*w/2,profile(u)+.1,depth/2+.13]);if(i<samples){let n=i*2;si.push(n,n+1,n+3,n,n+3,n+2)}}mesh(polyGeom(surf,si),roofMat,0,0,0,group);
+function world(a){return new THREE.Vector3(...a).applyAxisAngle(new THREE.Vector3(0,1,0),rot).add(group.position).toArray()}
+for(let i=0;i<samples;i++){let a=-1+2*i/samples,b=-1+2*(i+1)/samples;rod(world([a*w/2,profile(a),depth/2+.16]),world([b*w/2,profile(b),depth/2+.16]),.105,white);rod(world([a*w/2,profile(a)+.17,depth/2+.19]),world([b*w/2,profile(b)+.17,depth/2+.19]),.072,roofEdge)}
+for(let a=-w/2;a<w/2;a+=.2){let u=a/(w/2);rod(world([a,profile(u)+.135,-depth/2]),world([a,profile(u)+.135,depth/2+.15]),.037,roofEdge)}
+const win=mesh(new THREE.BoxGeometry(w*.25,h*.3,.06),dark,0,h*.28,depth/2+.045,group);for(let a=-w*.1;a<=w*.1;a+=.15)mesh(new THREE.BoxGeometry(.045,h*.3,.07),white,a,h*.28,depth/2+.09,group);
+if(!curved){rod(world([0,h-.13,depth/2+.16]),world([0,h-.53,depth/2+.16]),.06,white);ball(...world([0,h-.52,depth/2+.16]),.11,.16,.065,white)}
+}
+function shachi(x,y,z,sign=1){const points=[[x,y,z],[x+sign*.12,y+.27,z],[x+sign*.28,y+.63,z],[x+sign*.22,y+.97,z],[x+sign*.06,y+1.13,z]];for(let i=0;i<points.length-1;i++)rod(points[i],points[i+1],.105-i*.016,roofMat);ball(x,y+.14,z,.19,.15,.12,roofMat);rod([x+sign*.18,y+.62,z],[x+sign*.49,y+.81,z],.055,roofMat)}
+function keep(x,z,y,levels,name){const groupData={name,tiers:levels.length,x,z,base:y};for(let i=0;i<levels.length;i++){const [w,d,h,r]=levels[i];storey(x,y,z,w,d,h,i===levels.length-1);hipRoof(x,y+h-.04,z,w+1.9,d+1.8,r);if(i===levels.length-1){gable(x,y+h+.04,z, w*.75,r, d+1.9,0,false);shachi(x-w*.245,y+h+r+.2,z,-1);shachi(x+w*.245,y+h+r+.2,z,1)}y+=h+.58}groupData.top=y;return groupData}
+const keeps=[];
+keeps.push(keep(5,-1.3,10.95,[[11.7,10,2.8,1.7],[10.7,9.1,3.5,2.15],[8.1,7,2.55,1.55],[6.9,6.0,2.35,1.4],[5.7,5.0,2.3,1.6]],'大天守'));
+keeps.push(keep(-7.2,-1.3,8.65,[[6.0,6.1,2.15,1.15],[5.3,5.4,2.0,1.1],[4.2,4.2,1.95,1.2]],'西小天守'));
+keeps.push(keep(-7.2,-11.1,8.45,[[6.4,5.7,2.3,1.25],[5.6,5.0,2.1,1.15],[4.5,4.0,2.05,1.25]],'乾小天守'));
+keeps.push(keep(5,-11.1,8.65,[[5.7,5.4,2.05,1.12],[4.9,4.7,1.95,1.05],[4.1,3.8,1.85,1.1]],'東小天守'));
+// Gables interrupt the large roof planes: paired chidori and central undulating kara-hafu.
+for(const s of [-1,1]){
+gable(5,17.12,-1.3+s*3.2,7.5,2.7,3.15,s===1?0:Math.PI,false);
+for(const a of [-1,1])gable(5+a*2.42,22.65,-1.3+s*3.0,2.8,1.35,1.4,s===1?0:Math.PI,false);
+gable(5,14.00,-1.3+s*5.0,3.4,1.32,1.25,s===1?0:Math.PI,true);
+gable(5+s*4.45,17.10,-1.3,4.3,2.0,2.3,s*Math.PI/2,false);
+gable(5+s*3.63,22.62,-1.3,3.7,1.45,1.7,s*Math.PI/2,true);
+for(const a of [-1,1])gable(5+s*5.0,14.04,-1.3+a*2.6,2.5,1.2,1.55,s*Math.PI/2,false);
+}
+// Ishio-toshi, the projecting defensive bays on the first level.
+for(const s of [-1,1])for(const a of [-1,1]){box(5+a*4.9,11.3,-1.3+s*5.18,1.2,1.05,.7,white);box(5+a*4.9,10.86,-1.3+s*5.25,.87,.12,.45,dark);hipRoof(5+a*4.9,11.85,-1.3+s*5.18,1.45,1.0,.3)}
+function corridor(x,z,w,d,y,h=2){storey(x,y,z,w,d,h);hipRoof(x,y+h,z,(w<d?d:w)+1.0,(w<d?w:d)+1.0,.9,w<d?Math.PI/2:0)}
+// All four sides of the linked keep courtyard, with the lower connecting wings.
+corridor(-1.4,-11.1,6.6,2.85,7.5,2.1);corridor(-7.2,-6.2,2.6,4.1,7.65,2.05);corridor(-1.55,-1.3,6.5,2.7,7.7,2.1);corridor(5,-7.6,2.8,2.6,8.0,2.15);
+// White parapets with real geometric loopholes, staggered paths and a roofed gate.
+function wallSeg(ax,az,bx,bz,y,h=1.45){const dx=bx-ax,dz=bz-az,L=Math.hypot(dx,dz),angle=Math.atan2(dz,dx),cx=(ax+bx)/2,cz=(az+bz)/2;const g=new THREE.Group();g.position.set(cx,y,cz);g.rotation.y=-angle;scene.add(g);mesh(new THREE.BoxGeometry(L,h,.44),plaster,0,h/2,0,g);mesh(new THREE.BoxGeometry(L+.3,.12,.66),roofMat,0,h+.06,0,g);for(let a=-L/2+.7;a<L/2;a+=1.1){mesh(new THREE.BoxGeometry(.14,.26,.46),dark,a,h*.61,0,g);mesh(new THREE.BoxGeometry(.06,.1,.85),roofEdge,a,h+.17,0,g)}for(let a=-L/2+.1;a<L/2;a+=3)mesh(new THREE.BoxGeometry(.23,h+.13,.63),white,a,(h+.13)/2,0,g)}
+wallSeg(-14.4,10.8,16.3,10.8,2.72);wallSeg(16.3,10.8,16.3,-13.0,2.72);wallSeg(-14.4,10.8,-14.4,4,2.72);wallSeg(-14.4,1,-14.4,-12.8,2.72);wallSeg(-14.4,-12.8,-10.1,-12.8,2.72);
+wallSeg(-10.6,3.9,-10.6,6.5,5.58);wallSeg(-10.6,6.5,11.5,6.5,5.58);wallSeg(11.5,6.5,11.5,4.1,5.58);
+wallSeg(-21,13.9,-8,13.9,.57,1.2);wallSeg(-21,13.9,-21,-4,.57,1.2);wallSeg(-21,-4,-16.5,-4,.57,1.2);
+// Switchback entrance: stair blocks are sized by the change in terrace elevation.
+function stairs(x,z,w,run,rise,y,count,rot=0){for(let i=0;i<count;i++){const xx=x+Math.sin(rot)*(i+.5)*run/count,zz=z+Math.cos(rot)*(i+.5)*run/count;box(xx,y+rise*(i+1)/count/2,zz,rot===0?w:run/count,rise*(i+1)/count,rot===0?run/count:w,sand)}}
+stairs(-17.1,3.1,2.4,5.0,2.15,.55,13,0);box(-16.4,2.7,8.6,4.2,.1,2.6,sand);stairs(-13.2,3.7,2.2,4.8,2.85,2.7,15,Math.PI/2);
+// Gate with a genuine opening between massive timber posts.
+box(-14.4,3.64,1.1,.6,1.85,.55,wood);box(-14.4,3.64,3.9,.6,1.85,.55,wood);box(-14.4,4.55,2.5,.85,.35,3.55,wood);hipRoof(-14.4,4.73,2.5,4.2,2.4,.75,Math.PI/2);
+// Western long gallery and its end turrets anchor the composition.
+corridor(-18.1,-8.5,3.0,13.5,.57,1.6);keep(-18.1,-14.2,.57,[[3.8,3.7,1.7,.85],[2.9,2.9,1.5,.8]],'西の丸の櫓');
+// Gravel, edging and quiet open courtyards, all geometry.
+const gravelMats=['#c1b69b','#d7cab1','#a7a18a'].map((c,i)=>material('gravel'+i,c));for(let i=0;i<1600;i++){let x=-13.9+rand()*29.8,z=7+rand()*3.2;ball(x,2.73,z,.025+rand()*.035,.018,.025+rand()*.04,gravelMats[i%3])}
+const leafMats=['#526b49','#667c50','#72895a','#879765','#435e44'].map((c,i)=>material('leaf'+i,c));const pinkMats=['#e9b9bc','#f2cecb','#f5dad2','#d99fab','#fff0e1'].map((c,i)=>material('pink'+i,c));
+function tree(x,z,y,s=1,cherry=false){const h=2.6*s;rod([x,y,z],[x+.1*s,y+h,z],.14*s,bark);for(let j=0;j<5;j++){const a=j*2.4,xx=x+Math.cos(a)*.75*s,zz=z+Math.sin(a)*.7*s,yy=y+h*(.7+rand()*.3);rod([x,y+h*.53,z],[xx,yy,zz],.065*s,bark);for(let k=0;k<5;k++){const b=k*2.4;ball(xx+Math.cos(b)*.43*s,yy+rand()*.45*s,zz+Math.sin(b)*.4*s,(.5+rand()*.22)*s,(cherry?.46:.65)*s,(.46+rand()*.23)*s,(cherry?pinkMats:leafMats)[Math.floor(rand()*5)])}}}
+function pine(x,z,y,s=1){rod([x,y,z],[x+.15*s,y+3.3*s,z],.13*s,bark);for(let i=0;i<4;i++){const a=i*2.6,xx=x+Math.cos(a)*(.75-i*.13)*s,zz=z+Math.sin(a)*(.75-i*.13)*s,yy=y+(1.6+i*.48)*s;rod([x+.1*s,y+1.3*s,z],[xx,yy,zz],.065*s,bark);for(let k=0;k<4;k++)ball(xx+Math.cos(k*2)*.4*s,yy,zz+Math.sin(k*2)*.35*s,.65*s,.3*s,.62*s,leafMats[(i+k)%5])}}
+for(let i=0;i<26;i++){const x=-20+rand()*41,z=-17+rand()*3;tree(x,z,.58,.7+rand()*.35,false)}
+for(let i=0;i<16;i++){const x=18.4+rand()*2.7,z=-13+rand()*25;tree(x,z,.58,.7+rand()*.35,false)}
+for(const p of [[-18,11,1],[-18,5,.95],[-12,15,1.15],[-6,15,1.0],[0,15,1.12],[7,15,1],[16,14,1.1],[-21,0,.85]])tree(p[0],p[1],.58,p[2],true);
+for(const p of [[-12,8],[-6,9],[10,9],[14,7],[14,-7],[-12,-8]])pine(p[0],p[1],2.72,.7);
+for(let i=0;i<50;i++){let x=-21+rand()*43,z=14+rand()*2.7;ball(x,.63,z,.16+rand()*.22,.18,.18,leafMats[i%5])}
+// Discrete petals gather below the spring trees.
+for(let i=0;i<230;i++){const x=-13+rand()*25,z=13.2+rand()*3.3;box(x,.59,z,.045+rand()*.05,.015,.035,pinkMats[i%5])}
+// Human scale figures, kept tiny like painted model-making figures.
+function figure(x,z,y,c){ball(x,y+.55,z,.075,.085,.075,material('skin'+rand(),'#c6ac8b'));box(x,y+.34,z,.15,.3,.11,c);rod([x-.045,y+.23,z],[x-.065,y+.02,z+.025],.029,wood);rod([x+.045,y+.23,z],[x+.065,y+.02,z-.025],.029,wood)}const coat1=material('coat1','#6e7e8b'),coat2=material('coat2','#b18665');figure(-2,8.5,2.73,coat1);figure(-1.6,8.6,2.73,coat2);figure(9,4.9,5.61,coat1);
+// A solid brass nameplate sits on the front edge of the display plinth.
+box(0,-.81,19.26,9,.68,.055,brass);for(const x of [-4.28,4.28])ball(x,-.81,19.30,.045,.045,.018,baseMat);
+// Batch repeated details to retain interactive performance without sacrificing geometry.
+for(const {kind,mat,items} of batches.values()){const g=kind==='box'?new THREE.BoxGeometry(1,1,1):kind==='cyl'?new THREE.CylinderGeometry(1,1,1,5):new THREE.IcosahedronGeometry(1,1);const im=new THREE.InstancedMesh(g,mat,items.length);for(let i=0;i<items.length;i++){const t=items[i];dummy.position.fromArray(t.p);dummy.scale.fromArray(t.s);dummy.quaternion.copy(t.q||new THREE.Quaternion());dummy.updateMatrix();im.setMatrixAt(i,dummy.matrix)}im.castShadow=true;im.receiveShadow=true;im.computeBoundingSphere();scene.add(im)}
+const plaqueCanvas=document.createElement('canvas');plaqueCanvas.width=1024;plaqueCanvas.height=96;const pc=plaqueCanvas.getContext('2d');pc.fillStyle='#b5a279';pc.fillRect(0,0,1024,96);pc.fillStyle='#35483e';pc.textAlign='center';pc.textBaseline='middle';pc.font='32px serif';pc.fillText('姫 路 城   /   H I M E J I   C A S T L E',512,49);const plaqueTexture=new THREE.CanvasTexture(plaqueCanvas);plaqueTexture.colorSpace=THREE.SRGBColorSpace;mesh(new THREE.PlaneGeometry(8.1,.58),new THREE.MeshStandardMaterial({map:plaqueTexture,roughness:.65,metalness:.2}),0,-.81,19.30);
+const labelData=keeps.map(k=>{const el=document.createElement('div');el.className='marker';el.textContent=k.name;document.body.appendChild(el);return {el,p:new THREE.Vector3(k.x,k.top+1.6,k.z)}});let showLabels=false;let tween=null;
+function view(pos,target){controls.autoRotate=false;document.getElementById('rotate').setAttribute('aria-pressed','false');tween={start:performance.now(),from:camera.position.clone(),to:pos,tf:controls.target.clone(),tt:target}}
+document.getElementById('home').onclick=()=>view(initial.clone().multiplyScalar(innerWidth<650?1.9:1),new THREE.Vector3(0,9,0));document.getElementById('above').onclick=()=>view(new THREE.Vector3(-32,66,36),new THREE.Vector3(0,4,0));document.getElementById('rotate').onclick=e=>{controls.autoRotate=!controls.autoRotate;e.currentTarget.setAttribute('aria-pressed',String(controls.autoRotate))};document.getElementById('labels').onclick=e=>{showLabels=!showLabels;e.currentTarget.setAttribute('aria-pressed',String(showLabels))};controls.addEventListener('start',()=>tween=null);
+function fit(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}window.addEventListener('resize',fit);
+if(innerWidth<650){camera.position.multiplyScalar(1.9);camera.fov=46;camera.updateProjectionMatrix()}
+window.__diorama={scene,camera,controls,renderer,keeps,stats:()=>({keeps:keeps.map(k=>({name:k.name,tiers:k.tiers})),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,meshes:scene.children.length,position:camera.position.toArray(),target:controls.target.toArray()})};
+renderer.setAnimationLoop(t=>{if(tween){const k=Math.min(1,(performance.now()-tween.start)/850),e=k*k*(3-2*k);camera.position.lerpVectors(tween.from,tween.to,e);controls.target.lerpVectors(tween.tf,tween.tt,e);if(k===1)tween=null}controls.update();renderer.render(scene,camera);for(const {el,p}of labelData){const v=p.clone().project(camera);el.style.display=showLabels&&v.z<1?'block':'none';el.style.left=(v.x*.5+.5)*innerWidth+'px';el.style.top=(-v.y*.5+.5)*innerHeight+'px'}});
+document.getElementById('loading').hidden=true;window.__ready=true;
+</script>
+<script>window.addEventListener('error',e=>{if(!window.__ready){document.getElementById('loading').hidden=true;const el=document.getElementById('error');el.style.display='block';el.textContent='描画を開始できませんでした。インターネット接続と WebGL が有効なブラウザをご確認ください。';}})</script>
+</body></html>
