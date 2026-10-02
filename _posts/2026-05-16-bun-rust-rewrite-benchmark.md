@@ -22,8 +22,6 @@ image: /images/posts/bun-rust-rewrite-benchmark/rust-vs-zig-bars.svg
 
 `.rs` と `.zig` に絞っても、差分は `1747 files changed, 982807 insertions(+), 1322 deletions(-)` でした。かなり大きな移行です。
 
-確認日は2026年5月16日 JST。
-
 ## 実行環境
 
 ベンチマークは、次の1台のローカル環境で実行しました。
@@ -228,5 +226,3 @@ Before Rustの時点で、Bunはすでにかなり速かったです。今回も
 それでも、実プロジェクトでまず効果が期待できるbuildと変換処理では、After Rustがかなり速いです。ローカルビルドではrelease binaryも小さくなりましたし、TypeScriptのbundleやtranspileではすぐに分かる差が出ていました。
 
 結論としては、Rust化後のBunはまだ「何でも速い」状態ではありません。ただ、build-heavyなBunユーザーにとっては、もう十分に意味のある改善に見えます。
-
-gpt-5.5

@@ -40,10 +40,9 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
 
 <h2>はじめに</h2>
 <p>Gemini Flashの3.5から3.8までを、今度は平面図ではなく3D空間で並べます。4世代が同じ題材をどのような形、質感、操作UIへ展開したかを比較します。</p>
-<p>同じ5題材を単一HTMLのThree.jsシーンとして生成し、完成したページをそのまま埋め込みました。静止画だけで判断せず、「3Dを起動」から回転、ズーム、各モデルが追加した操作UIを試せます。</p>
-<p>各モデルによる成果物の生成と機械検証、gpt-5.6-solによる記事作成までをAIで行いました（Full AI方式）。掲載する成果物は既存のものを使っています。</p>
+<p>同じ5題材を単一HTMLのThree.jsシーンとして生成し、完成したページをそのまま埋め込みました。Gemini 3.5 Flash 分は既存の生成物を再利用し、3.6 / 3.7 / 3.8 分は共通プロンプトで新規生成しています。</p>
 
-<div class="bench-note"><strong>操作方法：</strong>各カードの「▶ 3Dを起動」を押すと埋め込みが起動します。ドラッグで回転、ホイールまたはピンチでズームできます。WebGLコンテキストを使いすぎないよう、同時起動は3件までです。</div>
+<div class="bench-note"><strong>注意：</strong>WebGLコンテキストを使いすぎないよう、同時起動は3件までです。</div>
 
 <h2>比較条件</h2>
 <ul>
@@ -52,7 +51,6 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
   <li><strong>掲載3D：</strong>5題材 × 4モデル = 20件</li>
   <li><strong>形式：</strong>Three.jsを使う単一HTML。外部の画像、glTFなどのモデルアセットは不使用</li>
   <li><strong>必須操作：</strong>ドラッグ回転、ホイールズーム</li>
-  <li><strong>確認日：</strong>2026年9月3日 JST</li>
 </ul>
 
 <h2>機械検証</h2>
@@ -63,7 +61,7 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
 <tr><td>Gemini 3.8 Flash</td><td>84,644 bytes</td><td>2,126行</td><td>Antigravity CLIの画面でHigh表示を確認して新規生成</td></tr></tbody></table>
 
 <h2>操作UIの数</h2>
-<p>自動ドッグフーディングで検出したボタンとレンジスライダーの数です。数の多さは品質の指標ではありません。共通プロンプトに対して各モデルが追加した操作機能を確認できます。</p>
+<p>自動ドッグフーディングで検出したボタンとレンジスライダーの数です。共通プロンプトに対して各モデルが追加した操作機能の数として読んでください。</p>
 <table class="bench-table"><thead><tr><th>題材</th><th>Gemini 3.5 Flash</th><th>Gemini 3.6 Flash High</th><th>Gemini 3.7 Flash High</th><th>Gemini 3.8 Flash</th></tr></thead><tbody><tr><td>トラックボール付き分割キーボード</td><td>ボタン3</td><td>ボタン0</td><td>ボタン2</td><td>ボタン2</td></tr><tr><td>機械式時計のムーブメント</td><td>ボタン2</td><td>ボタン1</td><td>ボタン1</td><td>ボタン2</td></tr><tr><td>猫</td><td>ボタン0</td><td>ボタン0</td><td>ボタン0</td><td>ボタン0</td></tr><tr><td>7軸ロボットアーム</td><td>ボタン3、スライダー7</td><td>ボタン0、スライダー7</td><td>ボタン2、スライダー8</td><td>ボタン3、スライダー8</td></tr><tr><td>エスプレッソマシン断面図</td><td>ボタン5</td><td>ボタン3</td><td>ボタン3</td><td>ボタン4</td></tr></tbody></table>
 
 <h2>1. トラックボール付き分割キーボード</h2>
@@ -153,14 +151,14 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
   <div class="v3d-stage"><img src="/images/posts/3d-model-benchmark/gemini38flash/espresso-machine.webp" alt="Gemini 3.8 Flashが生成したエスプレッソマシン断面図の3Dモデル" loading="lazy"><button type="button" class="v3d-play"><span>▶ 3Dを起動</span></button></div>
 </div></div>
 
-<h2>再現方法</h2>
-<p>共通プロンプトと検証スクリプトは、<a href="https://github.com/kazuph/kazuph.github.io/tree/master/scripts/3d_benchmark_2026" target="_blank" rel="noopener">scripts/3d_benchmark_2026/</a>にあります。</p>
-<pre><code class="language-bash">node scripts/3d_benchmark_2026/dogfood_check.mjs http://127.0.0.1:4000 gemini35flash gemini36flash gemini37flash gemini38flash
-</code></pre>
-
 <h2>おわりに</h2>
 <p>Gemini 3.5 Flash、Gemini 3.6 Flash High、Gemini 3.7 Flash High、Gemini 3.8 Flashが同じ5題材から作った20件を、記事内で直接操作できる形にしました。初期画面だけでなく、視点を回し、各ボタンやスライダーを触ると、モデルごとの作り込みの差を確認できます。</p>
 <p>Enjoy, spinning the models!</p>
+
+<h2>参考</h2>
+<ul>
+  <li><a href="https://github.com/kazuph/kazuph.github.io/tree/master/scripts/3d_benchmark_2026" target="_blank" rel="noopener">scripts/3d_benchmark_2026/（共通プロンプトと検証スクリプト）</a></li>
+</ul>
 
 <script>
 (function () {

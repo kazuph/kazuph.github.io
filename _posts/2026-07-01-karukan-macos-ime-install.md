@@ -2,7 +2,7 @@
 layout: post
 title: "KarukanをmacOSに入れたらGoogle日本語入力より軽快だった"
 date: 2026-07-01
-description: "Rust製IME KarukanをmacOSに導入し、辞書・モデル取得から実際の変換確認まで行ったFull AI導入メモ。"
+description: "Rust製IME KarukanをmacOSに導入し、辞書・モデル取得から実際の変換確認まで行った導入メモ。"
 permalink: /2026/07/01/karukan-macos-ime-install.html
 full_ai: true
 full_ai_model: gpt-5.5
@@ -10,7 +10,7 @@ full_ai_model: gpt-5.5
 
 ## はじめに
 
-この記事は、Rust製の日本語入力システム [Karukan](https://github.com/togatoga/karukan) を macOS に導入した記録です。AI が実環境で導入作業、ビルド、辞書とモデルの取得、インストール済みサーバーの動作確認を行いました。この記事は、その結果を Full AI 記事としてまとめたものです。
+この記事は、Rust製の日本語入力システム [Karukan](https://github.com/togatoga/karukan) を macOS に導入した記録です。
 
 最初に触った感想はかなり強烈でした。
 

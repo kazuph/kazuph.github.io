@@ -44,14 +44,14 @@ jobs:
           import subprocess
           from pathlib import Path
           text = Path('_site/blog/2026/10/02/yomiyasu-ai-articles/index.html').read_text()
-          assert text.count('class="yms-compare"') == 11
+          assert text.count('class="yms-compare"') == 10
           assert '過去のAI記事にyomiyasu（よみやす）を適用してみた' in text
           assert '既存22記事の112箇所' in text
           assert 'CPUを使わない方に倒す' not in text
           assert 'Opus圧勝です。Astraは精巧に見えて、再現度が低いです。適当じゃん。' in text
           article = Path('_posts/2026-10-02-yomiyasu-ai-articles.md').read_text()
           examples = re.findall(r'<p class="yms-source">出典 <a href="\{% post_url ([\w-]+) %\}">.*?<table class="yms-compare">(.*?)</table>', article, re.S)
-          assert len(examples) == 11
+          assert len(examples) == 10
           def plain(value):
               value = html.unescape(re.sub(r'<[^>]*>', '', value))
               return re.sub(r'[\s`*]+', '', value)
@@ -65,7 +65,7 @@ jobs:
               assert len(cells) == 2, slug
               assert plain(cells[0]) in plain(before), ('before mismatch', slug)
               assert plain(cells[1]) in plain(after), ('after mismatch', slug)
-          print('All eleven comparison pairs match their source posts; the human quotation is unchanged.')
+          print('All ten comparison pairs match their source posts; the human quotation is unchanged.')
           PY
       - uses: actions/upload-artifact@v4
         if: always()

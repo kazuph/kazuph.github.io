@@ -16,8 +16,7 @@ Gemini 3.5 Flashを基準にしてきた図解生成ベンチマークへ、Gemi
 比較には、2026年7月31日のベンチマークでClaude Opus 5が生成した結果を使っています。
 同じ題材を同じ形式で描いた画像を並べ、Flash各世代の違いとOpus 5との違いを確認できます。
 
-既存プロンプトの再利用、各モデルによるソース生成、機械検証、記事作成までをAIで行いました（Full AI方式）。
-機械検証の結果だけで見た目の順位を決めず、180枚のレンダリング結果と公開ソースをそのまま掲載します。
+見た目の順位は付けず、機械検証の結果と180枚のレンダリング結果、公開ソースをそのまま掲載します。
 
 <style>
 body:has(.diagram-benchmark-wide) { --page-max-width: 1600px; --page-gutter: 12px; }
@@ -149,11 +148,9 @@ body:has(.diagram-benchmark-wide) { --page-max-width: 1600px; --page-gutter: 12p
 - **掲載画像**：12題材 × 3形式 × 5列 = **180枚**
 - **今回の新規生成**：Gemini 3.6 Flash、Gemini 3.7 Flash、Gemini 3.8 Flashの各36件、合計**108件**
 - **既存資産**：Gemini 3.5 Flash 36件、Claude Opus 5 36件
-- **確認日**：2026-09-03 JST
 
 Gemini 3.6 FlashとGemini 3.7 Flashは、Antigravity CLI 1.1.24（`agy`）の`--model`でHigh版を固定しました。
-Gemini 3.8 Flashは対話画面にHighと表示されていることを確認しましたが、起動引数にはモデルとeffortを明示していませんでした。
-APIキー課金は使っていません。
+Gemini 3.8 Flashは、起動引数でモデルとeffortを指定せず、対話画面にHighと表示された状態で生成しました。
 
 Claude Opus 5は2026年7月31日の生成物を再利用しています。
 新しいモデルが過去結果を参照して描き直すことを避けるため、各Gemini担当には共通プロンプトだけを渡し、既存モデルの成果物をコピーしない条件を付けました。
@@ -192,9 +189,6 @@ Claude Opus 5は2026年7月31日の生成物を再利用しています。
 残り7題材は、数式、制御、認証経路、物理装置、夜景、高密度なアーキテクチャ図まで比較範囲を広げるためにAIが設計しました。
 
 ## 出力一覧
-
-各表は5列を同時に見渡せるよう、画面幅の中へ収めています。
-モデル名の直下にあるファイル名から、実際に使ったTikZ、Python、SVGソースを開けます。
 
 ## 01. クマのぬいぐるみ
 
@@ -642,26 +636,6 @@ Claude Opus 5は2026年7月31日の生成物を再利用しています。
 </table>
 </div>
 
-
-## 再現方法
-
-共通プロンプトは[`scripts/diagram_benchmark_2026/prompts/`](https://github.com/kazuph/kazuph.github.io/tree/master/scripts/diagram_benchmark_2026/prompts)にあります。
-生成後のソースは、形式ごとに次の処理でWebPへ変換しました。
-
-```bash
-# 各モデルの36件をまとめてレンダリング
-scripts/diagram_benchmark_2026/render_all.sh gemini36flash
-scripts/diagram_benchmark_2026/render_all.sh gemini37flash
-scripts/diagram_benchmark_2026/render_all.sh gemini38flash
-
-# 記事から開ける場所へソースをコピー
-python3 scripts/diagram_benchmark_2026/publish_sources.py
-```
-
-- TikZ：`xelatex → pdftoppm → cwebp`
-- matplotlib：`python → PNG → cwebp`
-- SVG：`rsvg-convert → PNG → cwebp`
-
 ## おわりに
 
 Gemini 3.5 Flash、Gemini 3.6 Flash、Gemini 3.7 Flash、Gemini 3.8 Flash、Claude Opus 5を、12題材、3形式、180枚で同じ画面に並べました。
@@ -673,6 +647,7 @@ Enjoy, comparing every diagram!
 
 ## 参考
 
-- [Cursor Grok 4.5 vs Claude Opus 5 vs Gemini 3.5 Flash 図解生成ベンチマーク](/blog/2026/07/31/grok45-vs-opus5-diagram-benchmark/)（確認日：2026-09-03）
-- [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)（確認日：2026-09-03）
-- [共通manifest](https://github.com/kazuph/kazuph.github.io/blob/master/scripts/diagram_benchmark_2026/manifest.yml)（確認日：2026-09-03）
+- [Cursor Grok 4.5 vs Claude Opus 5 vs Gemini 3.5 Flash 図解生成ベンチマーク](/blog/2026/07/31/grok45-vs-opus5-diagram-benchmark/)
+- [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)
+- [共通manifest](https://github.com/kazuph/kazuph.github.io/blob/master/scripts/diagram_benchmark_2026/manifest.yml)
+- [共通プロンプト scripts/diagram_benchmark_2026/prompts/](https://github.com/kazuph/kazuph.github.io/tree/master/scripts/diagram_benchmark_2026/prompts)

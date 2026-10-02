@@ -10,7 +10,7 @@ full_ai_model: claude-sonnet-5
 ---
 
 <div class="zenn-message">
-  <p><strong>この記事について:</strong> これは <a href="/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-22 の「Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク」</a>と<a href="/blog/2026/05/29/opus48-vs-gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-29 の Claude Opus 4.8 追加版</a>の系譜を継ぐ更新版です。今回はマスター(ユーザー)から「一番左の列を Claude Sonnet 5(このセッション自身)の新規作図にし、真ん中を Claude Opus 4.8、右を Gemini 3.5 Flash にした3列で作れ」という指示を受け、GPT-5.4 列を Claude Sonnet 5 列に置き換えました。Opus 4.8 と Gemini 3.5 Flash の列は 2026-05-29 版の資産をそのまま流用し、<strong>新規に作図したのは Sonnet 5 の30個(10題材 × 3形式)だけ</strong>です。</p>
+  <p><strong>この記事について:</strong> これは <a href="/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-22 の「Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク」</a>と<a href="/blog/2026/05/29/opus48-vs-gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-29 の Claude Opus 4.8 追加版</a>の系譜を継ぐ更新版です。GPT-5.4 列を Claude Sonnet 5 列に置き換え、左から Sonnet 5 / Opus 4.8 / Gemini 3.5 Flash の3列にしました。Opus 4.8 と Gemini 3.5 Flash の列は 2026-05-29 版の資産をそのまま流用し、<strong>新規に作図したのは Sonnet 5 の30個(10題材 × 3形式)だけ</strong>です。</p>
 </div>
 
 ## 依頼内容
@@ -32,11 +32,9 @@ full_ai_model: claude-sonnet-5
 
 このシリーズは、新しいモデルが出るたびに「同じお題・同じプロンプト・同じビルド手順」で図解を描かせて横並び比較する定点観測ベンチマークです。今回の3モデルは左から **Claude Sonnet 5 / Claude Opus 4.8 / Gemini 3.5 Flash** の順で並べています。
 
-- **Claude Sonnet 5**: この作業セッションを主導する Claude Code(オーケストレーター)自身が、`Agent` ツールで題材×形式ぶん(30体)の subagent を model 固定で個別にスポーンし、各subagentが担当プロンプトから直接 source を書き起こしました
+- **Claude Sonnet 5**: Claude Code の `Agent` ツールで題材×形式ぶん(30体)の subagent を model 固定で個別にスポーンし、各subagentが担当プロンプトから直接 source を書き起こしました
 - **Claude Opus 4.8**: 2026-05-29版で生成済みの10題材 × 3形式 = 30個をそのまま流用
 - **Gemini 3.5 Flash**: `agy` コマンド(Gemini CLI 系のローカルエージェントCLI)の print モードで2026-05-22に生成済みの10題材 × 3形式 = 30個をそのまま流用
-
-題材設計、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。
 
 <style>
 .diagram-hero img,
@@ -76,7 +74,6 @@ full_ai_model: claude-sonnet-5
 
 <figure class="diagram-hero">
   <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/bear-plush-ogp-sonnet5-3way.png" alt="クマのぬいぐるみの TikZ 結果を、Claude Sonnet 5・Claude Opus 4.8・Gemini 3.5 Flash の3モデルで横並び比較した画像" loading="eager">
-  <figcaption>冒頭画像と OGP には、シリーズで継続して使っているクマのぬいぐるみ題材の TikZ 比較を Sonnet 5 / Opus 4.8 / Gemini 3.5 Flash の3列で並べた画像を使っています。</figcaption>
 </figure>
 
 ## 比較条件
@@ -87,9 +84,8 @@ full_ai_model: claude-sonnet-5
 - **総数**: 10題材 × 3形式 × 3モデル = **90個**
 - **今回の新規生成分**: Claude Sonnet 5 の 10題材 × 3形式 = **30個**(1図1subagent、model固定、Read/Writeのみで生成)
 - **流用分**: Claude Opus 4.8(2026-05-29生成)30個 + Gemini 3.5 Flash(2026-05-22生成)30個
-- **確認日**: 2026-07-01 JST(Opus 4.8 分は2026-05-29、Gemini 3.5 Flash 分は2026-05-22)
 
-題材のうち 5 つはユーザー指定です。残り 5 つは比較差が出やすいように AI で設計しました。過去の題材は1つも削除していません。
+題材のうち 5 つはユーザー指定です。残り 5 つは比較差が出やすいように AI で設計しました。
 
 ## 題材一覧
 
@@ -121,29 +117,16 @@ full_ai_model: claude-sonnet-5
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。お題のプロンプトは `scripts/diagram_benchmark_2026/prompts/` にあります(3モデル共通)。
 
-source 欄のリンクから、公開したソースをこのサイトで直接開けます。
+## Sonnet 5 列の強制プロンプト運用
 
-## 実行方法(Sonnet 5 列の強制プロンプト運用)
-
-Sonnet 5 列の30個は、この作業セッションのメインエージェントが `Agent` ツールで題材×形式の組み合わせぶん(10題材 × 3形式 = 30体)の subagent を個別に起動し、それぞれに次を明記したプロンプトを渡して生成させました。
+Sonnet 5 列の30個は、`Agent` ツールで題材×形式の組み合わせぶん(10題材 × 3形式 = 30体)の subagent を個別に起動し、それぞれに次を明記したプロンプトを渡して生成させました。
 
 - **モデル固定**: `Agent` 呼び出し側で `model: "sonnet"` を明示指定(subagentの自己申告に頼らず、オーケストレーター側の呼び出しパラメータでモデルを強制)
 - **使用ツールの制限**: 「Read でお題プロンプトを読み、Write で source を保存する以外のツールは使うな」と明記
 - **代替手段の禁止**: 「Bashは一切使用禁止。`codex exec` / `agy` / `gemini` / `copilot` などの外部CLIやMCPツール(drawio等)、WebFetch/WebSearchで代わりに描かせることを完全禁止。違反が発覚した時点でその成果物は削除する」と明記
 - **他モデル出力の参照禁止**: 「既存の opus48 / gemini35flash / gpt54 / gpt55 / fable5 ディレクトリ以下を読んだりコピーしたりするな。ゼロから自分で設計しろ」と明記
 
-```bash
-# Sonnet 5 の source を画像へ(1図1subagentで生成した30個)
-scripts/diagram_benchmark_2026/render_all.sh sonnet5
-
-# 流用分(Opus 4.8 / Gemini 3.5 Flash)は過去記事の生成物をそのまま使用
-scripts/diagram_benchmark_2026/render_all.sh opus48
-scripts/diagram_benchmark_2026/render_all.sh gemini35flash
-```
-
-### 生成時に起きたこと(記録)
-
-継続して比較できるよう、生成中に起きた問題も記録します。
+### 生成時に起きたこと
 
 - **subagent の同時起動数上限**: 30体を1メッセージで一気に起動しようとしたところ、環境側のpane同時起動数の上限(概ね15体前後)に達し、後半のsubagentが `respawn pane failed` で起動失敗しました。オーケストレーターは、完了済みsubagentへ `shutdown_request` を送ってpaneを解放しながら、失敗分を数体ずつ再送信する形で30体すべての起動と完了を確認しています
 - **Claude Sonnet 5**: ブロッホ球のTikZで、独自マクロ名 `\tmpX1` / `\tmpY1`(TeXの制御綴りは英字のみで数字を含められないため `\tmpX` + 文字 `1` に分割される既知の罠)と、`\SphR and \EqMinorR` のようにマクロ直後に `and` キーワードを続けた際にマクロが後続スペースを飲み込んで `3and ...` になる罠の、計2箇所でコンパイルエラーが発生しました。いずれも描画内容には無関係な構文修正(マクロ名の変更、`{}` によるスペース保持)をオーケストレーター側で1回ずつ行い、コンパイルを通しています
@@ -981,9 +964,9 @@ scripts/diagram_benchmark_2026/render_all.sh gemini35flash
 
 ## 参考
 
-- 前回記事(3モデル版): [Claude Opus 4.8 vs Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/29/opus48-vs-gemini35flash-vs-gpt54-diagram-benchmark/)(確認日: 2026-05-29)
-- 元記事(2モデル版): [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)(確認日: 2026-05-22)
-- さらに前の比較記事: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison (確認日: 2026-05-22)
+- 前回記事(3モデル版): [Claude Opus 4.8 vs Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/29/opus48-vs-gemini35flash-vs-gpt54-diagram-benchmark/)
+- 元記事(2モデル版): [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)
+- さらに前の比較記事: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison
 
 ## おわりに(人間コメント)
 

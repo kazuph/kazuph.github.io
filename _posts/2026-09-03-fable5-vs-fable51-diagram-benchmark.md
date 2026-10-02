@@ -18,8 +18,7 @@ Claude Fable 5が出たとき、同じ12題材をTikZ、matplotlib、SVGで描�
 バージョン番号は0.1しか増えていません。
 では、出力も小さな差に収まるのでしょうか。
 
-ソース生成と機械検証はFable 5.1、記事作成はgpt-5.6-solが担当しました（Full AI方式）。
-見た目の優劣は自動判定せず、108枚のレンダリング結果と実際のソースを掲載します。
+108枚のレンダリング結果と実際のソースを掲載し、見た目の優劣は読者に判断してもらう形式です。
 
 <style>
 body:has(.fable-compare-wide) { --page-max-width: 1400px; --page-gutter: 12px; }
@@ -135,10 +134,6 @@ body:has(.fable-compare-wide) { --page-max-width: 1400px; --page-gutter: 12px; }
 - **Fable 5**：2026年6月10日の生成物36件を再利用
 - **Fable 5.1**：共通プロンプトだけを入力し、既存Fable 5の成果物を参照せずに36件を新規生成
 - **Opus 5**：2026年7月31日の生成物36件を再利用
-- **確認日**：2026年9月3日 JST
-
-Fable 5.1の生成には、個人環境で起動したClaude Codeを使用しました。
-外部の共有APIキーや他モデルは使っていません。
 
 ## 機械検証の結果
 
@@ -629,23 +624,6 @@ Fable 5の36ソースには日本語文字がなく、Fable 5.1はmatplotlibとS
 </table>
 </div>
 
-
-## 再現方法
-
-共通プロンプトは[`scripts/diagram_benchmark_2026/prompts/`](https://github.com/kazuph/kazuph.github.io/tree/master/scripts/diagram_benchmark_2026/prompts)にあります。
-生成後のソースは、同じレンダリングスクリプトでWebPへ変換しました。
-
-```bash
-scripts/diagram_benchmark_2026/render_all.sh fable5
-scripts/diagram_benchmark_2026/render_all.sh fable51
-scripts/diagram_benchmark_2026/render_all.sh opus5
-python3 scripts/diagram_benchmark_2026/publish_sources.py
-```
-
-- TikZ：`xelatex → pdftoppm → cwebp`
-- matplotlib：`python → PNG → cwebp`
-- SVG：`rsvg-convert → PNG → cwebp`
-
 ## おわりに
 
 Fable 5、Fable 5.1、Opus 5を、同じ12題材、3形式、108枚で並べました。
@@ -657,5 +635,6 @@ Enjoy, comparing Fable generations!
 
 ## 参考
 
-- [Claude Fable 5 vs Gemini 3.5 Flash vs GPT-5.5 図解生成ベンチマーク](/blog/2026/06/10/fable5-vs-gemini35flash-vs-gpt55-diagram-benchmark/)（確認日：2026年9月3日）
-- [Gemini 3.5 Flashから3.8 Flash vs Claude Opus 5 図解生成ベンチマーク](/blog/2026/09/03/gemini35-to-38-vs-opus5-diagram-benchmark/)（確認日：2026年9月3日）
+- [Claude Fable 5 vs Gemini 3.5 Flash vs GPT-5.5 図解生成ベンチマーク](/blog/2026/06/10/fable5-vs-gemini35flash-vs-gpt55-diagram-benchmark/)
+- [Gemini 3.5 Flashから3.8 Flash vs Claude Opus 5 図解生成ベンチマーク](/blog/2026/09/03/gemini35-to-38-vs-opus5-diagram-benchmark/)
+- [共通プロンプト scripts/diagram_benchmark_2026/prompts/](https://github.com/kazuph/kazuph.github.io/tree/master/scripts/diagram_benchmark_2026/prompts)

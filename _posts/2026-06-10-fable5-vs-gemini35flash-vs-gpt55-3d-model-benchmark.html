@@ -10,22 +10,20 @@ full_ai_model: claude-fable-5
 ---
 
 <div class="zenn-message">
-  <p><strong>この記事について:</strong> これは <a href="/blog/2026/06/10/fable5-vs-gemini35flash-vs-gpt55-diagram-benchmark/">同日公開の「Claude Fable 5 vs Gemini 3.5 Flash vs GPT-5.5 図解生成ベンチマーク」</a>（2D図解・静止画）の<strong>3D版スピンオフ</strong>です。今回は静止画ではなく、各モデルに <strong>単一HTMLのインタラクティブ3Dシーン</strong>（Three.js 可・外部アセット禁止）を書かせて、できあがったページをこの記事に埋め込みました。あえて Markdown ではなく HTML 記事にしているのは、<strong>読者にその場で3Dをグリグリ回してほしいから</strong>です。各カードの「▶ 3Dを起動」を押すと、そのモデルが生成したページがそのまま動きます。</p>
+  <p><strong>この記事について:</strong> これは <a href="/blog/2026/06/10/fable5-vs-gemini35flash-vs-gpt55-diagram-benchmark/">同日公開の「Claude Fable 5 vs Gemini 3.5 Flash vs GPT-5.5 図解生成ベンチマーク」</a>（2D図解・静止画）の<strong>3D版スピンオフ</strong>です。今回は静止画ではなく、各モデルに <strong>単一HTMLのインタラクティブ3Dシーン</strong>（Three.js 可・外部アセット禁止）を書かせて、できあがったページをこの記事に埋め込みました。</p>
 </div>
 
 <h2>はじめに</h2>
 
-<p>2D図解ベンチマークを続けてきて、「コードで絵を描く力」はだいぶ見えてきました。次は立体的な空間の表現を比較します。座標も配色も照明も全部コードで指定する Three.js のシーンを一発で書かせたとき、3モデルでどれだけ差が出るのか。静止画のスクリーンショット比較では3Dの面白さが伝わらないので、生成された HTML をそのまま記事に埋め込んで、読者が自分の手で回せる形にしました。</p>
+<p>2D図解ベンチマークを続けてきて、「コードで絵を描く力」はだいぶ見えてきました。次は立体的な空間の表現を比較します。座標も配色も照明も全部コードで指定する Three.js のシーンを一発で書かせたとき、3モデルでどれだけ差が出るのか。静止画のスクリーンショット比較では3Dの面白さが伝わらないので、生成された HTML をそのまま記事に埋め込みました。</p>
 
 <p>モデルと生成経路は2D版と同じ構成です。</p>
 
 <ul>
-  <li><strong>Claude Fable 5</strong>: この作業セッションの Claude Code（モデルID: <code>claude-fable-5</code>）自身が、プロンプトから直接書き起こし</li>
+  <li><strong>Claude Fable 5</strong>: Claude Code（モデルID: <code>claude-fable-5</code>）がプロンプトから直接書き起こし（レンダリング結果を見てからの手直しはなし）</li>
   <li><strong>Gemini 3.5 Flash</strong>: <code>agy</code>（Gemini CLI 系ローカルエージェント）の print モード <code>agy -p</code> で生成</li>
   <li><strong>GPT-5.5</strong>: <code>codex exec -m gpt-5.5</code> の非対話モードで生成</li>
 </ul>
-
-<p>題材設計、コード生成、検証、記事作成までをAIで行いました（Full AI 方式）。</p>
 
 <style>
 body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
@@ -123,11 +121,11 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
 
 <figure class="diagram-hero">
   <img src="/images/posts/3d-model-benchmark/ogp-keyboard-3way.png" alt="トラックボール付き分割キーボードの3Dモデルを、Claude Fable 5・Gemini 3.5 Flash・GPT-5.5 の3モデルで横並び比較した画像" loading="eager">
-  <figcaption>題材1「トラックボール付き分割キーボード」の初期表示を3モデル並べたもの。左から Claude Fable 5 / Gemini 3.5 Flash / GPT-5.5。この記事内で3つとも実際に動かせます。</figcaption>
+  <figcaption>題材1「トラックボール付き分割キーボード」の初期表示を3モデル並べたもの。左から Claude Fable 5 / Gemini 3.5 Flash / GPT-5.5。</figcaption>
 </figure>
 
 <div class="bench-note">
-  <strong>操作メモ:</strong> 各カードの「▶ 3Dを起動」を押すとそのまま埋め込みで動きます（ドラッグ: 回転 / ホイール: ズーム）。起動したカードは横幅いっぱいに広がります。WebGL コンテキストの上限対策で<strong>同時に動くのは3つまで</strong>（古いものから自動で閉じます）。ページスクロールとホイール操作が干渉するときは「別タブ」リンクからフルスクリーンでどうぞ。スマホはタッチドラッグ・ピンチで操作できます。
+  <strong>注意:</strong> WebGL コンテキストの上限対策で<strong>同時に動くのは3つまで</strong>です（古いものから自動で閉じます）。ページスクロールとホイール操作が干渉するときは「別タブ」リンクからフルスクリーンでどうぞ。
 </div>
 
 <h2>比較条件</h2>
@@ -137,7 +135,6 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
   <li><strong>出力形式</strong>: 単一HTMLのインタラクティブ3Dシーン（Three.js の CDN 読み込みのみ可、画像・glTF等の外部アセット禁止、形状はすべてコードで構築、ドラッグ回転＋ホイールズーム必須）</li>
   <li><strong>題材</strong>: 5題材</li>
   <li><strong>総数</strong>: 5題材 × 3モデル = <strong>15個</strong>（すべて今回新規生成）</li>
-  <li><strong>確認日</strong>: 2026-06-10 JST</li>
 </ul>
 
 <h2>題材一覧</h2>
@@ -157,16 +154,16 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
 
 <p>プロンプトは3モデル共通で、<a href="https://github.com/kazuph/kazuph.github.io/tree/master/scripts/3d_benchmark_2026/prompts" target="_blank" rel="noopener">scripts/3d_benchmark_2026/prompts/</a> に置いています。生成・検証スクリプトも同じディレクトリにあります。</p>
 
-<h2>実行方法と検証パイプライン</h2>
+<h2>生成と機械検証</h2>
 
 <ul>
-  <li><strong>Claude Fable 5</strong>: セッション内でプロンプトから一発書き起こし。書いた直後のセルフレビューで誤記5箇所（壊れたCSS宣言2つ、<code>add()</code> の戻り値に対して位置を設定していたバグ2つなど、3ファイル分）を修正してからレンダリングしました。<strong>レンダリング結果を見てからの手直しはゼロ</strong>です。</li>
-  <li><strong>Gemini 3.5 Flash</strong>: <code>run_gemini_batch.py</code>（<code>agy -p</code>）で5題材を生成。<strong>全題材1回目で成功</strong>。</li>
-  <li><strong>GPT-5.5</strong>: <code>run_codex_batch.py</code>（<code>codex exec</code>）で5題材を生成。後述のとおりリトライが多発しました。</li>
+  <li><strong>Claude Fable 5</strong>: プロンプトから一発書き起こし。書いた直後のセルフレビューで誤記5箇所（壊れたCSS宣言2つ、<code>add()</code> の戻り値に対して位置を設定していたバグ2つなど、3ファイル分）を修正してからレンダリングしました。<strong>レンダリング結果を見てからの手直しはゼロ</strong>です。</li>
+  <li><strong>Gemini 3.5 Flash</strong>: <strong>全題材1回目で成功</strong>。</li>
+  <li><strong>GPT-5.5</strong>: 後述のとおりリトライが多発しました。</li>
   <li><strong>検証</strong>: 2D版の「xelatex / py_compile でコンパイル確認」に相当するものとして、Playwright のヘッドレス Chromium で実際にページを開き、<strong>ページエラーなし＋WebGL キャンバス生存</strong>を確認するレンダリング検証（<code>render_check.mjs</code>）を全15ページに通しました。さらに自動ドッグフーディング（<code>dogfood_check.mjs</code>）でドラッグ回転・ホイールズーム・アニメーション・UI要素の有無を機械的に確認しています。</li>
 </ul>
 
-<h3>生成時のトラブル（正直な記録）</h3>
+<h3>生成時のトラブル</h3>
 
 <div class="bench-note">
   <p><strong>GPT-5.5 は5題材中4題材で同じバグを繰り返しました。</strong> <code>OrbitControls.js</code> を CDN のフルURLで直接 import すると、その内部にある <code>import ... from 'three'</code>（bare specifier）が解決できず実行時エラーになる、という Three.js のモジュール解決の問題です。importmap を書けば回避できるのですが、初回バッチでは エスプレッソマシン以外の4本すべてがこのパターンで動きませんでした。</p>
@@ -300,7 +297,7 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
 
 <h2>自動ドッグフーディング結果</h2>
 
-<p>全15ページに対して、ヘッドレスブラウザでドラッグ回転・ホイールズーム・自動アニメーション・追加UIを機械的に確認した結果です（<code>dogfood_check.mjs</code>、確認日 2026-06-10）。<strong>回転とズームは15/15すべて動作</strong>しました。</p>
+<p>全15ページに対して、ヘッドレスブラウザでドラッグ回転・ホイールズーム・自動アニメーション・追加UIを機械的に確認した結果です（<code>dogfood_check.mjs</code>）。<strong>回転とズームは15/15すべて動作</strong>しました。</p>
 
 <table class="bench-table">
   <thead><tr><th>題材</th><th>Claude Fable 5</th><th>Gemini 3.5 Flash</th><th>GPT-5.5</th></tr></thead>
@@ -321,22 +318,6 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
   <li><strong>Gemini 3.5 Flash</strong> は質感の表現とUIの充実度が強みです。エスプレッソマシンの操作パネルは3モデルの中で特に優れています。ただし初期カメラやポーズの詰めが甘く、「最初の1画面」で損をしがちです。生成の安定性は完璧でした。</li>
   <li><strong>GPT-5.5</strong> は当たり外れの振れ幅が大きい結果に。ロボットアームの初期ポーズは3モデルで一番絵になっていますが、OrbitControls の bare import という同一バグを11世代連続で書いた生成安定性が最大の課題です。要件にないUIを足さない、ミニマル志向も一貫しています。</li>
 </ul>
-
-<h2>再現方法</h2>
-
-<p>生成と検証は以下で再現できます（リポジトリの <a href="https://github.com/kazuph/kazuph.github.io/tree/master/scripts/3d_benchmark_2026" target="_blank" rel="noopener">scripts/3d_benchmark_2026/</a>）。</p>
-
-<pre><code class="language-bash"># ローカルサーバ（レンダリング検証が参照）
-python3 -m http.server 8941 --bind 127.0.0.1
-
-# 生成（render_check.mjs によるヘッドレス描画検証＋3リトライ付き）
-python3 scripts/3d_benchmark_2026/run_gemini_batch.py   # Gemini 3.5 Flash (agy -p)
-python3 scripts/3d_benchmark_2026/run_codex_batch.py    # GPT-5.5 (codex exec)
-
-# スクリーンショット一括取得と自動ドッグフーディング
-node scripts/3d_benchmark_2026/capture_screens.mjs http://127.0.0.1:8941
-node scripts/3d_benchmark_2026/dogfood_check.mjs http://127.0.0.1:8941
-</code></pre>
 
 <h2>おまけ: 当事者 Gemini 3.5 Flash による総評</h2>
 
@@ -379,6 +360,12 @@ node scripts/3d_benchmark_2026/dogfood_check.mjs http://127.0.0.1:8941
 <p>2Dの図解では「破綻なく描けるか」が主戦場でしたが、3Dでは「何を作り込むと嬉しいかを自分で決める力」と「動くコードを一発で出す力」の両方が試されます。15個の3Dシーンはすべてこのページに埋め込んであるので、ぜひ手元でグリグリ回して、スクリーンショットでは伝わらない差を確かめてみてください。</p>
 
 <p>Enjoy, spin the models!</p>
+
+<h2>参考</h2>
+
+<ul>
+  <li><a href="https://github.com/kazuph/kazuph.github.io/tree/master/scripts/3d_benchmark_2026" target="_blank" rel="noopener">scripts/3d_benchmark_2026/（生成・検証スクリプト）</a></li>
+</ul>
 
 <script>
 (function () {

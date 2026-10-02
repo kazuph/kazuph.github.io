@@ -13,8 +13,6 @@ full_ai_model: gpt-5.4
 
 以前の比較記事では、複数のLLMに対して14題材を4形式で描かせていました。今回はその比較をそのまま続けず、`Gemini 3.5 Flash` と `GPT-5.4` の2モデルに絞って、新たに実行します。
 
-題材設計、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。
-
 <style>
 .diagram-hero img,
 .diagram-compare-table img {
@@ -53,7 +51,6 @@ full_ai_model: gpt-5.4
 
 <figure class="diagram-hero">
   <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/bear-plush-ogp.png" alt="クマのぬいぐるみの TikZ 結果を、GPT-5.4 と Gemini 3.5 Flash で左右比較した画像" loading="eager">
-  <figcaption>冒頭画像と OGP には、クマのぬいぐるみ題材の TikZ 比較を左右並びにした画像を使っています。</figcaption>
 </figure>
 
 ## 比較条件
@@ -62,7 +59,6 @@ full_ai_model: gpt-5.4
 - **形式**: TikZ / matplotlib / SVG
 - **題材**: 10題材
 - **総数**: 10題材 × 3形式 × 2モデル = **60個**
-- **確認日**: 2026-05-22 JST
 
 題材のうち 5 つはユーザー指定です。残り 5 つは比較差が出やすいように AI で設計しました。今回は「全部の題材を全部の形式で描かせる」前提で進めています。
 
@@ -95,25 +91,6 @@ full_ai_model: gpt-5.4
 - AI設計ケース: カルマンフィルターのブロック線図, RAGパイプライン構成図, ゼロトラスト認証とトークン交換, ブロッホ球, マイケルソン干渉計
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。Gemini 側の prompt は `scripts/diagram_benchmark_2026/prompts/` にあります。
-
-source 欄のリンクから、公開したソースをこのサイトで直接開けます。
-
-## 実行方法
-
-Gemini 3.5 Flash 側は `agy` を使っています。サインイン済みセッションで、対話画面に `Gemini 3.5 Flash (Medium)` と表示されていることを確認しています。
-
-```bash
-~/.local/bin/agy -p "<prompt>"
-```
-
-GPT-5.4 側の source は、この作業セッションで直接生成しました。残りの source と prompt は、次のスクリプトでまとめて作っています。
-
-```bash
-python3 scripts/diagram_benchmark_2026/generate_benchmark_sources.py
-python3 scripts/diagram_benchmark_2026/run_gemini_batch.py
-scripts/diagram_benchmark_2026/render_all.sh gpt54
-scripts/diagram_benchmark_2026/render_all.sh gemini35flash
-```
 
 ## 出力一覧
 
@@ -857,7 +834,7 @@ scripts/diagram_benchmark_2026/render_all.sh gemini35flash
 
 ## 参考
 
-- 既存比較記事: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison （確認日: 2026-05-22）
+- 既存比較記事: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison
 
 ## おわりに
 
