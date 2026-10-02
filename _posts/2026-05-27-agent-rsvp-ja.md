@@ -11,8 +11,6 @@ image: /images/posts/agent-rsvp-ja/minimal.gif
 
 ## はじめに
 
-これは Full AI で書いた記事です。
-
 [`agent-rsvp`](https://github.com/EvanBacon/agent-rsvp) は、RSVP（Rapid Serial Visual Presentation）方式の速読ツールです。単語や短い塊を画面中央に次々出して、目を動かす距離を減らしながら読むためのものです。
 
 もともとのツールはターミナル上で動く CLI/TUI として作られていて、英語の文章や短いテキストを読むには素直な作りでした。ただ、日本語の文章を読むために使ってみると、いくつか気になるところが出ました。
@@ -24,7 +22,7 @@ image: /images/posts/agent-rsvp-ja/minimal.gif
 - ターミナルを起動せず、普通の macOS アプリとして開きたい
 - 技術ブログでは英単語や記号が多く、純粋な速読サンプルとしては読みにくい
 
-そこで、フォーク版として [`kazuph/agent-rsvp-ja`](https://github.com/kazuph/agent-rsvp-ja) を作りました。本家へ Pull Request は送っていません。日本語で気持ちよく読むための実験を、別フォークとして公開しています。
+そこで、フォーク版として [`kazuph/agent-rsvp-ja`](https://github.com/kazuph/agent-rsvp-ja) を作りました。日本語で気持ちよく読むための実験を、別フォークとして公開しています。
 
 ## フォークの位置づけ
 
@@ -33,9 +31,8 @@ image: /images/posts/agent-rsvp-ja/minimal.gif
 - Fork: <https://github.com/kazuph/agent-rsvp-ja>
 - Upstream: <https://github.com/EvanBacon/agent-rsvp>
 - Default branch: `ja`
-- 確認日: 2026-05-27
 
-リポジトリ名と `package.json` の名前は `agent-rsvp-ja` に変えています。ただし、この記事を書いている時点では `agent-rsvp-ja` は npm には公開していません。npm の `agent-rsvp` は本家名なので、`npx agent-rsvp` と書くと本家側を取りに行ってしまいます。
+リポジトリ名と `package.json` の名前は `agent-rsvp-ja` に変えています。ただし、`agent-rsvp-ja` は npm には公開していません。npm の `agent-rsvp` は本家名なので、`npx agent-rsvp` と書くと本家側を取りに行ってしまいます。
 
 CLI の起動コマンドは、ローカルで build / link した後は従来どおり `agent-rsvp` のままです。普段使うコマンド名を変えずに、日本語向けの実装へ差し替えるためです。
 
@@ -76,7 +73,6 @@ RSVP では、表示される語や句のどこを見るかが大事です。英
 
 - GitHub: <https://github.com/vercel-labs/zero-native>
 - Docs: <https://zero-native.dev/>
-- 確認日: 2026-05-27
 
 Zero Native を調べていて良かったのは、「小さいデスクトップアプリ」を考えるときに、Electron のように巨大なブラウザランタイムを同梱する道だけではないと再確認できたことです。system WebView を使えば、Web UI でもかなり小さくできます。
 
@@ -132,9 +128,7 @@ native/macos_app.m    AppKit のウィンドウ、描画、キー操作、本文
 build.zig             Zig/AppKit バイナリのビルド
 ```
 
-GitHub の Languages 表示を見ると、Zig は数%で、ほとんど Objective-C に見えます。これはその通りです。
-
-このフォークは「アプリ全体を Zig で書いた」というものではありません。実態は、Zig の build system と小さな entry point で Objective-C/AppKit の実装を束ね、配布用にサイズを抑えたネイティブバイナリとして出している構成です。
+GitHub の Languages 表示では、Zig は数%でほとんど Objective-C に見えます。実態は、Zig の build system と小さな entry point で Objective-C/AppKit の実装を束ね、配布用にサイズを抑えたネイティブバイナリとして出している構成です。
 
 ```zig
 exe.addCSourceFile(.{
@@ -228,7 +222,6 @@ agent-rsvp セロ弾きのゴーシュ
 - 坊っちゃん: <https://www.aozora.gr.jp/cards/000148/card752.html>
 - 吾輩は猫である: <https://www.aozora.gr.jp/cards/000148/card789.html>
 - セロ弾きのゴーシュ: <https://www.aozora.gr.jp/cards/000081/card470.html>
-- 確認日: 2026-05-27
 
 ## 操作のこだわり
 
@@ -263,7 +256,7 @@ minimal mode では、現在読んでいる chunk だけを表示します。
 
 ## 確認したこと
 
-今回の記事を書く前に、少なくとも次を確認しました。
+少なくとも次を確認しました。
 
 ```console
 $ bun run build

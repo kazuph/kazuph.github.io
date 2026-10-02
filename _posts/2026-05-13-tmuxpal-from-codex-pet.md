@@ -131,8 +131,8 @@ pane 数が増えた時の動作の遅さも少し改善しました。原因は
 
 ## 参考
 
-- [TmuxPal GitHub Repository](https://github.com/kazuph/TmuxPal)（確認日: 2026-05-13）
-- [Codexのpetスキルでキャラがうまくジャンプできない問題を解決する](/2026/05/08/hatch-pet-spritesheet-pipeline.html)（確認日: 2026-05-13）
+- [TmuxPal GitHub Repository](https://github.com/kazuph/TmuxPal)
+- [Codexのpetスキルでキャラがうまくジャンプできない問題を解決する](/2026/05/08/hatch-pet-spritesheet-pipeline.html)
 
 ## おわりに
 

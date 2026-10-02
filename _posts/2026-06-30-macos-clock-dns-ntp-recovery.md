@@ -6,8 +6,6 @@ description: "DNS lookup failureでNTP同期できないmacOSを、IP直指定�
 full_ai: true
 ---
 
-この記事は、実際の復旧ログを元に Full AI で整理した記事です。個人環境のユーザー名、ホスト名、端末名、プロンプト文字列は載せていません。
-
 ## はじめに
 
 macOS の時計が数日ずれていました。
@@ -211,21 +209,14 @@ sudo systemsetup -getnetworktimeserver
 date
 ```
 
-## 再現手順と確認日
-
-- 確認日: 2026-06-30 JST
-- 確認環境: macOS の標準コマンド `sntp`, `systemsetup`, `networksetup`, `scutil`, `dig`
-- 再現した症状: `sudo sntp -sS ntp.nict.jp` が `DNS lookup failure` で失敗
-- 復旧確認: `sudo sntp -sS ntp.nict.jp` が `+0.000906` 秒差で成功し、`systemsetup` が `Network Time: On` と `Network Time Server: ntp.nict.jp` を返した
-
 ## 参考
 
-- [NICT Public NTP Service](https://jjy.nict.go.jp/tsp/PubNtp/index-e.html)（確認日: 2026-06-30）
-- [NICT NTP FAQ](https://www.nict.go.jp/en/sts/ntp_faq.html)（確認日: 2026-06-30）
-- [`sntp(1)` macOS manual](https://keith.github.io/xcode-man-pages/sntp.1.html)（確認日: 2026-06-30）
-- [`systemsetup(8)` macOS manual](https://keith.github.io/xcode-man-pages/systemsetup.8.html)（確認日: 2026-06-30）
-- [`networksetup(8)` macOS manual](https://keith.github.io/xcode-man-pages/networksetup.8.html)（確認日: 2026-06-30）
-- [`scutil(8)` macOS manual](https://keith.github.io/xcode-man-pages/scutil.8.html)（確認日: 2026-06-30）
+- [NICT Public NTP Service](https://jjy.nict.go.jp/tsp/PubNtp/index-e.html)
+- [NICT NTP FAQ](https://www.nict.go.jp/en/sts/ntp_faq.html)
+- [`sntp(1)` macOS manual](https://keith.github.io/xcode-man-pages/sntp.1.html)
+- [`systemsetup(8)` macOS manual](https://keith.github.io/xcode-man-pages/systemsetup.8.html)
+- [`networksetup(8)` macOS manual](https://keith.github.io/xcode-man-pages/networksetup.8.html)
+- [`scutil(8)` macOS manual](https://keith.github.io/xcode-man-pages/scutil.8.html)
 
 ## おわりに
 

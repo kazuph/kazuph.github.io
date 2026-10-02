@@ -23,15 +23,13 @@ full_ai_model: cursor-grok-4.5
 
 この指示に沿って、シリーズ従来どおりの **12題材 × 3形式** で比較しています。
 
-- **Cursor Grok 4.5**: この作業セッション自身および同モデルの subagent が、お題プロンプトから source を書き起こした
+- **Cursor Grok 4.5**: Grok 4.5 本体および同モデルの subagent が、お題プロンプトから source を書き起こした
 - **Claude Opus 5**: 1図につき1 subagent(model 固定)をスポーンし、Read/Write のみ・他モデル出力参照禁止・外部CLI禁止の強制プロンプトで生成させた
 - **Gemini 3.5 Flash**: 過去記事で生成済みの資産を再生成せず流用
 
 ## はじめに
 
 このシリーズは、新しいモデルが出るたびに「同じお題・同じプロンプト・同じビルド手順」で図解を描かせて横並び比較する定点観測ベンチマークです。今回の3モデルは左から **Cursor Grok 4.5 / Claude Opus 5 / Gemini 3.5 Flash** の順です。
-
-題材選定、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。
 
 <style>
 .diagram-hero img,
@@ -71,7 +69,6 @@ full_ai_model: cursor-grok-4.5
 
 <figure class="diagram-hero">
   <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/bear-plush-ogp-grok45-opus5-gemini-3way.png" alt="クマのぬいぐるみの TikZ 結果を、Cursor Grok 4.5・Claude Opus 5・Gemini 3.5 Flash の3モデルで横並び比較した画像" loading="eager">
-  <figcaption>冒頭画像と OGP には、シリーズで継続して使っているクマのぬいぐるみ題材の TikZ 比較を Cursor Grok 4.5 / Claude Opus 5 / Gemini 3.5 Flash の3列で並べた画像を使っています。</figcaption>
 </figure>
 
 ## 比較条件
@@ -82,9 +79,8 @@ full_ai_model: cursor-grok-4.5
 - **総数**: 12題材 × 3形式 × 3モデル = **108個**
 - **今回の新規生成分**: Cursor Grok 4.5 36個 + Claude Opus 5 36個 = **72個**
 - **流用分**: Gemini 3.5 Flash 36個
-- **確認日**: 2026-07-31 JST(Gemini 3.5 Flash 分は過去記事生成分)
 
-題材のうち 5 つはユーザー指定です。残りは比較差が出やすいように AI で設計したシリーズ定番です。過去の題材は削除していません。
+題材のうち 5 つはユーザー指定です。残りは比較差が出やすいように AI で設計したシリーズ定番です。
 
 ## 題材一覧
 
@@ -118,22 +114,7 @@ full_ai_model: cursor-grok-4.5
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。お題のプロンプトは `scripts/diagram_benchmark_2026/prompts/` にあります(3モデル共通)。
 
-source 欄のリンクから、公開したソースをこのサイトで直接開けます。
-
-## 実行方法
-
-```bash
-# Cursor Grok 4.5 列
-scripts/diagram_benchmark_2026/render_all.sh grok45
-
-# Claude Opus 5 列
-scripts/diagram_benchmark_2026/render_all.sh opus5
-
-# Gemini 3.5 Flash 列は過去記事の生成物をそのまま使用
-scripts/diagram_benchmark_2026/render_all.sh gemini35flash
-```
-
-### 生成時に起きたこと(記録)
+## 生成時に起きたこと
 
 - **Claude Opus 5 / Cursor Grok 4.5**: SVG で Unicode 記号が制御文字へ崩れるケースがあり、ASCII 表記へ直して再レンダリングした
 - **Cursor Grok 4.5**: TikZ の `RGB={...}` キー未定義、`out` スタイル名衝突、`below left=2pt and 2pt` を修正して通した
@@ -1149,11 +1130,9 @@ Cursor Grok 4.5 と Claude Opus 5 を新規作図し、Gemini 3.5 Flash を3列�
 
 Enjoy, diagram duel!
 
-Cursor Grok 4.5
-
 ## 参考
 
-- 前回記事(Sonnet 5 3列版): [Claude Sonnet 5 vs Claude Opus 4.8 vs Gemini 3.5 Flash 図解生成ベンチマーク](/blog/2026/07/01/sonnet5-vs-opus48-vs-gemini35flash-diagram-benchmark/)(確認日: 2026-07-01)
-- 元記事(2モデル版): [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)(確認日: 2026-05-22)
+- 前回記事(Sonnet 5 3列版): [Claude Sonnet 5 vs Claude Opus 4.8 vs Gemini 3.5 Flash 図解生成ベンチマーク](/blog/2026/07/01/sonnet5-vs-opus48-vs-gemini35flash-diagram-benchmark/)
+- 元記事(2モデル版): [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)
 - 共通 manifest: `scripts/diagram_benchmark_2026/manifest.yml`
 - お題プロンプト: `scripts/diagram_benchmark_2026/prompts/`

@@ -10,12 +10,12 @@ full_ai_model: claude-fable-5
 ---
 
 <div class="zenn-message">
-  <p><strong>この記事について:</strong> <a href="/blog/2026/06/10/fable5-vs-gemini35flash-vs-gpt55-3d-model-benchmark/">前回の「インタラクティブ3Dモデル生成ベンチマーク」</a>の続編スピンオフです。前回は3モデルの横並び比較でしたが、今回は<strong>比較なし・Claude Fable 5 単独</strong>。「水・波・森・ガラス・爆発」という CG の古典題材5つを、<strong>とにかく極める</strong>方向に振り切ったら何が起こるのかの実験です。今回も HTML 記事なのは、5つとも読者にその場で触ってほしいからです。</p>
+  <p><strong>この記事について:</strong> <a href="/blog/2026/06/10/fable5-vs-gemini35flash-vs-gpt55-3d-model-benchmark/">前回の「インタラクティブ3Dモデル生成ベンチマーク」</a>の続編スピンオフです。前回は3モデルの横並び比較でしたが、今回は<strong>比較なし・Claude Fable 5 単独</strong>。「水・波・森・ガラス・爆発」という CG の古典題材5つを、<strong>とにかく極める</strong>方向に振り切ったら何が起こるのかの実験です。</p>
 </div>
 
 <h2>はじめに</h2>
 
-<p>前回のベンチマークは公平性のために「プロンプトから一発書き起こし、レンダリング後の手直し禁止」という縛りでした。今回はその逆です。<strong>レンダリング結果をスクリーンショットで確認しながら、納得いくまで何度でも磨いてよい</strong>というルールで、Fable 5（この記事を書いている Claude Code 自身）が5つのVFXシーンを作り込みました。ベンチマークが「素の実力」を測るものだとしたら、今回は「実際に修正を繰り返したときの完成度」を見る実験です。</p>
+<p>前回のベンチマークは公平性のために「プロンプトから一発書き起こし、レンダリング後の手直し禁止」という縛りでした。今回はその逆です。<strong>レンダリング結果をスクリーンショットで確認しながら、納得いくまで何度でも磨いてよい</strong>というルールで、Fable 5 が5つのVFXシーンを作り込みました。ベンチマークが「素の実力」を測るものだとしたら、今回は「実際に修正を繰り返したときの完成度」を見る実験です。</p>
 
 <p>制約は前回と同じく、<strong>単一HTML・Three.js の CDN 読み込みのみ可・画像や glTF などの外部アセット禁止</strong>。つまりジオメトリも質感も全部コードで作ります。エンジン任せのマテリアルだけでは「極めた」ことにならないので、5シーンとも<strong>カスタムGLSLシェーダー</strong>を中心に組みました。</p>
 
@@ -72,7 +72,7 @@ full_ai_model: claude-fable-5
 </figure>
 
 <div class="vfx-note">
-  <strong>操作メモ:</strong> 各カードの「▶ 起動」でその場で動きます。今回のシーンはシェーダー多めで前回より重いので、<strong>同時に動くのは2つまで</strong>（古い方から自動で閉じます）。カクつく場合やスマホでは「別タブ」リンク推奨です。
+  <strong>注意:</strong> 今回のシーンはシェーダー多めで重いため、<strong>同時に動くのは2つまで</strong>です（古い方から自動で閉じます）。カクつく場合やスマホでは「別タブ」リンク推奨です。
 </div>
 
 <h2>ルール</h2>
@@ -80,8 +80,8 @@ full_ai_model: claude-fable-5
 <ul>
   <li>単一HTMLファイル・Three.js の CDN 読み込みのみ可・外部アセット（画像/動画/glTF）禁止</li>
   <li>前回と違い、<strong>ヘッドレスブラウザのスクリーンショットを見ながらの反復改善OK</strong></li>
-  <li>各シーンの反復回数・発生した事故は正直に記録する（後述）</li>
-  <li>確認環境: Playwright + ヘッドレス Chromium（SwiftShader）、確認日 2026-06-11 JST</li>
+  <li>各シーンの反復回数・発生した事故を記録する（後述）</li>
+  <li>確認環境: Playwright + ヘッドレス Chromium（SwiftShader）</li>
 </ul>
 
 <h2>1. 水 — 小千谷の錦鯉の池</h2>
@@ -157,7 +157,7 @@ full_ai_model: claude-fable-5
 
 <h2>磨き込みの記録 — 「極める」過程で起きたこと</h2>
 
-<p>今回は反復改善ありのルールなので、何をどれだけ直したかを正直に記録しておきます。さらに今回は一度ユーザーレビューに出して、<strong>「もっと行ける」という差し戻しを受けて全面強化した第2ラウンド</strong>があります。</p>
+<p>今回は一度ユーザーレビューに出して、<strong>「もっと行ける」という差し戻しを受けて全面強化した第2ラウンド</strong>があります。</p>
 
 <h3>第1ラウンド — 自分のスクリーンショットループ（確認スクショ21枚）</h3>
 
@@ -211,21 +211,13 @@ full_ai_model: claude-fable-5
   <p><strong>観察:</strong> 9本の初稿・改修コードはすべて<strong>一度もJavaScriptエラー・シェーダーコンパイルエラーを出さずに動きました</strong>。「動くものを書く」のは反復なしでも安定していて、反復が効いたのはもっぱら<strong>絵作りのチューニング</strong>でした。一方で、ガラスの座標空間取り違えや嵐の波のカスプのような「動くけど物理的・美的に破綻する」問題は、スクリーンショット（と人間のレビュー）を経ないと気づけませんでした。レンダリング結果のフィードバックループは、エラー検出ではなく<strong>美的判断と物理的妥当性の検証</strong>のためにこそ必要、というのが今回の結論です。あと「君ならもっと行ける」と言われると実際もう2段くらい行ける、というのも発見でした。</p>
 </div>
 
-<h2>再現方法</h2>
-
-<p>5シーンのソースは <a href="https://github.com/kazuph/kazuph.github.io/tree/master/labs/fable5-vfx" target="_blank" rel="noopener">labs/fable5-vfx/</a> にあります。検証は次のとおりです。</p>
-
-<pre><code class="language-bash"># リポジトリルートで
-python3 -m http.server 8941 --bind 127.0.0.1
-
-# ヘッドレス描画確認（ページエラー収集＋ドラッグ回転チェック＋スクリーンショット9枚）
-node scripts/fable5_vfx_2026/capture.mjs http://127.0.0.1:8941
-
-# OGP用の5パネル合成画像
-python3 scripts/fable5_vfx_2026/build_ogp.py
-</code></pre>
-
 <p>低速なヘッドレス環境ではアニメーション遷移の途中でスクリーンショットが撮れてしまうため、各ページに決定論的なデバッグパラメータを用意しています（爆発: <code>?t=4.5</code> で任意時刻をフリーズ、海: <code>?storm=1</code>、森: <code>?time=night</code>）。</p>
+
+<h2>参考</h2>
+
+<ul>
+  <li><a href="https://github.com/kazuph/kazuph.github.io/tree/master/labs/fable5-vfx" target="_blank" rel="noopener">labs/fable5-vfx/（5シーンのソース）</a></li>
+</ul>
 
 <h2>おわりに</h2>
 

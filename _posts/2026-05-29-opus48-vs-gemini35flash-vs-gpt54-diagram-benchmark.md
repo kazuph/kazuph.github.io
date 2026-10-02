@@ -17,7 +17,7 @@ full_ai_model: claude-opus-4-8
 
 元記事では `Gemini 3.5 Flash` と `GPT-5.4` の2モデルで、10題材を TikZ・matplotlib・SVG の3形式ずつ描かせていました。本記事はそこに `Claude Opus 4.8` を加えた更新版です。同じお題・同じプロンプト・同じビルド手順で Opus 4.8 にも描かせ、3モデルを左から **Claude Opus 4.8 / Gemini 3.5 Flash / GPT-5.4** の順で並べています。
 
-題材設計、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。Opus 4.8 列の source（`.tex` / `.py` / `.svg`）は、この作業セッションで Claude Opus 4.8 が元記事と同じプロンプトから一度で生成したものです。
+Opus 4.8 列の source（`.tex` / `.py` / `.svg`）は、Claude Opus 4.8 が元記事と同じプロンプトから一度で生成したものです。
 
 <style>
 .diagram-hero img,
@@ -57,7 +57,6 @@ full_ai_model: claude-opus-4-8
 
 <figure class="diagram-hero">
   <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/bear-plush-ogp-3way.png" alt="クマのぬいぐるみの TikZ 結果を、Claude Opus 4.8・Gemini 3.5 Flash・GPT-5.4 の3モデルで横並び比較した画像" loading="eager">
-  <figcaption>冒頭画像と OGP には、クマのぬいぐるみ題材の TikZ 比較を Opus 4.8 / Gemini 3.5 Flash / GPT-5.4 の3列で並べた画像を使っています。</figcaption>
 </figure>
 
 ## 比較条件
@@ -67,7 +66,6 @@ full_ai_model: claude-opus-4-8
 - **題材**: 10題材
 - **総数**: 10題材 × 3形式 × 3モデル = **90個**
 - **追加分**: Claude Opus 4.8 の 10題材 × 3形式 = **30個**（今回の更新で追加）
-- **確認日**: 2026-05-29 JST（元記事の Gemini / GPT 分は 2026-05-22）
 
 題材のうち 5 つはユーザー指定です。残り 5 つは比較差が出やすいように AI で設計しました。Opus 4.8 にも「全部の題材を全部の形式で描かせる」前提で、元記事と同じお題を渡しています。
 
@@ -100,19 +98,6 @@ full_ai_model: claude-opus-4-8
 - AI設計ケース: カルマンフィルターのブロック線図, RAGパイプライン構成図, ゼロトラスト認証とトークン交換, ブロッホ球, マイケルソン干渉計
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。お題のプロンプトは `scripts/diagram_benchmark_2026/prompts/` にあります（3モデル共通）。
-
-source 欄のリンクから、公開したソースをこのサイトで直接開けます。
-
-## 実行方法
-
-Claude Opus 4.8 側の source は、この作業セッションで `prompts/` の各プロンプト（元記事と同一）から直接生成しました。Gemini 3.5 Flash 側は `agy`、GPT-5.4 側は元記事の作業セッションで生成したものをそのまま使っています。
-
-```bash
-# 3モデル分の source を画像へ
-scripts/diagram_benchmark_2026/render_all.sh opus48
-scripts/diagram_benchmark_2026/render_all.sh gemini35flash
-scripts/diagram_benchmark_2026/render_all.sh gpt54
-```
 
 ## 出力一覧
 
@@ -946,8 +931,8 @@ scripts/diagram_benchmark_2026/render_all.sh gpt54
 
 ## 参考
 
-- 元記事（2モデル版）: [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)（確認日: 2026-05-22）
-- さらに前の比較記事: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison （確認日: 2026-05-22）
+- 元記事（2モデル版）: [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)
+- さらに前の比較記事: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison
 
 ## おわりに
 

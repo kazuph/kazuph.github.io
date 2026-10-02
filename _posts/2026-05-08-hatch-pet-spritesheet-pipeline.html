@@ -1084,7 +1084,6 @@ if __name__ == &quot;__main__&quot;:
           <li>最終検証の <code>final/validation.json</code> は errors 0 / warnings 0</li>
         </ol>
         <p class="note">
-          今回の改善では、画像生成そのものはやり直していません。
           生成済みの横長画像からポーズを切り出す処理を直し、見た目の同一性を保ったまま、アニメーション中の大きさの揺れだけを減らしています。
         </p>
       </div>
@@ -1379,7 +1378,7 @@ if __name__ == &quot;__main__&quot;:
             <li>正式アセット <code>~/.codex/pets/dokochan</code> に pet.json と spritesheet.webp を配置済み</li>
           </ol>
           <p class="note">
-            画像生成はすべて組み込み画像生成で行い、API KEY fallbackは使っていません。
+            画像生成はすべて組み込み画像生成で行いました。
             row生成はsubagentに委譲し、親エージェントだけがmanifest記録とpackage処理を行いました。
           </p>
         </div>

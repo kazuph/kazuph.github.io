@@ -286,19 +286,7 @@ Opusの作品も、すでに笑顔が祖父に似ているのに、さらに練�
 
 補足すると、Astra の作品は「お母さん」を「ではなかった」側に置いて捨てており、一番強い材料を自分で潰しています。Opus の作品は、似ていないものを似せにいく構図であれば「練習」に意味が生まれたはずです。たとえば「祖母が孫を祖父の若い頃と取り違えて話しかけ、孫はそれに合わせて祖父の口ぐせを覚えた」のような形です。どちらも、オチの論理が一文ぶん足りていませんでした。
 
-## 再現方法
-
-依頼文（`prompts/`）、各モデルの成果物、ISUCONの差分・ベンチ記録・公式計測ログは、すべて [`benchmark_sources/opus55-vs-astra/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/opus55-vs-astra) にあります。
-
-ISUCON の競技環境は [`benchmark_sources/opus55-vs-astra/isucon-env/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/opus55-vs-astra/isucon-env) に一式あります。[isucon/isucon14](https://github.com/isucon/isucon14) を今回使ったコミットに固定して取得し、Ubuntu 24.04 ベースの単一コンテナイメージ（MySQL・nginx・Go・マッチャーを同居）を Apple container で起動します。各モデルの最終差分を当てれば、同じ手順で公式計測できます。ただしベンチマーカーも同じ Mac で動くため、スコアは Mac の空き具合に大きく左右されます。記事公開前にこの手順を通しで試したときは、ほかの作業で負荷が高かったため、初期実装が 1,932点（本番時 6,448点）、Astra の最終版が 33,006点（本番時 152,416点）でした。どちらも合格はしています。勝敗の比較は、同じ時間帯に続けて計測した本番の数値で行っています。
-
-```bash
-container system start
-cd benchmark_sources/opus55-vs-astra/isucon-env
-./setup.sh /tmp/isu-run/astra/isucon          # ISUCON14取得・ビルド・参加者ディレクトリ作成
-git -C /tmp/isu-run/astra/isucon apply "$PWD/../astra/isucon/final.diff"
-./judge.sh /tmp/isu-run/astra/isucon          # コンテナを作り直して公式ベンチを1回
-```
+ISUCON の競技環境は [`benchmark_sources/opus55-vs-astra/isucon-env/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/opus55-vs-astra/isucon-env) に一式あります。[isucon/isucon14](https://github.com/isucon/isucon14) を今回使ったコミットに固定して取得し、Ubuntu 24.04 ベースの単一コンテナイメージ（MySQL・nginx・Go・マッチャーを同居）を Apple container で起動します。各モデルの最終差分を当てれば、同じ手順で公式計測できます。ただしベンチマーカーも同じ Mac で動くため、スコアは Mac の空き具合に大きく左右されます。別のタイミングで同じ手順を通しで試したときは、ほかの作業で負荷が高かったため、初期実装が 1,932点（本番時 6,448点）、Astra の最終版が 33,006点（本番時 152,416点）でした。どちらも合格はしています。勝敗の比較は、同じ時間帯に続けて計測した本番の数値で行っています。
 
 ## おわりに
 
@@ -311,9 +299,10 @@ Enjoy, comparing Opus and Astra!
 
 ## 参考
 
-- [isucon/isucon14](https://github.com/isucon/isucon14)（確認日：2026年9月23日）
-- [ISUCON公式Blog](https://isucon.net/)（確認日：2026年9月23日）
+- [isucon/isucon14](https://github.com/isucon/isucon14)
+- [ISUCON公式Blog](https://isucon.net/)
 - [twitter/twemoji](https://github.com/twitter/twemoji)（Astra の絵本の挿絵。CC BY 4.0）
+- [benchmark_sources/opus55-vs-astra/](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/opus55-vs-astra)（依頼文、成果物、ISUCONの差分・ベンチ記録・公式計測ログ）
 
 <script>
 (function () {

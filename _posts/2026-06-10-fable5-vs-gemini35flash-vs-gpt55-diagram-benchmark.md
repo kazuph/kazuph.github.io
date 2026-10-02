@@ -10,18 +10,16 @@ full_ai_model: claude-fable-5
 ---
 
 <div class="zenn-message">
-  <p><strong>この記事について:</strong> これは <a href="/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-22 の「Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク」</a>および<a href="/blog/2026/05/29/opus48-vs-gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-29 の Claude Opus 4.8 追加版</a>の系譜を継ぐ更新版です。今回は新しく登場した <strong>Claude Fable 5</strong> を一番左の列として追加し、右列は GPT-5.4 に代わって <strong>GPT-5.5</strong>（<code>codex exec</code> で新規生成）に刷新しました。さらに新題材を2つ追加し、<strong>12題材 × 3形式 × 3モデル = 108個</strong>の比較になっています。過去の題材は削除せずすべて残しています。</p>
+  <p><strong>この記事について:</strong> これは <a href="/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-22 の「Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク」</a>および<a href="/blog/2026/05/29/opus48-vs-gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-29 の Claude Opus 4.8 追加版</a>の系譜を継ぐ更新版です。今回は新しく登場した <strong>Claude Fable 5</strong> を一番左の列として追加し、右列は GPT-5.4 に代わって <strong>GPT-5.5</strong>（<code>codex exec</code> で新規生成）に刷新しました。さらに新題材を2つ追加し、<strong>12題材 × 3形式 × 3モデル = 108個</strong>の比較になっています。過去の題材はすべて残しています。</p>
 </div>
 
 ## はじめに
 
 このシリーズは、新しいモデルが出るたびに「同じお題・同じプロンプト・同じビルド手順」で図解を描かせて横並び比較する定点観測ベンチマークです。今回の3モデルは左から **Claude Fable 5 / Gemini 3.5 Flash / GPT-5.5** の順で並べています。
 
-- **Claude Fable 5**: この作業セッションの Claude Code（モデルID: `claude-fable-5`）自身が、プロンプトから直接 source を書き起こしました
+- **Claude Fable 5**: Claude Code（モデルID: `claude-fable-5`）がプロンプトから直接 source を書き起こしました（レンダリング結果を見てからの手直しはなし）
 - **Gemini 3.5 Flash**: `agy` コマンド（Gemini CLI 系のローカルエージェントCLI）の print モード（`agy -p`）で生成。既存10題材は 2026-05-22 生成分をそのまま流用し、新題材2つだけ今回 `agy` で追加生成しました
 - **GPT-5.5**: `codex exec`（Codex CLI の非対話モード）で12題材すべてを今回新規生成しました
-
-題材設計、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。
 
 <style>
 .diagram-hero img,
@@ -61,7 +59,6 @@ full_ai_model: claude-fable-5
 
 <figure class="diagram-hero">
   <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/bear-plush-ogp-fable5-3way.png" alt="クマのぬいぐるみの TikZ 結果を、Claude Fable 5・Gemini 3.5 Flash・GPT-5.5 の3モデルで横並び比較した画像" loading="eager">
-  <figcaption>冒頭画像と OGP には、シリーズで継続して使っているクマのぬいぐるみ題材の TikZ 比較を Fable 5 / Gemini 3.5 Flash / GPT-5.5 の3列で並べた画像を使っています。</figcaption>
 </figure>
 
 ## 比較条件
@@ -72,9 +69,8 @@ full_ai_model: claude-fable-5
 - **総数**: 12題材 × 3形式 × 3モデル = **108個**
 - **今回の新規生成分**: Claude Fable 5 が36個、GPT-5.5 が36個、Gemini 3.5 Flash が新題材分の6個（計78個）
 - **流用分**: Gemini 3.5 Flash の既存10題材 × 3形式 = 30個（2026-05-22 生成）
-- **確認日**: 2026-06-10 JST
 
-題材のうち5つはユーザー指定です。残りは比較差が出やすいようにAIで設計しました。今回追加した2題材（夏祭りの花火大会・Transformerのアーキテクチャ図）もAI設計で、「夜景の配色」と「高密度なラベル配置」という、従来の10題材では確認できていなかった点を比較します。過去の題材は1つも削除していません。
+題材のうち5つはユーザー指定です。残りは比較差が出やすいようにAIで設計しました。今回追加した2題材（夏祭りの花火大会・Transformerのアーキテクチャ図）もAI設計で、「夜景の配色」と「高密度なラベル配置」という、従来の10題材では確認できていなかった点を比較します。
 
 ## 題材一覧
 
@@ -108,45 +104,13 @@ full_ai_model: claude-fable-5
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。お題のプロンプトは `scripts/diagram_benchmark_2026/prompts/` にあります（3モデル共通）。
 
-source 欄のリンクから、公開したソースをこのサイトで直接開けます。
-
-## 実行方法
-
-各モデルの生成経路はそれぞれ次のとおりです。
-
-- **Claude Fable 5**: この作業セッションの Claude Code 自身が `prompts/` の各プロンプトから一発で書き起こし（レンダリング結果を見てからの手直しはなし）
-- **Gemini 3.5 Flash**: `agy -p <prompt>` の print モードで生成（`run_gemini_batch.py`）
-- **GPT-5.5**: `codex exec -m gpt-5.5` の非対話モードで生成（`run_codex_batch.py`）
-
-```bash
-# Gemini 3.5 Flash（agy 経由）
-python3 scripts/diagram_benchmark_2026/run_gemini_batch.py
-
-# GPT-5.5（codex exec 経由）
-python3 scripts/diagram_benchmark_2026/run_codex_batch.py
-
-# 3モデル分の source を画像へ
-scripts/diagram_benchmark_2026/render_all.sh fable5
-scripts/diagram_benchmark_2026/render_all.sh gemini35flash
-scripts/diagram_benchmark_2026/render_all.sh gpt55
-```
-
 CLI 経由の2モデル（Gemini / GPT-5.5）には「構文チェック（SVGのXMLパース・Pythonコンパイル・xelatexコンパイル）に通るまで最大3回リトライ」という同条件のバリデーションを掛けています。見た目を確認しての描き直しはどのモデルにもさせていません。
 
-### 生成時に起きたこと（記録）
-
-継続して比較できるよう、生成中に起きた問題も記録します。
+## 生成時に起きたこと
 
 - **GPT-5.5**: イラスト系のTikZ（おばあちゃん・VR息子・花火）で「未定義の色名を参照する」コンパイルエラーを繰り返し、リトライ複数ラウンドを要しました。特にVR息子のTikZは合計11回目の生成でようやくコンパイルが通りました
 - **Gemini 3.5 Flash**: 新題材のTransformer SVG で不正なXMLを3連続で出し、再実行ラウンドで成功しました
 - **Claude Fable 5**: ゼロトラストのTikZで、自作スタイル名が TikZ の既存キー `step` と衝突してコンパイルに失敗し、スタイル名の変更（描画内容には無関係）を1回行いました
-
-トークン消費の記録も残しておきます。Fable 5 は1Mコンテクストの31%を消費した時点で、5h limit の95%に到達しました。
-
-<figure class="diagram-hero">
-  <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/fable5-context-usage-statusline.png" alt="Fable 5 のステータスライン。1Mコンテクストの31%消費時点で5h limitの95%に到達している" loading="lazy">
-  <figcaption>この記事の作業セッションの Fable 5 のステータスライン。ctx 31%/1M の時点で 5h limit 95%（残り3h0m）。</figcaption>
-</figure>
 
 ## 新題材のハイライト
 
@@ -1154,9 +1118,9 @@ CLI 経由の2モデル（Gemini / GPT-5.5）には「構文チェック（SVG�
 
 ## 参考
 
-- 元記事（2モデル版）: [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)（確認日: 2026-05-22）
-- 前回記事（Opus 4.8 追加版）: [Claude Opus 4.8 vs Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/29/opus48-vs-gemini35flash-vs-gpt54-diagram-benchmark/)（確認日: 2026-05-29）
-- さらに前の比較記事: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison （確認日: 2026-05-22）
+- 元記事（2モデル版）: [Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/)
+- 前回記事（Opus 4.8 追加版）: [Claude Opus 4.8 vs Gemini 3.5 Flash vs GPT-5.4 図解生成ベンチマーク](/blog/2026/05/29/opus48-vs-gemini35flash-vs-gpt54-diagram-benchmark/)
+- さらに前の比較記事: https://zenn.dev/kazuph/articles/claude-opus-tikz-comparison
 
 ## おわりに
 
