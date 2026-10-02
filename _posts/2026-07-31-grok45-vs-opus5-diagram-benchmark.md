@@ -10,12 +10,12 @@ full_ai_model: cursor-grok-4.5
 ---
 
 <div class="zenn-message">
-  <p><strong>この記事について:</strong> これは <a href="/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-22 の図解生成ベンチマーク</a>から続く定点観測シリーズです。マスターから Cursor Grok 4.5 と Claude Opus 5 の一騎打ち、さらに既存の Gemini 3.5 Flash を3列目に足す指示を受け、左から <strong>Cursor Grok 4.5 / Claude Opus 5 / Gemini 3.5 Flash</strong> の3列にしました。新規作図は Grok 4.5 と Opus 5 の 12題材 × 3形式 = 72個で、Gemini 3.5 Flash 列は過去記事の資産をそのまま流用しています。</p>
+  <p><strong>この記事について:</strong> これは <a href="/blog/2026/05/22/gemini35flash-vs-gpt54-diagram-benchmark/">2026-05-22 の図解生成ベンチマーク</a>から続く定点観測シリーズです。kazuph から、Cursor Grok 4.5 と Claude Opus 5 を比較し、既存の Gemini 3.5 Flash を3列目に追加するよう指示を受け、左から <strong>Cursor Grok 4.5 / Claude Opus 5 / Gemini 3.5 Flash</strong> の3列にしました。新規作図は Grok 4.5 と Opus 5 の 12題材 × 3形式 = 72個で、Gemini 3.5 Flash 列は過去記事の資産をそのまま流用しています。</p>
 </div>
 
 ## 依頼内容
 
-この記事は、以下の指示をマスターから受けて作成しました。
+この記事は、以下の指示を kazuph から受けて作成しました。
 
 > このブログで伝統の図解ベンチがあります。君とopus 5で一騎打ちして欲しいです。2つの比較でオケー。プレビューはtailscaleのURLをSlackに送ってください。承認するまでプッシュしないでね。
 
@@ -31,7 +31,7 @@ full_ai_model: cursor-grok-4.5
 
 このシリーズは、新しいモデルが出るたびに「同じお題・同じプロンプト・同じビルド手順」で図解を描かせて横並び比較する定点観測ベンチマークです。今回の3モデルは左から **Cursor Grok 4.5 / Claude Opus 5 / Gemini 3.5 Flash** の順です。
 
-この記事は題材選定、コード生成、比較、記事化までをAIで進める **Full AI** 方式で書いています。
+題材選定、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。
 
 <style>
 .diagram-hero img,
@@ -71,7 +71,7 @@ full_ai_model: cursor-grok-4.5
 
 <figure class="diagram-hero">
   <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/bear-plush-ogp-grok45-opus5-gemini-3way.png" alt="クマのぬいぐるみの TikZ 結果を、Cursor Grok 4.5・Claude Opus 5・Gemini 3.5 Flash の3モデルで横並び比較した画像" loading="eager">
-  <figcaption>冒頭画像と OGP には、シリーズの顔であるクマのぬいぐるみ題材の TikZ 比較を Cursor Grok 4.5 / Claude Opus 5 / Gemini 3.5 Flash の3列で並べた画像を使っています。</figcaption>
+  <figcaption>冒頭画像と OGP には、シリーズで継続して使っているクマのぬいぐるみ題材の TikZ 比較を Cursor Grok 4.5 / Claude Opus 5 / Gemini 3.5 Flash の3列で並べた画像を使っています。</figcaption>
 </figure>
 
 ## 比較条件
@@ -118,7 +118,7 @@ full_ai_model: cursor-grok-4.5
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。お題のプロンプトは `scripts/diagram_benchmark_2026/prompts/` にあります(3モデル共通)。
 
-source 欄は単なるパス文字列ではなく、サイト上でそのまま開ける公開 source へのリンクにしています。
+source 欄のリンクから、公開したソースをこのサイトで直接開けます。
 
 ## 実行方法
 
@@ -1130,7 +1130,7 @@ scripts/diagram_benchmark_2026/render_all.sh gemini35flash
 
 ## 所見
 
-結論から言うと、今回の並びでは **Claude Opus 5 が明らかに圧勝** でした。
+今回の比較では、Claude Opus 5 が明らかに圧勝でした。
 
 イラストでも技術図でも、部品の密度、視線や矢印の整理、余白の取り方まで一段上に仕上がっている題材が多く、横並びで見ると差はかなりはっきりします。
 
@@ -1143,7 +1143,7 @@ scripts/diagram_benchmark_2026/render_all.sh gemini35flash
 
 ## おわりに
 
-Cursor Grok 4.5 と Claude Opus 5 を新規作図し、Gemini 3.5 Flash を3列目に据えた 12題材 × 3形式の定点観測でした。
+Cursor Grok 4.5 と Claude Opus 5 を新規作図し、Gemini 3.5 Flash を3列目に追加した 12題材 × 3形式の定点観測でした。
 
 勝者は Opus 5 で疑いない一方、Flash のコスパと Grok の追従が見えたので、ただの実力差の確認以上に残る比較になったと思います。
 

@@ -11,7 +11,7 @@ Android の画面を Mac に映すとき、`scrcpy` はかなり便利です。U
 
 ただ、普段使いの道具としては、毎回ターミナルから起動するより、Finder や Spotlight から普通のアプリとして起動できるほうが気楽です。`/Applications` に置いておけば、Dock にも置けるし、他の macOS アプリと同じ感覚で扱えます。
 
-今回は Homebrew で入っている `scrcpy` を、薄い AppleScript アプリで包んで `/Applications/scrcpy.app` にしました。中身は大げさな GUI ではなく、既存の CLI をきれいに起動するための小さなランチャーです。
+今回は Homebrew で入っている `scrcpy` を起動する AppleScript アプリを作り、`/Applications/scrcpy.app` にしました。複雑な GUI は作らず、既存の CLI を起動するだけの小さなランチャーにしています。
 
 ![scrcpy.app から Pixel 10 の Minecraft 画面を表示しているところ](/images/scrcpy/2026-05-14-scrcpy-minecraft-app-1600.png)
 
@@ -33,7 +33,7 @@ brew install scrcpy
 brew install android-platform-tools
 ```
 
-インストールできたら、コマンドが見えることを確認します。
+インストールできたら、コマンドの保存先とバージョンを確認します。
 
 ```console
 $ command -v scrcpy
@@ -81,9 +81,9 @@ end run'
 2. `nohup ... &` で AppleScript の実行をすぐ返す
 3. `/tmp/scrcpy-app.log` にログを残す
 
-GUI アプリとして起動すると、ターミナルで使っている shell の `PATH` はそのまま引き継がれません。なので、`scrcpy` と `adb` が見えるように `PATH` を明示しておきます。
+GUI アプリとして起動すると、ターミナルで使っている shell の `PATH` はそのまま引き継がれません。そのため、`scrcpy` と `adb` の実行ファイルを見つけられるように `PATH` を明示します。
 
-また、`scrcpy` は起動後も動き続けるアプリなので、AppleScript 側で待ち続ける必要はありません。`nohup` と `&` で裏に回し、ログだけ残しておくと、起動に失敗したときも原因を追いやすいです。
+また、`scrcpy` は起動後も動き続けるアプリなので、AppleScript 側で終了を待つ必要はありません。`nohup` と `&` でバックグラウンド実行し、ログを残すと、起動に失敗した原因を調べやすくなります。
 
 ## アプリ名とアイコンを整える
 
@@ -161,7 +161,7 @@ $ tail /tmp/scrcpy-app.log
 [server] INFO: Device: [Google] google Pixel 10 (Android 16)
 ```
 
-ここまで出れば、`/Applications/scrcpy.app` から Homebrew 版 scrcpy が起動し、接続中の Android 端末まで届いています。
+このログが出れば、`/Applications/scrcpy.app` から Homebrew 版 scrcpy が起動し、接続中の Android 端末と通信できています。
 
 ## Minecraft 用の可変サイズアプリも作る
 
@@ -207,7 +207,7 @@ Minecraft 版は Spotlight / Raycast で見分けやすいように、草ブロ�
 
 ![scrcpy Minecraft.app で flex display のサイズ変更を試しているところ](/images/scrcpy/2026-05-14-scrcpy-minecraft-flex.gif)
 
-さらに面白いのは、この状態だと Mac 側のキーボードとマウスで Minecraft を操作できることです。スマホゲームを「Mac のウィンドウ上で、キーボード + マウス操作できる」状態になるので、単なる画面ミラーリングよりだいぶ PC 版っぽい触り心地になります。
+さらに面白いのは、Mac 側のキーボードとマウスで Minecraft を操作できることです。スマホゲームでも Mac のウィンドウで操作できるため、単なる画面ミラーリングより、だいぶ PC 版に近い操作感になります。
 
 確認ログはこんな感じです。
 

@@ -211,7 +211,7 @@ herdr pane report-agent "$HERDR_PANE_ID" \
   --title "restore pane sessions"
 ```
 
-CLAUDE.md や AGENTS.md に「タスク開始時と、タスク内容が変わった時に報告しろ」と書いておくと、Agent が勝手にこれを打ちます。すると pane タイトルが `%81 codex restore pane sessions` になり、workspace 名も `herdr-restore pane sessions` のように変わる。
+CLAUDE.md や AGENTS.md に「タスク開始時と、タスク内容が変わった時に報告しろ」と書いておくと、Agent がその指示に従ってこのコマンドを実行します。すると pane タイトルが `%81 codex restore pane sessions` になり、workspace 名も `herdr-restore pane sessions` のように変わる。
 
 pane タイトルには cwd の Git branch も末尾に出るので、sidebar を見るだけで「どの pane の、どの Agent が、どのブランチで、何をしているか」まで分かります。
 
@@ -229,7 +229,7 @@ Agent には「まず `herdr help` を読め」と言うだけで済みます。
 
 この中でも大事にしているのが fail-closed です。`herdr pane current` は「呼び出し元プロセスが属する pane」だけを返します。解決できなければ失敗する。focus 中の pane や pane 一覧の先頭から推測して返すことはしません。AI が「自分がいる pane」を取り違えて別 pane に送信する事故は、一度起きると被害が大きいので、ここは推測禁止に振り切りました。
 
-`herdr agent send` は、テキストを書いてから少し待って Enter まで送ります。「入力欄に文字は入ったが送信されてない」という AI あるあるを、送信側で潰しています。
+`herdr agent send` は、テキストを書いてから少し待って Enter まで送ります。「入力欄に文字は入ったが送信されてない」という AI あるあるを、送信側で防いでいます。
 
 長いコマンドを別 pane に投げる時は `herdr pane run-notify` を使います。
 
@@ -253,7 +253,7 @@ fork では通知タイトルを `2 herdr-planner` のように「workspace 番�
 
 これが最近やった中で一番重い変更です。
 
-Herdr を再起動すると、pane の中で動いていた Claude Code や Codex は当然死にます。復元機能自体はありますが、雑にやると事故ります。同じ cwd で Codex を 3 枚動かしていた場合、「そのディレクトリの最新セッションに resume」みたいな復元だと、3 枚とも同じ会話に潰れる。
+Herdr を再起動すると、pane の中で動いていた Claude Code や Codex は終了します。復元機能自体はありますが、復元先を誤ることがあります。同じ cwd で Codex を 3 枚動かしていた場合、「そのディレクトリの最新セッションに resume」みたいな復元だと、3 枚とも同じ会話を開いてしまいます。
 
 なので fork の復元は fail-closed にしました。
 
@@ -285,7 +285,7 @@ vim mode は、Normal mode で `h` / `l` が pane 移動、`j` / `k` が workspa
 
 tmux の `Ctrl-b` + `Space` の答えとして `Cycle pane layout` を入れました。横一列 → 縦一列 → 左メイン + グリッド → 右メイン + グリッド → 上メイン + 下一列 → 下メイン + 上一列、を 1 操作で巡回します。Agent を 4〜5 枚並べている時は「メイン 1 枚 + 残りグリッド」が一番見やすいので、そこに一発で行けるのが効きます。
 
-`Rotate panes` は split の形を保ったまま、中身だけ回す操作です。ここで大事なのが、回しても `%pane_id` と terminal の対応は変わらないこと。位置が変わっても `%2` は同じ Codex のままなので、Agent 同士の宛先が壊れません。
+`Rotate panes` は split の形を保ったまま、中身だけ回す操作です。ここで大事なのが、回しても `%pane_id` と terminal の対応は変わらないこと。位置が変わっても `%2` は同じ Codex のままなので、Agent 同士が指定する宛先は変わりません。
 
 ターミナル領域の下には 1 行だけの action bar を置いて、` CYCLE LAYOUT ` ` ROTATE PANES ` ` EQUALIZE ` をクリックで叩けるようにしました。pane タイトルのクリックで zoom のトグルもできます。スマホ SSH だと、キーバインドよりこういう「見えてるものを押す」の方が速い。
 

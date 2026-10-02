@@ -1,0 +1,81 @@
+name: Yomiyasu editorial review
+
+on:
+  push:
+    branches: [chore/yomiyasu-20261001]
+  pull_request:
+    paths:
+      - '_posts/**'
+      - 'scripts/yomiyasu/**'
+      - '.github/workflows/yomiyasu-review.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: editorial-review-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify this editorial pass and preserved source material
+        if: github.head_ref == 'chore/yomiyasu-20261001' || github.ref == 'refs/heads/chore/yomiyasu-20261001'
+        run: python3 scripts/yomiyasu/edit_posts.py --report-dir /tmp/editorial-audit
+      - name: Check whitespace errors
+        run: git diff --check origin/master...HEAD
+      - uses: cachix/install-nix-action@v31
+      - name: Install gems
+        run: nix --extra-experimental-features 'nix-command flakes' develop --command bundle install
+      - name: Build site without publishing
+        run: nix --extra-experimental-features 'nix-command flakes' develop --command bundle exec jekyll build
+      - name: Check the new comparison article
+        if: github.head_ref == 'chore/yomiyasu-20261001' || github.ref == 'refs/heads/chore/yomiyasu-20261001'
+        run: |
+          python3 - <<'PY'
+          import html
+          import re
+          import subprocess
+          from pathlib import Path
+          text = Path('_site/blog/2026/10/02/yomiyasu-ai-articles/index.html').read_text()
+          assert text.count('class="yms-compare"') == 11
+          assert '過去のAI記事に読みやすを適用してみた' in text
+          assert '既存22記事の112箇所' in text
+          assert 'CPUを使わない方に倒す' not in text
+          assert 'Opus圧勝です。Astraは精巧に見えて、再現度が低いです。適当じゃん。' in text
+          article = Path('_posts/2026-10-02-yomiyasu-ai-articles.md').read_text()
+          examples = re.findall(r'<p class="yms-source">出典 <a href="\{% post_url ([\w-]+) %\}">.*?<table class="yms-compare">(.*?)</table>', article, re.S)
+          assert len(examples) == 11
+          def plain(value):
+              value = html.unescape(re.sub(r'<[^>]*>', '', value))
+              return re.sub(r'[\s`*]+', '', value)
+          for slug, table in examples:
+              files = [p for p in Path('_posts').glob(slug + '.*') if p.suffix in ('.md', '.html')]
+              assert len(files) == 1, slug
+              path = files[0]
+              before = subprocess.check_output(['git', 'show', '5751b3916a0dc3ae61b43b62d598dade8c385a38:' + path.as_posix()], text=True)
+              after = path.read_text()
+              cells = re.findall(r'<td>(.*?)</td>', table, re.S)
+              assert len(cells) == 2, slug
+              assert plain(cells[0]) in plain(before), ('before mismatch', slug)
+              assert plain(cells[1]) in plain(after), ('after mismatch', slug)
+          print('All eleven comparison pairs match their source posts; the human quotation is unchanged.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: editorial-audit
+          path: /tmp/editorial-audit
+          if-no-files-found: ignore
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: editorial-preview
+          path: _site
+          retention-days: 3

@@ -79,7 +79,7 @@ export RUSTUP_TOOLCHAIN="nightly"
 | Before Rust | `b8ecc78b` | `1.3.14-canary.1+b8ecc78b0` | 59 MB | 約8分 |
 | After Rust | `23427dbc` | `1.3.14-canary.1+23427dbc1` | 55 MB | 約12分26秒 |
 
-バイナリサイズはRust化後のほうが小さくなりました。一方で、まっさらな状態からのrelease buildはRust化後のほうが長くなりました。新しく入ったCargo workspaceがRust側のcoreを `libbun_rust.a` としてビルドするため、ここは素直に重くなっています。
+バイナリサイズはRust化後のほうが小さくなりました。一方で、クリーンな状態からのrelease buildはRust化後のほうが長くなりました。新しく入ったCargo workspaceがRust側のcoreを `libbun_rust.a` としてビルドするため、その分ビルドに時間がかかっています。
 
 ## 何を測ったか
 
@@ -94,7 +94,7 @@ export RUSTUP_TOOLCHAIN="nightly"
 
 ベンチケースの設計はAIが行いました。方針は「Rust化で効きそうなbuild/transpile系を中心にしつつ、runtime寄りの処理も混ぜて、実環境で同じ条件で測る」ことです。実際に使ったfixture、実行スクリプト、hyperfineの出力は [secret gist](https://gist.github.com/kazuph/f135de62775238a8b8a2424525846b25) に置いています。
 
-一番見たかったのは `bundle-big-ts` です。大きめのTypeScriptファイルをbundleしてminifyするケースで、parse、TypeScriptの変換、symbol処理、出力、minifyがまとめて通ります。
+一番見たかったのは `bundle-big-ts` です。大きめのTypeScriptファイルをbundleしてminifyするケースで、parse、TypeScriptの変換、symbol処理、出力、minifyをまとめて実行します。
 
 生成した `big.ts` の中身はだいたいこういうものです。
 
@@ -122,7 +122,7 @@ bun build fixtures/src/big.ts --outfile=results/big.js --minify
 - `json-parse`: 100,000件のJSONを読み込んでparse
 - `glob-loop`, `file-read-loop`, `hash-loop`, `package-scripts`, `version`
 
-`install-small-cold` も試しましたが、速すぎて `hyperfine` が片方を0秒として扱ってしまいました。さすがに結論に入れるには怪しいので除外しました。手動で見る限り、小さなinstallはどちらもだいたい `0.01s` で終わっていました。
+`install-small-cold` も試しましたが、速すぎて `hyperfine` が片方を0秒として扱ってしまいました。測定値を結論の根拠にするには信頼性が足りないため、除外しました。手動で見る限り、小さなinstallはどちらもだいたい `0.01s` で終わっていました。
 
 ## 結果
 
@@ -225,7 +225,7 @@ hyperfine --warmup 2 --runs 12 \
 
 Before Rustの時点で、Bunはすでにかなり速かったです。今回も、runtime寄りの小さなベンチマークではBefore Rustのほうが速いケースが残っています。
 
-それでも、実プロジェクトでまず効きそうなbuildと変換処理では、After Rustがかなり速いです。ローカルビルドではrelease binaryも小さくなりましたし、TypeScriptのbundleやtranspileではすぐに分かる差が出ていました。
+それでも、実プロジェクトでまず効果が期待できるbuildと変換処理では、After Rustがかなり速いです。ローカルビルドではrelease binaryも小さくなりましたし、TypeScriptのbundleやtranspileではすぐに分かる差が出ていました。
 
 結論としては、Rust化後のBunはまだ「何でも速い」状態ではありません。ただ、build-heavyなBunユーザーにとっては、もう十分に意味のある改善に見えます。
 

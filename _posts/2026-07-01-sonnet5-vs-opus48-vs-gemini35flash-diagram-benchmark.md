@@ -36,7 +36,7 @@ full_ai_model: claude-sonnet-5
 - **Claude Opus 4.8**: 2026-05-29版で生成済みの10題材 × 3形式 = 30個をそのまま流用
 - **Gemini 3.5 Flash**: `agy` コマンド(Gemini CLI 系のローカルエージェントCLI)の print モードで2026-05-22に生成済みの10題材 × 3形式 = 30個をそのまま流用
 
-この記事は、題材設計、コード生成、比較、記事化までをAIで進める **Full AI** 方式で書いています。
+題材設計、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。
 
 <style>
 .diagram-hero img,
@@ -76,7 +76,7 @@ full_ai_model: claude-sonnet-5
 
 <figure class="diagram-hero">
   <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/bear-plush-ogp-sonnet5-3way.png" alt="クマのぬいぐるみの TikZ 結果を、Claude Sonnet 5・Claude Opus 4.8・Gemini 3.5 Flash の3モデルで横並び比較した画像" loading="eager">
-  <figcaption>冒頭画像と OGP には、シリーズの顔であるクマのぬいぐるみ題材の TikZ 比較を Sonnet 5 / Opus 4.8 / Gemini 3.5 Flash の3列で並べた画像を使っています。</figcaption>
+  <figcaption>冒頭画像と OGP には、シリーズで継続して使っているクマのぬいぐるみ題材の TikZ 比較を Sonnet 5 / Opus 4.8 / Gemini 3.5 Flash の3列で並べた画像を使っています。</figcaption>
 </figure>
 
 ## 比較条件
@@ -121,11 +121,11 @@ full_ai_model: claude-sonnet-5
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。お題のプロンプトは `scripts/diagram_benchmark_2026/prompts/` にあります(3モデル共通)。
 
-source 欄は単なるパス文字列ではなく、サイト上でそのまま開ける公開 source へのリンクにしています。
+source 欄のリンクから、公開したソースをこのサイトで直接開けます。
 
 ## 実行方法(Sonnet 5 列の強制プロンプト運用)
 
-Sonnet 5 列の30個は、オーケストレーター(この作業セッションのメインエージェント)が `Agent` ツールで題材×形式の組み合わせぶん(10題材 × 3形式 = 30体)の subagent を個別に起動し、それぞれに次を明記したプロンプトを渡して生成させました。
+Sonnet 5 列の30個は、この作業セッションのメインエージェントが `Agent` ツールで題材×形式の組み合わせぶん(10題材 × 3形式 = 30体)の subagent を個別に起動し、それぞれに次を明記したプロンプトを渡して生成させました。
 
 - **モデル固定**: `Agent` 呼び出し側で `model: "sonnet"` を明示指定(subagentの自己申告に頼らず、オーケストレーター側の呼び出しパラメータでモデルを強制)
 - **使用ツールの制限**: 「Read でお題プロンプトを読み、Write で source を保存する以外のツールは使うな」と明記
@@ -143,7 +143,7 @@ scripts/diagram_benchmark_2026/render_all.sh gemini35flash
 
 ### 生成時に起きたこと(記録)
 
-定点観測なので、生成過程でつまずいた点も正直に記録しておきます。
+継続して比較できるよう、生成中に起きた問題も記録します。
 
 - **subagent の同時起動数上限**: 30体を1メッセージで一気に起動しようとしたところ、環境側のpane同時起動数の上限(概ね15体前後)に達し、後半のsubagentが `respawn pane failed` で起動失敗しました。オーケストレーターは、完了済みsubagentへ `shutdown_request` を送ってpaneを解放しながら、失敗分を数体ずつ再送信する形で30体すべての起動と完了を確認しています
 - **Claude Sonnet 5**: ブロッホ球のTikZで、独自マクロ名 `\tmpX1` / `\tmpY1`(TeXの制御綴りは英字のみで数字を含められないため `\tmpX` + 文字 `1` に分割される既知の罠)と、`\SphR and \EqMinorR` のようにマクロ直後に `and` キーワードを続けた際にマクロが後続スペースを飲み込んで `3and ...` になる罠の、計2箇所でコンパイルエラーが発生しました。いずれも描画内容には無関係な構文修正(マクロ名の変更、`{}` によるスペース保持)をオーケストレーター側で1回ずつ行い、コンパイルを通しています
