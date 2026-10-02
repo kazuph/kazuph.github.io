@@ -55,7 +55,7 @@ full_ai_model: "GPT-6 Astra Pro"
 
 ### 1. モデルと生成結果を区別する
 
-<p class="yms-source">出典 <a href="/blog/2026/09/03/gemini35-to-38-vs-opus5-diagram-benchmark/">Gemini 3.5〜3.8 FlashとOpus 5の図解比較</a></p>
+<p class="yms-source">出典 <a href="{% post_url 2026-09-03-gemini35-to-38-vs-opus5-diagram-benchmark %}">Gemini 3.5〜3.8 FlashとOpus 5の図解比較</a></p>
 
 <div class="yms-scroll" tabindex="0" role="region" aria-label="モデルと生成結果の修正前後">
 <table class="yms-compare">
@@ -68,7 +68,7 @@ full_ai_model: "GPT-6 Astra Pro"
 
 ### 2. AIの作業説明を短くする
 
-<p class="yms-source">出典 <a href="/blog/2026/09/03/gemini35-to-38-vs-opus5-diagram-benchmark/">同記事のFull AIの説明</a></p>
+<p class="yms-source">出典 <a href="{% post_url 2026-09-03-gemini35-to-38-vs-opus5-diagram-benchmark %}">同記事のFull AIの説明</a></p>
 
 <div class="yms-scroll" tabindex="0" role="region" aria-label="AIの作業説明の修正前後">
 <table class="yms-compare">
@@ -81,7 +81,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 ### 3. 性格付けを、実装した内容に戻す
 
-<p class="yms-source">出典 <a href="/blog/2026/09/24/opus55-vs-astra-benchmark/">Opus 5.5とAstraのISUCON講評</a></p>
+<p class="yms-source">出典 <a href="{% post_url 2026-09-24-opus55-vs-astra-benchmark %}">Opus 5.5とAstraのISUCON講評</a></p>
 
 <div class="yms-scroll" tabindex="0" role="region" aria-label="ISUCON講評の修正前後">
 <table class="yms-compare">
@@ -94,7 +94,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 ### 4. 障害の状態を具体的にする
 
-<p class="yms-source">出典 <a href="/blog/2026/06/30/macos-clock-dns-ntp-recovery/">macOSの時計とDNSの復旧記事</a></p>
+<p class="yms-source">出典 <a href="{% post_url 2026-06-30-macos-clock-dns-ntp-recovery %}">macOSの時計とDNSの復旧記事</a></p>
 
 <div class="yms-scroll" tabindex="0" role="region" aria-label="DNSの説明の修正前後">
 <table class="yms-compare">
@@ -107,7 +107,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 ### 5. 不要な否定対比を整理する
 
-<p class="yms-source">出典 <a href="/blog/2026/07/01/karukan-macos-ime-install/">KarukanのMetalに関する説明</a></p>
+<p class="yms-source">出典 <a href="{% post_url 2026-07-01-karukan-macos-ime-install %}">KarukanのMetalに関する説明</a></p>
 
 <div class="yms-scroll" tabindex="0" role="region" aria-label="Metalの説明の修正前後">
 <table class="yms-compare">
@@ -120,7 +120,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 ### 6. 「重要」を消さず、文の形を直す
 
-<p class="yms-source">出典 <a href="/blog/2026/06/30/macos-clock-dns-ntp-recovery/">macOS復旧記事の切り分け方</a></p>
+<p class="yms-source">出典 <a href="{% post_url 2026-06-30-macos-clock-dns-ntp-recovery %}">macOS復旧記事の切り分け方</a></p>
 
 <div class="yms-scroll" tabindex="0" role="region" aria-label="重要性を残した修正前後">
 <table class="yms-compare">
@@ -133,7 +133,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 ### 7. 評価の強さは変えない
 
-<p class="yms-source">出典 <a href="/blog/2026/07/31/grok45-vs-opus5-diagram-benchmark/">Grok 4.5、Opus 5、Gemini 3.5 Flashの図解比較</a></p>
+<p class="yms-source">出典 <a href="{% post_url 2026-07-31-grok45-vs-opus5-diagram-benchmark %}">Grok 4.5、Opus 5、Gemini 3.5 Flashの図解比較</a></p>
 
 <div class="yms-scroll" tabindex="0" role="region" aria-label="評価を残した修正前後">
 <table class="yms-compare">
@@ -146,7 +146,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 ### 8. 本人のコメントはそのまま残す
 
-<p class="yms-source">出典 <a href="/blog/2026/09/24/opus55-vs-astra-benchmark/">姫路城の講評（kazuph）</a></p>
+<p class="yms-source">出典 <a href="{% post_url 2026-09-24-opus55-vs-astra-benchmark %}">姫路城の講評（kazuph）</a></p>
 
 <div class="yms-scroll" tabindex="0" role="region" aria-label="変更しなかった本人コメント">
 <table class="yms-compare">
@@ -171,7 +171,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 参照したyomiyasuはコミット`f03aecd9c4c4a69e229f3848ecba66c3871f734c`、元記事はコミット`5751b3916a0dc3ae61b43b62d598dade8c385a38`に固定しました。確認日は2026年10月2日です。
 
-SKILL.mdと技術記事向けの仕様を読み、各記事の文脈に合わせて修正文を作りました。その変更を[検証用スクリプト](https://github.com/kazuph/kazuph.github.io/blob/chore/yomiyasu-20261001/scripts/yomiyasu/edit_posts.py)に記録しています。このスクリプトは汎用の自動リライターではなく、今回確認した89箇所の変更を適用・検証するものです。
+SKILL.mdと技術記事向けの仕様を読み、各記事の文脈に合わせて修正文を作りました。その変更を[検証用スクリプト](https://github.com/kazuph/kazuph.github.io/blob/b3dafaa2e83be1a8901a35b897235b185925f8a7/scripts/yomiyasu/edit_posts.py)に記録しています。このスクリプトは汎用の自動リライターではなく、今回確認した89箇所の変更を適用・検証するものです。
 
 検証では、変更前後のfront matter、コード、ログ、数値、表、引用、本人講評、出題文、生成作品を照合します。19記事以外の既存記事が変更されていないことも確認します。
 
