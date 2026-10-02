@@ -2,7 +2,7 @@
 layout: post
 title: "過去のAI記事に読みやすを適用してみた"
 date: 2026-10-02
-description: "過去22記事を確認し、AI執筆と確認できた19記事の89箇所をyomiyasuの方針で推敲しました。実際の修正前後を横並びで比較し、本人コメントや検証データを残した理由も説明します。"
+description: "過去22記事の111箇所をyomiyasuの方針で推敲しました。実際の修正前後を横並びで比較し、本人コメントや検証データを残した理由も説明します。"
 full_ai: true
 full_ai_model: "GPT-6 Astra Pro"
 ---
@@ -29,7 +29,7 @@ full_ai_model: "GPT-6 Astra Pro"
 
 このブログの過去記事に、[yomiyasu（よみやす）](https://github.com/nanaism/yomiyasu)を適用しました。対象を調べると、記事の意味は通じても、「比較相手にモデルを置く」「Metalを使わない方に倒す」など、読者が意味を補う必要のある言い回しが残っていました。
 
-既存22記事を確認し、AI執筆と確認できた19記事の89箇所を修正しました。技術的な内容を再調査して更新したのではなく、元の記事に書かれた内容を保って、日本語の説明を直しています。
+既存22記事の111箇所を修正しました。技術的な内容を再調査して更新したのではなく、元の記事に書かれた内容を保って、日本語の説明を直しています。
 
 推敲と本記事の執筆はChatGPTで行いました。過去記事の`full_ai`と`full_ai_model`は変更していません。そこに表示されるのは、今回推敲したAIではなく、元の原稿を書いたモデルです。
 
@@ -43,9 +43,9 @@ full_ai_model: "GPT-6 Astra Pro"
 
 ## 何を直し、何を残したか
 
-`full_ai: true`の18記事と、本文でCodexによる記事作成が明示されているpetの記事を対象にしました。AI執筆かどうかを判断しきれないTmuxPal、scrcpy、Finderの記事は、今回は全文を残しています。Zennから取り込む記事と、過去の発表スライドも対象外です。
+このブログでは、記事の指示はkazuph本人が出し、執筆はAIが担当しています。本人からの確認に基づき、`full_ai`の有無にかかわらず既存22記事を対象にしました。TmuxPal、scrcpy、Finderも含みます。Zennから取り込む記事と、過去の発表スライドは対象外です。
 
-記事単位のAI表示だけでは、全ての文章を変更してよいとは限りません。対象記事の中にも本人の依頼文や講評があります。また、ベンチマークで生成された小説や、他のAIの回答を原文として掲載した部分は、比較の資料です。これらも推敲しませんでした。
+記事をAIが執筆していても、全ての文章を変更してよいとは限りません。対象記事の中にも本人の依頼文や講評があります。また、ベンチマークで生成された小説や、他のAIの回答を原文として掲載した部分は、比較の資料です。これらも推敲しませんでした。
 
 コード、コマンド、ログ、数値表、出題プロンプト、生成作品、画像やデモの参照先も保持しています。文章を読みやすくするために、過去の実験条件や結果まで変えてしまわないためです。
 
@@ -157,6 +157,45 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 この文章は`講評（kazuph）`と明示されています。同じ記事にあるAIの講評は直しましたが、本人の言葉は触っていません。Karukanの記事にある感想の引用や、Sonnet 5の記事末尾の人間コメントも保持しました。
 
+### 9. TmuxPalの検出対象を明記する
+
+<p class="yms-source">出典 <a href="{% post_url 2026-05-13-tmuxpal-from-codex-pet %}">TmuxPalのAI pane検出</a></p>
+
+<div class="yms-scroll" tabindex="0" role="region" aria-label="TmuxPalの検出対象の修正前後">
+<table class="yms-compare">
+<thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
+<tbody><tr><td><p>tmux 全体の pane を見渡しながら、<mark>AI っぽいものだけを抜く</mark>、という実装です。</p></td><td><p>tmux全体のpaneから、<mark>AIのTUIと判定したものだけを選ぶ</mark>実装です。</p></td></tr></tbody>
+</table>
+</div>
+
+直前には、コマンド名、pane title、process argumentを使って判定する説明があります。その結果として何を選ぶのかを明記しました。TmuxPalの記事では、このほか監視方法とキャッシュ期間など、計9箇所を直しています。最初の依頼文と実装方針の引用は変更していません。
+
+### 10. scrcpyのランチャーが行うことを書く
+
+<p class="yms-source">出典 <a href="{% post_url 2026-05-14-scrcpy-macos-app-launcher %}">scrcpyをmacOSアプリにする説明</a></p>
+
+<div class="yms-scroll" tabindex="0" role="region" aria-label="scrcpyのランチャーの修正前後">
+<table class="yms-compare">
+<thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
+<tbody><tr><td><p>今回は Homebrew で入っている <code>scrcpy</code> を、<mark>薄い AppleScript アプリで包んで</mark> <code>/Applications/scrcpy.app</code> にしました。</p></td><td><p>今回はHomebrewで入っている <code>scrcpy</code> を<mark>起動するAppleScriptアプリを作り</mark>、<code>/Applications/scrcpy.app</code> にしました。</p></td></tr></tbody>
+</table>
+</div>
+
+「薄い」「包む」ではなく、既存のscrcpyを起動するアプリだと書きました。scrcpyの記事では、実行ファイルの検索やログの説明など計6箇所を修正しています。コマンドと実行ログはそのまま残しました。
+
+### 11. Finder連携の役割分担を書く
+
+<p class="yms-source">出典 <a href="{% post_url 2026-05-15-finder-paste-clipboard-image %}">Finderの画像貼り付けとKarabinerの役割</a></p>
+
+<div class="yms-scroll" tabindex="0" role="region" aria-label="Finder連携の役割分担の修正前後">
+<table class="yms-compare">
+<thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
+<tbody><tr><td><p>Karabiner 側は <code>Cmd+V</code> を Finder 前面のときだけ<mark>このスクリプトへ渡す係です</mark>。</p></td><td><p>Karabinerは、Finderが前面のときだけ <code>Cmd+V</code> に応じて<mark>スクリプトを呼び出します</mark>。</p></td></tr></tbody>
+</table>
+</div>
+
+Karabinerがショートカットに反応してスクリプトを呼び出し、スクリプト側が貼り付ける内容を判定する、と役割を分けて説明しました。Finderの記事は計7箇所の修正です。通常のファイル貼り付けに影響する可能性と、別のショートカットを使う場合の注意は削っていません。
+
 ## 今回、どこで役立ったか
 
 比較記事の導入では、何を比較に使ったのかを明記できました。実装や障害対応の説明では、比喩を具体的な動作や状態に置き換えられました。AIが作業工程を説明する段落では、同じ内容を重ねずに書けています。
@@ -171,9 +210,9 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 
 参照したyomiyasuはコミット`f03aecd9c4c4a69e229f3848ecba66c3871f734c`、元記事はコミット`5751b3916a0dc3ae61b43b62d598dade8c385a38`に固定しました。確認日は2026年10月2日です。
 
-SKILL.mdと技術記事向けの仕様を読み、各記事の文脈に合わせて修正文を作りました。その変更を[検証用スクリプト](https://github.com/kazuph/kazuph.github.io/blob/b3dafaa2e83be1a8901a35b897235b185925f8a7/scripts/yomiyasu/edit_posts.py)に記録しています。このスクリプトは汎用の自動リライターではなく、今回確認した89箇所の変更を適用・検証するものです。
+SKILL.mdと技術記事向けの仕様を読み、各記事の文脈に合わせて修正文を作りました。その変更を[検証用スクリプト](https://github.com/kazuph/kazuph.github.io/blob/b16be041ea9c57df6ef7265ecb66238f5ea93e69/scripts/yomiyasu/edit_posts.py)に記録しています。このスクリプトは汎用の自動リライターではなく、今回確認した111箇所の変更を適用・検証するものです。
 
-検証では、変更前後のfront matter、コード、ログ、数値、表、引用、本人講評、出題文、生成作品を照合します。19記事以外の既存記事が変更されていないことも確認します。
+検証では、既存22記事について変更前後のfront matter、コード、ログ、数値、表、引用、本人講評、出題文、生成作品を照合します。
 
 ```bash
 # この変更を含むリポジトリで実行する。通常は検証のみ。
