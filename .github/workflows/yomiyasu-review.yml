@@ -1,0 +1,39 @@
+name: Yomiyasu editorial review
+
+on:
+  push:
+    branches: [chore/yomiyasu-20261001]
+  pull_request:
+    paths:
+      - '_posts/**'
+      - 'scripts/yomiyasu/**'
+      - '.github/workflows/yomiyasu-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Archive editorial source
+        run: |
+          mkdir -p /tmp/editorial-input
+          git archive HEAD _posts _layouts _includes _data stylesheets javascripts scripts AGENTS.md README.md Gemfile Gemfile.lock _config.yml index.html flake.nix flake.lock | tar -x -C /tmp/editorial-input
+      - uses: actions/upload-artifact@v4
+        with:
+          name: editorial-input
+          path: /tmp/editorial-input
+          retention-days: 7
+      - uses: cachix/install-nix-action@v31
+      - name: Install gems
+        run: nix --extra-experimental-features 'nix-command flakes' develop --command bundle install
+      - name: Build site without publishing
+        run: nix --extra-experimental-features 'nix-command flakes' develop --command bundle exec jekyll build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: editorial-preview
+          path: _site
+          retention-days: 7
