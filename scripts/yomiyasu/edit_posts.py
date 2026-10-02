@@ -2,7 +2,7 @@
 """Apply or verify the editorial changes reviewed on 2026-10-02.
 
 The replacements below are individually reviewed edits, not a general rewriter.
-Default: verify only. --apply writes only the 19 reviewed historical posts.
+Default: verify only. --apply writes only the 22 reviewed historical posts.
 """
 import argparse
 from collections import Counter, defaultdict
@@ -149,6 +149,32 @@ change(p, 'スコアの天井を追うより「落ちない実装を出す」判
 change(p, 'それでも、絵本の土台である日本語が崩れていては成り立ちません。', 'それでも、日本語として意味が通じなければ絵本として成り立ちません。', '言語表現への評価を直接記述')
 change(p, 'スコアの天井よりも「落ちない実装を最後に出す」判断が効いた勝負でした。', '最高スコアよりも、合格する実装を最後に提出する判断が勝敗を分けた勝負でした。', '比喩を実際の合否判断に変更')
 
+
+# kazuph confirmed that these posts were also drafted by AI.
+# Instructions, quotations, and already-natural personal remarks stay unchanged.
+change('2026-05-13-tmuxpal-from-codex-pet.md', '実際に Codex へ渡していた依頼は、かなりそのままです。', 'Codexへ渡した依頼文を、そのまま載せます。', '曖昧な前置きを、引用する内容の説明に変更')
+change('2026-05-13-tmuxpal-from-codex-pet.md', 'tmux で複数の AI を並行で動かしていると、今どの pane に何がいて、どれがまだ動いているのかを毎回 tmux だけで追うのは意外と大変です。そこで、Codex.app の pet に着想を得つつ、tmux 用には **複数 pane を一覧できること** を主役にして作ったのが TmuxPal です。', 'tmuxで複数のAIを並行で動かしていると、どのpaneで何が動き、どれが実行中なのかをtmuxだけで毎回確認するのは意外と大変です。そこでCodex.appのpetに着想を得て、複数paneの一覧表示を重視したTmuxPalを作りました。', '困りごとと実装の目的を保ち、主役という比喩と過剰な強調を整理')
+change('2026-05-13-tmuxpal-from-codex-pet.md', '実際の構成もその方向で整理しています。', 'アプリは次のターゲットに分けています。', '直後に示すターゲット構成を明記')
+change('2026-05-13-tmuxpal-from-codex-pet.md', 'tmux 側は 1 本の仕組みに寄せず、**polling + hook** の併用にしています。', 'tmuxの監視は1つの方法だけに頼らず、pollingとhookを併用しています。', '寄せるという比喩を監視方法の説明に変更')
+change('2026-05-13-tmuxpal-from-codex-pet.md', 'ここを hook だけに寄せなかったのは、tmux の hook だけでは AI の意味的な開始・完了を完全には取れないからです。pane の生死、pane title、コマンドライン、直近 transcript を合わせて見たほうが、現実の coding AI TUI には強いです。', 'hookだけに頼らないのは、tmuxのhookだけではAIの処理開始や完了を完全には検出できないためです。paneが動いているかどうかに加え、pane title、コマンドライン、直近のtranscriptを確認するほうが、実際のcoding AI TUIの状態を判断しやすくなります。', '検出できない範囲と、判定に使う情報を具体化')
+change('2026-05-13-tmuxpal-from-codex-pet.md', 'tmux 全体の pane を見渡しながら、AI っぽいものだけを抜く、という実装です。', 'tmux全体のpaneから、AIのTUIと判定したものだけを選ぶ実装です。', 'AIっぽいものを抜くという説明を検出結果の選別に変更')
+change('2026-05-13-tmuxpal-from-codex-pet.md', 'pane 数が増えた時の遅さも少し詰めました。原因は transcript の取り回しで、3 秒ごとの polling に対して transcript cache の TTL が 1.5 秒しかなかったため、pane が増えるとほぼ毎回 `tmux capture-pane` を叩き直していました。', 'pane数が増えた時の動作の遅さも少し改善しました。原因はtranscriptのキャッシュ期間です。3秒ごとのpollingに対してtranscript cacheのTTLが1.5秒しかなく、paneが増えるとほぼ毎回 `tmux capture-pane` を再実行していました。', '遅さを詰めるという比喩を直し、原因と再実行の条件を分けて説明')
+change('2026-05-13-tmuxpal-from-codex-pet.md', 'そこで `TmuxCollector` の transcript cache を見直して、active pane は 4.5 秒、inactive pane は 12 秒で持つように変えました。これで動いている pane の追従は残しつつ、画面外で待機している pane まで毎回取り直すことは減らせています。tmux 全体を見る UI なので、こういう地味な軽量化も相性がいいです。', 'そこで `TmuxCollector` のtranscript cacheの保持期間を、active paneは4.5秒、inactive paneは12秒に変えました。動いているpaneの変化を追いながら、画面外で待機しているpaneの情報を取り直す回数を減らせています。tmux全体を表示するUIでは、目立たないこうした負荷の削減も役立ちます。', '保持期間と削減した処理を明記し、数値と控えめな評価を保持')
+change('2026-05-13-tmuxpal-from-codex-pet.md', 'つまり、最初は **起動して tmux を使うだけ** でよくて、常駐や hooks は気に入ったら足していく、くらいの使い方で十分です。', '最初はアプリを起動してtmuxを使うだけで十分です。気に入ったら、ログイン時の常駐やhooksを追加できます。', '必須操作と任意設定を分け、重い言い回しを整理')
+change('2026-05-14-scrcpy-macos-app-launcher.md', '今回は Homebrew で入っている `scrcpy` を、薄い AppleScript アプリで包んで `/Applications/scrcpy.app` にしました。中身は大げさな GUI ではなく、既存の CLI をきれいに起動するための小さなランチャーです。', '今回はHomebrewで入っている `scrcpy` を起動するAppleScriptアプリを作り、`/Applications/scrcpy.app` にしました。複雑なGUIは作らず、既存のCLIを起動するだけの小さなランチャーにしています。', '薄いアプリで包むという比喩を、実際に作ったものと役割の説明に変更')
+change('2026-05-14-scrcpy-macos-app-launcher.md', 'インストールできたら、コマンドが見えることを確認します。', 'インストールできたら、コマンドの保存先とバージョンを確認します。', '後続の確認コマンドが調べる内容を明記')
+change('2026-05-14-scrcpy-macos-app-launcher.md', 'GUI アプリとして起動すると、ターミナルで使っている shell の `PATH` はそのまま引き継がれません。なので、`scrcpy` と `adb` が見えるように `PATH` を明示しておきます。', 'GUIアプリとして起動すると、ターミナルで使っているshellの `PATH` はそのまま引き継がれません。そのため、`scrcpy` と `adb` の実行ファイルを見つけられるように `PATH` を明示します。', 'コマンドが見えるという比喩を実行ファイルの検索として説明')
+change('2026-05-14-scrcpy-macos-app-launcher.md', 'また、`scrcpy` は起動後も動き続けるアプリなので、AppleScript 側で待ち続ける必要はありません。`nohup` と `&` で裏に回し、ログだけ残しておくと、起動に失敗したときも原因を追いやすいです。', 'また、`scrcpy` は起動後も動き続けるアプリなので、AppleScript側で終了を待つ必要はありません。`nohup` と `&` でバックグラウンド実行し、ログを残すと、起動に失敗した原因を調べやすくなります。', '裏に回すという比喩を実行方法に変更し、ログの用途を保持')
+change('2026-05-14-scrcpy-macos-app-launcher.md', 'ここまで出れば、`/Applications/scrcpy.app` から Homebrew 版 scrcpy が起動し、接続中の Android 端末まで届いています。', 'このログが出れば、`/Applications/scrcpy.app` からHomebrew版scrcpyが起動し、接続中のAndroid端末と通信できています。', '端末まで届くという比喩を、ログで確認した通信の説明に変更')
+change('2026-05-14-scrcpy-macos-app-launcher.md', 'さらに面白いのは、この状態だと Mac 側のキーボードとマウスで Minecraft を操作できることです。スマホゲームを「Mac のウィンドウ上で、キーボード + マウス操作できる」状態になるので、単なる画面ミラーリングよりだいぶ PC 版っぽい触り心地になります。', 'さらに面白いのは、Mac側のキーボードとマウスでMinecraftを操作できることです。スマホゲームでもMacのウィンドウで操作できるため、単なる画面ミラーリングより、だいぶPC版に近い操作感になります。', '操作方法の重複を整理し、面白さと操作感の評価は保持')
+change('2026-05-15-finder-paste-clipboard-image.md', 'でも macOS の Finder は、画像データそのものを `Cmd+V` しても、その場に PNG として保存してくれるわけではありません。いったん Preview や画像編集アプリを挟むのは、毎回やるにはちょっとだけ重い。', 'でもmacOSのFinderでは、画像データそのものを `Cmd+V` しても、その場にPNGファイルを作れません。毎回Previewや画像編集アプリを開くのは、少し手間がかかります。', '重いという比喩を作業の手間として説明')
+change('2026-05-15-finder-paste-clipboard-image.md', 'この記事を書いたあと、最初の実装には困るパターンがあることに気づきました。Finder で普通にファイルをコピーして別フォルダへ `Cmd+V` したときまで、この画像保存スクリプトが先に動いてしまいます。', 'この記事を書いたあと、最初の実装が通常のファイル貼り付けにも反応することに気づきました。Finderでファイルをコピーして別フォルダへ `Cmd+V` したときも、画像保存スクリプトが先に動いてしまいます。', '困るパターンという前置きを具体的な問題に変更')
+change('2026-05-15-finder-paste-clipboard-image.md', 'もうひとつの問題は fallback です。画像ではないと判断したあとに `Cmd+V` を送り直すだけだと、Karabiner の同じルールにまた捕まって、通常の Finder ペーストに戻りません。つまり、便利にしたかった `Cmd+V` が Finder の普通の `Cmd+V` を邪魔していました。', 'もうひとつの問題は、画像以外を貼り付ける場合のfallbackです。画像ではないと判断したあとに `Cmd+V` を送り直すだけでは、Karabinerの同じルールが再び反応し、Finderの通常のペーストを実行できません。画像保存用の `Cmd+V` が、Finder標準の `Cmd+V` を妨げていました。', 'ルールに捕まるという比喩を再反応の説明に変更し、問題の範囲を保持')
+change('2026-05-15-finder-paste-clipboard-image.md', 'ここで先に file URL を見ているのが大事です。Finder でファイルをコピーしたときも pasteboard には画像っぽいデータが入ることがあり、特に画像ファイルを複数選択していると `NSImage(pasteboard:)` が 1 枚の画像として読めてしまいます。', '先にfile URLを確認することが重要です。Finderでファイルをコピーしたときも、pasteboardに画像として読めるデータが入ることがあります。特に画像ファイルを複数選択していると、`NSImage(pasteboard:)` で1枚の画像として読み取れてしまいます。', '確認順序の重要性を残し、長い理由説明を分割')
+change('2026-05-15-finder-paste-clipboard-image.md', 'Karabiner 側は `Cmd+V` を Finder 前面のときだけこのスクリプトへ渡す係です。ここでは「画像か、ファイルか、通常ペーストへ戻すか」の判定を Karabiner の JSON に押し込まず、スクリプト側に寄せています。JSON の役割を小さくしておくと、複数 profile に同じルールを入れても挙動がずれにくくなります。', 'Karabinerは、Finderが前面のときだけ `Cmd+V` に応じてスクリプトを呼び出します。画像かファイルかの判定と、通常のペーストに戻すかどうかの処理は、KarabinerのJSONではなくスクリプト側で行います。JSONに記述する処理を少なくすると、複数profileに同じルールを入れても挙動がずれにくくなります。', '係や押し込むという比喩を、Karabinerとスクリプトの役割分担に変更')
+change('2026-05-15-finder-paste-clipboard-image.md', '画像でもファイル参照でもないものを貼り付けた場合は、スクリプトの中で Finder のペーストメニューを直接クリックします。`Cmd+V` を送り直すと Karabiner に再捕捉されるので、メニュー項目を使うのがポイントです。', '画像でもファイル参照でもないものを貼り付けた場合は、スクリプトからFinderのペーストメニューを直接クリックします。`Cmd+V` を送り直すとKarabinerのルールが再び反応するため、メニュー項目を使います。', '再捕捉とポイントという表現を、操作と理由の説明に変更')
+change('2026-05-15-finder-paste-clipboard-image.md', 'これで、Finder を開いて画像をコピーし、そこで `Cmd+V` するだけで PNG が吐き出されます。ただし Finder の通常ペーストまで同じキーで扱うため、使う場合は上の注意点も込みで試すのがよさそうです。', 'これで、Finderを開いて画像をコピーし、そこで `Cmd+V` するだけでPNGファイルが保存されます。ただし、通常のペーストも同じキーで扱うため、使う場合は上の注意点も踏まえて試すのがよさそうです。', '吐き出すという比喩を保存に変更し、注意事項と提案の強さを保持')
+
 # These blocks are evidence or attributed speech, not editorial prose.
 PROTECTED = {
     'frontmatter': r'\A---\n[\s\S]*?\n---',
@@ -186,7 +212,7 @@ def main():
     grouped = defaultdict(list)
     for edit in edits:
         grouped[edit['path']].append(edit)
-    if len(grouped) != 19 or len(edits) != 89:
+    if len(grouped) != 22 or len(edits) != 111:
         raise ValueError(('unexpected review scope', len(grouped), len(edits)))
     pending = {}
     for path, rows in grouped.items():

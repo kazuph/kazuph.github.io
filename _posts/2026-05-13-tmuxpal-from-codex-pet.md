@@ -12,7 +12,7 @@ social_image: /images/tmuxpal/2026-05-13-tmuxpal-demo-poster-v2.png
 
 最初のきっかけは、Codex.app の `/pet` でした。画面の端でキャラクターが動いているだけなのに、いま何かが走っている感じが自然に伝わってくる。これを tmux 上の coding AI にも持ち込みたい、というのが今回の出発点です。
 
-実際に Codex へ渡していた依頼は、かなりそのままです。
+Codexへ渡した依頼文を、そのまま載せます。
 
 <details><summary>最初の依頼文を開く</summary>
 
@@ -28,7 +28,7 @@ codex以外にもcopilot cli、claude code、opencodeに対応する必要があ
 
 </details>
 
-tmux で複数の AI を並行で動かしていると、今どの pane に何がいて、どれがまだ動いているのかを毎回 tmux だけで追うのは意外と大変です。そこで、Codex.app の pet に着想を得つつ、tmux 用には **複数 pane を一覧できること** を主役にして作ったのが TmuxPal です。
+tmuxで複数のAIを並行で動かしていると、どのpaneで何が動き、どれが実行中なのかをtmuxだけで毎回確認するのは意外と大変です。そこでCodex.appのpetに着想を得て、複数paneの一覧表示を重視したTmuxPalを作りました。
 
 名前を **pet** ではなく **pal** にしたのは、今回使いたかったのが単なるペット的な存在ではなく、人のキャラクターだったからです。相棒として隣にいる感じを出したかったので、TmuxPal という名前にしています。
 
@@ -58,7 +58,7 @@ LaunchAgent として常駐し、tmux 内の `codex` / `claude` / `copilot` / `o
 Dokochan のキャラクターと縦積み吹き出しで AI TUI の状態と短い要約を表示する。
 ```
 
-実際の構成もその方向で整理しています。
+アプリは次のターゲットに分けています。
 
 - `TmuxPal` executable target: AppKit の GUI 常駐アプリ本体
 - `TmuxPalCore` library target: tmux 収集、AI pane 判定、bubble 要約、hook event 読み取りなどのコア処理
@@ -76,14 +76,14 @@ bubble click で pane を切り替える部分は、tmux 側では `list-clients
 
 ### tmux 監視
 
-tmux 側は 1 本の仕組みに寄せず、**polling + hook** の併用にしています。
+tmuxの監視は1つの方法だけに頼らず、pollingとhookを併用しています。
 
 - polling では `tmux list-panes -a -F ...` で全 pane を定期的に回収する
 - hook では `after-new-window`, `after-split-window`, `after-select-window`, `after-select-pane`, `pane-exited`, `pane-died` を見る
 - hook event はアプリ側で保持して UI 更新に使う
 - hook がなくても動くが、hook を入れると lifecycle の反映が速くなる
 
-ここを hook だけに寄せなかったのは、tmux の hook だけでは AI の意味的な開始・完了を完全には取れないからです。pane の生死、pane title、コマンドライン、直近 transcript を合わせて見たほうが、現実の coding AI TUI には強いです。
+hookだけに頼らないのは、tmuxのhookだけではAIの処理開始や完了を完全には検出できないためです。paneが動いているかどうかに加え、pane title、コマンドライン、直近のtranscriptを確認するほうが、実際のcoding AI TUIの状態を判断しやすくなります。
 
 ### AI pane 検出: 「コマンド名だけ」にしない
 
@@ -96,7 +96,7 @@ tmux 側は 1 本の仕組みに寄せず、**polling + hook** の併用にし�
 - GitHub Copilot CLI
 - opencode
 
-tmux 全体の pane を見渡しながら、AI っぽいものだけを抜く、という実装です。
+tmux全体のpaneから、AIのTUIと判定したものだけを選ぶ実装です。
 
 ### Dokochan
 
@@ -108,9 +108,9 @@ README にも、デフォルト素材に加えてユーザーの characters デ�
 
 ## パフォーマンス改善
 
-pane 数が増えた時の遅さも少し詰めました。原因は transcript の取り回しで、3 秒ごとの polling に対して transcript cache の TTL が 1.5 秒しかなかったため、pane が増えるとほぼ毎回 `tmux capture-pane` を叩き直していました。
+pane数が増えた時の動作の遅さも少し改善しました。原因はtranscriptのキャッシュ期間です。3秒ごとのpollingに対してtranscript cacheのTTLが1.5秒しかなく、paneが増えるとほぼ毎回 `tmux capture-pane` を再実行していました。
 
-そこで `TmuxCollector` の transcript cache を見直して、active pane は 4.5 秒、inactive pane は 12 秒で持つように変えました。これで動いている pane の追従は残しつつ、画面外で待機している pane まで毎回取り直すことは減らせています。tmux 全体を見る UI なので、こういう地味な軽量化も相性がいいです。
+そこで `TmuxCollector` のtranscript cacheの保持期間を、active paneは4.5秒、inactive paneは12秒に変えました。動いているpaneの変化を追いながら、画面外で待機しているpaneの情報を取り直す回数を減らせています。tmux全体を表示するUIでは、目立たないこうした負荷の削減も役立ちます。
 
 ## どう使うか
 
@@ -127,7 +127,7 @@ pane 数が増えた時の遅さも少し詰めました。原因は transcript 
 
 ログイン時に常駐させたいなら LaunchAgent を入れます。tmux 側の pane 増減をもっと速く反映したいなら hooks を追加します。ここは必須ではなく、まずはアプリを起動するだけでも動きます。
 
-つまり、最初は **起動して tmux を使うだけ** でよくて、常駐や hooks は気に入ったら足していく、くらいの使い方で十分です。
+最初はアプリを起動してtmuxを使うだけで十分です。気に入ったら、ログイン時の常駐やhooksを追加できます。
 
 ## 参考
 
