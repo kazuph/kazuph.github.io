@@ -45,7 +45,7 @@ jobs:
           from pathlib import Path
           text = Path('_site/blog/2026/10/02/yomiyasu-ai-articles/index.html').read_text()
           assert text.count('class="yms-compare"') == 11
-          assert '過去のAI記事に読みやすを適用してみた' in text
+          assert '過去のAI記事にyomiyasu（よみやす）を適用してみた' in text
           assert '既存22記事の112箇所' in text
           assert 'CPUを使わない方に倒す' not in text
           assert 'Opus圧勝です。Astraは精巧に見えて、再現度が低いです。適当じゃん。' in text

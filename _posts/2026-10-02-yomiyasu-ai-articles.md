@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "過去のAI記事に読みやすを適用してみた"
+title: "過去のAI記事にyomiyasu（よみやす）を適用してみた"
 date: 2026-10-02
 description: "過去22記事の112箇所をyomiyasuの方針で推敲しました。実際の修正前後を横並びで比較し、本人コメントや検証データを残した理由も説明します。"
 full_ai: true
