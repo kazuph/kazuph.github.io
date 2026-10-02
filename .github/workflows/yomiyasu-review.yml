@@ -12,28 +12,49 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: editorial-review-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   review:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Archive editorial source
-        run: |
-          mkdir -p /tmp/editorial-input
-          git archive HEAD _posts _layouts _includes _data stylesheets javascripts scripts AGENTS.md README.md Gemfile Gemfile.lock _config.yml index.html flake.nix flake.lock | tar -x -C /tmp/editorial-input
-      - uses: actions/upload-artifact@v4
         with:
-          name: editorial-input
-          path: /tmp/editorial-input
-          retention-days: 7
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify this editorial pass and preserved source material
+        if: github.head_ref == 'chore/yomiyasu-20261001' || github.ref == 'refs/heads/chore/yomiyasu-20261001'
+        run: python3 scripts/yomiyasu/edit_posts.py --report-dir /tmp/editorial-audit
+      - name: Check whitespace errors
+        run: git diff --check origin/master...HEAD
       - uses: cachix/install-nix-action@v31
       - name: Install gems
         run: nix --extra-experimental-features 'nix-command flakes' develop --command bundle install
       - name: Build site without publishing
         run: nix --extra-experimental-features 'nix-command flakes' develop --command bundle exec jekyll build
+      - name: Check the new comparison article
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('_site/blog/2026/10/02/yomiyasu-ai-articles/index.html').read_text()
+          assert text.count('class="yms-compare"') == 8
+          assert '過去のAI記事に読みやすを適用してみた' in text
+          assert 'CPUを使わない方に倒す' not in text
+          assert 'Opus圧勝です。Astraは精巧に見えて、再現度が低いです。適当じゃん。' in text
+          print('Eight comparison tables and the unchanged human quotation verified.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: editorial-audit
+          path: /tmp/editorial-audit
+          if-no-files-found: ignore
+          retention-days: 3
       - uses: actions/upload-artifact@v4
         with:
           name: editorial-preview
           path: _site
-          retention-days: 7
+          retention-days: 3

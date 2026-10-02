@@ -10,7 +10,7 @@ full_ai_model: "GPT-6 Astra Pro"
 <style>
 .yomiyasu-article { max-width: 1040px; margin-inline: auto; }
 .yomiyasu-article .yms-scroll { max-width: 100%; overflow-x: auto; margin: 1rem 0; border: 1px solid #d7dfe8; border-radius: 8px; }
-.post-body .yomiyasu-article table.yms-compare { display: table; table-layout: fixed; width: 100%; min-width: 620px; margin: 0; border-collapse: collapse; }
+.post-body .yomiyasu-article table.yms-compare { display: table; table-layout: fixed; width: 100%; min-width: 0; margin: 0; border-collapse: collapse; }
 .yomiyasu-article .yms-compare th, .yomiyasu-article .yms-compare td { width: 50%; padding: 16px 20px; vertical-align: top; white-space: normal; overflow-wrap: anywhere; line-height: 1.9; text-align: left; }
 .yomiyasu-article .yms-compare th:first-child { background: #aa2646; color: #fff; }
 .yomiyasu-article .yms-compare th:last-child { background: #204774; color: #fff; }
@@ -18,19 +18,16 @@ full_ai_model: "GPT-6 Astra Pro"
 .yomiyasu-article .yms-compare td:last-child { background: #f4f8fd; }
 .yomiyasu-article .yms-compare td p { margin: 0; }
 .yomiyasu-article .yms-compare mark { color: inherit; background: transparent; font-weight: 700; text-decoration: underline; text-underline-offset: .2em; }
-.yomiyasu-article .yms-note { color: #4b596b; font-size: .9rem; }
 .yomiyasu-article .yms-source { font-size: .9rem; }
-.yomiyasu-article figure { margin: 1.5rem 0 2rem; }
-.yomiyasu-article figure img { width: 100%; height: auto; }
 .yomiyasu-article h2 { margin-top: 2.4rem; }
 @media (max-width: 680px) {
-  .yomiyasu-article .yms-compare th, .yomiyasu-article .yms-compare td { padding: 12px 14px; }
+  .yomiyasu-article .yms-compare th, .yomiyasu-article .yms-compare td { padding: 10px; font-size: 14px; line-height: 1.8; }
 }
 </style>
 
 <div class="yomiyasu-article" markdown="1">
 
-このブログの過去記事に、[yomiyasu（よみやす）](https://github.com/nanaism/yomiyasu)を適用しました。対象を調べると、記事の意味は通じても、「比較相手にモデルを置く」「CPUを使わない方に倒す」など、読者が意味を補う必要のある言い回しが残っていました。
+このブログの過去記事に、[yomiyasu（よみやす）](https://github.com/nanaism/yomiyasu)を適用しました。対象を調べると、記事の意味は通じても、「比較相手にモデルを置く」「Metalを使わない方に倒す」など、読者が意味を補う必要のある言い回しが残っていました。
 
 既存22記事を確認し、AI執筆と確認できた19記事の89箇所を修正しました。技術的な内容を再調査して更新したのではなく、元の記事に書かれた内容を保って、日本語の説明を直しています。
 
@@ -54,7 +51,7 @@ full_ai_model: "GPT-6 Astra Pro"
 
 ## 実際の修正前後
 
-以下は今回の変更に含まれる原文と修正文です。比較用に新しく作った例文ではありません。狭い画面では、表の中を横にスクロールして比較できます。
+以下は今回の変更に含まれる原文と修正文です。比較用に新しく作った例文ではありません。スマートフォンでも、修正前後を横並びで表示します。
 
 ### 1. モデルと生成結果を区別する
 
