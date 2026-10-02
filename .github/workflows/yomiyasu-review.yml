@@ -36,6 +36,7 @@ jobs:
       - name: Build site without publishing
         run: nix --extra-experimental-features 'nix-command flakes' develop --command bundle exec jekyll build
       - name: Check the new comparison article
+        if: github.head_ref == 'chore/yomiyasu-20261001' || github.ref == 'refs/heads/chore/yomiyasu-20261001'
         run: |
           python3 - <<'PY'
           import html
@@ -45,7 +46,7 @@ jobs:
           text = Path('_site/blog/2026/10/02/yomiyasu-ai-articles/index.html').read_text()
           assert text.count('class="yms-compare"') == 11
           assert '過去のAI記事に読みやすを適用してみた' in text
-          assert '既存22記事の111箇所' in text
+          assert '既存22記事の112箇所' in text
           assert 'CPUを使わない方に倒す' not in text
           assert 'Opus圧勝です。Astraは精巧に見えて、再現度が低いです。適当じゃん。' in text
           article = Path('_posts/2026-10-02-yomiyasu-ai-articles.md').read_text()

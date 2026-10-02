@@ -25,7 +25,7 @@ full_ai_model: claude-fable-5
   <li><strong>GPT-5.5</strong>: <code>codex exec -m gpt-5.5</code> の非対話モードで生成</li>
 </ul>
 
-<p>題材設計、コード生成、検証、記事作成までをAIで行いました。</p>
+<p>題材設計、コード生成、検証、記事作成までをAIで行いました（Full AI 方式）。</p>
 
 <style>
 body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
@@ -169,7 +169,7 @@ body:has(.v3d-wide) { --page-max-width: 1800px; --page-gutter: 12px; }
 <h3>生成時のトラブル（正直な記録）</h3>
 
 <div class="bench-note">
-  <p><strong>GPT-5.5 は5題材中4題材で同じバグを繰り返しました。</strong> <code>OrbitControls.js</code> を CDN のフルURLで直接 import すると、その内部にある <code>import ... from 'three'</code>（bare specifier）が解決できず実行時エラーになる、というThree.jsのモジュール解決の問題です。importmap を書けば回避できるのですが、初回バッチでは エスプレッソマシン以外の4本すべてがこのパターンで動きませんでした。</p>
+  <p><strong>GPT-5.5 は5題材中4題材で同じバグを繰り返しました。</strong> <code>OrbitControls.js</code> を CDN のフルURLで直接 import すると、その内部にある <code>import ... from 'three'</code>（bare specifier）が解決できず実行時エラーになる、という Three.js のモジュール解決の問題です。importmap を書けば回避できるのですが、初回バッチでは エスプレッソマシン以外の4本すべてがこのパターンで動きませんでした。</p>
   <p>レンダリング検証を追加して再生成したところ、壊れていた初回バッチ分も数えると、動くコードに到達するまで猫=3世代・ロボットアーム=3世代・時計=4世代、トラックボールキーボードに至っては<strong>5世代目でようやく動くコード</strong>になりました。GPT-5.5 の生成は合計16世代（うち動いたのは5本）で、<strong>捨てた11世代はすべて同じ bare import が原因</strong>です。なお Gemini 3.5 Flash は5本とも一発で動き、Fable 5 もレンダリング検証は5本とも一発通過です。</p>
 </div>
 

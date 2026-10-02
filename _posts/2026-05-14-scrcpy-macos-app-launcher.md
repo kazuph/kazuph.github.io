@@ -11,7 +11,7 @@ Android の画面を Mac に映すとき、`scrcpy` はかなり便利です。U
 
 ただ、普段使いの道具としては、毎回ターミナルから起動するより、Finder や Spotlight から普通のアプリとして起動できるほうが気楽です。`/Applications` に置いておけば、Dock にも置けるし、他の macOS アプリと同じ感覚で扱えます。
 
-今回はHomebrewで入っている `scrcpy` を起動するAppleScriptアプリを作り、`/Applications/scrcpy.app` にしました。複雑なGUIは作らず、既存のCLIを起動するだけの小さなランチャーにしています。
+今回は Homebrew で入っている `scrcpy` を起動する AppleScript アプリを作り、`/Applications/scrcpy.app` にしました。複雑な GUI は作らず、既存の CLI を起動するだけの小さなランチャーにしています。
 
 ![scrcpy.app から Pixel 10 の Minecraft 画面を表示しているところ](/images/scrcpy/2026-05-14-scrcpy-minecraft-app-1600.png)
 
@@ -81,9 +81,9 @@ end run'
 2. `nohup ... &` で AppleScript の実行をすぐ返す
 3. `/tmp/scrcpy-app.log` にログを残す
 
-GUIアプリとして起動すると、ターミナルで使っているshellの `PATH` はそのまま引き継がれません。そのため、`scrcpy` と `adb` の実行ファイルを見つけられるように `PATH` を明示します。
+GUI アプリとして起動すると、ターミナルで使っている shell の `PATH` はそのまま引き継がれません。そのため、`scrcpy` と `adb` の実行ファイルを見つけられるように `PATH` を明示します。
 
-また、`scrcpy` は起動後も動き続けるアプリなので、AppleScript側で終了を待つ必要はありません。`nohup` と `&` でバックグラウンド実行し、ログを残すと、起動に失敗した原因を調べやすくなります。
+また、`scrcpy` は起動後も動き続けるアプリなので、AppleScript 側で終了を待つ必要はありません。`nohup` と `&` でバックグラウンド実行し、ログを残すと、起動に失敗した原因を調べやすくなります。
 
 ## アプリ名とアイコンを整える
 
@@ -161,7 +161,7 @@ $ tail /tmp/scrcpy-app.log
 [server] INFO: Device: [Google] google Pixel 10 (Android 16)
 ```
 
-このログが出れば、`/Applications/scrcpy.app` からHomebrew版scrcpyが起動し、接続中のAndroid端末と通信できています。
+このログが出れば、`/Applications/scrcpy.app` から Homebrew 版 scrcpy が起動し、接続中の Android 端末と通信できています。
 
 ## Minecraft 用の可変サイズアプリも作る
 
@@ -207,7 +207,7 @@ Minecraft 版は Spotlight / Raycast で見分けやすいように、草ブロ�
 
 ![scrcpy Minecraft.app で flex display のサイズ変更を試しているところ](/images/scrcpy/2026-05-14-scrcpy-minecraft-flex.gif)
 
-さらに面白いのは、Mac側のキーボードとマウスでMinecraftを操作できることです。スマホゲームでもMacのウィンドウで操作できるため、単なる画面ミラーリングより、だいぶPC版に近い操作感になります。
+さらに面白いのは、Mac 側のキーボードとマウスで Minecraft を操作できることです。スマホゲームでも Mac のウィンドウで操作できるため、単なる画面ミラーリングより、だいぶ PC 版に近い操作感になります。
 
 確認ログはこんな感じです。
 

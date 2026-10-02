@@ -36,7 +36,7 @@ full_ai_model: claude-sonnet-5
 - **Claude Opus 4.8**: 2026-05-29版で生成済みの10題材 × 3形式 = 30個をそのまま流用
 - **Gemini 3.5 Flash**: `agy` コマンド(Gemini CLI 系のローカルエージェントCLI)の print モードで2026-05-22に生成済みの10題材 × 3形式 = 30個をそのまま流用
 
-題材設計、コード生成、比較、記事作成までをAIで行いました。
+題材設計、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。
 
 <style>
 .diagram-hero img,
@@ -76,7 +76,7 @@ full_ai_model: claude-sonnet-5
 
 <figure class="diagram-hero">
   <img src="/images/posts/gemini35flash-vs-gpt54-diagram-benchmark/bear-plush-ogp-sonnet5-3way.png" alt="クマのぬいぐるみの TikZ 結果を、Claude Sonnet 5・Claude Opus 4.8・Gemini 3.5 Flash の3モデルで横並び比較した画像" loading="eager">
-  <figcaption>冒頭画像と OGP には、シリーズで継続して使っているクマのぬいぐるみ題材のTikZ比較を Sonnet 5 / Opus 4.8 / Gemini 3.5 Flash の3列で並べた画像を使っています。</figcaption>
+  <figcaption>冒頭画像と OGP には、シリーズで継続して使っているクマのぬいぐるみ題材の TikZ 比較を Sonnet 5 / Opus 4.8 / Gemini 3.5 Flash の3列で並べた画像を使っています。</figcaption>
 </figure>
 
 ## 比較条件
@@ -121,7 +121,7 @@ full_ai_model: claude-sonnet-5
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。お題のプロンプトは `scripts/diagram_benchmark_2026/prompts/` にあります(3モデル共通)。
 
-source欄のリンクから、公開したソースをこのサイトで直接開けます。
+source 欄のリンクから、公開したソースをこのサイトで直接開けます。
 
 ## 実行方法(Sonnet 5 列の強制プロンプト運用)
 

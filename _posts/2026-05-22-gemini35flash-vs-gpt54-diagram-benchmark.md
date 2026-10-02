@@ -13,7 +13,7 @@ full_ai_model: gpt-5.4
 
 以前の比較記事では、複数のLLMに対して14題材を4形式で描かせていました。今回はその比較をそのまま続けず、`Gemini 3.5 Flash` と `GPT-5.4` の2モデルに絞って、新たに実行します。
 
-題材設計、コード生成、比較、記事作成までをAIで行いました。
+題材設計、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。
 
 <style>
 .diagram-hero img,
@@ -96,7 +96,7 @@ full_ai_model: gpt-5.4
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。Gemini 側の prompt は `scripts/diagram_benchmark_2026/prompts/` にあります。
 
-source欄のリンクから、公開したソースをこのサイトで直接開けます。
+source 欄のリンクから、公開したソースをこのサイトで直接開けます。
 
 ## 実行方法
 

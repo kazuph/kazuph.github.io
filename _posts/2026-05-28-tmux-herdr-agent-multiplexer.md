@@ -211,7 +211,7 @@ herdr pane report-agent "$HERDR_PANE_ID" \
   --title "restore pane sessions"
 ```
 
-CLAUDE.md や AGENTS.md に「タスク開始時と、タスク内容が変わった時に報告しろ」と書いておくと、Agentがその指示に従ってこのコマンドを実行します。すると pane タイトルが `%81 codex restore pane sessions` になり、workspace 名も `herdr-restore pane sessions` のように変わる。
+CLAUDE.md や AGENTS.md に「タスク開始時と、タスク内容が変わった時に報告しろ」と書いておくと、Agent がその指示に従ってこのコマンドを実行します。すると pane タイトルが `%81 codex restore pane sessions` になり、workspace 名も `herdr-restore pane sessions` のように変わる。
 
 pane タイトルには cwd の Git branch も末尾に出るので、sidebar を見るだけで「どの pane の、どの Agent が、どのブランチで、何をしているか」まで分かります。
 
@@ -253,7 +253,7 @@ fork では通知タイトルを `2 herdr-planner` のように「workspace 番�
 
 これが最近やった中で一番重い変更です。
 
-Herdr を再起動すると、paneの中で動いていたClaude CodeやCodexは終了します。復元機能自体はありますが、復元先を誤ることがあります。同じ cwd で Codex を 3 枚動かしていた場合、「そのディレクトリの最新セッションに resume」みたいな復元だと、3枚とも同じ会話を開いてしまいます。
+Herdr を再起動すると、pane の中で動いていた Claude Code や Codex は終了します。復元機能自体はありますが、復元先を誤ることがあります。同じ cwd で Codex を 3 枚動かしていた場合、「そのディレクトリの最新セッションに resume」みたいな復元だと、3 枚とも同じ会話を開いてしまいます。
 
 なので fork の復元は fail-closed にしました。
 
@@ -285,7 +285,7 @@ vim mode は、Normal mode で `h` / `l` が pane 移動、`j` / `k` が workspa
 
 tmux の `Ctrl-b` + `Space` の答えとして `Cycle pane layout` を入れました。横一列 → 縦一列 → 左メイン + グリッド → 右メイン + グリッド → 上メイン + 下一列 → 下メイン + 上一列、を 1 操作で巡回します。Agent を 4〜5 枚並べている時は「メイン 1 枚 + 残りグリッド」が一番見やすいので、そこに一発で行けるのが効きます。
 
-`Rotate panes` は split の形を保ったまま、中身だけ回す操作です。ここで大事なのが、回しても `%pane_id` と terminal の対応は変わらないこと。位置が変わっても `%2` は同じ Codex のままなので、Agent同士が指定する宛先は変わりません。
+`Rotate panes` は split の形を保ったまま、中身だけ回す操作です。ここで大事なのが、回しても `%pane_id` と terminal の対応は変わらないこと。位置が変わっても `%2` は同じ Codex のままなので、Agent 同士が指定する宛先は変わりません。
 
 ターミナル領域の下には 1 行だけの action bar を置いて、` CYCLE LAYOUT ` ` ROTATE PANES ` ` EQUALIZE ` をクリックで叩けるようにしました。pane タイトルのクリックで zoom のトグルもできます。スマホ SSH だと、キーバインドよりこういう「見えてるものを押す」の方が速い。
 

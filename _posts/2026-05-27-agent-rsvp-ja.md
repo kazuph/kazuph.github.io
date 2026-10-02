@@ -68,7 +68,7 @@ RSVP では、表示される語や句のどこを見るかが大事です。英
 
 速読アプリは、読む画面そのものが主役です。ターミナルの中で動くより、普通の macOS アプリとして開き、キー操作だけで速度や行数を変えられるほうが使いやすい。
 
-最初は TUI のまま改善していましたが、行数を増やしたときに表示速度が落ちる問題もありました。そこで、TUIでの再描画をやめ、macOS側はAppKitで直接描画する構成へ変えました。
+最初は TUI のまま改善していましたが、行数を増やしたときに表示速度が落ちる問題もありました。そこで、TUI での再描画をやめ、macOS 側は AppKit で直接描画する構成へ変えました。
 
 この方向に踏み切るきっかけになったのが、Vercel Labs の [`zero-native`](https://github.com/vercel-labs/zero-native) です。
 
@@ -86,9 +86,9 @@ Zero Native を調べていて良かったのは、「小さいデスクトッ�
 
 Zero Native を system WebView で使う場合、ブラウザランタイム自体はOS側の WebView を使うので、Electron のように Chromium 一式を抱えるわけではありません。手元で `zero-native` の `examples/hello` を、Zig のサイズ優先ビルド設定で system WebView 向けにビルドすると 442KB でした。同じ経路で RSVP 相当の inline HTML/JavaScript も作り、起動まで確認しましたが、サイズは同じく 442KB でした。
 
-つまり、Zero Native/system WebView は十分に小さいです。ただし今回のように AppKit の `drawRect:` で文字を直接描けるだけのアプリでは、WebView runtime、bridge、HTML/CSS/JS 側の配布物、アプリ manifest などを足すより、Cocoa/AppKitを直接使うほうが、さらに構成を小さくできます。Zero Native は「Web UI を極小ネイティブアプリにする」ための選択肢で、今回は「Web UI すら不要だった」という判断です。
+つまり、Zero Native/system WebView は十分に小さいです。ただし今回のように AppKit の `drawRect:` で文字を直接描けるだけのアプリでは、WebView runtime、bridge、HTML/CSS/JS 側の配布物、アプリ manifest などを足すより、Cocoa/AppKit を直接使うほうが、さらに構成を小さくできます。Zero Native は「Web UI を極小ネイティブアプリにする」ための選択肢で、今回は「Web UI すら不要だった」という判断です。
 
-そこで最終的には、Objective-C/AppKit で表示部分を書き、Zig の build system でコンパイルとリンクをまとめる構成にしました。ここでZigを使っているのは、UIを書くためではありません。Objective-C の `.m`、小さな Zig entry point、Cocoa / NaturalLanguage などの macOS フレームワーク、サイズ優先のビルド設定を、ひとつの `build.zig` にまとめるために使っています。
+そこで最終的には、Objective-C/AppKit で表示部分を書き、Zig の build system でコンパイルとリンクをまとめる構成にしました。ここで Zig を使っているのは、UI を書くためではありません。Objective-C の `.m`、小さな Zig entry point、Cocoa / NaturalLanguage などの macOS フレームワーク、サイズ優先のビルド設定を、ひとつの `build.zig` にまとめるために使っています。
 
 実際、手元でビルドした `agent-rsvp-native` は、ビルド直後のバイナリが 109KB、インストール済みの署名後バイナリが 127KB でした。
 
@@ -100,7 +100,7 @@ $ ls -lh ~/.local/share/agent-rsvp/agent-rsvp-native
 -rwxr-xr-x  ... 127K agent-rsvp-native
 ```
 
-Zigだけがバイナリの小ささの理由ではない点が大事です。小さい理由の中心は、AppKit / Foundation / NaturalLanguage などをバイナリに内包せず、macOS 標準フレームワークとしてリンクしている点です。Objective-Cのコードは、Zig自体が特別に小さくしているわけではありません。最終的にはclang/LLVMでコンパイルされます。
+Zig だけがバイナリの小ささの理由ではない点が大事です。小さい理由の中心は、AppKit / Foundation / NaturalLanguage などをバイナリに内包せず、macOS 標準フレームワークとしてリンクしている点です。Objective-C のコードは、Zig 自体が特別に小さくしているわけではありません。最終的には clang/LLVM でコンパイルされます。
 
 実際、Zig を介さない Objective-C/AppKit の最小 RSVP アプリを `clang -Os` で作ると 55KB、Swift/AppKit の最小 RSVP アプリを `swiftc -Osize` で作ると 68KB でした。どちらも実際にウィンドウ起動まで確認しています。
 
@@ -111,15 +111,15 @@ Zigだけがバイナリの小ささの理由ではない点が大事です。�
 | 現行 `agent-rsvp-native` | Zig のサイズ優先ビルド | 109KB / 127KB | 済 |
 | Zero Native RSVP 相当 | Zig 0.16.0 + system WebView + サイズ優先ビルド | 442KB | 済 |
 
-Objective-C だけでも、Swift でも、小さい AppKit アプリは作れます。では Zig を使った意味は何かというと、Objective-C/AppKit という macOS ネイティブの最短経路を、余計なruntimeや接続層を増やさずにビルド手順へまとめられることです。
+Objective-C だけでも、Swift でも、小さい AppKit アプリは作れます。では Zig を使った意味は何かというと、Objective-C/AppKit という macOS ネイティブの最短経路を、余計な runtime や接続層を増やさずにビルド手順へまとめられることです。
 
-ZigがC/Objective-Cを通常のソースとして扱える点が役立ちました。`addCSourceFile` で Objective-C のソースを足し、`linkFramework` で macOS フレームワークを明示的にリンクし、配布用の成果物としてインストールする。この流れを Zig の標準ビルドだけで書けます。
+Zig が C/Objective-C を通常のソースとして扱える点が役立ちました。`addCSourceFile` で Objective-C のソースを足し、`linkFramework` で macOS フレームワークを明示的にリンクし、配布用の成果物としてインストールする。この流れを Zig の標準ビルドだけで書けます。
 
 Rust でも Go でも、AppKit アプリを作ること自体は不可能ではありません。ただ、Rust なら `build.rs`、`cc` crate、`objc2` などの Objective-C runtime binding、macOS framework link の指定が必要になります。Go なら cgo と Objective-C wrapper を挟み、さらに Go runtime も乗ります。今回のような「macOS 専用で、AppKit に薄く乗るだけの極小 GUI」では、その接続層が本体より重くなりやすい。
 
 npm パッケージとして配布できるように Node 製 CLI ランチャーとネイティブ本体を分けている点もありますが、これは Zig 固有の利点ではありません。Rust でも Go でも同じように、ビルド済みの native binary を Node CLI から呼ぶ構成は作れます。npm 配布に備えた構成は本家の使い勝手を残すための選択で、Zig を選んだ理由の中心ではありません。
 
-Zig のいちばん大きなメリットは、Objective-C/AppKit という macOS ネイティブの最短経路を、余計なruntimeを増やさずに再現可能なビルド手順へまとめられることでした。
+Zig のいちばん大きなメリットは、Objective-C/AppKit という macOS ネイティブの最短経路を、余計な runtime を増やさずに再現可能なビルド手順へまとめられることでした。
 
 ## 実装の構成
 
@@ -183,7 +183,7 @@ agent-rsvp --test-layout sample.md
 「
 ```
 
-1文字や2文字だけが単独で出ると、読むリズムが崩れます。そこで、短すぎるchunkは前後につなげる後処理を入れました。
+1文字や2文字だけが単独で出ると、読むリズムが崩れます。そこで、短すぎる chunk は前後につなげる後処理を入れました。
 
 確認では、青空文庫の `坊っちゃん` で次の状態まで落としています。
 

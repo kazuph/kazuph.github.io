@@ -2,7 +2,7 @@
 layout: post
 title: "過去のAI記事に読みやすを適用してみた"
 date: 2026-10-02
-description: "過去22記事の111箇所をyomiyasuの方針で推敲しました。実際の修正前後を横並びで比較し、本人コメントや検証データを残した理由も説明します。"
+description: "過去22記事の112箇所をyomiyasuの方針で推敲しました。実際の修正前後を横並びで比較し、本人コメントや検証データを残した理由も説明します。"
 full_ai: true
 full_ai_model: "GPT-6 Astra Pro"
 ---
@@ -29,7 +29,7 @@ full_ai_model: "GPT-6 Astra Pro"
 
 このブログの過去記事に、[yomiyasu（よみやす）](https://github.com/nanaism/yomiyasu)を適用しました。対象を調べると、記事の意味は通じても、「比較相手にモデルを置く」「Metalを使わない方に倒す」など、読者が意味を補う必要のある言い回しが残っていました。
 
-既存22記事の111箇所を修正しました。技術的な内容を再調査して更新したのではなく、元の記事に書かれた内容を保って、日本語の説明を直しています。
+既存22記事の112箇所を修正しました。技術的な内容を再調査して更新したのではなく、元の記事に書かれた内容を保って、日本語の説明を直しています。
 
 推敲と本記事の執筆はChatGPTで行いました。過去記事の`full_ai`と`full_ai_model`は変更していません。そこに表示されるのは、今回推敲したAIではなく、元の原稿を書いたモデルです。
 
@@ -73,11 +73,11 @@ full_ai_model: "GPT-6 Astra Pro"
 <div class="yms-scroll" tabindex="0" role="region" aria-label="AIの作業説明の修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p>この記事は、既存プロンプトの再利用、各モデルによるソース生成、機械検証、記事化までを<mark>AIで進めるFull AI方式で作成しています</mark>。</p></td><td><p>既存プロンプトの再利用、各モデルによるソース生成、機械検証、記事作成までを<mark>AIで行いました</mark>。</p></td></tr></tbody>
+<tbody><tr><td><p>この記事は、既存プロンプトの再利用、各モデルによるソース生成、機械検証、記事化までを<mark>AIで進めるFull AI方式で作成しています</mark>。</p></td><td><p>既存プロンプトの再利用、各モデルによるソース生成、機械検証、記事作成までを<mark>AIで行いました（Full AI方式）</mark>。</p></td></tr></tbody>
 </table>
 </div>
 
-AIが担当した工程は全て残しました。「記事化」「方式で作成」と説明を重ねず、実際に行った作業を一度だけ書いています。AI執筆であることを隠す変更ではありません。
+AIが担当した工程と「Full AI方式」の呼び名は残しました。「記事化」「方式で作成」と説明を重ねず、実際に行った作業を一度だけ書いています。AI執筆であることを隠す変更ではありません。
 
 ### 3. 性格付けを、実装した内容に戻す
 
@@ -86,7 +86,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 <div class="yms-scroll" tabindex="0" role="region" aria-label="ISUCON講評の修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p>Opus は開始2分で、インデックス追加、移動距離のキャッシュ、近い椅子を優先する配車を<mark>まとめて入れる速攻型でした</mark>。</p></td><td><p>Opusは開始2分で、インデックス追加、移動距離のキャッシュ、近い椅子を優先する配車を<mark>まとめて実装しました</mark>。</p></td></tr></tbody>
+<tbody><tr><td><p>Opus は開始2分で、インデックス追加、移動距離のキャッシュ、近い椅子を優先する配車を<mark>まとめて入れる速攻型でした</mark>。</p></td><td><p>Opus は開始2分で、インデックス追加、移動距離のキャッシュ、近い椅子を優先する配車を<mark>まとめて実装しました</mark>。</p></td></tr></tbody>
 </table>
 </div>
 
@@ -99,7 +99,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 <div class="yms-scroll" tabindex="0" role="region" aria-label="DNSの説明の修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p><mark>DNS が壊れている時は、</mark></p></td><td><p><mark>DNSで名前解決できない時は、</mark></p></td></tr></tbody>
+<tbody><tr><td><p><mark>DNS が壊れている時は、</mark></p></td><td><p><mark>DNS で名前解決できない時は、</mark></p></td></tr></tbody>
 </table>
 </div>
 
@@ -112,7 +112,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 <div class="yms-scroll" tabindex="0" role="region" aria-label="Metalの説明の修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p>つまり、いまの実装は「Metal を使っていない」のではなく、<mark>「GPT-2 では Metal を使わない方に倒している」</mark>状態です。</p></td><td><p>つまり、現行の実装ではGPT-2の問題を避けるため、<mark>意図的にMetalを使わないようにしています</mark>。</p></td></tr></tbody>
+<tbody><tr><td><p>つまり、いまの実装は「Metal を使っていない」のではなく、<mark>「GPT-2 では Metal を使わない方に倒している」</mark>状態です。</p></td><td><p>つまり、現行の実装では GPT-2 の問題を避けるため、<mark>意図的に Metal を使わないようにしています</mark>。</p></td></tr></tbody>
 </table>
 </div>
 
@@ -125,7 +125,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 <div class="yms-scroll" tabindex="0" role="region" aria-label="重要性を残した修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p><mark>ここで重要なのは、</mark>NTP 通信そのものが失敗しているのか、NTP サーバー名の DNS 解決だけが失敗しているのかを分けることです。</p></td><td><p>NTP通信そのものの失敗と、NTPサーバー名のDNS解決の失敗を<mark>切り分けることが重要です</mark>。</p></td></tr></tbody>
+<tbody><tr><td><p><mark>ここで重要なのは、</mark>NTP 通信そのものが失敗しているのか、NTP サーバー名の DNS 解決だけが失敗しているのかを分けることです。</p></td><td><p>NTP 通信そのものの失敗と、NTP サーバー名の DNS 解決の失敗を<mark>切り分けることが重要です</mark>。</p></td></tr></tbody>
 </table>
 </div>
 
@@ -138,7 +138,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 <div class="yms-scroll" tabindex="0" role="region" aria-label="評価を残した修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p><mark>結論から言うと、今回の並びでは</mark> <strong>Claude Opus 5 が明らかに圧勝</strong> でした。</p></td><td><p><mark>今回の比較では、</mark>Claude Opus 5が明らかに圧勝でした。</p></td></tr></tbody>
+<tbody><tr><td><p><mark>結論から言うと、今回の並びでは</mark> <strong>Claude Opus 5 が明らかに圧勝</strong> でした。</p></td><td><p><mark>今回の比較では、</mark>Claude Opus 5 が明らかに圧勝でした。</p></td></tr></tbody>
 </table>
 </div>
 
@@ -164,7 +164,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 <div class="yms-scroll" tabindex="0" role="region" aria-label="TmuxPalの検出対象の修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p>tmux 全体の pane を見渡しながら、<mark>AI っぽいものだけを抜く</mark>、という実装です。</p></td><td><p>tmux全体のpaneから、<mark>AIのTUIと判定したものだけを選ぶ</mark>実装です。</p></td></tr></tbody>
+<tbody><tr><td><p>tmux 全体の pane を見渡しながら、<mark>AI っぽいものだけを抜く</mark>、という実装です。</p></td><td><p>tmux 全体の pane から、<mark>AI の TUI と判定したものだけを選ぶ</mark>実装です。</p></td></tr></tbody>
 </table>
 </div>
 
@@ -177,7 +177,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 <div class="yms-scroll" tabindex="0" role="region" aria-label="scrcpyのランチャーの修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p>今回は Homebrew で入っている <code>scrcpy</code> を、<mark>薄い AppleScript アプリで包んで</mark> <code>/Applications/scrcpy.app</code> にしました。</p></td><td><p>今回はHomebrewで入っている <code>scrcpy</code> を<mark>起動するAppleScriptアプリを作り</mark>、<code>/Applications/scrcpy.app</code> にしました。</p></td></tr></tbody>
+<tbody><tr><td><p>今回は Homebrew で入っている <code>scrcpy</code> を、<mark>薄い AppleScript アプリで包んで</mark> <code>/Applications/scrcpy.app</code> にしました。</p></td><td><p>今回は Homebrew で入っている <code>scrcpy</code> を<mark>起動する AppleScript アプリを作り</mark>、<code>/Applications/scrcpy.app</code> にしました。</p></td></tr></tbody>
 </table>
 </div>
 
@@ -190,7 +190,7 @@ AIが担当した工程は全て残しました。「記事化」「方式で作
 <div class="yms-scroll" tabindex="0" role="region" aria-label="Finder連携の役割分担の修正前後">
 <table class="yms-compare">
 <thead><tr><th scope="col">修正前（原文）</th><th scope="col">修正後</th></tr></thead>
-<tbody><tr><td><p>Karabiner 側は <code>Cmd+V</code> を Finder 前面のときだけ<mark>このスクリプトへ渡す係です</mark>。</p></td><td><p>Karabinerは、Finderが前面のときだけ <code>Cmd+V</code> に応じて<mark>スクリプトを呼び出します</mark>。</p></td></tr></tbody>
+<tbody><tr><td><p>Karabiner 側は <code>Cmd+V</code> を Finder 前面のときだけ<mark>このスクリプトへ渡す係です</mark>。</p></td><td><p>Karabiner は、Finder が前面のときだけ <code>Cmd+V</code> に応じて<mark>スクリプトを呼び出します</mark>。</p></td></tr></tbody>
 </table>
 </div>
 
@@ -210,7 +210,7 @@ Karabinerがショートカットに反応してスクリプトを呼び出し�
 
 参照したyomiyasuはコミット`f03aecd9c4c4a69e229f3848ecba66c3871f734c`、元記事はコミット`5751b3916a0dc3ae61b43b62d598dade8c385a38`に固定しました。確認日は2026年10月2日です。
 
-SKILL.mdと技術記事向けの仕様を読み、各記事の文脈に合わせて修正文を作りました。その変更を[検証用スクリプト](https://github.com/kazuph/kazuph.github.io/blob/b16be041ea9c57df6ef7265ecb66238f5ea93e69/scripts/yomiyasu/edit_posts.py)に記録しています。このスクリプトは汎用の自動リライターではなく、今回確認した111箇所の変更を適用・検証するものです。
+SKILL.mdと技術記事向けの仕様を読み、各記事の文脈に合わせて修正文を作りました。その変更を[検証用スクリプト](https://github.com/kazuph/kazuph.github.io/blob/master/scripts/yomiyasu/edit_posts.py)に記録しています。このスクリプトは汎用の自動リライターではなく、今回確認した112箇所の変更を適用・検証するものです。
 
 検証では、既存22記事について変更前後のfront matter、コード、ログ、数値、表、引用、本人講評、出題文、生成作品を照合します。
 

@@ -12,7 +12,7 @@ social_image: /images/tmuxpal/2026-05-13-tmuxpal-demo-poster-v2.png
 
 最初のきっかけは、Codex.app の `/pet` でした。画面の端でキャラクターが動いているだけなのに、いま何かが走っている感じが自然に伝わってくる。これを tmux 上の coding AI にも持ち込みたい、というのが今回の出発点です。
 
-Codexへ渡した依頼文を、そのまま載せます。
+Codex へ渡した依頼文を、そのまま載せます。
 
 <details><summary>最初の依頼文を開く</summary>
 
@@ -28,7 +28,7 @@ codex以外にもcopilot cli、claude code、opencodeに対応する必要があ
 
 </details>
 
-tmuxで複数のAIを並行で動かしていると、どのpaneで何が動き、どれが実行中なのかをtmuxだけで毎回確認するのは意外と大変です。そこでCodex.appのpetに着想を得て、複数paneの一覧表示を重視したTmuxPalを作りました。
+tmux で複数の AI を並行で動かしていると、どの pane で何が動き、どれが実行中なのかを tmux だけで毎回確認するのは意外と大変です。そこで Codex.app の pet に着想を得て、複数 pane の一覧表示を重視した TmuxPal を作りました。
 
 名前を **pet** ではなく **pal** にしたのは、今回使いたかったのが単なるペット的な存在ではなく、人のキャラクターだったからです。相棒として隣にいる感じを出したかったので、TmuxPal という名前にしています。
 
@@ -76,14 +76,14 @@ bubble click で pane を切り替える部分は、tmux 側では `list-clients
 
 ### tmux 監視
 
-tmuxの監視は1つの方法だけに頼らず、pollingとhookを併用しています。
+tmux の監視は 1 つの方法だけに頼らず、polling と hook を併用しています。
 
 - polling では `tmux list-panes -a -F ...` で全 pane を定期的に回収する
 - hook では `after-new-window`, `after-split-window`, `after-select-window`, `after-select-pane`, `pane-exited`, `pane-died` を見る
 - hook event はアプリ側で保持して UI 更新に使う
 - hook がなくても動くが、hook を入れると lifecycle の反映が速くなる
 
-hookだけに頼らないのは、tmuxのhookだけではAIの処理開始や完了を完全には検出できないためです。paneが動いているかどうかに加え、pane title、コマンドライン、直近のtranscriptを確認するほうが、実際のcoding AI TUIの状態を判断しやすくなります。
+hook だけに頼らないのは、tmux の hook だけでは AI の処理開始や完了を完全には検出できないためです。pane が動いているかどうかに加え、pane title、コマンドライン、直近の transcript を確認するほうが、実際の coding AI TUI の状態を判断しやすくなります。
 
 ### AI pane 検出: 「コマンド名だけ」にしない
 
@@ -96,7 +96,7 @@ hookだけに頼らないのは、tmuxのhookだけではAIの処理開始や完
 - GitHub Copilot CLI
 - opencode
 
-tmux全体のpaneから、AIのTUIと判定したものだけを選ぶ実装です。
+tmux 全体の pane から、AI の TUI と判定したものだけを選ぶ実装です。
 
 ### Dokochan
 
@@ -108,9 +108,9 @@ README にも、デフォルト素材に加えてユーザーの characters デ�
 
 ## パフォーマンス改善
 
-pane数が増えた時の動作の遅さも少し改善しました。原因はtranscriptのキャッシュ期間です。3秒ごとのpollingに対してtranscript cacheのTTLが1.5秒しかなく、paneが増えるとほぼ毎回 `tmux capture-pane` を再実行していました。
+pane 数が増えた時の動作の遅さも少し改善しました。原因は transcript のキャッシュ期間です。3 秒ごとの polling に対して transcript cache の TTL が 1.5 秒しかなく、pane が増えるとほぼ毎回 `tmux capture-pane` を再実行していました。
 
-そこで `TmuxCollector` のtranscript cacheの保持期間を、active paneは4.5秒、inactive paneは12秒に変えました。動いているpaneの変化を追いながら、画面外で待機しているpaneの情報を取り直す回数を減らせています。tmux全体を表示するUIでは、目立たないこうした負荷の削減も役立ちます。
+そこで `TmuxCollector` の transcript cache の保持期間を、active pane は 4.5 秒、inactive pane は 12 秒に変えました。動いている pane の変化を追いながら、画面外で待機している pane の情報を取り直す回数を減らせています。tmux 全体を表示する UI では、目立たないこうした負荷の削減も役立ちます。
 
 ## どう使うか
 
@@ -127,7 +127,7 @@ pane数が増えた時の動作の遅さも少し改善しました。原因はt
 
 ログイン時に常駐させたいなら LaunchAgent を入れます。tmux 側の pane 増減をもっと速く反映したいなら hooks を追加します。ここは必須ではなく、まずはアプリを起動するだけでも動きます。
 
-最初はアプリを起動してtmuxを使うだけで十分です。気に入ったら、ログイン時の常駐やhooksを追加できます。
+最初はアプリを起動して tmux を使うだけで十分です。気に入ったら、ログイン時の常駐や hooks を追加できます。
 
 ## 参考
 

@@ -17,7 +17,7 @@ full_ai_model: claude-opus-4-8
 
 元記事では `Gemini 3.5 Flash` と `GPT-5.4` の2モデルで、10題材を TikZ・matplotlib・SVG の3形式ずつ描かせていました。本記事はそこに `Claude Opus 4.8` を加えた更新版です。同じお題・同じプロンプト・同じビルド手順で Opus 4.8 にも描かせ、3モデルを左から **Claude Opus 4.8 / Gemini 3.5 Flash / GPT-5.4** の順で並べています。
 
-題材設計、コード生成、比較、記事作成までをAIで行いました。Opus 4.8 列の source（`.tex` / `.py` / `.svg`）は、この作業セッションで Claude Opus 4.8 が元記事と同じプロンプトから一度で生成したものです。
+題材設計、コード生成、比較、記事作成までをAIで行いました（Full AI 方式）。Opus 4.8 列の source（`.tex` / `.py` / `.svg`）は、この作業セッションで Claude Opus 4.8 が元記事と同じプロンプトから一度で生成したものです。
 
 <style>
 .diagram-hero img,
@@ -101,7 +101,7 @@ full_ai_model: claude-opus-4-8
 
 共通チェック項目は `scripts/diagram_benchmark_2026/manifest.yml` に置いています。お題のプロンプトは `scripts/diagram_benchmark_2026/prompts/` にあります（3モデル共通）。
 
-source欄のリンクから、公開したソースをこのサイトで直接開けます。
+source 欄のリンクから、公開したソースをこのサイトで直接開けます。
 
 ## 実行方法
 
