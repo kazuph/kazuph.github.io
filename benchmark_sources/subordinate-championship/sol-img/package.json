@@ -1,0 +1,11 @@
+{
+  "name": "quick-quiz-local", "private": true, "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local --port 8784 --inspector-port 0",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit && npm run test:e2e",
+    "build": "wrangler deploy --dry-run --outdir .artifacts/build"
+  },
+  "devDependencies": { "wrangler": "4.149.0", "@playwright/test": "1.56.1" }
+}

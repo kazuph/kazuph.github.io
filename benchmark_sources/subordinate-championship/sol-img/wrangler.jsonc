@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "quick-quiz-local", "main": "src/worker.js",
+  "compatibility_date": "2026-10-06",
+  "assets": { "directory": "public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  "durable_objects": { "bindings": [{ "name": "ROOMS", "class_name": "QuizRoom" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["QuizRoom"] }],
+  "dev": { "port": 8784, "inspector_port": 0 }
+}

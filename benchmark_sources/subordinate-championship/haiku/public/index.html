@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>早押しクイズ バザー対決</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+    <!-- 1. ホーム：名前・部屋を作る／参加する -->
+    <main id="screen-home" class="screen" data-testid="screen-home">
+      <header class="hero">
+        <p class="eyebrow">4人オンライン早押しクイズ</p>
+        <h1>早押しクイズ<span>バザー対決</span></h1>
+        <p class="lead">同じ部屋で最大4人。サーバーが最初に受け取った1人だけが回答権を得ます。</p>
+      </header>
+      <form id="form-create" class="card" data-testid="form-create">
+        <h2>部屋を作る</h2>
+        <label>
+          <span>あなたの名前</span>
+          <input name="name" maxlength="20" autocomplete="off" placeholder="例: たろう" required data-testid="input-name-create" />
+        </label>
+        <button type="submit" class="btn primary" data-testid="btn-create">部屋を作る</button>
+      </form>
+      <form id="form-join" class="card" data-testid="form-join">
+        <h2>部屋に参加する</h2>
+        <label>
+          <span>あなたの名前</span>
+          <input name="name" maxlength="20" autocomplete="off" placeholder="例: はなこ" required data-testid="input-name-join" />
+        </label>
+        <label>
+          <span>部屋コード（4文字）</span>
+          <input name="code" maxlength="4" autocomplete="off" placeholder="ABCD" class="code-input" required data-testid="input-code" />
+        </label>
+        <button type="submit" class="btn secondary" data-testid="btn-join">参加する</button>
+      </form>
+      <p id="home-error" class="error" role="alert" data-testid="home-error" hidden></p>
+    </main>
+
+    <!-- 2. ロビー：参加者とホストの開始ボタン -->
+    <main id="screen-lobby" class="screen" hidden data-testid="screen-lobby">
+      <section class="card room-card">
+        <p class="eyebrow">部屋コード</p>
+        <p class="room-code" data-testid="room-code">----</p>
+        <p class="muted">ほかの3人までこの部屋コードを入力して参加できます。</p>
+      </section>
+      <section class="card">
+        <h2>参加者 <span data-testid="lobby-count">0</span> / 4人</h2>
+        <ul class="player-list" id="lobby-players" data-testid="lobby-players"></ul>
+        <p class="muted" id="lobby-hint" data-testid="lobby-hint"></p>
+        <button type="button" class="btn primary" id="btn-start" data-testid="btn-start" disabled>ゲーム開始</button>
+      </section>
+      <button type="button" class="btn ghost" id="btn-leave-lobby" data-testid="btn-leave">部屋を出る</button>
+    </main>
+
+    <!-- 3. ゲーム：問題・早押し・回答・正解表示 -->
+    <main id="screen-game" class="screen wide" hidden data-testid="screen-game">
+      <div class="game-top">
+        <span class="chip" data-testid="progress">1 / 10</span>
+        <span class="chip" data-testid="room-chip">部屋 ----</span>
+      </div>
+      <div class="game-layout">
+        <aside class="card scoreboard" aria-label="点数">
+          <h2>点数</h2>
+          <ul id="scoreboard" class="score-list" data-testid="scoreboard"></ul>
+        </aside>
+
+        <section class="card stage">
+          <div class="status-row">
+            <p class="status" id="status" data-testid="status">問題を準備中…</p>
+            <p class="timer" id="timer" data-testid="timer" aria-live="off">--</p>
+          </div>
+          <div class="bar" aria-hidden="true"><div class="bar-fill" id="bar-fill"></div></div>
+
+          <h2 class="question" id="question-text" data-testid="question-text"></h2>
+
+          <div class="choices" id="choices" data-testid="choices">
+            <button type="button" class="choice" data-choice="0" data-testid="choice-0" disabled><span>A</span><b></b></button>
+            <button type="button" class="choice" data-choice="1" data-testid="choice-1" disabled><span>B</span><b></b></button>
+            <button type="button" class="choice" data-choice="2" data-testid="choice-2" disabled><span>C</span><b></b></button>
+            <button type="button" class="choice" data-choice="3" data-testid="choice-3" disabled><span>D</span><b></b></button>
+          </div>
+
+          <button type="button" class="buzzer" id="buzzer" data-testid="buzzer" disabled>
+            <span class="buzzer-label" id="buzzer-label">押す</span>
+          </button>
+          <p class="notice" id="notice" data-testid="notice"></p>
+        </section>
+      </div>
+      <button type="button" class="btn ghost" id="btn-leave-game" data-testid="btn-leave-game">部屋を出る</button>
+    </main>
+
+    <!-- 4. 最終結果 -->
+    <main id="screen-result" class="screen" hidden data-testid="screen-result">
+      <section class="card result-card">
+        <p class="eyebrow">ゲーム終了</p>
+        <h2>最終順位</h2>
+        <ol class="ranking" id="ranking" data-testid="ranking"></ol>
+        <button type="button" class="btn primary" id="btn-home" data-testid="btn-home">トップに戻る</button>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
