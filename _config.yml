@@ -32,6 +32,7 @@ exclude:
   - scripts/
   - shell.nix
   - vendor/
+  - works/yuzuki-yugo/skill/story-serial-craft/SKILL.md
 
 defaults:
   - scope:
