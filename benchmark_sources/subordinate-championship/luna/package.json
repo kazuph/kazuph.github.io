@@ -1,0 +1,17 @@
+{
+  "name": "local-quiz-contest",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --ip 127.0.0.1 --port 8787",
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.59.1",
+    "@types/node": "24.5.2",
+    "typescript": "5.9.3",
+    "wrangler": "4.149.0"
+  }
+}
