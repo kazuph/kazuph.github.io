@@ -1,0 +1,9 @@
+node_modules/
+.artifacts/
+.wrangler/
+.tmp/
+.npm/
+test-results/
+playwright-report/
+.tmp-wrangler.log
+.tmp-wrangler.pid

@@ -1,0 +1,23 @@
+name = "buzzer-quiz"
+main = "src/index.ts"
+compatibility_date = "2025-10-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
+
+[durable_objects]
+bindings = [
+  { name = "ROOMS", class_name = "Room" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Room"]
+
+[vars]
+ROOM_QUESTION_MS = "20000"
+ROOM_ANSWER_MS = "10000"
+ROOM_REVEAL_MS = "4000"

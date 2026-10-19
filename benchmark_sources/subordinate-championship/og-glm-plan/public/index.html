@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>早押しクイズ</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="conn-banner" hidden>再接続中…</div>
+  <main id="app">
+
+    <!-- 入口 -->
+    <section id="screen-entry" class="screen">
+      <div class="card entry-card">
+        <h1 class="logo"><span class="logo-mark">⚡</span>早押しクイズ</h1>
+        <p class="tagline">4人で対戦！オンライン早押しバトル</p>
+        <label class="field">
+          <span>名前</span>
+          <input id="input-name" maxlength="20" placeholder="あなたの名前" autocomplete="off">
+        </label>
+        <button id="btn-create" class="btn primary big">部屋を作る</button>
+        <div class="divider"><span>または</span></div>
+        <label class="field">
+          <span>部屋コード</span>
+          <input id="input-code" maxlength="6" placeholder="例: AB3C9X" autocapitalize="characters" class="code-input">
+        </label>
+        <button id="btn-join" class="btn big">部屋に参加する</button>
+        <p id="entry-error" class="error" hidden></p>
+      </div>
+    </section>
+
+    <!-- ロビー -->
+    <section id="screen-lobby" class="screen" hidden>
+      <div class="card lobby-card">
+        <p class="lobby-label">部屋コード</p>
+        <div class="room-code-row">
+          <p id="room-code" class="room-code">------</p>
+          <button id="btn-copy" class="btn small" title="コピー">コピー</button>
+        </div>
+        <p class="lobby-note">このコードを友だちに教えてね（全10問）</p>
+        <h2 class="section-title">メンバー <span id="lobby-count" class="pill">1/4</span></h2>
+        <ul id="lobby-players" class="player-cards"></ul>
+        <div id="lobby-host" class="lobby-host">
+          <button id="btn-start" class="btn primary big" disabled>ゲームを開始する</button>
+          <p class="hint" id="lobby-start-hint">2人以上そろうと押せます</p>
+        </div>
+        <div id="lobby-guest" class="lobby-guest" hidden>
+          <p class="waiting"> HOST が開始するのを待っています…<span class="dots"></span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ゲーム -->
+    <section id="screen-game" class="screen" hidden>
+      <header class="game-head">
+        <div class="game-head-left"><span id="q-num" class="q-num">第1問</span><span id="q-total" class="q-total">/ 10</span></div>
+        <div class="timer-wrap">
+          <div class="timer"><div id="timer-bar"></div></div>
+          <span id="timer-text" class="timer-text">--</span>
+        </div>
+      </header>
+      <div class="game-body">
+        <div class="game-main">
+          <div id="q-card" class="q-card"><p id="q-text">問題</p></div>
+          <div id="choices" class="choices">
+            <button class="choice" data-i="0" disabled><span class="badge">A</span><span class="label"></span></button>
+            <button class="choice" data-i="1" disabled><span class="badge">B</span><span class="label"></span></button>
+            <button class="choice" data-i="2" disabled><span class="badge">C</span><span class="label"></span></button>
+            <button class="choice" data-i="3" disabled><span class="badge">D</span><span class="label"></span></button>
+          </div>
+          <p id="game-status" class="game-status">&nbsp;</p>
+          <div class="buzzer-wrap">
+            <button id="buzzer" class="buzzer" disabled><span class="buzzer-inner">押</span></button>
+          </div>
+        </div>
+        <aside class="players-panel">
+          <h2 class="panel-title">スコア</h2>
+          <ul id="players-list" class="players-list"></ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 結果 -->
+    <section id="screen-result" class="screen" hidden>
+      <div class="card result-card">
+        <h1 class="result-title">🏆 結果発表</h1>
+        <ol id="ranking-list" class="ranking-list"></ol>
+        <button id="btn-back-home" class="btn big">おわる</button>
+      </div>
+    </section>
+
+  </main>
+  <div id="toast" class="toast" hidden></div>
+  <script src="/app.js?v=12"></script>
+</body>
+</html>

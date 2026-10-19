@@ -1,0 +1,22 @@
+{
+  "name": "pi-benchmark-buzzer-dependencies",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tests/tsconfig.json",
+    "test:unit": "vitest run tests/unit",
+    "test:e2e": "playwright test",
+    "test": "npm run typecheck && npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "wrangler": "4.149.0",
+    "@playwright/test": "1.56.1",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11",
+    "@cloudflare/workers-types": "5.20261006.1",
+    "@cloudflare/vitest-pool-workers": "0.22.0",
+    "@types/node": "24.5.2"
+  }
+}

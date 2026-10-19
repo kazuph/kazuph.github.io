@@ -11,6 +11,12 @@ const A = {
   haiku: { port: 8782, name: tid('input-name-create'), create: tid('btn-create'), joinName: tid('input-name-join'), code: tid('input-code'), join: tid('btn-join'), roomCode: tid('room-code'), start: tid('btn-start'), buzz: tid('buzzer'), choice: '[data-testid^="choice-"]' },
   sol: { port: 8783, name: '#name', create: 'role=button[name="部屋を作る"]', joinName: '#name', code: '#code', join: 'role=button[name="参加する"]', roomCode: tid('room-code'), start: 'role=button[name="ゲームを開始する"]', buzz: '#buzz', choice: '[data-choice]' },
   'sol-img': { port: 8784, name: 'role=textbox[name="プレイヤー名"]', create: 'role=button[name=/部屋を作る/]', joinName: 'role=textbox[name="プレイヤー名"]', code: 'role=textbox[name="部屋コード"]', join: 'role=button[name=/^参加/]', roomCode: tid('room-code'), start: 'role=button[name=/クイズをはじめる/]', buzz: 'role=button[name=/早押し/]', choice: '[data-choice]' },
+  opus: { port: 8786, name: '[placeholder="例: たろう"]', create: 'role=button[name="部屋を作る"]', joinName: '[placeholder="例: たろう"]', code: '[aria-label="部屋コード（5文字）"]', join: 'role=button[name="参加する"]', roomCode: tid('room-code'), start: 'role=button[name="▶ ゲーム開始"]', buzz: 'button.buzzer', choice: '.choice' },
+  'sonnet-plan': { port: 8791, name: tid('name-input'), create: tid('create-btn'), joinName: tid('name-input'), code: tid('code-input'), join: tid('join-btn'), roomCode: tid('room-code'), start: tid('start-btn'), buzz: tid('buzz-btn'), choice: '[data-testid^="choice-"]' },
+  'haiku-plan': { port: 8792, name: '#name', create: '#create', joinName: '#name', code: '#code', join: '#join', roomCode: '#lobby-code', start: '#start', buzz: '#buzz', choice: '.choice' },
+  'devin-plan': { port: 8793, name: '#name-input', create: '#create-btn', joinName: '#name-input', code: '#code-input', join: '#join-btn', roomCode: '#room-code', start: '#start-btn', buzz: '#buzz-btn', choice: '.choice' },
+  luna: { port: 8787, name: 'role=textbox[name="プレイヤー名"] >> nth=0', create: 'role=button[name="部屋を作る"]', joinName: 'role=textbox[name="プレイヤー名"] >> nth=-1', code: 'role=textbox[name="部屋コード"]', join: 'role=button[name="部屋に参加する"]', roomCode: '.room-code', start: 'role=button[name="ゲームを開始"]', buzz: 'role=button[name="早押し！"]', choice: '[data-choice]' },
+  'luna-plan': { port: 8794, name: '#player-name', create: 'role=button[name="部屋を作る"]', joinName: '#player-name', code: '#room-code', join: 'role=button[name="参加する"]', roomCode: tid('room-code'), start: 'role=button[name="クイズを開始"]', buzz: tid('buzzer'), choice: '[data-choice]' },
   devin: { port: 8785, name: '#in-name', create: '#btn-create', joinName: '#in-name', code: '#in-code', join: '#btn-join', roomCode: '#lobby-code', start: '#btn-start', buzz: '#btn-buzz', choice: '#choices button' },
 };
 
@@ -45,7 +51,7 @@ try {
   await host.page.locator(a.name).first().fill(names[0]);
   await host.page.locator(a.create).first().click();
   await host.page.locator(a.roomCode).first().waitFor({ timeout: 10000 });
-  const code = (await host.page.locator(a.roomCode).first().innerText()).trim();
+  const code = (await host.page.locator(a.roomCode).first().innerText()).replace(/\s/g, '');
   note('roomCode', code);
   for (let i = 1; i < 4; i++) {
     const p = P[i].page;
