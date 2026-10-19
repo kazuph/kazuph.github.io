@@ -172,6 +172,24 @@ DeepSeek V4.1 Flash は10月17日に [1017 版へ更新](https://api-docs.deepse
 
 ![DeepSeek V4.1 Flash 1017 の PC幅の画面。左が計画なし、右が計画あり。上段が出題中、下段が回答中](/images/posts/subordinate-championship/deepseek-1017-pc.webp)
 
+遅かった理由は2通りありました。DeepSeek V4.1 Flash の計画なしは応答1回に平均32秒かかり、90分のうち55分がモデルの応答待ちでした。1017 版では1回10秒前後に縮みました。GLM-5.3-Flash と DeepSeek 1017 は時間の6〜8割がコマンドの実行で、応答の遅さよりも、テストや開発サーバーを何度も回す時間が長くかかっています。表の数字は作業役の分です。
+
+<div class="bench-wrap">
+<table>
+<thead><tr><th>部下候補</th><th>計画</th><th class="num">完成<br>まで</th><th class="num">コマンド<br>実行</th><th class="num">モデルの<br>応答待ち</th><th class="num">応答1回<br>あたり</th><th class="num">ツール<br>呼び出し</th><th class="num">応答<br>回数</th><th class="num">出力<br>トークン</th></tr></thead>
+<tbody>
+<tr><td>Muse Spark 1.3</td><td>なし</td><td class="num">17分</td><td class="num">12分</td><td class="num">5分</td><td class="num">5秒</td><td class="num">57</td><td class="num">54</td><td class="num">4.1万</td></tr>
+<tr><td>Muse Spark 1.3</td><td>あり</td><td class="num">22分</td><td class="num">17分</td><td class="num">5分</td><td class="num">5秒</td><td class="num">67</td><td class="num">60</td><td class="num">4.4万</td></tr>
+<tr><td>GLM-5.3-Flash</td><td>なし</td><td class="num">60分</td><td class="num">45分</td><td class="num">14分</td><td class="num">5秒</td><td class="num">169</td><td class="num">161</td><td class="num">8.1万</td></tr>
+<tr><td>GLM-5.3-Flash</td><td>あり</td><td class="num">90分（打ち切り）</td><td class="num">57分</td><td class="num">33分</td><td class="num">13秒</td><td class="num">168</td><td class="num">156</td><td class="num">11.6万</td></tr>
+<tr><td>DeepSeek V4.1 Flash</td><td>なし</td><td class="num">90分（打ち切り）</td><td class="num">35分</td><td class="num">55分</td><td class="num">32秒</td><td class="num">109</td><td class="num">104</td><td class="num">10.8万</td></tr>
+<tr><td>DeepSeek V4.1 Flash</td><td>あり</td><td class="num">90分（打ち切り）</td><td class="num">59分</td><td class="num">31分</td><td class="num">16秒</td><td class="num">142</td><td class="num">115</td><td class="num">11.6万</td></tr>
+<tr><td>DeepSeek V4.1 Flash 1017</td><td>なし</td><td class="num">56分</td><td class="num">37分</td><td class="num">19分</td><td class="num">10秒</td><td class="num">136</td><td class="num">122</td><td class="num">10.9万</td></tr>
+<tr><td>DeepSeek V4.1 Flash 1017</td><td>あり</td><td class="num">52分</td><td class="num">35分</td><td class="num">17分</td><td class="num">9秒</td><td class="num">135</td><td class="num">117</td><td class="num">10.6万</td></tr>
+</tbody>
+</table>
+</div>
+
 1017 版の2回では、作業役が打ったコマンドと、VM が止めた通信もすべて記録しました。外への通信は、Playwright の配布元に curl で1回つなごうとしたほかは、wrangler や npx が自動でつなぎに行ったものだけで、すべて VM が止めました。作業フォルダの外を探ったのは、Chromium の場所を探す `find /` と、使っているポートを確かめる `ss` で、テストを動かすための範囲でした。
 
 ## 点数の内訳
@@ -346,7 +364,7 @@ DeepSeek V4.1 Flash は10月17日に [1017 版へ更新](https://api-docs.deepse
 
 全員に同じ指示書（[`TASK.md`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship/sonnet/TASK.md)）を渡しました。課題、画像生成ありの Sol、Opus 5.5 と GPT-6 Luna と OpenCode Go の3モデルの追加、計画を渡す本番は kazuph の指定で、指示書と計画の細部と採点の観点は筆者が決めました。各1回の実行で、UI と構成の点数は筆者の主観です。計画を書いた筆者の手間と料金は表に含めていません。
 
-API料金は作業の開始から完了報告を送るまでのトークン数に各社の API 定価を掛け、1ドル158円で換算しました（[Claude](https://platform.claude.com/docs/en/about-claude/pricing)、[GPT-6.1-Sol](https://openai.com/index/introducing-gpt-6-1-sol/)、[SWE-2](https://docs.devin.ai/desktop/models)）。GPT-6 Luna は OpenAI の公式の価格表を確認できず、第三者のまとめ（[eesel.ai](https://www.eesel.ai/blog/gpt-6-luna-pricing)、[BenchLM](https://benchlm.ai/openai/api-pricing)）の単価を使いました。画像生成ありの Sol の画像生成4枚の料金は含みません。番外戦の料金は [OpenCode Go の公式の単価](https://opencode.ai/docs/go/)（2026年10月19日時点、DeepSeek は混雑しない時間帯の単価）で換算した額で、月額の定額プランの実際の支払いとは別です。番外戦だけは ubuntu の VM で走らせ（DeepSeek V4.1 Flash 1017 の2回は10月19日 22:28〜23:24 UTC）、依存パッケージの版（Vitest 4.1.11 など）を固定し、90分で打ち切りました。Muse Spark 1.3 Contributor は、送った内容が Meta のモデルの学習に使われる枠です。全員のソースと審判のスクリプトは [`benchmark_sources/subordinate-championship/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship) にあります。
+API料金は作業の開始から完了報告を送るまでのトークン数に各社の API 定価を掛け、1ドル158円で換算しました（[Claude](https://platform.claude.com/docs/en/about-claude/pricing)、[GPT-6.1-Sol](https://openai.com/index/introducing-gpt-6-1-sol/)、[SWE-2](https://docs.devin.ai/desktop/models)）。GPT-6 Luna は OpenAI の公式の価格表を確認できず、第三者のまとめ（[eesel.ai](https://www.eesel.ai/blog/gpt-6-luna-pricing)、[BenchLM](https://benchlm.ai/openai/api-pricing)）の単価を使いました。画像生成ありの Sol の画像生成4枚の料金は含みません。番外戦の料金は [OpenCode Go の公式の単価](https://opencode.ai/docs/go/)（2026年10月19日時点、DeepSeek は混雑しない時間帯の単価）で換算した額で、月額の定額プランの実際の支払いとは別です。番外戦だけは ubuntu の VM で走らせ（DeepSeek V4.1 Flash 1017 の2回は10月19日 22:28〜23:24 UTC）、依存パッケージの版（Vitest 4.1.11 など）を固定し、90分で打ち切りました。番外戦の時間の内訳は作業役の途中経過の記録を「コマンド実行中」とそれ以外に分けて足しました。Muse Spark 1.3 Contributor は、送った内容が Meta のモデルの学習に使われる枠です。全員のソースと審判のスクリプトは [`benchmark_sources/subordinate-championship/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship) にあります。
 
 ## おわりに
 
