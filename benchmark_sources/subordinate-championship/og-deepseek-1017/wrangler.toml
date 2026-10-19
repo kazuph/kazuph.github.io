@@ -1,0 +1,22 @@
+name = "buzzer-quiz"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+workers_dev = false
+
+[dev]
+port = 8787
+inspector_port = 39217
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
+
+[[durable_objects.bindings]]
+name = "ROOMS"
+class_name = "QuizRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["QuizRoom"]
