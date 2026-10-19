@@ -11,7 +11,7 @@ full_ai_model: claude-opus-5-5
 
 <style>
 .bench-wrap { overflow-x: auto; margin: 1rem 0 1.6rem; }
-.bench-wrap table { min-width: 620px; }
+.bench-wrap table { min-width: 600px; }
 .bench-wrap td.num, .bench-wrap th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bench-wrap tr.top td { font-weight: 700; background: #fff7ed; }
 </style>
@@ -28,18 +28,33 @@ full_ai_model: claude-opus-5-5
 
 <div class="bench-wrap">
 <table>
-<thead><tr><th>順位</th><th>部下候補</th><th class="num">遊び方<br>25</th><th class="num">構成<br>10</th><th class="num">テスト<br>20</th><th class="num">UI<br>20</th><th class="num">報告と仕様<br>15</th><th class="num">速さ<br>10</th><th class="num">合計</th><th class="num">完成まで</th></tr></thead>
+<thead><tr><th>順位</th><th>部下候補</th><th class="num">点数</th><th class="num">完成まで</th><th class="num">API料金</th><th class="num">入力トークン<br>（うちキャッシュ読み）</th><th class="num">出力トークン</th></tr></thead>
 <tbody>
-<tr class="top"><td>1</td><td>Sol（画像生成あり）</td><td class="num">25</td><td class="num">9</td><td class="num">19</td><td class="num">19</td><td class="num">13</td><td class="num">10</td><td class="num">95</td><td class="num">17分</td></tr>
-<tr><td>2</td><td>Sol（画像生成なし）</td><td class="num">25</td><td class="num">7</td><td class="num">16</td><td class="num">18</td><td class="num">12</td><td class="num">10</td><td class="num">88</td><td class="num">18分</td></tr>
-<tr><td>3</td><td>Sonnet 5.5</td><td class="num">25</td><td class="num">10</td><td class="num">19</td><td class="num">16</td><td class="num">12</td><td class="num">4</td><td class="num">86</td><td class="num">55分</td></tr>
-<tr><td>4</td><td>Haiku 5.5</td><td class="num">25</td><td class="num">9</td><td class="num">14</td><td class="num">15</td><td class="num">15</td><td class="num">6</td><td class="num">84</td><td class="num">47分</td></tr>
-<tr><td>5</td><td>Devin SWE-2 High</td><td class="num">25</td><td class="num">8</td><td class="num">11</td><td class="num">12</td><td class="num">12</td><td class="num">9</td><td class="num">77</td><td class="num">19分</td></tr>
+<tr class="top"><td>1</td><td>Sol（画像生成あり）</td><td class="num">95</td><td class="num">17分</td><td class="num">約254円</td><td class="num">787万（768万）</td><td class="num">4.5万</td></tr>
+<tr><td>2</td><td>Sol（画像生成なし）</td><td class="num">88</td><td class="num">18分</td><td class="num">約234円</td><td class="num">679万（661万）</td><td class="num">4.6万</td></tr>
+<tr><td>3</td><td>Sonnet 5.5</td><td class="num">86</td><td class="num">55分</td><td class="num">約429円</td><td class="num">944万（922万）</td><td class="num">9.1万</td></tr>
+<tr><td>4</td><td>Haiku 5.5</td><td class="num">84</td><td class="num">47分</td><td class="num">約153円</td><td class="num">1,014万（988万）</td><td class="num">12.7万</td></tr>
+<tr><td>5</td><td>Devin SWE-2 High</td><td class="num">77</td><td class="num">19分</td><td class="num">約524円</td><td class="num">666万（654万）</td><td class="num">6.5万</td></tr>
 </tbody>
 </table>
 </div>
 
 ![5人のアプリの出題中の画面（PC幅）。上段左から Sonnet 5.5、Haiku 5.5、Sol（画像生成なし）、下段左から Sol（画像生成あり）、Devin SWE-2 High](/images/posts/subordinate-championship/question-pc.webp)
+
+点数の内訳は次のとおりです。
+
+<div class="bench-wrap">
+<table>
+<thead><tr><th>部下候補</th><th class="num">遊び方<br>25</th><th class="num">構成<br>10</th><th class="num">テスト<br>20</th><th class="num">UI<br>20</th><th class="num">報告と仕様<br>15</th><th class="num">速さ<br>10</th></tr></thead>
+<tbody>
+<tr><td>Sol（画像生成あり）</td><td class="num">25</td><td class="num">9</td><td class="num">19</td><td class="num">19</td><td class="num">13</td><td class="num">10</td></tr>
+<tr><td>Sol（画像生成なし）</td><td class="num">25</td><td class="num">7</td><td class="num">16</td><td class="num">18</td><td class="num">12</td><td class="num">10</td></tr>
+<tr><td>Sonnet 5.5</td><td class="num">25</td><td class="num">10</td><td class="num">19</td><td class="num">16</td><td class="num">12</td><td class="num">4</td></tr>
+<tr><td>Haiku 5.5</td><td class="num">25</td><td class="num">9</td><td class="num">14</td><td class="num">15</td><td class="num">15</td><td class="num">6</td></tr>
+<tr><td>Devin SWE-2 High</td><td class="num">25</td><td class="num">8</td><td class="num">11</td><td class="num">12</td><td class="num">12</td><td class="num">9</td></tr>
+</tbody>
+</table>
+</div>
 
 5人とも動くアプリを出し、構成も全員が同じでした。1部屋に1つの [Durable Object](https://developers.cloudflare.com/durable-objects/) を置き、[WebSocket Hibernation API](https://developers.cloudflare.com/durable-objects/best-practices/websockets/) でつなぎ、10秒・20秒の期限を [Alarm](https://developers.cloudflare.com/durable-objects/api/alarms/) で進める形です。Durable Object は同じ部屋あてのメッセージを1つずつ処理するので、4人が同時に押しても回答権は1人に決まります。
 
@@ -63,7 +78,7 @@ full_ai_model: claude-opus-5-5
 
 ### Haiku 5.5
 
-費用は約1.24ドルで、Sonnet 5.5（約2.91ドル）の半分以下です。実時間の10秒待ちや回線断のテストは書いていません。その代わり、確かめていない項目を「一部達成」として自分から全部書き出していました。キーボード入力を待つコマンドで13分止まったのが速さの減点です。
+API料金は約153円で、Sonnet 5.5（約429円）の半分以下です。実時間の10秒待ちや回線断のテストは書いていません。その代わり、確かめていない項目を「一部達成」として自分から全部書き出していました。キーボード入力を待つコマンドで13分止まったのが速さの減点です。
 
 ### Devin SWE-2 High
 
@@ -73,7 +88,7 @@ full_ai_model: claude-opus-5-5
 
 ## 比較の条件
 
-5人に同じ指示書（[`TASK.md`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship/sonnet/TASK.md)）を渡し、同時に開始しました。課題と画像生成ありの Sol を加えることは kazuph の指定で、指示書の細部と採点の観点は筆者が決めました。各1回の実行で、UI と構成の点数は筆者の主観です。5人のソースと審判のスクリプトは [`benchmark_sources/subordinate-championship/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship) にあります。
+5人に同じ指示書（[`TASK.md`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship/sonnet/TASK.md)）を渡し、同時に開始しました。課題と画像生成ありの Sol を加えることは kazuph の指定で、指示書の細部と採点の観点は筆者が決めました。各1回の実行で、UI と構成の点数は筆者の主観です。API料金は、作業の開始から完了報告を送るまでのトークン数に各社の API 定価を掛け、1ドル158円で換算しました（[Claude](https://platform.claude.com/docs/en/about-claude/pricing)、[GPT-6.1-Sol](https://openai.com/index/introducing-gpt-6-1-sol/)、[SWE-2](https://docs.devin.ai/desktop/models)）。画像生成ありの Sol の画像生成4枚の料金は含みません。5人のソースと審判のスクリプトは [`benchmark_sources/subordinate-championship/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship) にあります。
 
 ## おわりに
 
