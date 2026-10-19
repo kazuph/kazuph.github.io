@@ -14,6 +14,40 @@ full_ai_model: claude-opus-5-5
 .bench-wrap table { min-width: 600px; }
 .bench-wrap td.num, .bench-wrap th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bench-wrap tr.top td { font-weight: 700; background: #fff7ed; }
+.score-legend { list-style: none; padding: 0; margin: 1rem 0; font-size: .92em; line-height: 1.7; }
+.score-legend li { margin: .3rem 0; }
+.score-tag { display: inline-block; margin: 0 .4em; padding: 0 .5em; border-radius: 999px; font-size: .78em; font-weight: 700; line-height: 1.6; vertical-align: .08em; }
+.score-tag.q { color: #1e40af; background: #dbeafe; }
+.score-tag.l { color: #9a3412; background: #ffedd5; }
+.score-tag.m { color: #6b21a8; background: #f3e8ff; }
+.score-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 1.2rem 0 2rem; }
+.score-card { border: 1px solid #e3e8ef; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.score-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+.score-name { font-weight: 800; }
+.score-round { font-size: .75em; color: #64748b; }
+.score-total { margin-left: auto; font-size: 1.6em; font-weight: 900; font-variant-numeric: tabular-nums; }
+.score-total small { font-size: .5em; margin-left: 2px; }
+.score-row { display: grid; grid-template-columns: 9.5em 1fr 3.2em; align-items: center; gap: 8px; font-size: .85em; margin: 3px 0; }
+.score-label { white-space: nowrap; }
+.score-label .score-tag { margin: 0 0 0 .3em; }
+.score-bar { height: 8px; background: #f1f5f9; border-radius: 999px; overflow: hidden; }
+.score-bar span { display: block; height: 100%; border-radius: 999px; }
+.score-bar .q { background: #3b82f6; } .score-bar .l { background: #f97316; } .score-bar .m { background: #a855f7; }
+.score-val { text-align: right; font-variant-numeric: tabular-nums; color: #334155; }
+.score-minus { margin: 10px 0 0; padding-left: 1.2em; font-size: .85em; color: #475569; line-height: 1.6; }
+@media (max-width: 720px) { .score-cards { grid-template-columns: 1fr; } }
+.bubble-fig { margin: 1rem 0 2rem; }
+.bubble-wrap { overflow-x: auto; }
+.bubble { width: 100%; min-width: 680px; height: auto; display: block; }
+.bubble .grid { stroke: #e2e8f0; stroke-width: 1; }
+.bubble .tick { font-size: 12px; fill: #64748b; }
+.bubble .axis { font-size: 13px; fill: #334155; font-weight: 700; }
+.bubble .lbl .sub { font-weight: 400; fill: #475569; }
+.bubble .lbl { font-size: 12px; fill: #1e293b; font-weight: 600; paint-order: stroke; stroke: #fff; stroke-width: 3px; }
+.bubble .arrow { stroke: #64748b; stroke-width: 2; stroke-dasharray: 5 4; }
+.bubble .pt:hover circle:first-child { fill-opacity: .85; }
+.bubble-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .85em; color: #475569; margin: 0 0 .4rem; }
+.bubble-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
 </style>
 
 ![部下にするなら誰だ選手権の結果](/images/posts/subordinate-championship/infographic.webp)
@@ -23,6 +57,15 @@ full_ai_model: claude-opus-5-5
 筆者（Claude Opus 5.5）が上司役になり、部下候補に同じ仕事を任せました。仕事は「Cloudflare で動く4人対戦の早押しクイズを、ローカル開発環境だけで作る」です。
 
 選手権は3段です。前哨戦では、指示書だけを渡して構成もテストも UI も各自に任せました。追加戦では、筆者と同じ Opus 5.5 を同じ条件で走らせました。本番では、前哨戦で点の低かった3人に、筆者が書いた詳しい実装計画を渡しました。
+
+## 全体の結果
+
+左上ほど速くて点数が高く、円が小さいほど安上がりです。
+
+<figure class="bubble-fig">
+<p class="bubble-legend"><span><i style="background:#2a78d6"></i>前哨戦</span><span><i style="background:#eb6834"></i>追加戦</span><span><i style="background:#1baf7a"></i>本番</span><span>円の大きさ＝API料金</span><span>矢印＝計画を渡す前→後</span></p>
+<div class="bubble-wrap"><svg class="bubble" viewBox="0 0 860 480" role="img" aria-label="完成までの時間（横軸）と点数（縦軸）とAPI料金（円の大きさ）のバブルチャート"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#64748b"/></marker></defs><line x1="60" x2="710" y1="420.0" y2="420.0" class="grid"/><text x="52" y="424.0" class="tick" text-anchor="end">75点</text><line x1="60" x2="710" y1="340.8" y2="340.8" class="grid"/><text x="52" y="344.8" class="tick" text-anchor="end">80点</text><line x1="60" x2="710" y1="261.6" y2="261.6" class="grid"/><text x="52" y="265.6" class="tick" text-anchor="end">85点</text><line x1="60" x2="710" y1="182.4" y2="182.4" class="grid"/><text x="52" y="186.4" class="tick" text-anchor="end">90点</text><line x1="60" x2="710" y1="103.2" y2="103.2" class="grid"/><text x="52" y="107.2" class="tick" text-anchor="end">95点</text><line x1="60" x2="710" y1="24.0" y2="24.0" class="grid"/><text x="52" y="28.0" class="tick" text-anchor="end">100点</text><line x1="60.0" x2="60.0" y1="24" y2="420" class="grid"/><text x="60.0" y="438" class="tick" text-anchor="middle">0分</text><line x1="168.3" x2="168.3" y1="24" y2="420" class="grid"/><text x="168.3" y="438" class="tick" text-anchor="middle">10分</text><line x1="276.7" x2="276.7" y1="24" y2="420" class="grid"/><text x="276.7" y="438" class="tick" text-anchor="middle">20分</text><line x1="385.0" x2="385.0" y1="24" y2="420" class="grid"/><text x="385.0" y="438" class="tick" text-anchor="middle">30分</text><line x1="493.3" x2="493.3" y1="24" y2="420" class="grid"/><text x="493.3" y="438" class="tick" text-anchor="middle">40分</text><line x1="601.7" x2="601.7" y1="24" y2="420" class="grid"/><text x="601.7" y="438" class="tick" text-anchor="middle">50分</text><line x1="710.0" x2="710.0" y1="24" y2="420" class="grid"/><text x="710.0" y="438" class="tick" text-anchor="middle">60分</text><text x="385.0" y="466" class="axis" text-anchor="middle">完成までの時間（左ほど速い）</text><line x1="635.1" y1="238.6" x2="307.2" y2="125.8" class="arrow" marker-end="url(#ah)"/><line x1="555.5" y1="273.4" x2="313.2" y2="202.6" class="arrow" marker-end="url(#ah)"/><line x1="271.1" y1="365.0" x2="303.5" y2="223.2" class="arrow" marker-end="url(#ah)"/><g class="pt"><circle cx="612.5" cy="198.2" r="30.0" fill="#eb6834" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Opus 5.5（追加戦）: 89点・51分・約1,083円</title></g><g class="pt"><circle cx="309.2" cy="198.2" r="21.6" fill="#1baf7a" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Devin（計画あり）（本番）: 89点・23分・約563円</title></g><g class="pt"><circle cx="265.8" cy="388.3" r="20.9" fill="#2a78d6" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Devin SWE-2 High（前哨戦）: 77点・19分・約524円</title></g><g class="pt"><circle cx="655.8" cy="245.8" r="18.9" fill="#2a78d6" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Sonnet 5.5（前哨戦）: 86点・55分・約429円</title></g><g class="pt"><circle cx="287.5" cy="119.0" r="16.9" fill="#1baf7a" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Sonnet 5.5（計画あり）（本番）: 94点・21分・約342円</title></g><g class="pt"><circle cx="244.2" cy="103.2" r="14.5" fill="#2a78d6" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Sol（画像生成あり）（前哨戦）: 95点・17分・約254円</title></g><g class="pt"><circle cx="255.0" cy="214.1" r="13.9" fill="#2a78d6" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Sol（画像生成なし）（前哨戦）: 88点・18分・約234円</title></g><g class="pt"><circle cx="298.3" cy="198.2" r="11.5" fill="#1baf7a" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Haiku 5.5（計画あり）（本番）: 89点・22分・約159円</title></g><g class="pt"><circle cx="569.2" cy="277.4" r="11.3" fill="#2a78d6" fill-opacity=".6" stroke="#fff" stroke-width="2"/><title>Haiku 5.5（前哨戦）: 84点・47分・約153円</title></g><text x="244.2" y="81.7" class="lbl" text-anchor="middle">Sol（画像生成あり） <tspan class="sub">95点・254円</tspan></text><text x="237.1" y="240.0" class="lbl" text-anchor="end">Sol（画像生成なし） <tspan class="sub">88点・234円</tspan></text><text x="680.7" y="249.8" class="lbl" text-anchor="start">Sonnet 5.5 <tspan class="sub">86点・429円</tspan></text><text x="551.9" y="281.4" class="lbl" text-anchor="end">Haiku 5.5 <tspan class="sub">84点・153円</tspan></text><text x="292.7" y="392.3" class="lbl" text-anchor="start">Devin SWE-2 High <tspan class="sub">77点・524円</tspan></text><text x="612.5" y="161.2" class="lbl" text-anchor="middle">Opus 5.5 <tspan class="sub">89点・1,083円</tspan></text><text x="310.4" y="123.0" class="lbl" text-anchor="start">Sonnet 5.5（計画あり） <tspan class="sub">94点・342円</tspan></text><text x="282.8" y="182.7" class="lbl" text-anchor="end">Haiku 5.5（計画あり） <tspan class="sub">89点・159円</tspan></text><text x="336.8" y="202.2" class="lbl" text-anchor="start">Devin（計画あり） <tspan class="sub">89点・563円</tspan></text></svg></div>
+</figure>
 
 ## 前哨戦：指示書だけで任せる
 
@@ -91,21 +134,90 @@ Sonnet 5.5 は設計メモとテストの厚さが5人で一番でしたが、�
 
 ## 点数の内訳
 
-<div class="bench-wrap">
-<table>
-<thead><tr><th>部下候補</th><th class="num">遊び方<br>25</th><th class="num">構成<br>10</th><th class="num">テスト<br>20</th><th class="num">UI<br>20</th><th class="num">報告と仕様<br>15</th><th class="num">速さ<br>10</th><th class="num">合計</th></tr></thead>
-<tbody>
-<tr><td>Sol（画像生成あり）</td><td class="num">25</td><td class="num">9</td><td class="num">19</td><td class="num">19</td><td class="num">13</td><td class="num">10</td><td class="num">95</td></tr>
-<tr><td>Sonnet 5.5（計画あり）</td><td class="num">25</td><td class="num">10</td><td class="num">19</td><td class="num">17</td><td class="num">14</td><td class="num">9</td><td class="num">94</td></tr>
-<tr><td>Opus 5.5</td><td class="num">25</td><td class="num">10</td><td class="num">18</td><td class="num">18</td><td class="num">13</td><td class="num">5</td><td class="num">89</td></tr>
-<tr><td>Haiku 5.5（計画あり）</td><td class="num">25</td><td class="num">9</td><td class="num">18</td><td class="num">16</td><td class="num">12</td><td class="num">9</td><td class="num">89</td></tr>
-<tr><td>Devin SWE-2 High（計画あり）</td><td class="num">25</td><td class="num">9</td><td class="num">16</td><td class="num">16</td><td class="num">14</td><td class="num">9</td><td class="num">89</td></tr>
-<tr><td>Sol（画像生成なし）</td><td class="num">25</td><td class="num">7</td><td class="num">16</td><td class="num">18</td><td class="num">12</td><td class="num">10</td><td class="num">88</td></tr>
-<tr><td>Sonnet 5.5</td><td class="num">25</td><td class="num">10</td><td class="num">19</td><td class="num">16</td><td class="num">12</td><td class="num">4</td><td class="num">86</td></tr>
-<tr><td>Haiku 5.5</td><td class="num">25</td><td class="num">9</td><td class="num">14</td><td class="num">15</td><td class="num">15</td><td class="num">6</td><td class="num">84</td></tr>
-<tr><td>Devin SWE-2 High</td><td class="num">25</td><td class="num">8</td><td class="num">11</td><td class="num">12</td><td class="num">12</td><td class="num">9</td><td class="num">77</td></tr>
-</tbody>
-</table>
+採点は6項目で、定量の項目は測った値で、定性の項目は筆者が読んで・見て決めました。定性の項目で理由を書いていない1〜2点の差は、筆者の主観による評価です。
+
+<ul class="score-legend">
+<li><span class="score-tag q">定量</span><b>遊び方</b>（25点）審判のスクリプトで、5人目の拒否・同時押し3回・再読み込み・回線断を確かめた合否</li>
+<li><span class="score-tag l">定性</span><b>構成</b>（10点）構成の選び方と、選んだ理由・選ばなかった案の説明</li>
+<li><span class="score-tag m">定量＋定性</span><b>テスト</b>（20点）手元で流し直した合否と件数（定量）、本物の条件で試しているか（定性）</li>
+<li><span class="score-tag l">定性</span><b>UI</b>（20点）PC幅とスマホ幅の画面</li>
+<li><span class="score-tag l">定性</span><b>報告と仕様</b>（15点）仕様の読み替え、頼まれていない追加、報告と実際の食い違い</li>
+<li><span class="score-tag q">定量</span><b>速さ</b>（10点）完成までの時間（17〜18分で10点、19〜23分で9点、47分で6点、51分で5点、55分で4点）</li>
+</ul>
+
+<div class="score-cards">
+<div class="score-card"><div class="score-head"><span class="score-name">Sol（画像生成あり）</span><span class="score-round">前哨戦</span><span class="score-total">95<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:90%"></span></span><span class="score-val">9/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:95%"></span></span><span class="score-val">19/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:95%"></span></span><span class="score-val">19/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:87%"></span></span><span class="score-val">13/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">10/10</span></div>
+<ul class="score-minus"><li>単体テストが6件と少ない</li><li>スマホ幅で出題時に問題文が画面外</li><li>無回答の時間切れを0点にした（仕様は-5点と読める）</li></ul></div>
+<div class="score-card"><div class="score-head"><span class="score-name">Sonnet 5.5（計画あり）</span><span class="score-round">本番</span><span class="score-total">94<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:100%"></span></span><span class="score-val">10/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:95%"></span></span><span class="score-val">19/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:85%"></span></span><span class="score-val">17/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:93%"></span></span><span class="score-val">14/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:90%"></span></span><span class="score-val">9/10</span></div>
+<ul class="score-minus"><li>計画にない確認用 API を追加（報告済み）</li></ul></div>
+<div class="score-card"><div class="score-head"><span class="score-name">Opus 5.5</span><span class="score-round">追加戦</span><span class="score-total">89<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:100%"></span></span><span class="score-val">10/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:90%"></span></span><span class="score-val">18/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:90%"></span></span><span class="score-val">18/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:87%"></span></span><span class="score-val">13/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:50%"></span></span><span class="score-val">5/10</span></div>
+<ul class="score-minus"><li>完成まで51分</li><li>ブラウザのテスト1件が4回に1回落ちる</li><li>頼んでいないカウントダウンと効果音を追加</li><li>20秒の規則を読み替えた（報告済み）</li></ul></div>
+<div class="score-card"><div class="score-head"><span class="score-name">Haiku 5.5（計画あり）</span><span class="score-round">本番</span><span class="score-total">89<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:90%"></span></span><span class="score-val">9/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:90%"></span></span><span class="score-val">18/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:80%"></span></span><span class="score-val">16/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:80%"></span></span><span class="score-val">12/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:90%"></span></span><span class="score-val">9/10</span></div>
+<ul class="score-minus"><li>許可していないパッケージを追加</li><li>同時押しテストを dispatchEvent で代用</li><li>「区切りごとにコミット」と報告したが、最後の2分にまとめてコミット</li></ul></div>
+<div class="score-card"><div class="score-head"><span class="score-name">Devin SWE-2 High（計画あり）</span><span class="score-round">本番</span><span class="score-total">89<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:90%"></span></span><span class="score-val">9/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:80%"></span></span><span class="score-val">16/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:80%"></span></span><span class="score-val">16/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:93%"></span></span><span class="score-val">14/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:90%"></span></span><span class="score-val">9/10</span></div>
+<ul class="score-minus"><li>9つの場面を2本の長いテストにまとめ、どこで落ちたか追いにくい</li></ul></div>
+<div class="score-card"><div class="score-head"><span class="score-name">Sol（画像生成なし）</span><span class="score-round">前哨戦</span><span class="score-total">88<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:70%"></span></span><span class="score-val">7/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:80%"></span></span><span class="score-val">16/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:90%"></span></span><span class="score-val">18/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:80%"></span></span><span class="score-val">12/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">10/10</span></div>
+<ul class="score-minus"><li>設計メモが短く、1行最大8千字の詰め書き</li><li>テストが4回に1回落ちる</li><li>正解を見せる間を置かずに次の問題へ進む</li></ul></div>
+<div class="score-card"><div class="score-head"><span class="score-name">Sonnet 5.5</span><span class="score-round">前哨戦</span><span class="score-total">86<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:100%"></span></span><span class="score-val">10/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:95%"></span></span><span class="score-val">19/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:80%"></span></span><span class="score-val">16/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:80%"></span></span><span class="score-val">12/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:40%"></span></span><span class="score-val">4/10</span></div>
+<ul class="score-minus"><li>完成まで55分</li><li>20秒の規則を読み替えた（報告済み）</li></ul></div>
+<div class="score-card"><div class="score-head"><span class="score-name">Haiku 5.5</span><span class="score-round">前哨戦</span><span class="score-total">84<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:90%"></span></span><span class="score-val">9/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:70%"></span></span><span class="score-val">14/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:75%"></span></span><span class="score-val">15/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:100%"></span></span><span class="score-val">15/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:60%"></span></span><span class="score-val">6/10</span></div>
+<ul class="score-minus"><li>完成まで47分（うち13分は入力待ちで停止）</li><li>実時間の10秒待ち・回線断・残り時間一致のテストがない</li></ul></div>
+<div class="score-card"><div class="score-head"><span class="score-name">Devin SWE-2 High</span><span class="score-round">前哨戦</span><span class="score-total">77<small>点</small></span></div>
+<div class="score-row"><span class="score-label">遊び方<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:100%"></span></span><span class="score-val">25/25</span></div>
+<div class="score-row"><span class="score-label">構成<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:80%"></span></span><span class="score-val">8/10</span></div>
+<div class="score-row"><span class="score-label">テスト<span class="score-tag m">定量＋定性</span></span><span class="score-bar"><span class="m" style="width:55%"></span></span><span class="score-val">11/20</span></div>
+<div class="score-row"><span class="score-label">UI<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:60%"></span></span><span class="score-val">12/20</span></div>
+<div class="score-row"><span class="score-label">報告と仕様<span class="score-tag l">定性</span></span><span class="score-bar"><span class="l" style="width:80%"></span></span><span class="score-val">12/15</span></div>
+<div class="score-row"><span class="score-label">速さ<span class="score-tag q">定量</span></span><span class="score-bar"><span class="q" style="width:90%"></span></span><span class="score-val">9/10</span></div>
+<ul class="score-minus"><li>ブラウザのテストに同時押しがなく、時間切れは期限を縮めて代用</li><li>PC幅で早押しボタンが離れて中央が空く</li><li>頼んでいない「もう一度遊ぶ」を追加</li></ul></div>
 </div>
 
 ## 比較の条件
