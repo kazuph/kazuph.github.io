@@ -28,9 +28,11 @@ def flat(inp,cached,out,p):  # p=(input,cached,output)
 import os
 H=os.path.expanduser('~/.claude/projects/')+'-Users-kazuph-src-github-com-kazuph-buzzer-quiz-contest-'
 rows=[]
-for name,g,cut in [('Sonnet 5.5',H+'sonnet/*.jsonl','2026-10-18T09:15:12.361Z'),('Haiku 5.5',H+'haiku/*.jsonl','2026-10-18T09:08:44.787Z')]+([('Opus 5.5',H+'opus/*.jsonl',sys.argv[1])] if len(sys.argv)>1 else []):
+for name,g,cut in [('Sonnet 5.5',H+'sonnet/*.jsonl','2026-10-18T09:15:12.361Z'),('Haiku 5.5',H+'haiku/*.jsonl','2026-10-18T09:08:44.787Z'),
+                   ('Opus 5.5',H+'opus/*.jsonl','2026-10-19T01:30:30.683Z'),('Sonnet 5.5（計画あり）',H+'sonnet-plan/*.jsonl','2026-10-19T01:19:06.943Z'),
+                   ('Haiku 5.5（計画あり）',H+'haiku-plan/*.jsonl','2026-10-19T01:20:40.229Z')]:
     t,usd=claude(g,cut)
     rows.append((name,t['input']+t['cache_write']+t['cache_read'],t['cache_read'],t['output'],usd))
-for name,inp,cached,out,p in [('Sol（なし）',6794104,6612096,45610,(2,0.10,10)),('Sol（あり）',7873318,7680768,45284,(2,0.10,10)),('Devin',6664994,6541278,65391,(3,0.30,15))]:
+for name,inp,cached,out,p in [('Sol（なし）',6794104,6612096,45610,(2,0.10,10)),('Sol（あり）',7873318,7680768,45284,(2,0.10,10)),('Devin',6664994,6541278,65391,(3,0.30,15)),('Devin（計画あり）',7150352,7068928,79842,(3,0.30,15))]:
     rows.append((name,inp,cached,out,flat(inp,cached,out,p)))
 for r in rows: print(f"{r[0]:12s} 入力 {r[1]/1e6:6.2f}M（うちキャッシュ読み {r[2]/1e6:6.2f}M） 出力 {r[3]/1e3:6.1f}k  ${r[4]:6.2f}  約{r[4]*JPY:5.0f}円")

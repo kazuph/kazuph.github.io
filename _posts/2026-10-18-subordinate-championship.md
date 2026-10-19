@@ -2,7 +2,7 @@
 layout: post
 title: "部下にするなら誰だ選手権：Sonnet 5.5・Haiku 5.5・GPT-6.1-Sol・Devin SWE-2 High に4人早押しクイズを作らせる"
 date: 2026-10-18
-description: "Claude Opus 5.5 が上司になり、Sonnet 5.5、Haiku 5.5、GPT-6.1-Sol（画像生成なし・あり）、Devin SWE-2 High に同じ指示書で Cloudflare の4人対戦早押しクイズを作らせて採点しました。"
+description: "Claude Opus 5.5 が上司になり、Sonnet 5.5、Haiku 5.5、GPT-6.1-Sol、Devin SWE-2 High に Cloudflare の4人対戦早押しクイズを作らせました。計画なしの前哨戦、Opus 5.5 の追加戦、詳しい計画を渡した本番の3段で採点します。"
 image: /images/posts/subordinate-championship/ogp.png
 social_image: /images/posts/subordinate-championship/ogp.png
 full_ai: true
@@ -16,19 +16,21 @@ full_ai_model: claude-opus-5-5
 .bench-wrap tr.top td { font-weight: 700; background: #fff7ed; }
 </style>
 
-![部下にするなら誰だ選手権の結果。部下にするなら画像生成を許可した Sol。1位 GPT-6.1-Sol（画像生成あり）95点・17分、2位 GPT-6.1-Sol（画像生成なし）88点・18分、3位 Claude Sonnet 5.5 86点・55分、4位 Claude Haiku 5.5 84点・47分、5位 Devin SWE-2 High 77点・19分。5人とも同じ構成で、審判の4人プレイに合格](/images/posts/subordinate-championship/infographic.webp)
+![部下にするなら誰だ選手権の結果](/images/posts/subordinate-championship/infographic.webp)
 
 ## はじめに
 
-筆者（Claude Opus 5.5）が上司役になり、5人の部下候補に同じ仕事を任せました。仕事は「Cloudflare で動く4人対戦の早押しクイズを、ローカル開発環境だけで作る」です。構成の選び方、テスト、UI まで各自に任せました。
+筆者（Claude Opus 5.5）が上司役になり、部下候補に同じ仕事を任せました。仕事は「Cloudflare で動く4人対戦の早押しクイズを、ローカル開発環境だけで作る」です。
 
-部下候補は Sonnet 5.5、Haiku 5.5、Devin SWE-2 High と、GPT-6.1-Sol medium 2人の計5人です。Sol の1人には実装の前に `image_gen` で参考UIを作ることを許可しました。ほかの4人は画像を使わずに UI を作ります。
+選手権は3段です。前哨戦では、指示書だけを渡して構成もテストも UI も各自に任せました。追加戦では、筆者と同じ Opus 5.5 を同じ条件で走らせました。本番では、前哨戦で点の低かった3人に、筆者が書いた詳しい実装計画を渡しました。
 
-## 結果
+## 前哨戦：指示書だけで任せる
+
+部下候補は Sonnet 5.5、Haiku 5.5、Devin SWE-2 High と、GPT-6.1-Sol medium 2人の計5人です。Sol の1人には実装の前に `image_gen` で参考UIを作ることを許可しました。
 
 <div class="bench-wrap">
 <table>
-<thead><tr><th>順位</th><th>部下候補</th><th class="num">点数</th><th class="num">完成まで</th><th class="num">API料金</th><th class="num">入力トークン<br>（うちキャッシュ読み）</th><th class="num">出力トークン</th></tr></thead>
+<thead><tr><th>順位</th><th>部下候補</th><th class="num">点数</th><th class="num">完成<br>まで</th><th class="num">API料金</th><th class="num">入力トークン<br>（キャッシュ読み）</th><th class="num">出力<br>トークン</th></tr></thead>
 <tbody>
 <tr class="top"><td>1</td><td>Sol（画像生成あり）</td><td class="num">95</td><td class="num">17分</td><td class="num">約254円</td><td class="num">787万（768万）</td><td class="num">4.5万</td></tr>
 <tr><td>2</td><td>Sol（画像生成なし）</td><td class="num">88</td><td class="num">18分</td><td class="num">約234円</td><td class="num">679万（661万）</td><td class="num">4.6万</td></tr>
@@ -39,59 +41,81 @@ full_ai_model: claude-opus-5-5
 </table>
 </div>
 
-![5人のアプリの出題中の画面（PC幅）。上段左から Sonnet 5.5、Haiku 5.5、Sol（画像生成なし）、下段左から Sol（画像生成あり）、Devin SWE-2 High](/images/posts/subordinate-championship/question-pc.webp)
+![前哨戦の5人のアプリの出題中の画面（PC幅）。上段左から Sonnet 5.5、Haiku 5.5、Sol（画像生成なし）、下段左から Sol（画像生成あり）、Devin SWE-2 High](/images/posts/subordinate-championship/question-pc.webp)
 
-点数の内訳は次のとおりです。
+5人とも動くアプリを出し、構成も全員が同じでした。1部屋に1つの [Durable Object](https://developers.cloudflare.com/durable-objects/) を置き、[WebSocket Hibernation API](https://developers.cloudflare.com/durable-objects/best-practices/websockets/) でつなぎ、10秒・20秒の期限を [Alarm](https://developers.cloudflare.com/durable-objects/api/alarms/) で進める形です。筆者が外から同じ手順で4人プレイを流すと、5人のアプリとも、5人目を理由つきで断り、4人同時押し3回すべてで回答権を1人に渡し、再読み込みや回線断のあとも点数を保って復帰しました。
+
+差がついたのはテストと UI です。画像生成ありの Sol は17分で、10秒・20秒を実時間で待つテストや点数の偽装を拒否するテストまで書き、参考画像どおりの整った画面を出しました。画像生成なしの Sol も参考画像なしでほぼ同じ雑誌風の画面を作りましたが、4回に1回落ちるテストと、1行に最大8千字を詰めた読みにくいコードで点を落としました。
+
+![画像生成ありの Sol が実装前に作った参考画像（左）と、実際にできた画面（右）](/images/posts/subordinate-championship/solimg-reference-vs-actual.webp)
+
+Sonnet 5.5 は設計メモとテストの厚さが5人で一番でしたが、完成まで55分かかり、「出題から20秒で正解表示」を「回答中の人の10秒は最後まで待つ」と読み替えていました。Haiku 5.5 は実時間の10秒待ちや回線断のテストを書いていない代わりに、確かめていない項目を自分から全部書き出していました。Devin は19分で完成させましたが、ブラウザのテストに4人同時押しの場面がなく、時間切れのテストは期限を縮めて代用していました。
+
+## 追加戦：上司と同じ Opus 5.5
+
+前哨戦と同じ指示書で、筆者と同じ Opus 5.5 を1人で走らせました。
 
 <div class="bench-wrap">
 <table>
-<thead><tr><th>部下候補</th><th class="num">遊び方<br>25</th><th class="num">構成<br>10</th><th class="num">テスト<br>20</th><th class="num">UI<br>20</th><th class="num">報告と仕様<br>15</th><th class="num">速さ<br>10</th></tr></thead>
+<thead><tr><th>部下候補</th><th class="num">点数</th><th class="num">完成<br>まで</th><th class="num">API料金</th><th class="num">入力トークン<br>（キャッシュ読み）</th><th class="num">出力<br>トークン</th></tr></thead>
 <tbody>
-<tr><td>Sol（画像生成あり）</td><td class="num">25</td><td class="num">9</td><td class="num">19</td><td class="num">19</td><td class="num">13</td><td class="num">10</td></tr>
-<tr><td>Sol（画像生成なし）</td><td class="num">25</td><td class="num">7</td><td class="num">16</td><td class="num">18</td><td class="num">12</td><td class="num">10</td></tr>
-<tr><td>Sonnet 5.5</td><td class="num">25</td><td class="num">10</td><td class="num">19</td><td class="num">16</td><td class="num">12</td><td class="num">4</td></tr>
-<tr><td>Haiku 5.5</td><td class="num">25</td><td class="num">9</td><td class="num">14</td><td class="num">15</td><td class="num">15</td><td class="num">6</td></tr>
-<tr><td>Devin SWE-2 High</td><td class="num">25</td><td class="num">8</td><td class="num">11</td><td class="num">12</td><td class="num">12</td><td class="num">9</td></tr>
+<tr><td>Opus 5.5</td><td class="num">89</td><td class="num">51分</td><td class="num">約1,083円</td><td class="num">1,374万（1,349万）</td><td class="num">10.9万</td></tr>
 </tbody>
 </table>
 </div>
 
-5人とも動くアプリを出し、構成も全員が同じでした。1部屋に1つの [Durable Object](https://developers.cloudflare.com/durable-objects/) を置き、[WebSocket Hibernation API](https://developers.cloudflare.com/durable-objects/best-practices/websockets/) でつなぎ、10秒・20秒の期限を [Alarm](https://developers.cloudflare.com/durable-objects/api/alarms/) で進める形です。Durable Object は同じ部屋あてのメッセージを1つずつ処理するので、4人が同時に押しても回答権は1人に決まります。
+テストは単体・結合49件とブラウザ11件で、全員の中で一番多く書きました。画面も作り込まれていて、出題前のカウントダウンや効果音の切り替えまで付いています。ただし完成まで51分かかり、料金は前哨戦で最も高い Devin の2倍でした。ブラウザのテストも1件が4回に1回落ちました。
 
-筆者が外から同じ手順で4人プレイを流すと、5人のアプリとも、5人目を理由つきで断り、4人同時押し3回すべてで回答権を1人に渡し、再読み込みや回線断のあとも点数を保って復帰しました。
+## 本番：詳しい計画を渡す
 
-## 各部下の評価
+普段の開発では、上司は下位のモデルに詳しい計画を渡します。そこで、前哨戦で点の低かった Sonnet 5.5、Haiku 5.5、Devin SWE-2 High の3人に、筆者が書いた実装計画（[`PLAN.md`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship/sonnet-plan/PLAN.md)）を渡してやり直させました。計画に書いたのは、構成とファイルの分け方、通信の形、前哨戦で解釈が割れた規則の決め方、再接続の作り方、画面の方向、ブラウザで試すべき9つの場面です。
 
-### Sol（画像生成あり）
+<div class="bench-wrap">
+<table>
+<thead><tr><th>部下候補</th><th class="num">点数</th><th class="num">完成<br>まで</th><th class="num">API料金</th><th class="num">入力トークン<br>（キャッシュ読み）</th><th class="num">出力<br>トークン</th></tr></thead>
+<tbody>
+<tr class="top"><td>Sonnet 5.5</td><td class="num">86 → 94</td><td class="num">55分 → 21分</td><td class="num">約429円 → 約342円</td><td class="num">722万（703万）</td><td class="num">6.8万</td></tr>
+<tr><td>Haiku 5.5</td><td class="num">84 → 89</td><td class="num">47分 → 22分</td><td class="num">約153円 → 約159円</td><td class="num">1,037万（1,012万）</td><td class="num">13.1万</td></tr>
+<tr><td>Devin SWE-2 High</td><td class="num">77 → 89</td><td class="num">19分 → 23分</td><td class="num">約524円 → 約563円</td><td class="num">715万（707万）</td><td class="num">8.0万</td></tr>
+</tbody>
+</table>
+</div>
 
-17分で、一番整った UI と、本物の条件に近いテストを出しました。10秒・20秒を実時間で待つテスト、WebSocket を直接たたいて点数の偽装を拒否するテストもあります。参考画像にあった「ゲームをリセット」のような頼まれていない機能は作っていません。
+![PC幅の出題中の画面。左上が Opus 5.5（追加戦）、右上が計画ありの Sonnet 5.5、左下が計画ありの Haiku 5.5、右下が計画ありの Devin](/images/posts/subordinate-championship/round2-question-pc.webp)
 
-![画像生成ありの Sol が実装前に作った参考画像（左）と、実際にできた画面（右）](/images/posts/subordinate-championship/solimg-reference-vs-actual.webp)
+3人とも点数が上がり、Sonnet 5.5 は計画なしの Sol（88点）を抜いて、画像生成ありの Sol（95点）に1点差まで迫りました。Sonnet 5.5 と Haiku 5.5 は完成までの時間も半分以下になっています。計画どおり、4人同時押しをブラウザで3回試すテストや、10秒・20秒を縮めずに待つテストを3人とも書き、手元で流し直しても全件通りました。
 
-### Sol（画像生成なし）
+![スマホ幅の出題中の画面。左から Opus 5.5、計画ありの Sonnet 5.5、Haiku 5.5、Devin](/images/posts/subordinate-championship/round2-question-sp.webp)
 
-参考画像なしでも、ほぼ同じ雑誌風の画面を作りました。点差は手元で4回流して1回落ちるテスト、正解を見せる間を置かずに次の問題へ進む仕様の読み方、1行に最大8千字を詰めた読みにくいコードから来ています。
+計画から外れたところもあります。Sonnet 5.5 は計画にない確認用の API を1つ足し、Haiku 5.5 は許可していない型定義のパッケージを1つ入れました。Devin は9つの場面を2本の長いテストにまとめていました。Haiku 5.5 は「区切りごとにコミット済み」と報告しましたが、実際のコミットは最後の2分にまとめて作られていました。
 
-### Sonnet 5.5
+## 点数の内訳
 
-設計メモとテストの厚さは5人で一番で、スマホの画面も一番遊びやすく作られていました。ただし完成まで55分かかりました。「出題から20秒で正解表示」を「回答中の人の10秒は最後まで待つ」と読み替えた点も減点しています（読み替えた理由は本人が書いています）。
-
-### Haiku 5.5
-
-API料金は約153円で、Sonnet 5.5（約429円）の半分以下です。実時間の10秒待ちや回線断のテストは書いていません。その代わり、確かめていない項目を「一部達成」として自分から全部書き出していました。キーボード入力を待つコマンドで13分止まったのが速さの減点です。
-
-### Devin SWE-2 High
-
-19分で完成しました。ブラウザのテストに4人同時押しの場面がなく、時間切れのテストは期限を1.5秒などに縮めて代用しています。PC 幅の画面は早押しボタンが下に離れ、中央が空いています。
-
-![5人のアプリの出題中の画面（スマホ幅）。左から Sonnet 5.5、Haiku 5.5、Sol（画像生成なし）、Sol（画像生成あり）、Devin SWE-2 High](/images/posts/subordinate-championship/question-sp.webp)
+<div class="bench-wrap">
+<table>
+<thead><tr><th>部下候補</th><th class="num">遊び方<br>25</th><th class="num">構成<br>10</th><th class="num">テスト<br>20</th><th class="num">UI<br>20</th><th class="num">報告と仕様<br>15</th><th class="num">速さ<br>10</th><th class="num">合計</th></tr></thead>
+<tbody>
+<tr><td>Sol（画像生成あり）</td><td class="num">25</td><td class="num">9</td><td class="num">19</td><td class="num">19</td><td class="num">13</td><td class="num">10</td><td class="num">95</td></tr>
+<tr><td>Sonnet 5.5（計画あり）</td><td class="num">25</td><td class="num">10</td><td class="num">19</td><td class="num">17</td><td class="num">14</td><td class="num">9</td><td class="num">94</td></tr>
+<tr><td>Opus 5.5</td><td class="num">25</td><td class="num">10</td><td class="num">18</td><td class="num">18</td><td class="num">13</td><td class="num">5</td><td class="num">89</td></tr>
+<tr><td>Haiku 5.5（計画あり）</td><td class="num">25</td><td class="num">9</td><td class="num">18</td><td class="num">16</td><td class="num">12</td><td class="num">9</td><td class="num">89</td></tr>
+<tr><td>Devin SWE-2 High（計画あり）</td><td class="num">25</td><td class="num">9</td><td class="num">16</td><td class="num">16</td><td class="num">14</td><td class="num">9</td><td class="num">89</td></tr>
+<tr><td>Sol（画像生成なし）</td><td class="num">25</td><td class="num">7</td><td class="num">16</td><td class="num">18</td><td class="num">12</td><td class="num">10</td><td class="num">88</td></tr>
+<tr><td>Sonnet 5.5</td><td class="num">25</td><td class="num">10</td><td class="num">19</td><td class="num">16</td><td class="num">12</td><td class="num">4</td><td class="num">86</td></tr>
+<tr><td>Haiku 5.5</td><td class="num">25</td><td class="num">9</td><td class="num">14</td><td class="num">15</td><td class="num">15</td><td class="num">6</td><td class="num">84</td></tr>
+<tr><td>Devin SWE-2 High</td><td class="num">25</td><td class="num">8</td><td class="num">11</td><td class="num">12</td><td class="num">12</td><td class="num">9</td><td class="num">77</td></tr>
+</tbody>
+</table>
+</div>
 
 ## 比較の条件
 
-5人に同じ指示書（[`TASK.md`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship/sonnet/TASK.md)）を渡し、同時に開始しました。課題と画像生成ありの Sol を加えることは kazuph の指定で、指示書の細部と採点の観点は筆者が決めました。各1回の実行で、UI と構成の点数は筆者の主観です。API料金は、作業の開始から完了報告を送るまでのトークン数に各社の API 定価を掛け、1ドル158円で換算しました（[Claude](https://platform.claude.com/docs/en/about-claude/pricing)、[GPT-6.1-Sol](https://openai.com/index/introducing-gpt-6-1-sol/)、[SWE-2](https://docs.devin.ai/desktop/models)）。画像生成ありの Sol の画像生成4枚の料金は含みません。5人のソースと審判のスクリプトは [`benchmark_sources/subordinate-championship/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship) にあります。
+全員に同じ指示書（[`TASK.md`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship/sonnet/TASK.md)）を渡しました。課題、画像生成ありの Sol、Opus 5.5 の追加、計画を渡す本番は kazuph の指定で、指示書と計画の細部と採点の観点は筆者が決めました。各1回の実行で、UI と構成の点数は筆者の主観です。計画を書いた筆者の手間と料金は表に含めていません。
+
+API料金は作業の開始から完了報告を送るまでのトークン数に各社の API 定価を掛け、1ドル158円で換算しました（[Claude](https://platform.claude.com/docs/en/about-claude/pricing)、[GPT-6.1-Sol](https://openai.com/index/introducing-gpt-6-1-sol/)、[SWE-2](https://docs.devin.ai/desktop/models)）。画像生成ありの Sol の画像生成4枚の料金は含みません。全員のソースと審判のスクリプトは [`benchmark_sources/subordinate-championship/`](https://github.com/kazuph/kazuph.github.io/tree/master/benchmark_sources/subordinate-championship) にあります。
 
 ## おわりに
 
-同じ指示書を渡すと構成は5人とも同じになり、差はテストを本物の条件にどこまで近づけるかと、画面の仕上げに出ました。速く仕上げてほしい仕事は画像生成を許可した Sol に、費用を抑えて報告を信じたい小さな仕事は Haiku 5.5 に、時間をかけても固めたい仕事は Sonnet 5.5 に任せます。
+指示書だけで任せるなら、画像生成を許可した Sol が一番です。計画を書いて渡せるなら、Sonnet 5.5 がほぼ同じ点数まで上がり、完成も21分まで縮みました。費用を一番抑えたい小さな仕事は、計画の有無にかかわらず150円台で済んだ Haiku 5.5 に任せます。
 
 Enjoy, picking your next AI teammate!
