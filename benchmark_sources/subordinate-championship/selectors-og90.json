@@ -1,0 +1,135 @@
+{
+ "pi-mm-no-plan": {
+  "name": "#name-input",
+  "create": "#create-btn",
+  "joinName": "#name-input",
+  "code": "#code-input",
+  "join": "#join-btn",
+  "beforeJoin": "role=tab[name=\"部屋に参加\"]",
+  "roomCode": "#lobby-code",
+  "start": "#start-btn",
+  "buzz": "#buzzer-btn",
+  "choice": ".option-btn"
+ },
+ "dsh-mm-no-plan": {
+  "name": "#name-input",
+  "create": "#create-room",
+  "joinName": "#name-input",
+  "code": "#code-input",
+  "join": "#join-room",
+  "roomCode": "#lobby-code",
+  "start": "#start-game",
+  "buzz": "#buzzer",
+  "choice": ".options .option"
+ },
+ "pi-mm-plan": {
+  "name": "#name-input",
+  "create": "#create-room-btn",
+  "joinName": "#name-input",
+  "code": "#code-input",
+  "join": "#join-room-btn",
+  "roomCode": "#lobby-code",
+  "start": "#start-btn",
+  "buzz": "#buzz-btn",
+  "choice": "#choices .choice"
+ },
+ "dsh-mm-plan": {
+  "name": "#name-input",
+  "create": "#create-btn",
+  "joinName": "#name-input",
+  "code": "#code-input",
+  "join": "#join-btn",
+  "roomCode": "#room-code",
+  "start": "#start-btn",
+  "buzz": "#buzz-btn",
+  "choice": ".choice"
+ },
+ "pi-muse-no-plan": {
+  "name": "#nameInput",
+  "create": "#createBtn",
+  "joinName": "#nameInput",
+  "code": "#codeInput",
+  "join": "#joinBtn",
+  "roomCode": "#roomCode",
+  "start": "#startBtn",
+  "buzz": "#buzzBtn",
+  "choice": "#choices .choice"
+ },
+ "pi-muse-plan": {
+  "name": "#name-input",
+  "create": "#create-btn",
+  "joinName": "#name-input",
+  "code": "#code-input",
+  "join": "#join-btn",
+  "roomCode": "#room-code",
+  "start": "#start-btn",
+  "buzz": "#buzz-btn",
+  "choice": "#choices .choice"
+ },
+ "pi-ds-no-plan": {
+  "name": "#input-name",
+  "create": "#btn-create",
+  "joinName": "#input-name",
+  "code": "#input-code",
+  "join": "#btn-join",
+  "roomCode": "#lobby-code",
+  "start": "#btn-start",
+  "buzz": "#btn-buzz",
+  "choice": "#choices .choice.enabled"
+ },
+ "dsh-ds-no-plan": {
+  "name": "#name-input",
+  "create": "#create-btn",
+  "joinName": "#name-input",
+  "code": "#code-input",
+  "join": "#join-btn",
+  "roomCode": "#lobby-code",
+  "start": "#start-btn",
+  "buzz": "#buzz-btn",
+  "choice": "#choices .choice"
+ },
+ "pi-ds-plan": {
+  "name": "#name-input",
+  "create": "#create-room-btn",
+  "joinName": "#name-input",
+  "code": "#code-input",
+  "join": "#join-room-btn",
+  "roomCode": "#lobby-code",
+  "start": "#start-btn",
+  "buzz": "#buzz-btn",
+  "choice": "#choices .choice"
+ },
+ "dsh-ds-plan": {
+  "name": "#name-input",
+  "create": "#create-button",
+  "joinName": "#name-input",
+  "code": "#code-input",
+  "join": "#join-button",
+  "roomCode": "#room-code",
+  "start": "#start-button",
+  "buzz": "#buzz-button",
+  "choice": "#choices .choice"
+ },
+ "pi-glm-no-plan": {
+  "name": "#input-name",
+  "create": "#btn-create",
+  "joinName": "#input-name",
+  "code": "#input-code",
+  "join": "#btn-join",
+  "roomCode": "#lobby-code",
+  "start": "#btn-start",
+  "buzz": "#btn-buzz",
+  "choice": "#choices .choice.selectable"
+ },
+ "pi-glm-plan": {
+  "name": "#name",
+  "create": "#create-btn",
+  "joinName": "#name",
+  "code": "#code",
+  "join": "#join-btn",
+  "roomCode": "#lobby-code",
+  "start": "#start-btn",
+  "buzz": "#buzz",
+  "choice": "#choices .choice"
+ }
+}

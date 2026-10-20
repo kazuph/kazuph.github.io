@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "buzzer-quiz-contest",
+  "main": "src/worker.ts",
+  "compatibility_date": "2025-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./public"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOMS",
+        "class_name": "Room"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["Room"]
+    }
+  ],
+  "vars": {
+    "QUESTION_MS": "20000",
+    "ANSWER_MS": "10000",
+    "REVEAL_MS": "5000"
+  },
+  "dev": {
+    "port": 8785
+  },
+  "observability": {
+    "enabled": false
+  }
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>早押しクイズ</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔔</text></svg>" />
+</head>
+<body>
+  <!-- 入口 -->
+  <section id="screen-entry" class="screen">
+    <div class="entry-card">
+      <div class="logo">
+        <span class="logo-bell">🔔</span>
+        <h1>早押しクイズ</h1>
+        <p class="catch">4人でわいわい！リアルタイム早押しバトル</p>
+      </div>
+      <p id="entry-error" class="error" hidden></p>
+      <label class="field">
+        <span class="field-label">名前</span>
+        <input id="name" type="text" maxlength="20" placeholder="あなたの名前" autocomplete="off" />
+      </label>
+      <button id="create-btn" class="btn btn-primary">
+        部屋を作る
+      </button>
+      <div class="divider"><span>または</span></div>
+      <label class="field">
+        <span class="field-label">部屋コード</span>
+        <input id="code" type="text" maxlength="6" placeholder="例：ABC234" autocapitalize="characters" autocomplete="off" />
+      </label>
+      <button id="join-btn" class="btn btn-secondary">部屋に参加する</button>
+    </div>
+  </section>
+
+  <!-- ロビー -->
+  <section id="screen-lobby" class="screen" hidden>
+    <div class="lobby-card">
+      <p class="lobby-label">部屋コードをなかまたちに教えよう</p>
+      <div class="code-box">
+        <span id="lobby-code" class="code-text"></span>
+        <button id="copy-code" class="btn-tiny" title="コピー">コピー</button>
+      </div>
+      <div id="lobby-players" class="lobby-players"></div>
+      <p id="lobby-note" class="note"></p>
+      <button id="start-btn" class="btn btn-primary">開始する</button>
+      <div id="lobby-status" class="reconnect" hidden>再接続中…</div>
+    </div>
+  </section>
+
+  <!-- ゲーム -->
+  <section id="screen-game" class="screen" hidden>
+    <header class="game-header">
+      <div class="round">
+        <span id="round-label" class="round-text">第1問</span>
+        <span class="round-total">/ 10</span>
+      </div>
+      <div id="timer-bar" class="timer-bar"><div id="timer-fill" class="timer-fill"></div></div>
+      <div id="timer-sec" class="timer-sec"></div>
+    </header>
+    <div class="game-main">
+      <div class="question-zone">
+        <p id="question-text" class="question-text"></p>
+        <div id="choices" class="choices"></div>
+        <div id="buzz-wrap" class="buzz-wrap">
+          <button id="buzz" class="buzz-button">押！</button>
+        </div>
+        <div id="status" class="status"></div>
+      </div>
+      <aside id="board" class="board"></aside>
+    </div>
+    <div id="game-status" class="reconnect" hidden>再接続中…</div>
+  </section>
+
+  <!-- 結果 -->
+  <section id="screen-result" class="screen" hidden>
+    <div class="result-card">
+      <h2 class="result-title">最終結果</h2>
+      <ol id="result-list" class="result-list"></ol>
+      <p id="result-note" class="note"></p>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+:root {
+  --bg: #f5f8ff;
+  --panel: #ffffff;
+  --ink: #16234e;
+  --ink-soft: #5a6a9b;
+  --red: #e63946;
+  --red-dark: #b82c38;
+  --blue: #2e6fe8;
+  --gold: #f4b41a;
+  --green: #22a06b;
+  --line: #d9e2f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%, #e8f0ff 0, transparent 40%),
+    radial-gradient(circle at 85% 90%, #fff3d6 0, transparent 40%),
+    var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.screen {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.title {
+  text-align: center;
+  font-size: clamp(28px, 6vw, 44px);
+  margin: 8px 0 4px;
+  color: var(--ink);
+  text-shadow: 0 2px 0 #fff;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--ink-soft);
+  margin: 0 0 20px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 6px 0 rgba(22, 35, 78, 0.08);
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+input[type="text"] {
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 18px;
+  color: var(--ink);
+  background: #fbfcff;
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.btn {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.05s;
+}
+.btn:active {
+  transform: translateY(2px);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--red-dark);
+}
+.btn-secondary {
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 4px 0 #1f4fad;
+}
+
+.divider {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.join-row {
+  display: flex;
+  gap: 8px;
+}
+.join-row input {
+  flex: 1;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-weight: bold;
+  text-align: center;
+}
+.join-row .btn {
+  white-space: nowrap;
+}
+
+.error {
+  color: var(--red);
+  font-weight: bold;
+  text-align: center;
+  min-height: 20px;
+  margin: 0;
+}
+
+.hint {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin: 0;
+}
+
+.room-code-label {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+  margin: 0;
+}
+.room-code {
+  text-align: center;
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: 10px;
+  margin: 0;
+  color: var(--blue);
+}
+
+.player-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "rank name score" "rank badges score";
+  align-items: center;
+  gap: 0 10px;
+  background: #f4f7ff;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.player-card .rank {
+  grid-area: rank;
+  font-weight: 900;
+  color: var(--gold);
+  font-size: 18px;
+  min-width: 40px;
+}
+.player-card .pname {
+  grid-area: name;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-card .score {
+  grid-area: score;
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--ink);
+}
+.player-card .badges {
+  grid-area: badges;
+}
+.player-card.answering {
+  border-color: var(--red);
+  background: #fff0f1;
+  animation: pulse 0.8s infinite alternate;
+}
+.player-card.host {
+  border-color: var(--gold);
+}
+@keyframes pulse {
+  from { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.25); }
+  to { box-shadow: 0 0 0 6px rgba(230, 57, 70, 0.12); }
+}
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-right: 4px;
+  background: var(--gold);
+  color: #4a3500;
+}
+.badge.off {
+  background: #c9d2e8;
+  color: #3d4a70;
+}
+.badge.out {
+  background: #ffd6d9;
+  color: var(--red-dark);
+}
+
+/* ---------- ゲーム画面 ---------- */
+
+.game-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  max-width: 720px;
+  margin: 0 auto 12px;
+}
+#question-counter {
+  font-weight: 900;
+  font-size: clamp(14px, 3vw, 20px);
+}
+.timer-track {
+  height: 14px;
+  background: #e3eaf9;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+#timer-bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--blue), #6ea1ff);
+  border-radius: 999px;
+  transition: width 0.1s linear;
+}
+#timer-bar.low {
+  background: linear-gradient(90deg, var(--red), #ff7b86);
+}
+#timer-text {
+  font-weight: 900;
+  font-size: 20px;
+  min-width: 2ch;
+  text-align: right;
+}
+
+.game-main {
+  display: flex;
+  gap: 16px;
+  max-width: 960px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.play-area {
+  flex: 1;
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 6px 0 rgba(22, 35, 78, 0.08);
+  padding: clamp(12px, 3vw, 28px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vh, 18px);
+}
+
+.question-text {
+  font-size: clamp(17px, 2.6vw, 26px);
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.choice {
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: #f7faff;
+  color: var(--ink);
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: bold;
+  padding: clamp(10px, 2vh, 20px) 10px;
+  cursor: pointer;
+  min-height: 48px;
+}
+.choice:not(:disabled):hover {
+  border-color: var(--blue);
+  background: #eef4ff;
+}
+.choice:disabled {
+  opacity: 0.75;
+  cursor: default;
+}
+.choice.correct {
+  background: #d8f5e8;
+  border-color: var(--green);
+  color: #0d6b45;
+}
+.choice.wrong {
+  background: #ffe1e4;
+  border-color: var(--red);
+}
+
+.buzz {
+  width: clamp(120px, 18vh, 200px);
+  height: clamp(120px, 18vh, 200px);
+  border-radius: 50%;
+  border: 6px solid var(--red-dark);
+  background: radial-gradient(circle at 35% 30%, #ff6b77, var(--red) 65%);
+  color: #fff;
+  font-size: clamp(20px, 4vh, 32px);
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 10px 0 var(--red-dark), 0 14px 24px rgba(230, 57, 70, 0.35);
+  transition: transform 0.05s, box-shadow 0.05s;
+}
+.buzz:not(:disabled):active {
+  transform: translateY(8px);
+  box-shadow: 0 2px 0 var(--red-dark);
+}
+.buzz:disabled {
+  filter: grayscale(0.8);
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: 0 6px 0 #7a7f92;
+}
+
+.game-status {
+  font-weight: bold;
+  color: var(--ink-soft);
+  text-align: center;
+  margin: 0;
+  min-height: 1.4em;
+}
+
+.scoreboard {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+}
+.scoreboard h2 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+/* ---------- 結果 ---------- */
+
+.result-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.result-list li {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  background: #f4f7ff;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 18px;
+}
+.result-list li:first-child {
+  border-color: var(--gold);
+  background: #fff8e3;
+}
+.result-list li.me {
+  border-color: var(--blue);
+}
+.result-list .rank {
+  font-weight: 900;
+  color: var(--gold);
+  font-size: 22px;
+}
+.result-list .score {
+  font-weight: 900;
+}
+
+/* ---------- 再接続 ---------- */
+
+#reconnecting {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--ink);
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  padding: 8px;
+  z-index: 10;
+}
+
+/* ---------- スマホ幅 ---------- */
+
+@media (max-width: 640px) {
+  .screen {
+    padding: 10px 10px 24px;
+  }
+  .game-main {
+    flex-direction: column;
+  }
+  .scoreboard {
+    width: 100%;
+  }
+  .play-area {
+    width: 100%;
+    padding: 12px;
+    gap: 8px;
+  }
+  .buzz {
+    width: 110px;
+    height: 110px;
+    font-size: 18px;
+  }
+  .choice {
+    min-height: 44px;
+    padding: 8px 6px;
+  }
+  .question-text {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,31 @@
+{
+  // Cloudflare Workers + Durable Objects で動く早押しクイズ。
+  // ローカル開発専用（wrangler dev）。デプロイ・アカウントログインは不要。
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "buzzer-quiz",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    "run_worker_first": ["/api/*"]
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "ROOMS", "class_name": "RoomDO" }]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["RoomDO"]
+    }
+  ],
+  "dev": {
+    "port": 8787,
+    // inspector は 8787 に隣接する固定値を使う（他エージェントとの衝突を避けるため既定の 9229 は使わない）
+    "inspector_port": 8788,
+    "ip": "127.0.0.1",
+    "local_protocol": "http"
+  },
+  "observability": { "enabled": false }
+}

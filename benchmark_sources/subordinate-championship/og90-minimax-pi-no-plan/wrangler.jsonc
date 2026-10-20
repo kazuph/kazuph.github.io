@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "buzzer-quiz",
+  "main": "src/worker.ts",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/ws"]
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "QUIZ_ROOM",
+        "class_name": "QuizRoom"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["QuizRoom"]
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

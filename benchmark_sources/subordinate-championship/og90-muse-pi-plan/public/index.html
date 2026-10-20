@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>早押しクイズバトル</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <span class="logo">⚡ 早押しクイズバトル</span>
+      <span id="conn" class="conn online" data-testid="conn">接続中…</span>
+    </header>
+    <div id="reconnect" class="reconnect hidden" data-testid="reconnect">
+      再接続中…
+    </div>
+    <main class="wrap">
+      <!-- 入口 -->
+      <section id="view-entry" class="card">
+        <h1>⚡ 早押しクイズバトル</h1>
+        <p class="sub">4人まで・全10問・早い者勝ち！</p>
+        <div id="resume-box" class="hidden">
+          <button id="resume-btn" class="btn primary" data-testid="resume-btn">
+            前回の部屋に戻る
+          </button>
+          <button id="forget-btn" class="btn ghost">別の名前で入り直す</button>
+        </div>
+        <label class="field">
+          <span>あなたの名前</span>
+          <input
+            id="name-input"
+            data-testid="name-input"
+            maxlength="20"
+            placeholder="例：たろう"
+            autocomplete="off"
+          />
+        </label>
+        <button id="create-btn" class="btn primary big" data-testid="create-btn">
+          部屋を作る
+        </button>
+        <div class="divider">または</div>
+        <label class="field">
+          <span>部屋コード（6文字）</span>
+          <input
+            id="code-input"
+            data-testid="code-input"
+            maxlength="6"
+            placeholder="例：AB3F9K"
+            autocomplete="off"
+            style="text-transform: uppercase"
+          />
+        </label>
+        <button id="join-btn" class="btn big" data-testid="join-btn">
+          参加する
+        </button>
+        <p id="entry-error" class="error" data-testid="entry-error"></p>
+      </section>
+
+      <!-- ロビー -->
+      <section id="view-lobby" class="card hidden" data-testid="lobby">
+        <h2>ロビー</h2>
+        <div class="roomcode-row">
+          <span>部屋コード</span>
+          <strong id="room-code" data-testid="room-code">------</strong>
+          <button id="copy-btn" class="btn small" data-testid="copy-btn">
+            コピー
+          </button>
+        </div>
+        <ul id="members" class="members" data-testid="members"></ul>
+        <p class="hint">2〜4人で開始できます（ホストが開始）</p>
+        <button id="start-btn" class="btn primary big" data-testid="start-btn">
+          開始
+        </button>
+        <p id="lobby-wait" class="hint hidden" data-testid="lobby-wait">
+          ホストの開始を待っています…
+        </p>
+        <p id="lobby-error" class="error" data-testid="lobby-error"></p>
+        <button id="leave-btn" class="btn ghost">部屋を出る</button>
+      </section>
+
+      <!-- ゲーム -->
+      <section id="view-game" class="hidden" data-testid="game">
+        <div class="game-grid">
+          <div class="board card">
+            <div class="qmeta">
+              <span id="qnum" data-testid="qnum">第1問 / 10</span>
+              <span id="timer-text" data-testid="timer-text">--秒</span>
+            </div>
+            <div class="timer"><div id="timer-bar" data-testid="timer-bar"></div></div>
+            <p id="question" class="question" data-testid="question"></p>
+            <div id="choices" class="choices" data-testid="choices"></div>
+            <div
+              id="answering-banner"
+              class="banner hidden"
+              data-testid="answering-banner"
+            ></div>
+            <div id="reveal" class="banner reveal hidden" data-testid="reveal"></div>
+            <div class="buzz-zone">
+              <button
+                id="buzz-btn"
+                class="buzzer"
+                data-testid="buzz-btn"
+              >
+                早押し！
+              </button>
+              <p id="buzz-state" class="hint" data-testid="buzz-state"></p>
+              <p class="hint small">スペースキーでも押せます</p>
+            </div>
+          </div>
+          <aside class="scores card">
+            <h3>参加者</h3>
+            <ul id="scores" data-testid="scores"></ul>
+          </aside>
+        </div>
+      </section>
+
+      <!-- 結果 -->
+      <section id="view-result" class="card hidden" data-testid="result">
+        <h2>🏆 最終結果</h2>
+        <ol id="ranking" class="ranking" data-testid="ranking"></ol>
+        <button id="back-btn" class="btn ghost">入口に戻る</button>
+      </section>
+    </main>
+    <div id="toast" class="toast hidden" data-testid="toast"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>

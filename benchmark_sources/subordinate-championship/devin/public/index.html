@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>バズクイズ - 4人対戦早押し</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ====== エントリー ====== -->
+    <section id="view-entry" class="view">
+      <div class="card entry-card">
+        <div class="logo">⚡</div>
+        <h1>バズクイズ</h1>
+        <p class="tagline">4人で対戦する早押しクイズ</p>
+        <div id="entry-error" class="error-box hidden"></div>
+        <label class="field">
+          <span>ニックネーム</span>
+          <input id="in-name" maxlength="16" placeholder="名前を入力" autocomplete="off" />
+        </label>
+        <button id="btn-create" class="btn btn-primary">部屋を作る</button>
+        <div class="divider"><span>または</span></div>
+        <label class="field">
+          <span>部屋コード</span>
+          <input id="in-code" maxlength="6" placeholder="例: K7P2MX" autocomplete="off" autocapitalize="characters" />
+        </label>
+        <button id="btn-join" class="btn btn-secondary">参加する</button>
+      </div>
+    </section>
+
+    <!-- ====== ロビー ====== -->
+    <section id="view-lobby" class="view hidden">
+      <div class="card lobby-card">
+        <div class="room-code-label">部屋コード</div>
+        <div class="room-code" id="lobby-code">------</div>
+        <p class="hint">このコードを友だちに教えてね（最大4人）</p>
+        <ul id="lobby-players" class="player-list"></ul>
+        <div id="lobby-status" class="hint"></div>
+        <button id="btn-start" class="btn btn-primary hidden">ゲーム開始</button>
+        <div id="lobby-error" class="error-box hidden"></div>
+      </div>
+    </section>
+
+    <!-- ====== ゲーム ====== -->
+    <section id="view-game" class="view hidden">
+      <header class="game-header">
+        <div class="q-count" id="q-count">Q1/10</div>
+        <div class="timerbar"><div class="timerbar-fill" id="timer-fill"></div></div>
+      </header>
+
+      <div class="game-body">
+        <aside class="scoreboard" id="scoreboard"></aside>
+        <main class="q-area">
+          <div id="q-status" class="q-status"></div>
+          <div id="q-text" class="q-text"></div>
+          <div id="choices" class="choices"></div>
+          <div id="buzz-wrap">
+            <button id="btn-buzz" class="buzz-btn">PUSH!</button>
+            <div id="buzz-hint" class="hint"></div>
+          </div>
+          <div id="reveal-banner" class="reveal hidden"></div>
+        </main>
+      </div>
+    </section>
+
+    <!-- ====== 結果 ====== -->
+    <section id="view-result" class="view hidden">
+      <div class="card result-card">
+        <h2>🏆 最終結果</h2>
+        <ol id="ranking" class="ranking"></ol>
+        <button id="btn-restart" class="btn btn-primary hidden">もう一度遊ぶ</button>
+        <p id="result-hint" class="hint"></p>
+      </div>
+    </section>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>

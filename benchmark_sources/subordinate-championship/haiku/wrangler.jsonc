@@ -1,0 +1,14 @@
+{
+  "name": "buzzer-quiz-contest",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "QUIZ_ROOM", "class_name": "QuizRoom" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["QuizRoom"] }]
+}
