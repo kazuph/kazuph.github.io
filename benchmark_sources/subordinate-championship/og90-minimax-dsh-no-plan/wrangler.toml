@@ -1,0 +1,28 @@
+name = "buzzer-quiz"
+main = "src/worker.ts"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+# 静的ファイル（public/）は Workers Assets で配信する
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# 1 部屋 = 1 Durable Object
+[[durable_objects.bindings]]
+name = "ROOM"
+class_name = "Room"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["Room"]
+
+[dev]
+port = 8787
+# 開発サーバー本体のポートは 8787。インスペクタ用ポートは別固定値にして
+# 他のエージェントと衝突しないようにしている（8787 とも無関係）。
+inspector_port = 9333
+
+[observability]
+enabled = false

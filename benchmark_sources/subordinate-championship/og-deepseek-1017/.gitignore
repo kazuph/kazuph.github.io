@@ -1,8 +1,0 @@
-node_modules/
-.artifacts/
-.wrangler/
-.tmp/
-.npm/
-.pw-browsers/
-test-results/
-playwright-report/

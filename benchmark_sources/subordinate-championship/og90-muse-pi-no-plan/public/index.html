@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>早押しクイズバトル | 4人オンライン対戦</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="bg"></div>
+<header class="topbar">
+  <div class="logo">⚡ 早押しクイズバトル</div>
+  <div id="conn" class="conn online"><span class="dot"></span><span id="connText">接続中…</span></div>
+</header>
+
+<main class="wrap">
+  <!-- ホーム -->
+  <section id="screen-home" class="card">
+    <h1>4人で早押しクイズ！</h1>
+    <p class="sub">友だちと同じ部屋に入って、10問で勝負。正解 <b>+10</b> / 不正解 <b>-5</b></p>
+    <label class="field">
+      <span>あなたの名前</span>
+      <input id="nameInput" maxlength="20" placeholder="例：たろう" autocomplete="off" />
+    </label>
+    <div class="row2">
+      <button id="createBtn" class="btn primary">部屋を作る</button>
+    </div>
+    <div class="divider"><span>または</span></div>
+    <label class="field">
+      <span>部屋コード（4文字）</span>
+      <input id="codeInput" maxlength="6" placeholder="例：AB12" autocomplete="off" class="code" />
+    </label>
+    <div class="row2">
+      <button id="joinBtn" class="btn">参加する</button>
+    </div>
+    <p id="homeError" class="error" hidden></p>
+    <details class="howto">
+      <summary>あそびかた</summary>
+      <ol>
+        <li>名前を入れて「部屋を作る」か、コードを入れて「参加する」。</li>
+        <li>1部屋は4人まで。作った人がホストです。</li>
+        <li>ホストが「開始」（2〜4人で押せます）。</li>
+        <li>問題が出たら早押しボタンを押下！最初に押した1人だけが回答できます。</li>
+        <li>回答者は10秒以内に4択から選ぼう。正解+10点、不正解−5点。</li>
+        <li>間違えた人はその問題ではもう押せません。20秒たつか全員押せなくなると正解発表。</li>
+        <li>10問終わると最終順位が出ます。回線が切れても再読み込みで復帰できます。</li>
+      </ol>
+    </details>
+  </section>
+
+  <!-- ロビー -->
+  <section id="screen-lobby" class="card" hidden>
+    <div class="roomline">
+      <div>
+        <div class="label">部屋コード</div>
+        <div class="roomcode" id="roomCode">----</div>
+      </div>
+      <button id="copyBtn" class="btn small">コピー</button>
+    </div>
+    <p class="hint">このコードを友だちに教えてね（URLを共有してもOK）</p>
+    <h2>参加者 <span id="memberCount" class="count">0/4</span></h2>
+    <ul id="memberList" class="members"></ul>
+    <p id="lobbyError" class="error" hidden></p>
+    <div class="actions">
+      <button id="startBtn" class="btn primary big">ゲーム開始</button>
+      <button id="leaveBtn" class="btn ghost">部屋を出る</button>
+    </div>
+    <p id="startHint" class="hint">2〜4人そろったらホストが開始できます</p>
+  </section>
+
+  <!-- ゲーム -->
+  <section id="screen-game" hidden>
+    <div class="gamegrid">
+      <div class="card qcard">
+        <div class="qmeta">
+          <span id="qNum" class="qnum">第1問 / 全10問</span>
+          <span id="phaseBadge" class="badge">出題中</span>
+        </div>
+        <div class="timerbar"><div id="timerFill" class="timerfill"></div></div>
+        <div id="timerText" class="timertext">残り 20.0 秒</div>
+        <h2 id="qText" class="qtext">問題文</h2>
+        <div id="lockNote" class="locknote" hidden>あなたはこの問題ではもう押せません。次の問題をお待ちください。</div>
+        <div id="revealBox" class="reveal" hidden></div>
+        <div id="choices" class="choices"></div>
+        <button id="buzzBtn" class="buzz">押す！</button>
+        <p id="buzzMsg" class="hint center">早押しボタン！サーバーに先に届いた1人が回答できます</p>
+        <p id="gameError" class="error" hidden></p>
+      </div>
+      <aside class="card side">
+        <h2>スコア</h2>
+        <ul id="scoreList" class="scores"></ul>
+        <div class="roommini">部屋 <b id="roomCodeMini">----</b> ／ あなた <b id="youName">-</b></div>
+        <button id="leaveBtn2" class="btn ghost small">部屋を出る</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 結果 -->
+  <section id="screen-result" class="card" hidden>
+    <h1>🏆 結果発表</h1>
+    <ol id="rankList" class="ranking"></ol>
+    <div class="actions">
+      <button id="againBtn" class="btn primary">もう一度遊ぶ（ホスト）</button>
+      <button id="leaveBtn3" class="btn ghost">部屋を出る</button>
+    </div>
+    <p class="hint">もう一度遊ぶと点数がリセットされてロビーに戻ります</p>
+  </section>
+</main>
+
+<footer class="foot">正誤判定・点数・早押しの順番はすべてサーバーが決定します</footer>
+<div id="toast" class="toast" hidden></div>
+<script src="/app.js"></script>
+</body>
+</html>
