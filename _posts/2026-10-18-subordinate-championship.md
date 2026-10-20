@@ -12,6 +12,10 @@ full_ai_model: claude-opus-5-5
 <style>
 .bench-wrap { overflow-x: auto; margin: 1rem 0 1.6rem; }
 .bench-wrap table { min-width: 600px; }
+.column-box { margin: 1.6rem 0; padding: 14px 18px; border: 1px solid #e3e8ef; border-left: 4px solid #8b5cf6; border-radius: 8px; background: #faf8ff; }
+.column-box h3 { margin-top: .2rem; }
+.column-box td, .column-box th { white-space: normal; }
+.column-box table { display: table; width: 100%; }
 .bench-wrap td.num, .bench-wrap th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bench-wrap tr.top td { font-weight: 700; background: #fff7ed; }
 .score-legend { list-style: none; padding: 0; margin: 1rem 0; font-size: .92em; line-height: 1.7; }
@@ -191,6 +195,23 @@ DeepSeek V4.1 Flash は10月17日に [1017 版へ更新](https://api-docs.deepse
 </div>
 
 1017 版の2回では、作業役が打ったコマンドと、VM が止めた通信もすべて記録しました。外への通信は、Playwright の配布元に curl で1回つなごうとしたほかは、wrangler や npx が自動でつなぎに行ったものだけで、すべて VM が止めました。作業フォルダの外を探ったのは、Chromium の場所を探す `find /` と、使っているポートを確かめる `ss` で、テストを動かすための範囲でした。
+
+<div class="column-box" markdown="1">
+
+### コラム：DeepSeek Harness が DeepSeek に一緒に送るもの
+
+DeepSeek は 1017 版を自社のエージェント実行環境 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）向けに最適化したと発表しています。DSH を DeepSeek 公式 API につなぐと、会話の本体に加えて独自のヘッダーと項目も一緒に送ります（[説明書](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/docs/deepseek-llm-api-wire-extensions.md)）。
+
+| 送るもの | 中身 |
+|---|---|
+| `x-deepseek-harness-user-id` ヘッダー | 利用者ごとに固定の匿名 ID |
+| `x-deepseek-harness-session-id` ヘッダー | 作業ごとの ID |
+| `dsh_plugin_packages` | 使っているプラグインの名前と版の一覧 |
+| `dsh_session_log` | 作業の記録。作業フォルダの場所、システムの指示、会話、道具の引数と結果、要約など |
+
+どれも初期設定で有効です。説明書によれば、これらは会話やシステムの指示とは別の場所に入るので、モデルの入力トークンを増やさず、モデルから見える内容も変えません。性能を上げる仕掛けではなく、DeepSeek に利用の記録を渡す仕組みです。`dsh_session_log` は設定で止められます。OpenCode Go などにつなぐ汎用の接続部品はこれらを送りません。
+
+</div>
 
 ## 点数の内訳
 
