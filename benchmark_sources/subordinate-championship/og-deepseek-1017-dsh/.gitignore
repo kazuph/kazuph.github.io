@@ -1,0 +1,10 @@
+node_modules/
+.wrangler/
+.tmp/
+
+# スクリーンショット・テストレポートなどの成果物（成果物には入れない）
+.artifacts/
+
+# テストの一時出力
+test-results/
+playwright-report/

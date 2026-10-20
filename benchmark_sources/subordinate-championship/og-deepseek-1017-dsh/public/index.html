@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1020" />
+    <title>早押しクイズ・アリーナ</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%236366f1'/%3E%3Cpath d='M32 12a20 20 0 1 1-14 34' stroke='%2322d3ee' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23fff'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div id="conn-banner" class="conn-banner" hidden>
+      <span class="spinner" aria-hidden="true"></span>
+      <span id="conn-banner-text">再接続しています…</span>
+    </div>
+
+    <main class="stage">
+      <!-- ============================== HOME ============================== -->
+      <section id="screen-home" class="screen screen-home">
+        <header class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <span class="brand-ring"></span>
+            <span class="brand-dot"></span>
+          </div>
+          <div>
+            <h1 class="brand-title">早押しクイズ・アリーナ</h1>
+            <p class="brand-sub">4人で対戦するオンライン早押しクイズ</p>
+          </div>
+        </header>
+
+        <div class="card home-card">
+          <div class="field">
+            <label for="input-name">あなたの名前</label>
+            <input
+              id="input-name"
+              class="input"
+              type="text"
+              maxlength="12"
+              placeholder="例: たろう"
+              autocomplete="nickname"
+              enterkeyhint="go"
+            />
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="参加方法">
+            <button id="tab-create" class="tab is-active" role="tab" aria-selected="true" type="button">
+              部屋を作る
+            </button>
+            <button id="tab-join" class="tab" role="tab" aria-selected="false" type="button">
+              コードで参加
+            </button>
+          </div>
+
+          <div id="panel-create" class="panel">
+            <p class="hint">あなたがホストです。2〜4人がそろったら開始できます。</p>
+            <button id="btn-create" class="btn btn-primary btn-block" type="button">
+              部屋を作る
+            </button>
+          </div>
+
+          <div id="panel-join" class="panel" hidden>
+            <div class="field">
+              <label for="input-code">部屋コード</label>
+              <input
+                id="input-code"
+                class="input input-code"
+                type="text"
+                maxlength="8"
+                placeholder="例: K7Q2"
+                autocapitalize="characters"
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+            <button id="btn-join" class="btn btn-primary btn-block" type="button">参加する</button>
+          </div>
+
+          <p id="home-error" class="alert alert-error" hidden role="alert"></p>
+        </div>
+
+        <ul class="features">
+          <li><strong>4択 × 10問</strong><span>内蔵の日本語問題</span></li>
+          <li><strong>早押し1人だけ</strong><span>サーバーが順番を裁定</span></li>
+          <li><strong>復帰できる</strong><span>再読み込みでも点数キープ</span></li>
+        </ul>
+      </section>
+
+      <!-- ============================== LOBBY ============================== -->
+      <section id="screen-lobby" class="screen screen-lobby" hidden>
+        <div class="lobby-head card">
+          <div class="lobby-code-wrap">
+            <span class="label">部屋コード</span>
+            <div class="lobby-code-row">
+              <strong id="lobby-code" class="lobby-code">----</strong>
+              <button id="btn-copy" class="btn btn-ghost btn-small" type="button">コピー</button>
+            </div>
+            <span class="hint">このコードを仲間に伝えてください</span>
+          </div>
+          <div class="lobby-status">
+            <span id="lobby-count" class="lobby-count">0 / 4 人</span>
+            <span id="lobby-note" class="hint">参加者を待っています…</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">参加者</h2>
+          <ul id="lobby-players" class="player-slots"></ul>
+        </div>
+
+        <div class="lobby-actions">
+          <button id="btn-start" class="btn btn-primary btn-large" type="button" disabled>
+            ゲーム開始
+          </button>
+          <p id="lobby-host-note" class="hint center">ホストの開始を待っています…</p>
+          <button id="btn-leave" class="btn btn-ghost" type="button">部屋を出る</button>
+        </div>
+      </section>
+
+      <!-- ============================== GAME ============================== -->
+      <section id="screen-game" class="screen screen-game" hidden>
+        <header class="game-top card">
+          <div class="game-top-left">
+            <span id="game-code" class="chip chip-code">----</span>
+            <span id="game-progress" class="chip">第 1 / 10 問</span>
+            <span id="game-category" class="chip chip-category">地理</span>
+          </div>
+          <div class="timer" id="timer">
+            <svg class="timer-ring" viewBox="0 0 44 44" aria-hidden="true">
+              <circle class="timer-track" cx="22" cy="22" r="19"></circle>
+              <circle id="timer-progress" class="timer-progress" cx="22" cy="22" r="19"></circle>
+            </svg>
+            <span id="timer-seconds" class="timer-seconds">20</span>
+          </div>
+        </header>
+
+        <div class="game-grid">
+          <div class="game-main">
+            <div class="card question-card">
+              <p id="question-text" class="question-text">問題を準備しています…</p>
+            </div>
+
+            <ul id="choices" class="choices"></ul>
+
+            <div id="buzz-zone" class="buzz-zone">
+              <button id="btn-buzz" class="buzz-btn" type="button" disabled>
+                <span class="buzz-label">早押し！</span>
+                <span class="buzz-sub">スペースキーでも押せます</span>
+              </button>
+              <p id="buzz-status" class="buzz-status" aria-live="polite">問題が出るまで待機中</p>
+            </div>
+          </div>
+
+          <aside class="game-side card">
+            <h2 class="section-title">スコア</h2>
+            <ul id="scoreboard" class="scoreboard"></ul>
+            <div class="game-side-foot">
+              <button id="btn-sound" class="btn btn-ghost btn-small" type="button" aria-pressed="true">
+                ♪ サウンド ON
+              </button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ============================== FINAL ============================== -->
+      <section id="screen-final" class="screen screen-final" hidden>
+        <div class="final-head">
+          <p class="final-kicker">FINAL RESULT</p>
+          <h1 class="final-title">最終順位</h1>
+          <p id="final-sub" class="hint">全10問おつかれさまでした！</p>
+        </div>
+        <ol id="final-ranking" class="ranking"></ol>
+        <div class="final-actions">
+          <button id="btn-again" class="btn btn-primary btn-large" type="button">もう一度あそぶ</button>
+          <button id="btn-final-leave" class="btn btn-ghost" type="button">部屋を出る</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
