@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#17233f" />
+    <title>早押しクイズ｜4人オンライン対戦</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body data-phase="entry" data-answerer="false">
+    <div id="toast" class="toast" role="status" hidden></div>
+    <div id="reconnect-banner" class="reconnect-banner" role="status" hidden></div>
+
+    <main id="app">
+      <!-- 入口 -->
+      <section id="screen-entry" class="screen entry">
+        <div class="entry-card panel">
+          <header class="brand">
+            <p class="brand-mark">⚡</p>
+            <h1 class="brand-title">早押しクイズ</h1>
+            <p class="brand-sub">4人でオンライン対戦・全10問</p>
+          </header>
+
+          <label class="field">
+            <span class="field-label">なまえ</span>
+            <input
+              id="name-input"
+              class="input"
+              type="text"
+              maxlength="12"
+              placeholder="例：たろう"
+              autocomplete="off"
+            />
+          </label>
+
+          <button id="create-room-btn" class="btn btn-primary btn-block" type="button">
+            部屋を作る（ホスト）
+          </button>
+
+          <div class="divider"><span>または</span></div>
+
+          <div class="join-row">
+            <input
+              id="code-input"
+              class="input input-code"
+              type="text"
+              maxlength="6"
+              placeholder="部屋コード"
+              autocapitalize="characters"
+              autocomplete="off"
+            />
+            <button id="join-room-btn" class="btn btn-secondary" type="button">参加する</button>
+          </div>
+
+          <p id="entry-error" class="entry-error" hidden></p>
+        </div>
+        <p class="entry-note">ローカル開発用（wrangler dev / localhost:8787）</p>
+      </section>
+
+      <!-- ロビー -->
+      <section id="screen-lobby" class="screen lobby" hidden>
+        <header class="lobby-head panel">
+          <div>
+            <p class="label-small">部屋コード</p>
+            <p id="lobby-code" class="room-code">------</p>
+          </div>
+          <button id="copy-code-btn" class="btn btn-ghost" type="button">コードをコピー</button>
+        </header>
+
+        <div class="lobby-body panel">
+          <h2 class="section-title">参加プレイヤー</h2>
+          <ul id="lobby-slots" class="lobby-slots"></ul>
+          <p id="lobby-status" class="lobby-status"></p>
+          <div class="lobby-actions">
+            <button id="start-btn" class="btn btn-primary btn-block" type="button" disabled>
+              ゲームを開始
+            </button>
+            <button id="leave-btn" class="btn btn-ghost btn-block" type="button">部屋を出る</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ゲーム -->
+      <section id="screen-game" class="screen game" hidden>
+        <header class="game-top">
+          <p class="progress">
+            第 <span id="q-number">1</span> 問<span class="progress-sep">/</span
+            ><span id="q-total">10</span> 問
+          </p>
+          <p class="timer-readout">
+            <span id="timer-value">20.0</span><span class="timer-unit">秒</span>
+          </p>
+        </header>
+        <div class="timer-bar"><div id="timer-fill" class="timer-fill"></div></div>
+
+        <div class="game-body">
+          <div class="game-main">
+            <p id="question-text" class="question-text"></p>
+            <div id="choices" class="choices">
+              <button class="choice" data-choice="0" type="button" disabled>
+                <span class="choice-key">A</span><span class="choice-label"></span>
+              </button>
+              <button class="choice" data-choice="1" type="button" disabled>
+                <span class="choice-key">B</span><span class="choice-label"></span>
+              </button>
+              <button class="choice" data-choice="2" type="button" disabled>
+                <span class="choice-key">C</span><span class="choice-label"></span>
+              </button>
+              <button class="choice" data-choice="3" type="button" disabled>
+                <span class="choice-key">D</span><span class="choice-label"></span>
+              </button>
+            </div>
+            <div class="buzz-area">
+              <button id="buzz-btn" class="buzz-btn" type="button" disabled>
+                <span class="buzz-label">早押し！</span>
+              </button>
+              <p id="game-status" class="game-status"></p>
+            </div>
+          </div>
+          <aside class="scoreboard">
+            <h2 class="section-title">スコア</h2>
+            <ul id="scoreboard" class="score-list"></ul>
+          </aside>
+        </div>
+      </section>
+
+      <!-- 結果 -->
+      <section id="screen-result" class="screen result" hidden>
+        <div class="result-card panel">
+          <h2 class="result-title">最終結果</h2>
+          <p class="result-sub">全10問おつかれさまでした</p>
+          <ol id="result-ranking" class="ranking"></ol>
+          <button id="again-btn" class="btn btn-primary btn-block" type="button">
+            新しい部屋で遊ぶ
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

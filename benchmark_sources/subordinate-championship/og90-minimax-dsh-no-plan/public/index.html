@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1020" />
+    <meta name="description" content="4人で遊べるオンライン早押しクイズ" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E"
+    />
+    <title>早押しクイズ BUZZ QUIZ</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bg-glow" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">⚡</span>
+        <span class="brand-text">早押しクイズ</span>
+      </div>
+      <div class="topbar-right">
+        <div id="room-chip" class="chip chip-room hidden" title="部屋コード">
+          <span class="chip-label">部屋</span>
+          <span id="room-code" class="chip-code">------</span>
+          <button id="copy-code" class="chip-copy" type="button" aria-label="部屋コードをコピー">⧉</button>
+        </div>
+        <div id="conn" class="chip chip-conn" data-state="idle">
+          <span class="dot" aria-hidden="true"></span><span id="conn-text">未接続</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="app">
+      <!-- ============ ホーム ============ -->
+      <section id="screen-home" class="screen">
+        <div class="hero">
+          <p class="hero-kicker">4 PLAYER BUZZER</p>
+          <h1 class="hero-title">早押し<span class="grad">クイズ</span></h1>
+          <p class="hero-lead">
+            部屋を作って4人で知識クイズ。サーバーが最初の1人にだけ回答権を与えるので、押し損じの不利はありません。
+          </p>
+        </div>
+
+        <div class="panel panel-home">
+          <label class="field">
+            <span class="field-label">あなたの名前</span>
+            <input id="name-input" type="text" maxlength="12" placeholder="例: みかん" autocomplete="nickname" />
+          </label>
+
+          <button id="create-room" class="btn btn-primary btn-lg" type="button">
+            <span class="btn-emoji">🏠</span> 部屋を作る
+          </button>
+
+          <div class="divider"><span>または</span></div>
+
+          <label class="field">
+            <span class="field-label">部屋コードで参加</span>
+            <input
+              id="code-input"
+              type="text"
+              maxlength="6"
+              inputmode="latin"
+              placeholder="ABC123"
+              autocomplete="off"
+              spellcheck="false"
+              class="code-input"
+            />
+          </label>
+          <button id="join-room" class="btn btn-secondary btn-lg" type="button">
+            <span class="btn-emoji">🚪</span> この部屋に参加
+          </button>
+          <p id="home-error" class="home-error hidden" role="alert"></p>
+        </div>
+
+        <ul class="feature-list">
+          <li><span aria-hidden="true">🎯</span> 早押しは<b>サーバーの先着順</b>で決まる</li>
+          <li><span aria-hidden="true">⏱️</span> 回答は10秒 / 問題は20秒で自動進行</li>
+          <li><span aria-hidden="true">🔁</span> 再読み込み・离线しても<b>同じプレイヤー</b>で復帰</li>
+        </ul>
+      </section>
+
+      <!-- ============ ロビー ============ -->
+      <section id="screen-lobby" class="screen hidden">
+        <div class="lobby-grid">
+          <div class="panel panel-code">
+            <p class="panel-eyebrow">この部屋のコード</p>
+            <p id="lobby-code" class="big-code">------</p>
+            <button id="lobby-copy" class="btn btn-ghost" type="button">📋 コードをコピーして渡す</button>
+            <p class="muted small">全員このコードで参加します（定員4人）</p>
+          </div>
+
+          <div class="panel panel-players">
+            <p class="panel-eyebrow">参加者 <span id="player-count" class="muted">0 / 4</span></p>
+            <ul id="lobby-players" class="player-list"></ul>
+            <div id="lobby-actions" class="lobby-actions"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ゲーム ============ -->
+      <section id="screen-game" class="screen hidden">
+        <div class="game-grid">
+          <div class="game-main">
+            <div class="progress-row">
+              <span id="question-counter" class="progress-counter">第 1 問 / 10</span>
+              <span id="phase-note" class="phase-note"></span>
+            </div>
+
+            <div class="timer-bar" role="timer" aria-label="問題の残り時間">
+              <div id="question-timer" class="timer-fill"></div>
+            </div>
+
+            <div class="panel panel-question">
+              <h2 id="question-text" class="question-text">…</h2>
+              <div id="options" class="options"></div>
+              <p id="question-explanation" class="explanation hidden"></p>
+            </div>
+
+            <div id="buzzer-area" class="buzzer-area">
+              <button id="buzzer" class="buzzer" type="button">
+                <span class="buzzer-label">早押し！</span>
+                <span class="buzzer-sub" id="buzzer-sub">最初の1人に回答権</span>
+              </button>
+              <div id="answer-status" class="answer-status hidden"></div>
+            </div>
+          </div>
+
+          <aside class="panel panel-score">
+            <p class="panel-eyebrow">スコア</p>
+            <ul id="score-list" class="player-list"></ul>
+            <p class="muted small score-hint">点数はサーバー側で管理されます</p>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ============ 結果 ============ -->
+      <section id="screen-result" class="screen hidden">
+        <div class="panel panel-result">
+          <p class="hero-kicker">RESULT</p>
+          <h2 class="result-title">最終順位</h2>
+          <ol id="ranking" class="ranking"></ol>
+          <div id="result-actions" class="lobby-actions"></div>
+        </div>
+      </section>
+
+      <!-- ============ エラー ============ -->
+      <section id="screen-error" class="screen hidden">
+        <div class="panel panel-error">
+          <p class="error-emoji" aria-hidden="true">🚫</p>
+          <h2 id="error-title" class="error-title">参加できません</h2>
+          <p id="error-message" class="error-message"></p>
+          <button id="error-back" class="btn btn-secondary" type="button">🏠 ホームに戻る</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <div id="reconnect" class="reconnect hidden">
+      <div class="reconnect-box">
+        <span class="spinner" aria-hidden="true"></span>
+        <p id="reconnect-text">接続が切れました。再接続しています…</p>
+      </div>
+    </div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

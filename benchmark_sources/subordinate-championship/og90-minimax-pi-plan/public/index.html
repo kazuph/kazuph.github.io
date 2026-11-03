@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#101a33" />
+    <title>早押しクイズ！</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23e03131'/%3E%3Ccircle cx='50' cy='50' r='30' fill='%23ff8787'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- ========== 入口 ========== -->
+      <section id="screen-entry" class="screen screen--entry is-active">
+        <div class="entry">
+          <header class="entry__hero">
+            <p class="entry__kicker">4人対戦・早押しクイズ</p>
+            <h1 class="entry__title">早押し<span>クイズ</span>！</h1>
+            <p class="entry__lead">
+              名前を入れて部屋を作るか、部屋コードで参加。<br />
+              いちばん早くボタンを押した人だけが回答権を得ます。
+            </p>
+          </header>
+
+          <div class="card entry__card">
+            <label class="field">
+              <span class="field__label">あなたの名前</span>
+              <input
+                id="name-input"
+                class="field__input"
+                type="text"
+                maxlength="20"
+                placeholder="例: たろう"
+                autocomplete="nickname"
+              />
+            </label>
+
+            <div class="entry__actions">
+              <button id="create-room-btn" class="btn btn--primary btn--lg" type="button">
+                部屋を作る
+              </button>
+              <div class="entry__divider"><span>または</span></div>
+              <div class="entry__join">
+                <input
+                  id="code-input"
+                  class="field__input field__input--code"
+                  type="text"
+                  maxlength="6"
+                  placeholder="ABCD12"
+                  autocapitalize="characters"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+                <button id="join-room-btn" class="btn btn--secondary" type="button">参加する</button>
+              </div>
+            </div>
+
+            <p id="entry-error" class="notice notice--error" hidden></p>
+          </div>
+
+          <p class="entry__hint">
+            同じ部屋に4人まで参加できます。5人目以降は「満員です」と表示されます。
+          </p>
+        </div>
+      </section>
+
+      <!-- ========== ロビー ========== -->
+      <section id="screen-lobby" class="screen screen--lobby">
+        <div class="lobby">
+          <div class="card lobby__card">
+            <p class="lobby__label">部屋コード</p>
+            <p id="lobby-code" class="lobby__code">------</p>
+            <p class="lobby__note">このコードをほかの人に伝えて参加してもらってください。</p>
+
+            <div class="lobby__players">
+              <h2 class="lobby__heading">参加者 <span id="lobby-count" class="badge">0 / 4</span></h2>
+              <ul id="lobby-list" class="playerlist"></ul>
+            </div>
+
+            <div class="lobby__actions">
+              <button id="start-btn" class="btn btn--primary btn--lg" type="button" disabled>
+                ゲーム開始
+              </button>
+              <p id="lobby-hint" class="lobby__hint">2人以上の参加者がいるとホストが開始できます。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== ゲーム ========== -->
+      <section id="screen-game" class="screen screen--game">
+        <div class="game">
+          <header class="game__header">
+            <div class="game__meta">
+              <span class="game__room">部屋 <b id="game-code">------</b></span>
+              <span id="game-progress" class="game__progress">第 0 問 / 10</span>
+            </div>
+            <div class="timer">
+              <div class="timer__bar"><div id="timer-fill" class="timer__fill"></div></div>
+              <span id="timer-text" class="timer__text">-- 秒</span>
+            </div>
+          </header>
+
+          <div class="game__body">
+            <main class="game__main">
+              <div id="question-card" class="card question">
+                <p id="question-kicker" class="question__kicker">問題</p>
+                <h2 id="question-text" class="question__text">準備してください</h2>
+                <div id="choices" class="choices"></div>
+              </div>
+
+              <div class="buzzrow">
+                <button id="buzz-btn" class="buzz" type="button">
+                  <span class="buzz__ring"></span>
+                  <span class="buzz__label">BZZZZ!</span>
+                  <span class="buzz__hint">押す！ / スペースキー</span>
+                </button>
+                <p id="game-message" class="game__message"></p>
+              </div>
+            </main>
+
+            <aside class="game__side">
+              <div class="card scoreboard">
+                <h2 class="scoreboard__title">スコア</h2>
+                <ul id="score-list" class="playerlist playerlist--score"></ul>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 結果 ========== -->
+      <section id="screen-result" class="screen screen--result">
+        <div class="result">
+          <div class="card result__card">
+            <p class="result__kicker">最終結果</p>
+            <h2 class="result__title">優勝者は…</h2>
+            <ol id="ranking" class="ranking"></ol>
+            <div class="result__actions">
+              <button id="back-btn" class="btn btn--secondary" type="button">入口に戻る</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="connection" class="connection" hidden>
+        <span class="connection__dot"></span><span id="connection-text">再接続中…</span>
+      </div>
+    </div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>早押しクイズ</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>早押しクイズ</h1>
+    <span id="room-chip" class="chip" hidden></span>
+  </header>
+  <div id="banner" class="banner" role="status" hidden></div>
+  <p id="toast" class="toast" role="alert" hidden></p>
+
+  <main>
+    <section id="entry" class="screen" hidden>
+      <div class="card">
+        <label class="field">名前（12文字まで）
+          <input id="name" maxlength="12" autocomplete="off" placeholder="例: たろう">
+        </label>
+        <button id="create" class="btn primary" type="button">部屋を作る</button>
+        <hr>
+        <label class="field">部屋コード（6文字）
+          <input id="code" maxlength="6" autocomplete="off" placeholder="例: ABCD23">
+        </label>
+        <button id="join" class="btn" type="button">参加する</button>
+        <p id="entry-error" class="error" role="alert"></p>
+      </div>
+    </section>
+
+    <section id="lobby" class="screen" hidden>
+      <div class="card">
+        <p class="label">部屋コード</p>
+        <p id="lobby-code" class="room-code"></p>
+        <p id="lobby-hint" class="hint"></p>
+        <ul id="lobby-players" class="players"></ul>
+        <button id="start" class="btn primary" type="button" hidden>ゲームを開始</button>
+      </div>
+    </section>
+
+    <section id="game" class="screen" hidden>
+      <div class="game-grid">
+        <div class="play">
+          <div class="progress-row">
+            <span id="round" class="round"></span>
+            <div id="timer" class="timer" data-remaining-ms=""><div id="timer-bar"></div></div>
+          </div>
+          <p id="timer-text" class="timer-text"></p>
+          <div class="question-card">
+            <p id="question"></p>
+          </div>
+          <div class="choices">
+            <button class="choice" type="button" data-index="0" disabled></button>
+            <button class="choice" type="button" data-index="1" disabled></button>
+            <button class="choice" type="button" data-index="2" disabled></button>
+            <button class="choice" type="button" data-index="3" disabled></button>
+          </div>
+          <p id="status" class="status" aria-live="polite"></p>
+          <button id="buzz" class="buzz" type="button" disabled>押す！</button>
+          <p class="hint">スペースキーでも押せます</p>
+        </div>
+        <aside class="side">
+          <h2>得点</h2>
+          <ul id="game-players" class="players"></ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="result" class="screen" hidden>
+      <div class="card">
+        <h2>最終結果</h2>
+        <ol id="ranking" class="ranking"></ol>
+        <button id="back" class="btn primary" type="button">入口に戻る</button>
+      </div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

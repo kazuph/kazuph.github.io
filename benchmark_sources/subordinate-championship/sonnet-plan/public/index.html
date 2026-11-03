@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>早押しクイズ BUZZ!</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body data-screen="entry" data-phase="none">
+  <div id="conn" class="conn" role="status" hidden>再接続中…</div>
+
+  <main id="app">
+    <!-- 入口 -->
+    <section id="screen-entry" class="screen entry" data-testid="screen-entry">
+      <div class="brand"><span class="brand-mark">!</span><h1>早押しクイズ <em>BUZZ!</em></h1></div>
+      <p class="tagline">4人まで・最速で押した人に回答権。10問勝負！</p>
+      <div class="card entry-card">
+        <label class="field">
+          <span>ニックネーム</span>
+          <input id="name" data-testid="name-input" type="text" maxlength="12" autocomplete="off" placeholder="例：たろう">
+        </label>
+        <button id="create" data-testid="create-btn" class="btn primary" type="button">部屋を作る</button>
+        <div class="or"><span>または</span></div>
+        <label class="field">
+          <span>部屋コード</span>
+          <input id="code" data-testid="code-input" type="text" maxlength="6" autocomplete="off"
+                 autocapitalize="characters" placeholder="ABC234" class="code-input">
+        </label>
+        <button id="join" data-testid="join-btn" class="btn secondary" type="button">参加する</button>
+        <p id="entry-error" data-testid="entry-error" class="error" role="alert" hidden></p>
+      </div>
+    </section>
+
+    <!-- ロビー -->
+    <section id="screen-lobby" class="screen lobby" data-testid="screen-lobby" hidden>
+      <div class="card lobby-card">
+        <p class="eyebrow">部屋コード</p>
+        <p id="lobby-code" data-testid="room-code" class="room-code"></p>
+        <p class="hint">このコードを友だちに伝えよう（最大4人）</p>
+        <ul id="lobby-players" class="slots" data-testid="lobby-players"></ul>
+        <button id="start" data-testid="start-btn" class="btn primary" type="button">ゲーム開始</button>
+        <p id="lobby-hint" data-testid="lobby-hint" class="hint"></p>
+      </div>
+    </section>
+
+    <!-- ゲーム -->
+    <section id="screen-game" class="screen game" data-testid="screen-game" hidden>
+      <div class="game-main">
+        <header class="qhead">
+          <div class="qnum" data-testid="qnum">第<b id="qnum"></b>問 <small>/ <span id="qtotal"></span></small></div>
+          <div id="timer-text" data-testid="timer-text" class="timer" data-remaining-ms="0">残り 20</div>
+        </header>
+        <div class="bar" aria-hidden="true"><i id="bar-fill"></i></div>
+
+        <div class="card qcard"><p id="question" data-testid="question" class="question"></p></div>
+
+        <div id="choices" class="choices">
+          <button type="button" class="choice" data-i="0" data-testid="choice-0"><b>A</b><span></span></button>
+          <button type="button" class="choice" data-i="1" data-testid="choice-1"><b>B</b><span></span></button>
+          <button type="button" class="choice" data-i="2" data-testid="choice-2"><b>C</b><span></span></button>
+          <button type="button" class="choice" data-i="3" data-testid="choice-3"><b>D</b><span></span></button>
+        </div>
+
+        <div class="buzz-area">
+          <button id="buzz" data-testid="buzz-btn" class="buzz" type="button"><span>押す！</span></button>
+          <div class="status-col">
+            <p id="status" data-testid="status" class="status" aria-live="polite"></p>
+            <p id="answer-timer" data-testid="answer-timer" class="answer-timer" hidden></p>
+          </div>
+        </div>
+      </div>
+      <aside class="scoreboard">
+        <h2>スコア</h2>
+        <ul id="scores" data-testid="scores" class="scores"></ul>
+      </aside>
+    </section>
+
+    <!-- 結果 -->
+    <section id="screen-result" class="screen result" data-testid="screen-result" hidden>
+      <div class="card result-card">
+        <p class="eyebrow">最終結果</p>
+        <h2 id="result-title" class="result-title"></h2>
+        <ol id="ranking" data-testid="ranking" class="ranking"></ol>
+        <button id="again" data-testid="again-btn" class="btn primary" type="button">最初の画面にもどる</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="/app.js"></script>
+</body>
+</html>

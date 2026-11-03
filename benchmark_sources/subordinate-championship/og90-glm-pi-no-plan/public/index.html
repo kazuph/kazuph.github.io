@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>早押しバズール — 4人対戦クイズ</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="bg-decoration" aria-hidden="true"></div>
+
+  <main id="app">
+    <!-- ===== トップ画面 ===== -->
+    <section id="screen-top" class="screen">
+      <div class="brand">
+        <div class="brand-bell">🔔</div>
+        <h1>早押し<span class="accent">バズール</span></h1>
+        <p class="tagline">4人で対戦！スピード勝負の早押しクイズ</p>
+      </div>
+
+      <div class="card">
+        <label class="field-label" for="input-name">プレイヤー名</label>
+        <input id="input-name" type="text" maxlength="12" placeholder="例: たろう" autocomplete="off" />
+
+        <button id="btn-create" class="btn btn-primary btn-block">🏠 部屋を作る</button>
+
+        <div class="divider"><span>または</span></div>
+
+        <label class="field-label" for="input-code">部屋コードで参加</label>
+        <input id="input-code" type="text" maxlength="4" placeholder="例: 7K3M" autocomplete="off" autocapitalize="characters" />
+        <button id="btn-join" class="btn btn-secondary btn-block">🚪 参加する</button>
+      </div>
+
+      <p id="top-error" class="error-text" role="alert" hidden></p>
+      <p class="rules-hint">ルール: 最初の早押しで回答権ゲット！正解 +10点 / 不正解 -5点</p>
+    </section>
+
+    <!-- ===== ロビー ===== -->
+    <section id="screen-lobby" class="screen" hidden>
+      <div class="room-code-box card">
+        <p class="room-code-label">部屋コード</p>
+        <p id="lobby-code" class="room-code">----</p>
+        <button id="btn-copy" class="btn btn-ghost btn-small">コピー</button>
+      </div>
+      <h2 class="screen-title">待機中 <span class="muted" id="lobby-count"></span></h2>
+      <ul id="lobby-players" class="player-list"></ul>
+      <p id="lobby-wait-note" class="muted center"></p>
+      <button id="btn-start" class="btn btn-primary btn-block btn-big" disabled>▶ クイズ開始</button>
+      <p id="lobby-error" class="error-text" role="alert" hidden></p>
+      <p class="muted center small" id="lobby-you"></p>
+    </section>
+
+    <!-- ===== 出題・回答画面 ===== -->
+    <section id="screen-quiz" class="screen" hidden>
+      <header class="quiz-header">
+        <span id="quiz-progress" class="pill">Q1 / 10</span>
+        <span id="quiz-phase-badge" class="pill pill-accent">早押し！</span>
+      </header>
+
+      <div class="timer-track" aria-hidden="true">
+        <div id="quiz-timer-bar" class="timer-bar"></div>
+      </div>
+
+      <div id="scoreboard" class="scoreboard"></div>
+
+      <div class="question-card card">
+        <p id="question-text" class="question-text">問題</p>
+        <div id="choices" class="choices"></div>
+      </div>
+
+      <div class="buzz-area">
+        <button id="btn-buzz" class="buzz-btn" disabled>
+          <span class="buzz-inner">押！</span>
+        </button>
+        <p id="buzz-status" class="buzz-status"></p>
+      </div>
+
+      <p id="quiz-banner" class="banner" hidden></p>
+      <div id="connection-note" class="connection-note" hidden>⚠ 接続が切れました。再接続中…</div>
+    </section>
+
+    <!-- ===== 結果画面 ===== -->
+    <section id="screen-result" class="screen" hidden>
+      <h2 class="screen-title">🏆 最終結果</h2>
+      <ol id="result-list" class="result-list"></ol>
+      <button id="btn-again" class="btn btn-primary btn-block" hidden>🔁 もう一度遊ぶ</button>
+      <p id="result-note" class="muted center"></p>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

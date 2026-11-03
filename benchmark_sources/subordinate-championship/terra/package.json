@@ -1,0 +1,1 @@
+{"name":"buzzer-quiz","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"wrangler dev --local --port 8788 --inspector-port 0","test":"playwright test"},"devDependencies":{"@playwright/test":"1.56.1","wrangler":"4.45.0"}}

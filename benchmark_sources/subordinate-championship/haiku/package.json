@@ -1,0 +1,27 @@
+{
+  "name": "buzzer-quiz-contest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run typecheck && npm run test:unit && npm run test:integration && npm run test:e2e",
+    "dev": "wrangler dev --port 8782 --inspector-port 9782 --ip 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run --config vitest.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e": "playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": "true",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261018.1",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.151.1"
+  }
+}

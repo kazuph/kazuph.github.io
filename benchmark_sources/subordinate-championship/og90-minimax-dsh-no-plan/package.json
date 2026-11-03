@@ -1,0 +1,29 @@
+{
+  "name": "buzzer-quiz",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "4人オンライン早押しクイズ（Cloudflare Workers + Durable Objects / ローカル開発限定）",
+  "scripts": {
+    "dev": "wrangler dev --port 8787 --inspector-port 9333",
+    "dev:alt": "wrangler dev --port 8790 --inspector-port 9340",
+    "test": "npm run test:unit && npm run test:workers",
+    "test:unit": "vitest run --config vitest.config.ts",
+    "test:workers": "vitest run --config vitest.workers.config.ts",
+    "test:e2e": "playwright test --config test/e2e/playwright.config.ts",
+    "test:e2e:pc": "playwright test --config test/e2e/playwright.config.ts --project=pc",
+    "test:e2e:mobile": "playwright test --config test/e2e/playwright.config.ts --project=mobile",
+    "test:all": "npm run test && npm run test:e2e",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "0.22.0",
+    "@cloudflare/workers-types": "5.20261006.1",
+    "@playwright/test": "1.56.1",
+    "@types/node": "24.5.2",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11",
+    "wrangler": "4.149.0",
+    "ws": "8.21.0"
+  }
+}

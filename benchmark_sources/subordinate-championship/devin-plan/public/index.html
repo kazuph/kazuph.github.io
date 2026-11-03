@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>早押しクイズ対戦</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <section id="screen-entry" class="screen">
+        <h1 class="title">早押しクイズ対戦</h1>
+        <p class="subtitle">4人でオンライン対戦！</p>
+        <div class="panel">
+          <label class="field">
+            <span>あなたの名前</span>
+            <input id="name-input" type="text" maxlength="20" placeholder="名前を入力" />
+          </label>
+          <button id="create-btn" class="btn btn-primary">部屋を作る</button>
+          <div class="divider">または</div>
+          <div class="join-row">
+            <input id="code-input" type="text" maxlength="6" placeholder="部屋コード" />
+            <button id="join-btn" class="btn btn-secondary">参加する</button>
+          </div>
+          <p id="entry-error" class="error"></p>
+        </div>
+      </section>
+
+      <section id="screen-lobby" class="screen hidden">
+        <h1 class="title">ロビー</h1>
+        <div class="panel">
+          <p class="room-code-label">部屋コード</p>
+          <p id="room-code" class="room-code">------</p>
+          <p class="hint">このコードを友だちに教えてね（4人まで）</p>
+          <ul id="lobby-players" class="player-list"></ul>
+          <button id="start-btn" class="btn btn-primary hidden">ゲーム開始</button>
+          <p id="lobby-wait" class="hint">ホストが開始するのを待っています…</p>
+          <p id="lobby-error" class="error"></p>
+        </div>
+      </section>
+
+      <section id="screen-game" class="screen hidden">
+        <header class="game-header">
+          <span id="question-counter">第1問 / 10</span>
+          <div class="timer-track"><div id="timer-bar"></div></div>
+          <span id="timer-text">20</span>
+        </header>
+        <div class="game-main">
+          <div class="play-area">
+            <p id="question-text" class="question-text"></p>
+            <div id="choices" class="choices">
+              <button class="choice" data-choice="0"></button>
+              <button class="choice" data-choice="1"></button>
+              <button class="choice" data-choice="2"></button>
+              <button class="choice" data-choice="3"></button>
+            </div>
+            <button id="buzz-btn" class="buzz">PUSH!</button>
+            <p id="game-status" class="game-status"></p>
+          </div>
+          <aside class="scoreboard">
+            <h2>点数</h2>
+            <ul id="game-players" class="player-list"></ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="screen-result" class="screen hidden">
+        <h1 class="title">最終結果</h1>
+        <div class="panel">
+          <ol id="result-list" class="result-list"></ol>
+          <button id="back-btn" class="btn btn-secondary">入口にもどる</button>
+        </div>
+      </section>
+    </div>
+    <div id="reconnecting" class="hidden">再接続中…</div>
+    <script src="/app.js"></script>
+  </body>
+</html>

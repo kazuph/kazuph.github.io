@@ -1,0 +1,25 @@
+{
+  "name": "pi-benchmark-buzzer-dependencies",
+  "private": true,
+  "version": "1.0.0",
+  "description": "4人オンライン対戦の早押しクイズ（Cloudflare Workers + Durable Objects / ローカル開発限定）",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run test/game-logic.test.ts",
+    "test:integration": "vitest run test/room-do.test.ts",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "wrangler": "4.149.0",
+    "@playwright/test": "1.56.1",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11",
+    "@cloudflare/workers-types": "5.20261006.1",
+    "@cloudflare/vitest-pool-workers": "0.22.0",
+    "@types/node": "24.5.2"
+  }
+}

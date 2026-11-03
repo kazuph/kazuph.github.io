@@ -1,0 +1,35 @@
+{
+  // Cloudflare Workers 設定（ローカル開発専用。deploy はしない）
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "buzzer-quiz",
+  "main": "src/worker.ts",
+  "compatibility_date": "2025-01-01",
+  "workers_dev": false,
+  "dev": {
+    "port": 8787,
+    "ip": "127.0.0.1",
+    "inspector_port": 0,
+    "local_protocol": "http"
+  },
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "QUIZ_ROOMS",
+        "class_name": "QuizRoom"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["QuizRoom"]
+    }
+  ],
+  "observability": {
+    "enabled": false
+  }
+}

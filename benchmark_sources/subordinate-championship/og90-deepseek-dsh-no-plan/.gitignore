@@ -1,0 +1,12 @@
+node_modules/
+.wrangler/
+.tmp/
+
+# スクリーンショット（採点用に .artifacts/ へ保存するがコミットしない）
+.artifacts/
+
+# テストの一時出力
+test-results/
+playwright-report/
+blob-report/
+*.log
