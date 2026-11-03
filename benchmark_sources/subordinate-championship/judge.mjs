@@ -17,6 +17,8 @@ const A = {
   'devin-plan': { port: 8793, name: '#name-input', create: '#create-btn', joinName: '#name-input', code: '#code-input', join: '#join-btn', roomCode: '#room-code', start: '#start-btn', buzz: '#buzz-btn', choice: '.choice' },
   luna: { port: 8787, name: 'role=textbox[name="プレイヤー名"] >> nth=0', create: 'role=button[name="部屋を作る"]', joinName: 'role=textbox[name="プレイヤー名"] >> nth=-1', code: 'role=textbox[name="部屋コード"]', join: 'role=button[name="部屋に参加する"]', roomCode: '.room-code', start: 'role=button[name="ゲームを開始"]', buzz: 'role=button[name="早押し！"]', choice: '[data-choice]' },
   'luna-plan': { port: 8794, name: '#player-name', create: 'role=button[name="部屋を作る"]', joinName: '#player-name', code: '#room-code', join: 'role=button[name="参加する"]', roomCode: tid('room-code'), start: 'role=button[name="クイズを開始"]', buzz: tid('buzzer'), choice: '[data-choice]' },
+  terra: { port: 8788, name: '#name', create: '#create', joinName: '#name', code: '#code', join: '#join', roomCode: '.room-code strong', start: '#start', buzz: '#buzz', choice: '[data-choice]' },
+  'terra-plan': { port: 8795, name: 'input[name="name"]', create: 'button[value="create"]', joinName: 'input[name="name"]', code: 'input[name="code"]', join: 'button[value="join"]', roomCode: '.room-code strong', start: '#start', buzz: '#buzz', choice: '[data-choice]' },
   devin: { port: 8785, name: '#in-name', create: '#btn-create', joinName: '#in-name', code: '#in-code', join: '#btn-join', roomCode: '#lobby-code', start: '#btn-start', buzz: '#btn-buzz', choice: '#choices button' },
 };
 

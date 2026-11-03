@@ -1,0 +1,2 @@
+# 部下候補が書いたソースはそのまま残すため、空白の検査から外す
+benchmark_sources/** -whitespace
