@@ -2,7 +2,7 @@
 layout: post
 title: "仕様を1か所壊したら誰が気づくか：Alloy・TLA+・Quint・Dafny・Lean・Z3・Cedar・dspecで試す"
 date: 2026-11-04
-description: "同じ承認フローを8つの形式手法の道具で書き、「取消したのにアクセスを許す」へ1か所だけ壊して、どの道具がどう気づくかを終了コードまで比べます。"
+description: "同じ承認フローを7つの形式手法の道具で書き、「取消したのにアクセスを許す」へ1か所だけ壊して、どの道具がどう気づくかを終了コードまで比べます。dspecでは実装参照の切れを試します。"
 full_ai: true
 full_ai_model: claude-opus-5-5
 image: /images/posts/formal-methods-executable-specs/who-notices.png
@@ -15,12 +15,14 @@ AIに頼めば、AlloyやTLA+やLeanのモデルは数分で出てくる。
 書くのが速くなると、今度は別の心配が出てくる。
 仕様を変えたとき、増えたモデルや証明のどれかが黙って古くなるのではないか。
 
-そこで、同じ小さな承認フローを8つの道具で書き、わざと1か所だけ壊してみた。
+そこで、同じ小さな承認フローを7つの道具で書き、わざと1か所だけ壊してみた。
 壊し方はすべて同じで、「取消したのにアクセスを許す」にする。
 道具が気づくか、気づいたらCIを止める終了コードを返すかを見る。
+仕様と実装の対応を管理するdspecだけは役目が違うので、実装参照の名前を壊して別に試した。
 
-結果は、8つのうち4つがそのまま止まった。
-残りは、命題の書き方か、テストの有無か、出力の読み方で決まった。
+結果は、7つのうちTLA+・Quint・Dafnyの3つがそのまま止まった。
+LeanとCedarは、命題の書き方とテストの有無で結果が変わった。
+AlloyとZ3は気づいたが、終了コードではCIを止めなかった。
 
 ## 題材：取消した依頼は許可しない
 
@@ -30,14 +32,13 @@ AIに頼めば、AlloyやTLA+やLeanのモデルは数分で出てくる。
 - `Cancelled`の依頼は、何をしても許可しない
 
 題材は記事用に作った最小の例である。
-金額や期限のような実サービスの値は入れていない。
-8つのサンプルと壊した版は[scripts/formal_methods_approval_2026](https://github.com/kazuph/kazuph.github.io/tree/master/scripts/formal_methods_approval_2026)にある。
+7つのサンプルと壊した版は[scripts/formal_methods_approval_2026](https://github.com/kazuph/kazuph.github.io/tree/master/scripts/formal_methods_approval_2026)にある。
 壊した版は`broken/`の下にあり、元の版との差は1行だけである。
 
 ## 壊した仕様に誰が気づいたか
 
 <div style="overflow-x:auto; margin: 24px 0;">
-<svg viewBox="0 0 900 650" style="width:100%; min-width:680px; height:auto; display:block;" role="img" aria-label="仕様を1か所壊したときに、8つの道具のどれが気づいたかの図" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Hiragino Sans', sans-serif">
+<svg viewBox="0 0 900 650" style="width:100%; min-width:680px; height:auto; display:block;" role="img" aria-label="仕様を1か所壊したときに、7つの道具とdspecのどれが気づいたかの図" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Hiragino Sans', sans-serif">
   <defs><marker id="fm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
   <rect x="220.0" y="10" width="460" height="58" rx="12" fill="#172033"/>
   <text x="450.0" y="36" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">仕様を1か所壊す</text>
@@ -53,7 +54,7 @@ AIに頼めば、AlloyやTLA+やLeanのモデルは数分で出てくる。
   <text x="24" y="220" font-size="14" font-weight="700" fill="#b45309">ただし終了コード 0</text>
   <rect x="10" y="254" width="280" height="92" rx="10" fill="#ecfdf5" stroke="#34d399"/>
   <text x="24" y="280" font-size="16" font-weight="800" fill="#172033">TLA+ / TLC</text>
-  <text x="24" y="304" font-size="14" fill="#172033">不変条件違反と2手の反例</text>
+  <text x="24" y="304" font-size="14" fill="#172033">取消1回で不変条件違反の反例</text>
   <text x="24" y="328" font-size="14" font-weight="700" fill="#047857">終了コード 12 で止まる</text>
   <rect x="10" y="362" width="280" height="92" rx="10" fill="#ecfdf5" stroke="#34d399"/>
   <text x="24" y="388" font-size="16" font-weight="800" fill="#172033">Quint</text>
@@ -89,7 +90,7 @@ AIに頼めば、AlloyやTLA+やLeanのモデルは数分で出てくる。
   <text x="450.0" y="358" font-size="12" fill="#475569">命題を強める</text>
   <path d="M730.0,346 L730.0,361" stroke="#475569" stroke-width="2" marker-end="url(#fm-arrow)"/>
   <text x="740.0" y="358" font-size="12" fill="#475569">期待値を書く</text>
-  <text x="450.0" y="484" text-anchor="middle" font-size="16" font-weight="800" fill="#172033">仕様と実装の対応</text>
+  <text x="450.0" y="484" text-anchor="middle" font-size="16" font-weight="800" fill="#172033">別の壊し方：dspec では実装参照の名前を壊す</text>
   <rect x="10" y="496" width="880" height="70" rx="10" fill="#ecfdf5" stroke="#34d399"/>
   <text x="24" y="524" font-size="16" font-weight="800" fill="#172033">dspec（drift）</text>
   <text x="160" y="524" font-size="14" fill="#172033">実装参照の関数名を壊すと missing implementation symbol</text>
@@ -98,34 +99,27 @@ AIに頼めば、AlloyやTLA+やLeanのモデルは数分で出てくる。
   <rect x="10" y="592" width="18" height="18" rx="4" fill="#ecfdf5" stroke="#34d399"/>
   <text x="36" y="606" font-size="14" fill="#172033">気づいて止まる</text>
   <rect x="180" y="592" width="18" height="18" rx="4" fill="#fffbeb" stroke="#fbbf24"/>
-  <text x="206" y="606" font-size="14" fill="#172033">出力を読めば分かるが、CIは止まらない</text>
+  <text x="206" y="606" font-size="14" fill="#172033">結果は返すが、CIを止めるには判定が要る</text>
   <rect x="510" y="592" width="18" height="18" rx="4" fill="#fef2f2" stroke="#f87171"/>
   <text x="536" y="606" font-size="14" fill="#172033">見逃す</text>
-  <text x="10" y="638" font-size="12" fill="#475569">Alloy 6.2.0、TLC 2.19、Quint 0.33.1、Dafny 4.11.0、Lean 4.35.0、Z3 5.3.3、Cedar CLI 4.14.1、dspec main（a7dde63）で、2026年11月に実行。</text>
+  <text x="10" y="638" font-size="12" fill="#475569">Alloy 6.2.0、TLC 2.19、Quint 0.33.1、Dafny 4.11.0、Lean 4.35.0、Z3 5.3.3、Cedar CLI 4.14.1、dspec の main で実行。</text>
 </svg>
 </div>
 
-気づき方は3通りに分かれた。
+止まらなかった道具には、それぞれ止める方法があった。
 
-**モデルの中の矛盾として見つけたもの。**
-Alloy、TLA+、Quint、Dafnyは、壊した行と「取消したら許可しない」という性質が両立しないことを、そのまま見つけた。
-TLA+とQuintは`pending → cancelled`の2手の反例を出し、Dafnyは`Cancel`の事後条件を証明できないと返した。
+**Leanは、書いた命題の外を見逃した。**
+元の定理は「取消済みの状態から先では許可しない」で、壊した`pending`から`cancel`する行は範囲の外にある。
+定理を「どの状態からでも、結果が取消済みなら許可しない」に強めると止まった。
 
-**書いた命題の外だったもの。**
-Leanの元の定理は「取消済みの状態から先では許可しない」だった。
-壊したのは`pending`から`cancel`する行なので、定理の範囲の外にある。
-ファイル全体は受理され、実行すると`granted=true`を出した。
-定理を「どの状態からでも、結果が取消済みなら許可しない」に強めると、`decide`が命題を偽と判定して止まった。
-証明が保証するのは、書いた命題の分だけである。
+**Cedarは、期待値が無いと正誤を決めない。**
+`authorize`は壊したポリシーでも`ALLOW`と答えるだけで、期待値を書いたテストを`run-tests`で流すと止まった。
 
-**判断は返すが、正誤は決めないもの。**
-Cedarの`authorize`は、壊したポリシーでも`ALLOW`と答えて終了コード0で終わる。
-CedarはALLOWが正しいかを知らないからだ。
-期待値を書いたテストを`run-tests`で流すと、`expected Deny, got Allow`で止まった。
-
-もう一つ、CIへの入れ方で差が出た。
-Alloyは反例を見つけても終了コード0を返し、Z3も`sat`を出して0で終わる。
-この2つをCIで使うなら、`SAT`や`sat`の文字列を読んで落とす仕組みが要る。
+**AlloyとZ3は、終了コードを見るだけでは足りない。**
+どちらも違反を見つけても終了コード0で終わる。
+CIで使うなら、違反を問う検査の結果を期待値と比べる処理を足す。
+Alloyなら対象の`check`が`UNSAT`か、Z3なら違反を問う`check-sat`が`unsat`かを見る。
+出力のどこかに`sat`が出たら落とす、という雑な判定では、正常な版も落ちる。
 
 ## 8つの道具は何を検査するか
 
@@ -150,7 +144,7 @@ Cedarは検証専用のモデルでもない。
 [Pkl](https://github.com/apple/pkl)の型付きモデルを正本にして、規則とAlloy・TLA+・Lean・テストなどの生成物、実装のどの関数がどの規則に対応するか（実装参照）を結び付ける。
 正本から生成物を作ることを、dspecは射影と呼ぶ。
 
-## 8つのサンプルと、壊したときの出力
+## サンプルと、壊したときの出力
 
 ### Alloy 6：有限の範囲で反例を探す
 
@@ -240,9 +234,8 @@ Model checking completed. No error has been found.
 ```
 
 終わった後の足踏みは`Finish`として明示した。
-デッドロックの検査を切って緑にするのではなく、終了後に状態が変わらないことを遷移として書いている。
 
-`Cancel`の`granted'`を`TRUE`にすると、TLCは2手の反例を出して終了コード12で止まる。
+`Cancel`の`granted'`を`TRUE`にすると、TLCは取消1回の反例（初期状態と取消後の2状態）を出して終了コード12で止まる。
 
 ```text
 State 1: <Initial predicate>
@@ -558,19 +551,6 @@ Leanは命題と証明の書き方を細かく制御できる。
 dspecのように、規則・実装参照・生成物・検証結果を1つの型付きモデルに戻すと、参照の切れはCIで止められる。
 意味の一致までは保証しないので、上の検証器やテストと組み合わせる。
 
-## 周辺の道具
-
-| 系統 | 道具 | 向く場面 |
-| --- | --- | --- |
-| 対話的定理証明 | Rocq（旧Coq）、Isabelle/HOL、Agda | 数学、言語の意味論、証明つきコンパイラ |
-| 検証つきプログラミング | F*、Why3、SPARK/Ada | 暗号、組込み、安全性が重要なコード |
-| 既存のRustの検証 | Kani、Verus、Creusot、Prusti | unsafeの境界、panicやオーバーフロー、関数の契約 |
-| 明示状態のモデル検査 | SPIN/Promela、Murphi | 通信プロトコル、並行プロセス |
-| 段階的な詳細化 | B/Event-B、Rodin | 鉄道など安全性が重要なシステム |
-| 代数仕様・書き換え | CafeOBJ、Maude | 状態機械、代数的な性質 |
-| プロセス代数 | CSP/FDR | チャネル通信、デッドロック |
-| Cの解析 | Frama-C、CBMC | 既存のCコード、メモリー、未定義動作 |
-
 ## 実行した版
 
 | 道具 | 実行した版 | 最新リリース |
@@ -582,7 +562,7 @@ dspecのように、規則・実装参照・生成物・検証結果を1つの�
 | [Lean 4](https://github.com/leanprover/lean4) | 4.35.0 | 2026-10-12 |
 | [Z3](https://github.com/Z3Prover/z3) | 5.3.3 | 2026-10-29 |
 | [Cedar](https://github.com/cedar-policy/cedar) | CLI 4.14.1 | 2026-11-02 |
-| [dspec](https://github.com/mizchi/dspec) | main（a7dde63） | リリースなし |
+| [dspec](https://github.com/mizchi/dspec) | main | リリースなし |
 
 ## 出典
 
@@ -598,7 +578,7 @@ dspecのように、規則・実装参照・生成物・検証結果を1つの�
 
 ## おわりに
 
-同じ1行の壊し方に対して、気づいた道具と見逃した道具があった。
+同じ1行の壊し方に対して、止まった道具と素通りした道具があった。
 差を生んだのは道具の強さより、命題をどこまで広く書いたか、期待値をテストに書いたか、CIが終了コードと出力のどちらを見るかだった。
 
 AIでモデルを増やすなら、モデルと一緒に「壊したら落ちるか」も確かめておきたい。
