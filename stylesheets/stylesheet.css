@@ -1325,6 +1325,55 @@ body.media-lightbox-open {
   margin-bottom: 0;
 }
 
+.kagero-attention {
+  margin: 20px 0;
+  padding: 16px 18px;
+  color: #203040;
+  background: #f2f8ff;
+  border: 1px solid #cfe2f3;
+  border-left: 5px solid #174a7c;
+  border-radius: 14px;
+}
+
+.kagero-attention strong {
+  color: #173f66;
+}
+
+.kagero-attention p:last-child {
+  margin-bottom: 0;
+}
+
+.post-body .kagero-code {
+  position: relative;
+  margin: 24px 0;
+}
+
+.post-body .kagero-code::before {
+  content: attr(data-label);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: auto;
+  z-index: 1;
+  max-width: calc(100% - 12px);
+  padding: 7px 10px;
+  color: #dbeafe;
+  background: #174a7c;
+  border: 1px solid #2b6da3;
+  border-radius: 0;
+  border-bottom-right-radius: 8px;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: normal;
+}
+
+.post-body .kagero-code pre {
+  margin: 0;
+  padding-top: 34px;
+}
+
 .post-body .msg {
   display: grid;
   grid-template-columns: 38px minmax(0, 1fr);
