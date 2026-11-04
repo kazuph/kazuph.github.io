@@ -2,7 +2,9 @@
   description = "kazuph.github.io blog development environment";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # nixpkgs-unstable no longer ships ruby_3_3; the 26.05 release branch
+    # carries Ruby 3.3.13 with the October 2026 Regexp security fixes.
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
 
   outputs = { self, nixpkgs }:
