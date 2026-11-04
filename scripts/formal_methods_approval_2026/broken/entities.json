@@ -1,0 +1,7 @@
+[
+  {
+    "uid": { "type": "Request", "id": "request-1" },
+    "attrs": { "status": "cancelled" },
+    "parents": []
+  }
+]

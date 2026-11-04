@@ -1,0 +1,32 @@
+[
+  {
+    "name": "cancelled request cannot be read",
+    "request": {
+      "principal": "User::\"approver\"",
+      "action": "Action::\"read\"",
+      "resource": "Request::\"request-1\"",
+      "context": {}
+    },
+    "entities": [
+      { "uid": { "type": "Request", "id": "request-1" }, "attrs": { "status": "cancelled" }, "parents": [] }
+    ],
+    "decision": "deny",
+    "reason": ["policy2"],
+    "num_errors": 0
+  },
+  {
+    "name": "approver can approve",
+    "request": {
+      "principal": "User::\"approver\"",
+      "action": "Action::\"approve\"",
+      "resource": "Request::\"request-1\"",
+      "context": {}
+    },
+    "entities": [
+      { "uid": { "type": "Request", "id": "request-1" }, "attrs": { "status": "cancelled" }, "parents": [] }
+    ],
+    "decision": "allow",
+    "reason": ["policy0"],
+    "num_errors": 0
+  }
+]
